@@ -1,0 +1,7 @@
+{
+  "*.{ts,tsx,js,jsx,json,md,mdx,yaml}": [
+    "dprint check",
+    "biome check",
+    "eslint"
+  ]
+}

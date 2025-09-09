@@ -1,0 +1,101 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+
+  "formatter": {
+    "enabled": false
+  },
+
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": false,
+
+      "correctness": {
+        "noUnusedImports": "error",
+        "noUnusedVariables": "error",
+        "noPrecisionLoss": "error",
+        "noInvalidUseBeforeDeclaration": "error",
+
+        "useJsxKeyInIterable": "off",
+        "noChildrenProp": "off",
+        "useExhaustiveDependencies": "off",
+        "useHookAtTopLevel": "off",
+
+        "noInvalidBuiltinInstantiation": "off"
+      },
+
+      "style": {
+        "useImportType": "error",
+        "useExportType": "error",
+        "useShorthandFunctionType": "error",
+        "useConsistentArrayType": "error",
+
+        "useAsConstAssertion": "off",
+        "useDefaultParameterLast": "off",
+        "noInferrableTypes": "off",
+        "noNamespace": "off",
+        "useEnumInitializers": "off",
+        "useForOf": "off",
+        "useLiteralEnumMembers": "off",
+
+        "useFragmentSyntax": "off",
+        "useExplicitLengthCheck": "off",
+        "useNodejsImportProtocol": "off",
+        "useNumberNamespace": "off",
+
+        "useThrowOnlyError": "error"
+      },
+      "suspicious": {
+        "noDuplicateJsxProps": "off",
+        "useErrorMessage": "off",
+        "useIsArray": "off",
+
+        "noEmptyBlockStatements": "warn",
+        "noEmptyInterface": "error",
+        "noExplicitAny": "warn",
+        "noExtraNonNullAssertion": "error",
+        "noConfusingVoidType": "error",
+        "noMisleadingInstantiator": "error",
+        "noRedeclare": "error",
+        "noUnsafeDeclarationMerging": "error",
+        "useAwait": "warn",
+
+        "useAdjacentOverloadSignatures": "warn"
+      },
+      "complexity": {
+        "noUselessThisAlias": "error",
+        "noUselessTypeConstraint": "error",
+        "noUselessConstructor": "error",
+        "noUselessEmptyExport": "error",
+
+        "noUselessFragments": "off",
+
+        "noUselessSwitchCase": "off",
+        "useDateNow": "off",
+        "useFlatMap": "off",
+
+        "noBannedTypes": "off",
+        "useOptionalChain": "off",
+        "useLiteralKeys": "off"
+      }
+    }
+  },
+  "files": {
+    "ignoreUnknown": true
+  },
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false,
+    "defaultBranch": "main"
+  },
+  "json": {
+    "parser": {
+      "allowComments": true,
+      "allowTrailingCommas": true
+    }
+  },
+  "assist": {
+    "enabled": false
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "name": "@dugyu/lunarium",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The experimental realm of Lynx UI Theming.",
+  "keywords": [],
+  "author": "The Lynx Authors",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "format": "dprint fmt",
+    "format:check": "dprint check",
+    "lint": "biome check .",
+    "lint:eslint": "eslint .",
+    "lint:eslint:fix": "eslint . --fix",
+    "prepare": "husky"
+  },
+  "packageManager": "pnpm@10.15.0",
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.3",
+    "@eslint/css": "^0.11.0",
+    "@eslint/js": "^9.35.0",
+    "@eslint/markdown": "^7.2.0",
+    "@vitest/eslint-plugin": "^1.3.9",
+    "dprint": "^0.50.1",
+    "eslint": "^9.35.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-n": "^17.21.3",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "eslint-plugin-regexp": "^2.10.0",
+    "eslint-plugin-unicorn": "^61.0.2",
+    "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.6",
+    "turbo": "^2.5.6",
+    "typescript-eslint": "^8.43.0"
+  }
+}
