@@ -1,20 +1,15 @@
 import js from '@eslint/js';
-
-import globals from 'globals';
 import markdown from '@eslint/markdown';
-import css from '@eslint/css';
-
+import vitest from '@vitest/eslint-plugin';
+import { defineConfig } from 'eslint/config';
 import importPlugin from 'eslint-plugin-import';
 import nodePlugin from 'eslint-plugin-n';
-import unicorn from 'eslint-plugin-unicorn';
-import * as regexpPlugin from 'eslint-plugin-regexp';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
-
-import tseslint from 'typescript-eslint';
-import { defineConfig } from 'eslint/config';
-
-import vitest from '@vitest/eslint-plugin';
+import * as regexpPlugin from 'eslint-plugin-regexp';
+import unicorn from 'eslint-plugin-unicorn';
+import globals from 'globals';
+import * as tseslint from 'typescript-eslint';
 
 export default defineConfig([
   // Global Ignores
@@ -49,6 +44,9 @@ export default defineConfig([
 
       // Ignored packages
       'packages/**/vitest.config.ts',
+
+      // Non-code text
+      '**/*.{css,scss,sass,less,md,mdx,json,yaml,yml,svg,html}',
     ],
   },
 
@@ -199,15 +197,7 @@ export default defineConfig([
         prefer: 'type-imports',
         fixStyle: 'inline-type-imports',
       }],
-      '@typescript-eslint/explicit-function-return-type': [
-        'error',
-        {
-          allowExpressions: true, // const fn = () => ...
-          allowTypedFunctionExpressions: true,
-          allowHigherOrderFunctions: true, // map/filter
-          allowConciseArrowFunctionExpressionsStartingWithVoid: true, // () => void
-        },
-      ],
+      '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/prefer-reduce-type-parameter': 'error',
     },
   },
@@ -233,6 +223,7 @@ export default defineConfig([
       },
     },
   },
+
   // React
   {
     files: [
@@ -291,13 +282,5 @@ export default defineConfig([
       ...markdown.configs.recommended,
       ...markdown.configs.processor,
     ],
-  },
-
-  // CSS
-  {
-    files: ['**/*.css'],
-    plugins: { css },
-    language: 'css/css',
-    extends: ['css/recommended'],
   },
 ]);
