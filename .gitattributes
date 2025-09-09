@@ -1,5 +1,6 @@
 *.ts linguist-language=TypeScript
 *.tsx linguist-language=TypeScript
+*.json linguist-detectable=false
 **/test/**/*.js linguist-detectable=false
 *.snap.txt text diff=markdown linguist-language=Markdown -linguist-documentation=false -linguist-detectable=false
 * text=auto eol=lf
