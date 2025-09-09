@@ -6,7 +6,7 @@
     "strict": true,
     "useDefineForClassFields": true,
 
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "bundler",
 
     "forceConsistentCasingInFileNames": true,
