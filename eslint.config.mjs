@@ -108,7 +108,7 @@ export default defineConfig([
           project: './tsconfig.json',
         },
       },
-      'import/internal-regex': '^@dugyu/',
+      'import/internal-regex': '^(@/|@dugyu/)',
     },
     rules: {
       'import/no-commonjs': 'error',
