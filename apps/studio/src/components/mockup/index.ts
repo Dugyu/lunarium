@@ -1,1 +1,1 @@
-export { Mockup } from './mockup.tsx';
+export { Mockup, MockupContainer } from './mockup.tsx';

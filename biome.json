@@ -81,7 +81,20 @@
     }
   },
   "files": {
-    "ignoreUnknown": true
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!**/*.test.js",
+      "!test",
+      "!**/node_modules/**",
+      "!**/dist/**",
+      "!**/lib/**",
+      "!**/.turbo/**",
+      "!**/.rslib/**",
+      "!**/coverage/**",
+      "!target/**",
+      "!output/**"
+    ]
   },
   "vcs": {
     "enabled": false,

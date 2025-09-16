@@ -199,6 +199,15 @@ export default defineConfig([
       }],
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/prefer-reduce-type-parameter': 'error',
+      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+    },
+  },
+
+  {
+    files: ['**/*.d.ts', '**/types/**/*.ts'],
+    rules: {
+      '@typescript-eslint/consistent-type-definitions': 'off',
+      '@typescript-eslint/no-empty-interface': 'off',
     },
   },
 
@@ -227,7 +236,7 @@ export default defineConfig([
   // React
   {
     files: [
-      '**/*.{jsx,tsx}',
+      '**/*.{jsx,tsx,ts}',
     ],
     extends: [
       reactHooks.configs['recommended-latest'],

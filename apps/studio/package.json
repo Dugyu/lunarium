@@ -9,6 +9,9 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.7",
+    "@headlessui/tailwindcss": "^0.2.2",
+    "clsx": "^2.1.1",
     "react": "catalog:react18",
     "react-dom": "catalog:react18"
   },
