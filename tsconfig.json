@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "composite": true,
     "target": "ES2022",
     "lib": ["ES2022", "DOM"],
     "jsx": "react-jsx",
@@ -19,5 +20,14 @@
     "exactOptionalPropertyTypes": true,
     "noUncheckedIndexedAccess": true,
   },
-  "references": [],
+  "references": [
+    /** packages-start */
+    {
+      "path": "./apps/studio/tsconfig.json",
+    },
+    {
+      "path": "./apps/stage/tsconfig.json",
+    },
+    /** packages-end */
+  ],
 }
