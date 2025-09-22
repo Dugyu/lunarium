@@ -10,14 +10,14 @@ type AppThemeProps = {
 
 function AppTheme({ preset = 'luna-dark', children }: AppThemeProps) {
   return (
-    <view
+    <page
       className={clsx(
         'w-full h-full flex flex-col justify-center items-center bg-base',
         preset,
       )}
     >
       {children}
-    </view>
+    </page>
   );
 }
 

@@ -14,6 +14,7 @@ const config: Config = {
           content: 'var(--color-base-content)',
         },
         content: 'var(--color-base-content)',
+
         primary: {
           DEFAULT: 'var(--color-primary)',
           content: 'var(--color-primary-content)',
@@ -29,6 +30,12 @@ const config: Config = {
         neutral: {
           DEFAULT: 'var(--color-neutral)',
           content: 'var(--color-neutral-content)',
+        },
+        gradient: {
+          a: 'var(--gradient-a)',
+          b: 'var(--gradient-b)',
+          c: 'var(--gradient-c)',
+          d: 'var(--gradient-d)',
         },
       },
     },
