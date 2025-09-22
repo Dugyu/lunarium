@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "composite": true,
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["src/*"],
     },
     "strict": true,
     "isolatedModules": true,

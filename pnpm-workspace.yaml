@@ -3,7 +3,7 @@ packages:
   - packages/*
 
 catalog:
-  rsbuild-plugin-tailwindcss: ^0.2.3
+  rsbuild-plugin-tailwindcss: 0.2.3
   tailwindcss: 3.4.17
   typescript: 5.9.2
 
