@@ -4,13 +4,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "rsbuild build",
+    "demo": "pnpm --filter ../stage build && cross-env rsbuild --config ./rsbuild.config.ts build && rsbuild preview",
+    "build": "pnpm --filter ../stage build && cross-env rsbuild --config ./rsbuild.config.ts build",
     "dev": "rsbuild dev --open",
     "preview": "rsbuild preview"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.7",
     "@headlessui/tailwindcss": "^0.2.2",
+    "@lynx-js/web-core": "^0.17.0",
+    "@lynx-js/web-elements": "^0.8.7",
     "clsx": "^2.1.1",
     "react": "catalog:react18",
     "react-dom": "catalog:react18"
@@ -20,6 +23,7 @@
     "@rsbuild/plugin-react": "catalog:rsbuild",
     "@types/react": "catalog:react18",
     "@types/react-dom": "catalog:react18",
+    "cross-env": "^10.0.0",
     "rsbuild-plugin-tailwindcss": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:"
