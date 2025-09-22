@@ -3,11 +3,12 @@ import '@lynx-js/react/debug';
 import { root } from '@lynx-js/react';
 
 import { AppTheme } from '@/App.js';
+import { ActTwo } from '@/components/act-two';
 
 export function App() {
   return (
     <AppTheme preset='luna-dark'>
-      <text className='text-2xl text-base-content'>L.U.N.A Stage</text>
+      <ActTwo />
     </AppTheme>
   );
 }

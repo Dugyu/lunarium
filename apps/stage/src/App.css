@@ -1,12 +1,60 @@
 @tailwind base;
+@tailwind components;
 @tailwind utilities;
 
 .luna-dark {
   --color-base: #000000;
   --color-base-content: #ffffff;
+  --gradient-a: #ff7385;
+  --gradient-b: #fe69a1;
+  --gradient-c: #a998bf;
+  --gradient-d: #00d0f1;
 }
 
 .luna-light {
   --color-base: #ffffff;
   --color-base-content: #000000;
+  --gradient-a: #ff3d63;
+  --gradient-b: #ff5d99;
+  --gradient-c: #93a1c6;
+  --gradient-d: #3dd5e9;
+}
+
+@layer components {
+  .luna-gradient {
+    background: linear-gradient(
+      160deg,
+      theme("colors.gradient.a"),
+      theme("colors.gradient.b"),
+      theme("colors.gradient.c"),
+      theme("colors.gradient.d")
+    );
+  }
+  .luna-gradient-h {
+    background: linear-gradient(
+      to right,
+      theme("colors.gradient.a"),
+      theme("colors.gradient.b"),
+      theme("colors.gradient.c"),
+      theme("colors.gradient.d")
+    );
+  }
+
+  .luna-gradient-strawberry {
+    background: linear-gradient(
+      160deg,
+      theme("colors.gradient.a"),
+      theme("colors.gradient.b"),
+      theme("colors.gradient.c"),
+    );
+  }
+
+  .luna-gradient-ocean {
+    background: linear-gradient(
+      160deg,
+      theme("colors.gradient.b"),
+      theme("colors.gradient.c"),
+      theme("colors.gradient.d")
+    );
+  }
 }

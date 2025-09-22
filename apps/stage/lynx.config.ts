@@ -18,8 +18,10 @@ export default defineConfig({
   },
   source: {
     entry: {
-      PortalDark: './src/demos/PortalDark.tsx',
-      PortalLight: './src/demos/PortalLight.tsx',
+      ActOneDark: './src/demos/ActOneDark.tsx',
+      ActOneLight: './src/demos/ActOneLight.tsx',
+      ActTwoDark: './src/demos/ActTwoDark.tsx',
+      ActTwoLight: './src/demos/ActTwoLight.tsx',
     },
   },
   plugins: [
