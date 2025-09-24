@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import type { ComponentPropsWithRef } from 'react';
 
 function Frame(
@@ -5,9 +6,10 @@ function Frame(
 ) {
   return (
     <div
-      className={`w-full h-full min-h-[240px] min-w-[240px] bg-[#f5f5f5] flex flex-row justify-center items-center box-border ${
-        className ?? ''
-      }`}
+      className={clsx(
+        'w-full h-full min-h-[240px] min-w-[240px] bg-[#f5f5f5] flex flex-row justify-center items-center box-border',
+        className,
+      )}
       {...restProps}
     >
       {children}

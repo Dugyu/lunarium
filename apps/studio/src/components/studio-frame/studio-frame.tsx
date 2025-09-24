@@ -16,10 +16,10 @@ Container.displayName = 'Container';
 function StudioFrame() {
   return (
     <Frame>
-      <Container className='w-full h-full flex flex-row py-10 gap-4 flex-wrap px-4'>
+      <Container className='w-full h-full flex flex-row py-10 gap-4 flex-wrap px-4 pointer-events-none'>
         <MockupContainer className='flex-1 flex justify-center items-center pointer-events-none'>
-          <Mockup className='bg-black opacity-10 pointer-events-none'>
-            <LynxStage entry='ActOneDark' style={{ pointerEvents: 'all' }} />
+          <Mockup className='bg-black opacity-10'>
+            <LynxStage entry='ActOneDark' />
           </Mockup>
         </MockupContainer>
         <MockupContainer className='flex-1 flex justify-center items-center'>

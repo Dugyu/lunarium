@@ -15,7 +15,7 @@ function LynxStage({ entry, style }: LynxStageProps) {
       style={{
         width: '100%',
         height: '100%',
-        pointerEvents: 'auto',
+        pointerEvents: 'all',
         ...style,
       }}
       url={`/${entry}.web.bundle`}

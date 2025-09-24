@@ -109,7 +109,6 @@ function Mockup({
             `translate(${scaleInfo.offsetX}px, ${scaleInfo.offsetY}px) scale(${scaleInfo.scale})`,
           clipPath: DEVICE_CLIP_PATH,
         }}
-        onClick={() => console.log('HElllll')}
       >
         {/* Content area inside the device */}
         {children}
