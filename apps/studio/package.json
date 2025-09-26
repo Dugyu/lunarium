@@ -15,8 +15,10 @@
     "@lynx-js/web-core": "^0.17.0",
     "@lynx-js/web-elements": "^0.8.7",
     "clsx": "^2.1.1",
+    "motion": "^12.23.21",
     "react": "catalog:react18",
-    "react-dom": "catalog:react18"
+    "react-dom": "catalog:react18",
+    "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
     "@rsbuild/core": "catalog:rsbuild",
