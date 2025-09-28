@@ -1,6 +1,8 @@
 import { useMotionValue } from 'motion/react';
 import type { MotionValue } from 'motion/react';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
+
+import { useIsomorphicLayoutEffect } from '@/hooks/use-isomorphic-layout-effect.ts';
 
 type SizeMV = { width: MotionValue<number>; height: MotionValue<number> };
 
@@ -18,7 +20,7 @@ export function useContainerResizeMV<T extends HTMLElement = HTMLElement>(
   const prevW = useRef<number>(-1);
   const prevH = useRef<number>(-1);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
 

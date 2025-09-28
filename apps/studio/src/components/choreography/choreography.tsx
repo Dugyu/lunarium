@@ -7,7 +7,7 @@ import { StudioFrame } from '@/components/studio-frame';
 import { cn } from '@/utils';
 
 function Choreography() {
-  const [landscape, setLandscape] = useState(false);
+  const [landscape, setLandscape] = useState(true);
   return (
     <StudioFrame
       className={cn('justify-between', landscape ? 'flex-row' : 'flex-col')}

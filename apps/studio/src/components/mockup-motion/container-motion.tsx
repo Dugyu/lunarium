@@ -1,5 +1,5 @@
 import { useMotionValue, useTransform } from 'motion/react';
-import type { MotionNodeOptions, TransformTemplate } from 'motion/react';
+import type { Box, MotionNodeOptions, TransformTemplate } from 'motion/react';
 import * as motion from 'motion/react-client';
 import { useRef } from 'react';
 import type { ComponentProps } from 'react';
@@ -17,26 +17,41 @@ type MotionContainerProps =
 function MotionContainer(props: MotionContainerProps) {
   const { children, className, ...restProps } = props;
 
-  const conatinerRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  // Layout size from ResizeObserver (untransformed border-box)
   const { width: layoutW, height: layoutH } = useContainerResizeMV(
-    conatinerRef,
+    containerRef,
   );
 
+  // Frozen base size during layout animation (snapshot at measure/start)
+  const animLayoutW = useMotionValue(0);
+  const animLayoutH = useMotionValue(0);
+
+  // Animation phase flag: 0 (idle) / 1 (animating)
+  const isAnimating = useMotionValue(0);
+
+  // Parent scale extracted from transformTemplate
   const scaleX = useMotionValue(1);
   const scaleY = useMotionValue(1);
 
-  const visualW = useTransform(() => scaleX.get() * layoutW.get());
-  const visualH = useTransform(() => scaleY.get() * layoutH.get());
+  // Visual size in the local transform coord system: base × scale
+  const visualW = useTransform(() =>
+    (isAnimating.get() ? animLayoutW.get() : layoutW.get()) * scaleX.get()
+  );
+  const visualH = useTransform(() =>
+    (isAnimating.get() ? animLayoutH.get() : layoutH.get()) * scaleY.get()
+  );
 
   const handleParentTransform: TransformTemplate = (
     _latest,
     generated,
   ) => {
     if (generated && generated !== 'none') {
-      const scale = getLastScaleFromTransform(generated);
-      if (scale) {
-        scaleX.set(scale.x);
-        scaleY.set(scale.y);
+      const s = getLastScaleFromTransform(generated);
+      if (s) {
+        scaleX.set(s.x);
+        scaleY.set(s.y);
       }
     } else if (generated === 'none') {
       scaleX.set(1);
@@ -45,12 +60,30 @@ function MotionContainer(props: MotionContainerProps) {
     return generated;
   };
 
+  const handleLayoutMeasure = (box: Box) => {
+    animLayoutW.set(box.x.max - box.x.min);
+    animLayoutH.set(box.y.max - box.y.min);
+  };
+
+  const handleLayoutAnimationStart = () => {
+    isAnimating.set(1);
+  };
+
+  const handleLayoutAnimationComplete = () => {
+    isAnimating.set(0);
+    animLayoutW.set(layoutW.get());
+    animLayoutH.set(layoutH.get());
+  };
+
   return (
     // Outer Layout Animation Parent
     <motion.div
       layout
       layoutCrossfade={false}
-      ref={conatinerRef}
+      ref={containerRef}
+      onLayoutMeasure={handleLayoutMeasure}
+      onLayoutAnimationStart={handleLayoutAnimationStart}
+      onLayoutAnimationComplete={handleLayoutAnimationComplete}
       transformTemplate={handleParentTransform}
       className={cn('flex justify-center items-center', className)}
       {...restProps}
