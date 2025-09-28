@@ -1,44 +1,22 @@
-import { forwardRef } from 'react';
-import type { ComponentPropsWithoutRef } from 'react';
+import type { ReactNode } from 'react';
 
-import { Frame } from '@/components/frame';
-import { LynxStage } from '@/components/lynx-stage';
-import { Mockup, MockupContainer } from '@/components/mockup';
+import { Container } from '@/components/container';
+import { cn } from '@/utils';
 
-const Container = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<'div'>>(
-  (props, ref) => {
-    return <div ref={ref} {...props} />;
-  },
-);
+type StudioFrameProps = {
+  children?: ReactNode;
+  className?: string;
+};
 
-Container.displayName = 'Container';
-
-function StudioFrame() {
+function StudioFrame({ children, className }: StudioFrameProps) {
   return (
-    <Frame>
-      <Container className='w-full h-full flex flex-row py-10 gap-4 flex-wrap px-4'>
-        <MockupContainer className='flex-1 flex justify-center items-center pointer-events-none'>
-          <Mockup className='bg-black opacity-10 pointer-events-none'>
-            <LynxStage entry='ActOneDark' style={{ pointerEvents: 'all' }} />
-          </Mockup>
-        </MockupContainer>
-        <MockupContainer className='flex-1 flex justify-center items-center'>
-          <Mockup className='bg-white opacity-50'>
-            <LynxStage entry='ActOneLight' />
-          </Mockup>
-        </MockupContainer>
-        <MockupContainer className='flex-1 flex justify-center items-center'>
-          <Mockup className='bg-black opacity-10'>
-            <LynxStage entry='ActTwoDark' />
-          </Mockup>
-        </MockupContainer>
-        <MockupContainer className='flex-1 flex justify-center items-center'>
-          <Mockup className='bg-white opacity-50 '>
-            <LynxStage entry='ActTwoLight' />
-          </Mockup>
-        </MockupContainer>
+    <Container className='min-h-[240px] min-w-[240px] bg-[#f5f5f5] box-border overflow-hidden pointer-events-none'>
+      <Container
+        className={cn('py-10 px-4 gap-4 pointer-events-none', className)}
+      >
+        {children}
       </Container>
-    </Frame>
+    </Container>
   );
 }
 

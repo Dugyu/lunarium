@@ -1,4 +1,3 @@
-import { clsx } from 'clsx';
 import { forwardRef, useMemo, useRef } from 'react';
 import type {
   CSSProperties,
@@ -10,6 +9,7 @@ import type {
 import { createContextWithProvider } from '@/components/context';
 import { useContainerResize } from '@/hooks/use-container-resize.ts';
 import { useMergedRefs } from '@/hooks/use-merged-refs.ts';
+import { cn } from '@/utils';
 
 const [MockupSizeProvider, useOptionalMockupSize] = createContextWithProvider<
   { width: number; height: number }
@@ -20,8 +20,6 @@ const SMOOTHING_OUTLINE_PATH =
 const SMOOTHING_PATH =
   `M0 86.4C0 56.1572 0 41.0357 5.88565 29.4845C11.0628 19.3238 19.3238 11.0628 29.4845 5.88565C41.0357 0 56.1572 0 86.4 0H288.6C318.843 0 333.964 0 345.516 5.88565C355.676 11.0628 363.937 19.3238 369.114 29.4845C375 41.0357 375 56.1572 375 86.4V725.6C375 755.843 375 770.964 369.114 782.516C363.937 792.676 355.676 800.937 345.516 806.114C333.964 812 318.843 812 288.6 812H86.4C56.1572 812 41.0357 812 29.4845 806.114C19.3238 800.937 11.0628 792.676 5.88565 782.516C0 770.964 0 755.843 0 725.6V86.4Z`;
 
-const DEFAULT_BASE_W = 375;
-const DEFAULT_BASE_H = 812;
 const OUTLINE_WEIGHT = 6;
 
 const DEVICE_CLIP_PATH = `path("${SMOOTHING_PATH}")`;
@@ -35,8 +33,8 @@ function Mockup({
   fit = 'contain',
   align = { x: 'center', y: 'center' },
   children,
-  baseWidth = DEFAULT_BASE_W,
-  baseHeight = DEFAULT_BASE_H,
+  baseWidth = 375,
+  baseHeight = 812,
 }: MockupProps) {
   const ctx = useOptionalMockupSize();
 
@@ -73,16 +71,15 @@ function Mockup({
 
   return (
     // Anchor & coordinate system element, no size
-    <div
-      className={'relative w-0 h-0 overflow-visible pointer-events-none'}
-    >
+    <div className='relative w-0 h-0 overflow-visible pointer-events-none'>
       {/* Device outline */}
       <div
-        className={clsx(
+        className={cn(
           'absolute drop-shadow-lg pointer-events-none',
           className,
         )}
         style={{
+          ...style,
           width: baseWidth + 2 * OUTLINE_WEIGHT,
           height: baseHeight + 2 * OUTLINE_WEIGHT,
           transformOrigin: 'top left',
@@ -97,11 +94,8 @@ function Mockup({
 
       {/* Device frame */}
       <div
-        className={clsx(
-          'absolute overflow-hidden drop-shadow-2xl cursor-pointer pointer-events-none',
-        )}
+        className='absolute overflow-hidden drop-shadow-2xl cursor-pointer pointer-events-none'
         style={{
-          ...style,
           width: baseWidth,
           height: baseHeight,
           transformOrigin: 'top left',
@@ -109,7 +103,6 @@ function Mockup({
             `translate(${scaleInfo.offsetX}px, ${scaleInfo.offsetY}px) scale(${scaleInfo.scale})`,
           clipPath: DEVICE_CLIP_PATH,
         }}
-        onClick={() => console.log('HElllll')}
       >
         {/* Content area inside the device */}
         {children}

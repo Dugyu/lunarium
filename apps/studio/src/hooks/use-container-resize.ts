@@ -51,9 +51,9 @@ function useContainerResize<T extends HTMLElement = HTMLElement>({
     // SSR & Polyfill
     // Prefer injected ctor; otherwise read from the environment in a typed way.
     const RO: ResizeObserverCtor | undefined = ResizeObserverImpl
-        ?? (typeof window !== 'undefined' && 'ResizeObserver' in window)
-      ? window.ResizeObserver
-      : undefined;
+      ?? ((typeof window !== 'undefined' && 'ResizeObserver' in window)
+        ? window.ResizeObserver
+        : undefined);
 
     if (!RO) return;
 
