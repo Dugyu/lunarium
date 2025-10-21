@@ -1,9 +1,10 @@
 import { useMotionValue, useTransform } from 'motion/react';
 import type { Box, MotionNodeOptions, TransformTemplate } from 'motion/react';
 import * as motion from 'motion/react-client';
-import { useRef } from 'react';
-import type { ComponentProps } from 'react';
+import { forwardRef, useRef } from 'react';
+import type { ComponentPropsWithoutRef, ForwardedRef } from 'react';
 
+import { useMergedRefs } from '@/hooks/use-merged-refs.ts';
 import { cn } from '@/utils';
 
 import { VisualSizeProvider } from './context/visual-size-provider.tsx';
@@ -12,10 +13,18 @@ import { useContainerResizeMV } from './use-container-resize.ts';
 
 type MotionContainerProps =
   & Omit<MotionNodeOptions, 'transformTemplate'>
-  & Pick<ComponentProps<'div'>, 'children' | 'className' | 'onClick'>;
+  & ComponentPropsWithoutRef<'div'>
+  & { layoutId: string };
 
-function MotionContainer(props: MotionContainerProps) {
-  const { children, className, ...restProps } = props;
+const MotionContainer = forwardRef<HTMLDivElement, MotionContainerProps>(
+  MotionContainerImpl,
+);
+
+function MotionContainerImpl(
+  props: MotionContainerProps,
+  ref: ForwardedRef<HTMLDivElement>,
+) {
+  const { children, className, layoutId, ...restProps } = props;
 
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -23,6 +32,8 @@ function MotionContainer(props: MotionContainerProps) {
   const { width: layoutW, height: layoutH } = useContainerResizeMV(
     containerRef,
   );
+
+  const mergedRef = useMergedRefs(containerRef, ref);
 
   // Frozen base size during layout animation (snapshot at measure/start)
   const animLayoutW = useMotionValue(0);
@@ -79,8 +90,9 @@ function MotionContainer(props: MotionContainerProps) {
     // Outer Layout Animation Parent
     <motion.div
       layout
+      layoutId={`_${layoutId}_parent`}
       layoutCrossfade={false}
-      ref={containerRef}
+      ref={mergedRef}
       onLayoutMeasure={handleLayoutMeasure}
       onLayoutAnimationStart={handleLayoutAnimationStart}
       onLayoutAnimationComplete={handleLayoutAnimationComplete}
@@ -90,6 +102,7 @@ function MotionContainer(props: MotionContainerProps) {
     >
       <motion.div
         layout
+        layoutId={`_${layoutId}_child`}
         layoutCrossfade={false}
         className='relative w-[4px] h-[4px] flex justify-center items-center overflow-visible'
       >

@@ -22,6 +22,7 @@ export default defineConfig({
       ActOneLight: './src/demos/ActOneLight.tsx',
       ActTwoDark: './src/demos/ActTwoDark.tsx',
       ActTwoLight: './src/demos/ActTwoLight.tsx',
+      ActSwitch: './src/demos/ActSwitch.tsx',
     },
   },
   plugins: [

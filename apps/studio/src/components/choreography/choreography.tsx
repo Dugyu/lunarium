@@ -1,53 +1,38 @@
 import { LayoutGroup } from 'motion/react';
 import { useState } from 'react';
 
-import { LynxStage } from '@/components/lynx-stage';
-import { MotionContainer, MotionMockup } from '@/components/mockup-motion';
 import { StudioFrame } from '@/components/studio-frame';
-import { cn } from '@/utils';
+
+import { DynamicView } from './dynamic-view.tsx';
+
+type ViewMode = 'compare' | 'focus' | 'lineup';
 
 function Choreography() {
-  const [landscape, setLandscape] = useState(true);
+  const [mode, setMode] = useState<ViewMode>('compare');
+
   return (
     <StudioFrame
-      className={cn('justify-between', landscape ? 'flex-row' : 'flex-col')}
+      className={'pointer-events-auto relative luna-studio'}
+      onClick={() => setMode(prev => loopMode(prev))}
     >
-      <LayoutGroup>
-        <MotionContainer
-          className='flex-1'
-          onClick={() => setLandscape(prev => !prev)}
-        >
-          <MotionMockup className='bg-black opacity-10'>
-            <LynxStage entry='ActOneDark' />
-          </MotionMockup>
-        </MotionContainer>
-        <MotionContainer
-          className='flex-1'
-          onClick={() => setLandscape(prev => !prev)}
-        >
-          <MotionMockup className='bg-white opacity-50'>
-            <LynxStage entry='ActOneLight' />
-          </MotionMockup>
-        </MotionContainer>
-        <MotionContainer
-          className='flex-1'
-          onClick={() => setLandscape(prev => !prev)}
-        >
-          <MotionMockup className='bg-black opacity-10'>
-            <LynxStage entry='ActTwoDark' />
-          </MotionMockup>
-        </MotionContainer>
-        <MotionContainer
-          className='flex-1'
-          onClick={() => setLandscape(prev => !prev)}
-        >
-          <MotionMockup className='bg-white opacity-50'>
-            <LynxStage entry='ActTwoLight' />
-          </MotionMockup>
-        </MotionContainer>
+      <LayoutGroup id='luna-studio'>
+        <DynamicView mode={mode} key='luna-studio-dynamic-view' />
       </LayoutGroup>
     </StudioFrame>
   );
+}
+
+function loopMode(prev: ViewMode): ViewMode {
+  switch (prev) {
+    case 'compare':
+      return 'focus';
+    case 'focus':
+      return 'lineup';
+    case 'lineup':
+      return 'compare';
+    default:
+      return 'compare';
+  }
 }
 
 export { Choreography };

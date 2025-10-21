@@ -1,6 +1,5 @@
 import './App.css';
-import { Choreography } from '@/components/choreography/';
-// import { Studio } from '@/components/studio';
+import { Studio } from '@/components/studio';
 
 function App() {
   return (
@@ -15,7 +14,7 @@ function App() {
       </div>
       <div className='relative w-full flex flex-1 justify-center items-center min-h-0'>
         <div className='relative w-full h-2/3 flex justify-center items-center'>
-          <Choreography />
+          <Studio />
         </div>
       </div>
     </div>
