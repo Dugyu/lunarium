@@ -1,13 +1,14 @@
 import type { LynxView } from '@lynx-js/web-core';
-import type { CSSProperties, Dispatch, SetStateAction } from 'react';
+import type { CSSProperties, Ref } from 'react';
 
 declare global {
   namespace JSX {
     interface IntrinsicElements {
       'lynx-view': {
-        url: string;
-        ref?: Dispatch<SetStateAction<LynxView | null | undefined>>;
+        url?: string;
+        ref?: Ref<LynxView>;
         style?: CSSProperties;
+        ['lynx-group-id']?: numberg;
       };
     }
   }
