@@ -1,6 +1,12 @@
-import { useMotionTemplate, useMotionValue, useTransform } from 'motion/react';
+import {
+  useMotionTemplate,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from 'motion/react';
 import type { MotionValue } from 'motion/react';
 import * as motion from 'motion/react-client';
+import { useLayoutEffect } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 
 import { cn } from '@/utils';
@@ -22,6 +28,11 @@ const SMOOTHING_PATH =
 const DEVICE_CLIP_PATH = `path("${SMOOTHING_PATH}")`;
 const DEVICE_OUTLINE_CLIP_PATH = `path("${SMOOTHING_OUTLINE_PATH}")`;
 
+const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
+
+const DEFAULT_FIT = { stiffness: 170, damping: 26 };
+const DEFAULT_ZOOM = { stiffness: 170, damping: 26 };
+
 type MockupMotionProps = {
   /**
    * Motion Value Width
@@ -33,7 +44,14 @@ type MockupMotionProps = {
   height?: MotionValue<number>;
   baseWidth?: number;
   baseHeight?: number;
-  fit?: 'cover' | 'contain';
+  fit?: 'contain' | 'cover';
+  /** Continuous interpolation (0: contain ... 1: cover), overrides `fit` if provided */
+  fitProgress?: number;
+  /** Extra zoom factor: 1 = no change, >1 = zoom in, <1 = zoom out */
+  zoom?: number;
+  /** Optional custom spring settings */
+  fitTransition?: { stiffness?: number; damping?: number };
+  zoomTransition?: { stiffness?: number; damping?: number };
   align?: { x?: Align; y?: Align };
   className?: string;
   style?: CSSProperties;
@@ -46,6 +64,10 @@ function MotionMockup({
   baseWidth = 375,
   baseHeight = 812,
   fit = 'contain',
+  fitProgress,
+  zoom = 1,
+  fitTransition = DEFAULT_FIT,
+  zoomTransition = DEFAULT_ZOOM,
   align = { x: 'center', y: 'center' } as { x?: Align; y?: Align },
   className,
   style,
@@ -67,10 +89,29 @@ function MotionMockup({
   const ratioW = useTransform(() => width.get() / baseWidth);
   const ratioH = useTransform(() => height.get() / baseHeight);
 
+  const tMv = useMotionValue(0);
+  const zMv = useMotionValue(1);
+
+  useLayoutEffect(() => {
+    if (typeof fitProgress === 'number') {
+      tMv.set(clamp01(fitProgress));
+    } else {
+      tMv.set(fit === 'cover' ? 1 : 0);
+    }
+  }, [fit, fitProgress, tMv]);
+
+  useLayoutEffect(() => {
+    zMv.set(zoom ?? 1);
+  }, [zoom, zMv]);
+
+  const minScale = useTransform(() => Math.min(ratioW.get(), ratioH.get()));
+  const maxScale = useTransform(() => Math.max(ratioW.get(), ratioH.get()));
+
+  const t = useSpring(tMv, fitTransition);
+  const z = useSpring(zMv, zoomTransition);
+
   const scale = useTransform(() =>
-    fit === 'cover'
-      ? Math.max(ratioW.get(), ratioH.get())
-      : Math.min(ratioW.get(), ratioH.get())
+    minScale.get() + (maxScale.get() - minScale.get()) * t.get() * z.get()
   );
 
   const offsetX = useTransform(() => -(baseWidth * scale.get()) * ax);

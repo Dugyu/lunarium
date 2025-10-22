@@ -87,6 +87,7 @@ function DynamicView({ mode = 'compare' }: DynamicViewProps) {
               exit={{ opacity: 0, scale: 0 }}
             >
               <MotionMockup
+                fitProgress={mode === 'lineup' ? 0.5 : 0}
                 className={stage.theme === 'light'
                   ? 'bg-white opacity-50'
                   : 'bg-black opacity-10'}
