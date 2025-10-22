@@ -74,8 +74,18 @@ function MotionMockup({
   children,
 }: MockupMotionProps) {
   const visualSizeCtx = useVisualSize();
-  const baseW = useMotionValue(baseWidth);
-  const baseH = useMotionValue(baseHeight);
+
+  const frameW = baseWidth;
+  const frameH = baseHeight;
+
+  const outlineW = baseWidth + 2 * OUTLINE_WEIGHT;
+  const outlineH = baseHeight + 2 * OUTLINE_WEIGHT;
+
+  const deltaX = (outlineW - frameW) / 2; // == OUTLINE_WEIGHT
+  const deltaY = (outlineH - frameH) / 2; // == OUTLINE_WEIGHT
+
+  const baseW = useMotionValue(outlineW);
+  const baseH = useMotionValue(outlineH);
 
   const width = widthProp
     ?? visualSizeCtx?.visualW ?? baseW;
@@ -86,8 +96,8 @@ function MotionMockup({
   const ax = alignFactor(align.x);
   const ay = alignFactor(align.y);
 
-  const ratioW = useTransform(() => width.get() / baseWidth);
-  const ratioH = useTransform(() => height.get() / baseHeight);
+  const ratioW = useTransform(() => width.get() / baseW.get());
+  const ratioH = useTransform(() => height.get() / baseH.get());
 
   const tMv = useMotionValue(0);
   const zMv = useMotionValue(1);
@@ -111,36 +121,32 @@ function MotionMockup({
   const z = useSpring(zMv, zoomTransition);
 
   const scale = useTransform(() =>
-    minScale.get() + (maxScale.get() - minScale.get()) * t.get() * z.get()
+    (minScale.get() + (maxScale.get() - minScale.get()) * t.get()) * z.get()
   );
 
-  const offsetX = useTransform(() => -(baseWidth * scale.get()) * ax);
-  const offsetY = useTransform(() => -(baseHeight * scale.get()) * ay);
+  const outlineX = useTransform(() => -(outlineW * scale.get()) * ax);
+  const outlineY = useTransform(() => -(outlineH * scale.get()) * ay);
 
-  const outlineX = useTransform(() =>
-    offsetX.get() - OUTLINE_WEIGHT * scale.get()
-  );
-  const outlineY = useTransform(() =>
-    offsetY.get() - OUTLINE_WEIGHT * scale.get()
-  );
+  const frameX = useTransform(() => outlineX.get() + deltaX * scale.get());
+  const frameY = useTransform(() => outlineY.get() + deltaY * scale.get());
 
   const frameTransform =
-    useMotionTemplate`translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+    useMotionTemplate`translate(${frameX}px, ${frameY}px) scale(${scale})`;
   const outlineTransform =
     useMotionTemplate`translate(${outlineX}px, ${outlineY}px) scale(${scale})`;
 
   return (
-    <div className='relative w-0 h-0 overflow-visible pointer-events-none'>
+    <motion.div className='relative w-0 h-0 overflow-visible pointer-events-none'>
       {/* Device outline */}
       <motion.div
         className={cn(
-          'absolute origin-top-left pointer-events-none',
+          'absolute origin-top-left pointer-events-none box-border',
           className,
         )}
         style={{
           ...style,
-          width: baseWidth + 2 * OUTLINE_WEIGHT,
-          height: baseHeight + 2 * OUTLINE_WEIGHT,
+          width: outlineW,
+          height: outlineH,
           transform: outlineTransform,
           clipPath: DEVICE_OUTLINE_CLIP_PATH,
           willChange: 'transform',
@@ -149,7 +155,7 @@ function MotionMockup({
       </motion.div>
       {/* Device frame */}
       <motion.div
-        className='absolute origin-top-left overflow-hidden cursor-pointer pointer-events-none'
+        className='absolute origin-top-left overflow-hidden cursor-pointer pointer-events-none box-border'
         style={{
           width: baseWidth,
           height: baseHeight,
@@ -160,7 +166,7 @@ function MotionMockup({
       >
         {children}
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 

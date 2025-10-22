@@ -2,7 +2,11 @@ import { AnimatePresence } from 'motion/react';
 import { useMemo } from 'react';
 
 import { LynxStage } from '@/components/lynx-stage';
-import { MotionContainer, MotionMockup } from '@/components/mockup-motion';
+import {
+  MotionContainer,
+  MotionMockup,
+  MotionPresentation,
+} from '@/components/mockup-motion';
 import { cn } from '@/utils';
 
 type ViewMode = 'compare' | 'focus' | 'lineup';
@@ -82,18 +86,17 @@ function DynamicView({ mode = 'compare' }: DynamicViewProps) {
               layoutId={stage.id}
               key={stage.id}
               className={stage.className}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0 }}
             >
-              <MotionMockup
-                fitProgress={mode === 'lineup' ? 0.5 : 0}
-                className={stage.theme === 'light'
-                  ? 'bg-white opacity-50'
-                  : 'bg-black opacity-10'}
-              >
-                <LynxStage entry={stage.entry} />
-              </MotionMockup>
+              <MotionPresentation>
+                <MotionMockup
+                  fitProgress={mode === 'lineup' ? 0.5 : 0}
+                  className={stage.theme === 'light'
+                    ? 'bg-white opacity-50'
+                    : 'bg-black opacity-10'}
+                >
+                  <LynxStage entry={stage.entry} />
+                </MotionMockup>
+              </MotionPresentation>
             </MotionContainer>
           );
         })}

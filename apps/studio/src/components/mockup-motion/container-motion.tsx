@@ -97,7 +97,10 @@ function MotionContainerImpl(
       onLayoutAnimationStart={handleLayoutAnimationStart}
       onLayoutAnimationComplete={handleLayoutAnimationComplete}
       transformTemplate={handleParentTransform}
-      className={cn('flex justify-center items-center', className)}
+      className={cn(
+        'flex justify-center items-center overflow-hidden',
+        className,
+      )}
       {...restProps}
     >
       <motion.div
