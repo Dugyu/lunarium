@@ -36,8 +36,8 @@ function MotionContainerImpl(
   const mergedRef = useMergedRefs(containerRef, ref);
 
   // Frozen base size during layout animation (snapshot at measure/start)
-  const animLayoutW = useMotionValue(0);
-  const animLayoutH = useMotionValue(0);
+  const animLayoutW = useMotionValue(layoutW.get());
+  const animLayoutH = useMotionValue(layoutH.get());
 
   // Animation phase flag: 0 (idle) / 1 (animating)
   const isAnimating = useMotionValue(0);
@@ -97,7 +97,10 @@ function MotionContainerImpl(
       onLayoutAnimationStart={handleLayoutAnimationStart}
       onLayoutAnimationComplete={handleLayoutAnimationComplete}
       transformTemplate={handleParentTransform}
-      className={cn('flex justify-center items-center', className)}
+      className={cn(
+        'flex justify-center items-center overflow-hidden',
+        className,
+      )}
       {...restProps}
     >
       <motion.div

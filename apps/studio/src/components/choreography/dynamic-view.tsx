@@ -1,8 +1,13 @@
 import { AnimatePresence } from 'motion/react';
+import type { SpringOptions, Transition } from 'motion/react';
 import { useMemo } from 'react';
 
 import { LynxStage } from '@/components/lynx-stage';
-import { MotionContainer, MotionMockup } from '@/components/mockup-motion';
+import {
+  MotionContainer,
+  MotionMockup,
+  MotionPresentation,
+} from '@/components/mockup-motion';
 import { cn } from '@/utils';
 
 type ViewMode = 'compare' | 'focus' | 'lineup';
@@ -60,6 +65,20 @@ const BASE_STATUS: Record<ViewMode, Spec[]> = {
   ],
 };
 
+const slidingVariants = {
+  initial: { opacity: 0, x: -300 },
+  animate: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: 300 },
+};
+
+const presentationTransition: Transition = {
+  type: 'spring',
+  visualDuration: 0.3,
+  bounce: 0.3,
+};
+
+const fitTransition: SpringOptions = { visualDuration: 0.8, bounce: 0.1 };
+
 function DynamicView({ mode = 'compare' }: DynamicViewProps) {
   const rendered: RenderData[] = useMemo(() => {
     const items = BASE_STATUS[mode].map(d => ({ ...d, ...STAGES[d.id] }));
@@ -82,17 +101,25 @@ function DynamicView({ mode = 'compare' }: DynamicViewProps) {
               layoutId={stage.id}
               key={stage.id}
               className={stage.className}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0 }}
             >
-              <MotionMockup
-                className={stage.theme === 'light'
-                  ? 'bg-white opacity-50'
-                  : 'bg-black opacity-10'}
+              <MotionPresentation
+                key={stage.id}
+                variants={slidingVariants}
+                initial='initial'
+                animate='animate'
+                exit='exit'
+                transition={presentationTransition}
               >
-                <LynxStage entry={stage.entry} />
-              </MotionMockup>
+                <MotionMockup
+                  fitProgress={mode === 'lineup' ? 0.5 : 0}
+                  fitTransition={fitTransition}
+                  className={stage.theme === 'light'
+                    ? 'bg-white opacity-50'
+                    : 'bg-black opacity-10'}
+                >
+                  <LynxStage entry={stage.entry} />
+                </MotionMockup>
+              </MotionPresentation>
             </MotionContainer>
           );
         })}
