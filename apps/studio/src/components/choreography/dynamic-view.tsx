@@ -77,8 +77,7 @@ const presentationTransition: Transition = {
   bounce: 0.3,
 };
 
-const fitTransition: SpringOptions = { visualDuration: 0.3, bounce: 0.3 };
-const zoomTransition: SpringOptions = { visualDuration: 0.5, bounce: 0.1 };
+const fitTransition: SpringOptions = { visualDuration: 0.8, bounce: 0.1 };
 
 function DynamicView({ mode = 'compare' }: DynamicViewProps) {
   const rendered: RenderData[] = useMemo(() => {
@@ -114,7 +113,6 @@ function DynamicView({ mode = 'compare' }: DynamicViewProps) {
                 <MotionMockup
                   fitProgress={mode === 'lineup' ? 0.5 : 0}
                   fitTransition={fitTransition}
-                  zoomTransition={zoomTransition}
                   className={stage.theme === 'light'
                     ? 'bg-white opacity-50'
                     : 'bg-black opacity-10'}
