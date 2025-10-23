@@ -4,7 +4,7 @@ import {
   useSpring,
   useTransform,
 } from 'motion/react';
-import type { MotionValue } from 'motion/react';
+import type { MotionValue, SpringOptions } from 'motion/react';
 import * as motion from 'motion/react-client';
 import { useLayoutEffect } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
@@ -30,8 +30,8 @@ const DEVICE_OUTLINE_CLIP_PATH = `path("${SMOOTHING_OUTLINE_PATH}")`;
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 
-const DEFAULT_FIT = { stiffness: 170, damping: 26 };
-const DEFAULT_ZOOM = { stiffness: 170, damping: 26 };
+const DEFAULT_FIT: SpringOptions = { stiffness: 170, damping: 26 };
+const DEFAULT_ZOOM: SpringOptions = { stiffness: 170, damping: 26 };
 
 type MockupMotionProps = {
   /**
@@ -50,8 +50,8 @@ type MockupMotionProps = {
   /** Extra zoom factor: 1 = no change, >1 = zoom in, <1 = zoom out */
   zoom?: number;
   /** Optional custom spring settings */
-  fitTransition?: { stiffness?: number; damping?: number };
-  zoomTransition?: { stiffness?: number; damping?: number };
+  fitTransition?: SpringOptions;
+  zoomTransition?: SpringOptions;
   align?: { x?: Align; y?: Align };
   className?: string;
   style?: CSSProperties;
@@ -140,7 +140,7 @@ function MotionMockup({
       {/* Device outline */}
       <motion.div
         className={cn(
-          'absolute origin-top-left pointer-events-none box-border',
+          'absolute origin-top-left pointer-events-none',
           className,
         )}
         style={{
@@ -155,7 +155,7 @@ function MotionMockup({
       </motion.div>
       {/* Device frame */}
       <motion.div
-        className='absolute origin-top-left overflow-hidden cursor-pointer pointer-events-none box-border'
+        className='absolute origin-top-left overflow-hidden cursor-pointer pointer-events-none'
         style={{
           width: baseWidth,
           height: baseHeight,

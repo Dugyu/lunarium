@@ -1,4 +1,5 @@
 import { AnimatePresence } from 'motion/react';
+import type { SpringOptions, Transition } from 'motion/react';
 import { useMemo } from 'react';
 
 import { LynxStage } from '@/components/lynx-stage';
@@ -64,6 +65,21 @@ const BASE_STATUS: Record<ViewMode, Spec[]> = {
   ],
 };
 
+const slidingVariants = {
+  initial: { opacity: 0, x: -300 },
+  animate: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: 300 },
+};
+
+const presentationTransition: Transition = {
+  type: 'spring',
+  visualDuration: 0.3,
+  bounce: 0.3,
+};
+
+const fitTransition: SpringOptions = { visualDuration: 0.3, bounce: 0.3 };
+const zoomTransition: SpringOptions = { visualDuration: 0.5, bounce: 0.1 };
+
 function DynamicView({ mode = 'compare' }: DynamicViewProps) {
   const rendered: RenderData[] = useMemo(() => {
     const items = BASE_STATUS[mode].map(d => ({ ...d, ...STAGES[d.id] }));
@@ -87,9 +103,18 @@ function DynamicView({ mode = 'compare' }: DynamicViewProps) {
               key={stage.id}
               className={stage.className}
             >
-              <MotionPresentation>
+              <MotionPresentation
+                key={stage.id}
+                variants={slidingVariants}
+                initial='initial'
+                animate='animate'
+                exit='exit'
+                transition={presentationTransition}
+              >
                 <MotionMockup
                   fitProgress={mode === 'lineup' ? 0.5 : 0}
+                  fitTransition={fitTransition}
+                  zoomTransition={zoomTransition}
                   className={stage.theme === 'light'
                     ? 'bg-white opacity-50'
                     : 'bg-black opacity-10'}
