@@ -19,7 +19,7 @@
     "motion": "^12.23.21",
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
-    "tailwind-merge": "^2.6.0"
+    "tailwind-merge": "catalog:"
   },
   "devDependencies": {
     "@rsbuild/core": "catalog:rsbuild",

@@ -1,8 +1,9 @@
 import { LayoutGroup } from 'motion/react';
 
 import { DynamicView } from './dynamic-view.tsx';
+import type { ViewMode } from './dynamic-view.tsx';
 
-type ChoreographyViewMode = 'compare' | 'focus' | 'lineup';
+type ChoreographyViewMode = ViewMode;
 
 type ChoreographyProps = {
   viewMode: ChoreographyViewMode;

@@ -2,7 +2,7 @@ import { AnimatePresence } from 'motion/react';
 import type { SpringOptions, Transition } from 'motion/react';
 import { useMemo } from 'react';
 
-import { LynxStage } from '@/components/lynx-stage';
+import { LunaLynxStage } from '@/components/lynx-stage';
 import {
   MotionContainer,
   MotionMockup,
@@ -19,7 +19,7 @@ type DynamicViewProps = {
 type Stage = { entry: string; theme: 'light' | 'dark' };
 
 const STAGES: Record<string, Stage> = {
-  A1L: { entry: 'ActOneLight', theme: 'light' },
+  A1L: { entry: 'ActDynamic', theme: 'light' },
   A1D: { entry: 'ActOneDark', theme: 'dark' },
   A2L: { entry: 'ActTwoLight', theme: 'light' },
   A2D: { entry: 'ActTwoDark', theme: 'dark' },
@@ -117,7 +117,14 @@ function DynamicView({ mode = 'compare' }: DynamicViewProps) {
                     ? 'bg-white opacity-50'
                     : 'bg-black opacity-10'}
                 >
-                  <LynxStage entry={stage.entry} />
+                  {/* <LynxStage entry={stage.entry} /> */}
+                  <LunaLynxStage
+                    entry={stage.entry}
+                    lunaTheme={stage.theme === 'light'
+                      ? 'luna-light'
+                      : 'luna-dark'}
+                    studioViewMode={mode}
+                  />
                 </MotionMockup>
               </MotionPresentation>
             </MotionContainer>
