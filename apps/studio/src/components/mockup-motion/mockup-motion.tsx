@@ -61,12 +61,13 @@ type MockupMotionProps = {
   className?: string;
   style?: CSSProperties;
   children?: ReactNode;
-
   /**
    * Camera (perspective) layer. When provided (focalLength > 0) enables perspective.
    * - focalLength: f (px)
    */
   focalLength?: number;
+  maskColor?: string;
+  maskOpacity?: number;
 };
 
 function MotionMockup({
@@ -87,6 +88,8 @@ function MotionMockup({
   style,
   children,
   focalLength,
+  maskColor = 'transparent',
+  maskOpacity = 0,
 }: MockupMotionProps) {
   const visualSizeCtx = useVisualSize();
 
@@ -217,6 +220,19 @@ function MotionMockup({
       >
         {children}
       </motion.div>
+      <motion.div
+        className='absolute origin-top-left overflow-hidden pointer-events-none'
+        style={{
+          width: baseWidth,
+          height: baseHeight,
+          transform: frameTransform,
+          clipPath: DEVICE_CLIP_PATH,
+          willChange: 'transform',
+          backgroundColor: maskColor,
+        }}
+        animate={{ opacity: maskOpacity }}
+        transition={DEFAULT_TRANSITION}
+      />
     </motion.div>
   );
 }

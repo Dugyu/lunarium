@@ -29,10 +29,14 @@ const STAGES: Record<string, Stage> = {
   A1D: { entry: 'ActOneDark', theme: 'luna-dark' },
   A2L: { entry: 'ActMoonrise', theme: 'luna-light', componentName: 'Button' },
   A2D: { entry: 'ActMoonrise', theme: 'luna-dark' },
-  Switch: { entry: 'ActSwitch', theme: 'luna-light', componentName: 'Switch' },
+  Switch: {
+    entry: 'ActBlueskies',
+    theme: 'luna-light',
+    componentName: 'Switch',
+  },
   Slider: { entry: 'ActTwoDark', theme: 'luna-dark', componentName: 'Slider' },
   Radio: {
-    entry: 'ActTwoLight',
+    entry: 'ActBlueskies',
     theme: 'luna-light',
     componentName: 'Radio Group',
   },
@@ -45,7 +49,7 @@ const STAGES: Record<string, Stage> = {
   Sheet: { entry: 'ActOneLight', theme: 'luna-light', componentName: 'Sheet' },
   Dialog: { entry: 'ActOneDark', theme: 'luna-dark', componentName: 'Dialog' },
   Checkbox: {
-    entry: 'ActTwoLight',
+    entry: 'ActBlueskies',
     theme: 'luna-light',
     componentName: 'Checkbox',
   },
@@ -62,8 +66,6 @@ type WorldPos = {
   y: number;
   z: number;
 };
-
-type RenderData = Spec & Stage & { world: WorldPos } & { zIndex: number };
 
 const BASE_STATUS: Record<ViewMode, Spec[]> = {
   compare: [
@@ -132,6 +134,11 @@ const BASE_STATUS: Record<ViewMode, Spec[]> = {
   ],
 };
 
+type RenderData = Spec & Stage & { world: WorldPos } & {
+  zIndex: number;
+  maskOpacity: number;
+};
+
 const slidingVariants = {
   initial: { opacity: 0, x: -300 },
   animate: { opacity: 1, x: 0 },
@@ -192,7 +199,11 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
         ? (escape ? 100 : Math.ceil(Math.abs(compOrder - mid) * 2))
         : 0;
 
-      const data = { ...d, ...stageMeta, world, zIndex: zIndex };
+      const maskOpacity = mode === 'focus'
+        ? (escape ? 0 : 1 - Math.abs(theta * 2 / Math.PI) * 0.6)
+        : 0;
+
+      const data = { ...d, ...stageMeta, world, zIndex: zIndex, maskOpacity };
       return data;
     });
     return items;
@@ -239,6 +250,8 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
                   className={stage.theme === 'luna-light'
                     ? 'bg-white opacity-50'
                     : 'bg-black opacity-10'}
+                  maskColor='#f5f5f5'
+                  maskOpacity={stage.maskOpacity}
                 >
                   {/* <LynxStage entry={stage.entry} /> */}
                   <LunaLynxStage
@@ -247,6 +260,7 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
                     studioViewMode={mode}
                     focusedComponent={focused}
                     onFocusedChange={setFocused}
+                    componentEntry={stage.componentName}
                   />
                 </MotionMockup>
               </MotionPresentation>

@@ -14,11 +14,18 @@ type LunaLynxStageProps = {
   studioViewMode: 'compare' | 'focus' | 'lineup';
   focusedComponent: LynxUIComponentName;
   onFocusedChange?: (name: LynxUIComponentName) => void;
+  componentEntry?: LynxUIComponentName;
 };
 
 function LunaLynxStage(
-  { entry, lunaTheme, studioViewMode, focusedComponent, onFocusedChange }:
-    LunaLynxStageProps,
+  {
+    entry,
+    lunaTheme,
+    studioViewMode,
+    focusedComponent,
+    onFocusedChange,
+    componentEntry,
+  }: LunaLynxStageProps,
 ) {
   const ref = useRef<LynxView | null>(null);
 
@@ -50,8 +57,9 @@ function LunaLynxStage(
       lunaTheme,
       studioViewMode,
       focusedComponent,
+      componentEntry,
     });
-  }, [lunaTheme, studioViewMode, focusedComponent]);
+  }, [lunaTheme, studioViewMode, focusedComponent, componentEntry]);
 
   return (
     <lynx-view
