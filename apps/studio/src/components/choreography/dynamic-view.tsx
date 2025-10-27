@@ -1,6 +1,6 @@
 import { AnimatePresence } from 'motion/react';
 import type { SpringOptions, Transition } from 'motion/react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import { LunaLynxStage } from '@/components/lynx-stage';
 import {
@@ -8,6 +8,7 @@ import {
   MotionMockup,
   MotionPresentation,
 } from '@/components/mockup-motion';
+import type { LynxUIComponentName } from '@/types';
 import { cn } from '@/utils';
 
 type ViewMode = 'compare' | 'focus' | 'lineup';
@@ -16,22 +17,37 @@ type DynamicViewProps = {
   mode?: ViewMode;
 };
 
-type Stage = { entry: string; theme: 'luna-light' | 'luna-dark' };
+type Stage = {
+  entry: string;
+  theme: 'luna-light' | 'luna-dark';
+  componentName?: LynxUIComponentName;
+};
 
 const STAGES: Record<string, Stage> = {
-  A1L: { entry: 'ActBloom', theme: 'luna-light' },
+  A1L: { entry: 'ActBloom', theme: 'luna-light', componentName: 'Sheet' },
   A1D: { entry: 'ActOneDark', theme: 'luna-dark' },
-  A2L: { entry: 'ActMoonrise', theme: 'luna-light' },
+  A2L: { entry: 'ActMoonrise', theme: 'luna-light', componentName: 'Button' },
   A2D: { entry: 'ActMoonrise', theme: 'luna-dark' },
-  Switch: { entry: 'ActSwitch', theme: 'luna-light' },
-  Slider: { entry: 'ActTwoDark', theme: 'luna-dark' },
-  Radio: { entry: 'ActTwoLight', theme: 'luna-light' },
-  Sheet: { entry: 'ActOneDark', theme: 'luna-dark' },
-  Toast: { entry: 'ActOneDark', theme: 'luna-dark' },
-  Popover: { entry: 'ActOneLight', theme: 'luna-light' },
-  Dialog: { entry: 'ActOneDark', theme: 'luna-dark' },
-  Checkbox: { entry: 'ActTwoLight', theme: 'luna-light' },
-  Input: { entry: 'ActTwoDark', theme: 'luna-dark' },
+  Switch: { entry: 'ActSwitch', theme: 'luna-light', componentName: 'Switch' },
+  Slider: { entry: 'ActTwoDark', theme: 'luna-dark', componentName: 'Slider' },
+  Radio: {
+    entry: 'ActTwoLight',
+    theme: 'luna-light',
+    componentName: 'Radio Group',
+  },
+  Toast: { entry: 'ActOneDark', theme: 'luna-dark', componentName: 'Toast' },
+  Popover: {
+    entry: 'ActOneLight',
+    theme: 'luna-light',
+    componentName: 'Popover',
+  },
+  Dialog: { entry: 'ActOneDark', theme: 'luna-dark', componentName: 'Dialog' },
+  Checkbox: {
+    entry: 'ActTwoLight',
+    theme: 'luna-light',
+    componentName: 'Checkbox',
+  },
+  Input: { entry: 'ActTwoDark', theme: 'luna-dark', componentName: 'Input' },
 };
 
 type Spec = {
@@ -43,18 +59,37 @@ type RenderData = Spec & Stage;
 
 const BASE_STATUS: Record<ViewMode, Spec[]> = {
   compare: [
-    { id: 'A1L', 'className': 'flex-1 order-1' },
-    { id: 'A2L', 'className': 'flex-1 order-3' },
     { id: 'A1D', 'className': 'flex-1 order-2' },
     { id: 'A2D', 'className': 'flex-1 order-4' },
+    { id: 'A1L', 'className': 'flex-1 order-1' },
+    { id: 'A2L', 'className': 'flex-1 order-3' },
   ],
   focus: [
-    { id: 'A1L', 'className': 'flex-1 order-1' },
-    { id: 'A2L', 'className': 'flex-1 order-2' },
+    {
+      id: 'Switch',
+      'className': 'col-start-2 col-end-3 row-start-1 row-end-2',
+    },
+    {
+      id: 'Slider',
+      'className': 'col-start-2 col-end-3 row-start-1 row-end-2',
+    },
+    {
+      id: 'Radio',
+      'className': 'col-start-2 col-end-3 row-start-1 row-end-2',
+    },
+    { id: 'Toast', 'className': 'col-start-2 col-end-3 row-start-1 row-end-2' },
+    {
+      id: 'Popover',
+      'className': 'col-start-2 col-end-3 row-start-1 row-end-2',
+    },
+    {
+      id: 'Dialog',
+      'className': 'col-start-2 col-end-3 row-start-1 row-end-2',
+    },
+    { id: 'A1L', 'className': 'col-start-1 col-end-2 row-start-1 row-end-2' },
+    { id: 'A2L', 'className': 'col-start-2 col-end-3 row-start-1 row-end-2' },
   ],
   lineup: [
-    { id: 'A1L', 'className': 'col-start-4 col-end-5 row-start-1 row-end-2' }, // Sheet
-    { id: 'A2L', 'className': 'col-start-2 col-end-3 row-start-2 row-end-3' }, // Button
     {
       id: 'Switch',
       'className': 'col-start-1 col-end-2 row-start-1 row-end-2',
@@ -63,7 +98,10 @@ const BASE_STATUS: Record<ViewMode, Spec[]> = {
       id: 'Slider',
       'className': 'col-start-2 col-end-3 row-start-1 row-end-2',
     },
-    { id: 'Radio', 'className': 'col-start-3 col-end-4 row-start-1 row-end-2' },
+    {
+      id: 'Radio',
+      'className': 'col-start-3 col-end-4 row-start-1 row-end-2',
+    },
     { id: 'Toast', 'className': 'col-start-1 col-end-2 row-start-2 row-end-3' },
 
     {
@@ -74,6 +112,8 @@ const BASE_STATUS: Record<ViewMode, Spec[]> = {
       id: 'Dialog',
       'className': 'col-start-4 col-end-5 row-start-2 row-end-3',
     },
+    { id: 'A1L', 'className': 'col-start-4 col-end-5 row-start-1 row-end-2' }, // Sheet
+    { id: 'A2L', 'className': 'col-start-2 col-end-3 row-start-2 row-end-3' }, // Button
   ],
 };
 
@@ -91,7 +131,11 @@ const presentationTransition: Transition = {
 
 const fitTransition: SpringOptions = { visualDuration: 0.8, bounce: 0.1 };
 
+const DEFAULT_FOCUSED: LynxUIComponentName = 'Button';
+
 function DynamicView({ mode = 'compare' }: DynamicViewProps) {
+  const [focused, setFocused] = useState<LynxUIComponentName>(DEFAULT_FOCUSED);
+
   const rendered: RenderData[] = useMemo(() => {
     const items = BASE_STATUS[mode].map(d => ({ ...d, ...STAGES[d.id] }));
     return items;
@@ -101,9 +145,9 @@ function DynamicView({ mode = 'compare' }: DynamicViewProps) {
     <div
       className={cn(
         'w-full h-full gap-4 pointer-events-none relative',
+        mode === 'compare' && 'flex flex-row items-center justify-between',
+        mode === 'focus' && 'grid grid-cols-2 grid-rows-1',
         mode === 'lineup' && 'grid grid-cols-4 grid-rows-2',
-        (mode === 'compare' || mode === 'focus')
-          && 'flex flex-row items-center justify-between',
       )}
     >
       <AnimatePresence mode='popLayout'>
@@ -112,7 +156,12 @@ function DynamicView({ mode = 'compare' }: DynamicViewProps) {
             <MotionContainer
               layoutId={stage.id}
               key={stage.id}
-              className={cn('h-full', stage.className)}
+              className={cn(
+                'h-full',
+                stage.className,
+                (mode === 'focus' && stage.componentName
+                  && focused === stage.componentName) && 'z-10',
+              )}
             >
               <MotionPresentation
                 key={stage.id}
@@ -134,6 +183,8 @@ function DynamicView({ mode = 'compare' }: DynamicViewProps) {
                     entry={stage.entry}
                     lunaTheme={stage.theme}
                     studioViewMode={mode}
+                    focusedComponent={focused}
+                    onFocusedChange={setFocused}
                   />
                 </MotionMockup>
               </MotionPresentation>
