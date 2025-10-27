@@ -8,10 +8,11 @@ type ButtonProps = {
   shape?: 'normal' | 'capsule';
   disabled?: boolean;
   children?: ReactNode;
+  className?: string;
 };
 
 function Button(props: ButtonProps) {
-  const { size = 'md', variant = 'primary', children } = props;
+  const { size = 'md', variant = 'primary', children, className } = props;
 
   return (
     <view
@@ -22,6 +23,7 @@ function Button(props: ButtonProps) {
             === 'lg'
           ? 'h-[48px]'
           : 'h-[32px]',
+        className,
       )}
     >
       <text

@@ -8,7 +8,9 @@ import { ActMoonrise } from '@/components/act-moonrise';
 export function App() {
   return (
     <AppTheme preset={lynx.__globalProps.lunaTheme ?? 'luna-light'}>
-      <ActMoonrise />
+      <ActMoonrise
+        studioViewMode={lynx.__globalProps.studioViewMode ?? 'compare'}
+      />
     </AppTheme>
   );
 }

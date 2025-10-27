@@ -4,14 +4,24 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
+import type { StudioViewMode } from '@/types';
 import { cn } from '@/utils';
 
-function ActMoonrise() {
+type ActMoonriseProps = {
+  studioViewMode: StudioViewMode;
+};
+
+function ActMoonrise({ studioViewMode }: ActMoonriseProps) {
   const [preset, setPreset] = useState<'luna' | 'lunaris'>('luna');
 
   return (
-    <view className='size-full flex flex-col justify-between items-center px-[16px] pt-[80px] pb-[48px]'>
-      <view className='w-full rounded-[16px] px-[20px] py-[32px] border border-neutral-2 flex flex-col items-start gap-[24px]'>
+    <view className='size-full flex flex-col justify-between items-center px-[16px] pt-[80px] pb-[48px] overflow-hidden'>
+      <view
+        className={cn(
+          'w-full rounded-[16px] px-[20px] py-[32px] border border-neutral-2 flex flex-col items-start gap-[24px] transition-transform duration-500 ease-in-out',
+          studioViewMode !== 'compare' && 'transform-[translateY(-100vh)]',
+        )}
+      >
         {/* Headline */}
         <view className='w-full flex flex-col items-start gap-[2px]'>
           <text className='text-start text-xl text-base-content font-semibold'>
@@ -129,13 +139,27 @@ function ActMoonrise() {
           </view>
         </view>
       </view>
-
       {/* CTA: Call-To-Action */}
-      <view className='w-full rounded-[16px] p-[16px]'>
+      <view
+        className={cn(
+          'w-full py-[16px] transition-all duration-500 ease-in-out overflow-hidden',
+          studioViewMode !== 'compare' && 'transform-[translateY(-33vh)]',
+          studioViewMode === 'compare' ? 'px-[16px]' : 'px-[64px]',
+        )}
+      >
         {/* Button Demo */}
         <view className='flex flex-col justify-end items-center w-full gap-[8px]'>
           <Button size='lg'>Let it bloom</Button>
-          <Button size='lg' variant='secondary'>Stay Asleep</Button>
+          <Button
+            size='lg'
+            variant='secondary'
+            className={cn(
+              'transition-all',
+              studioViewMode === 'lineup' && 'transform-[translateY(60px)]',
+            )}
+          >
+            Stay Asleep
+          </Button>
         </view>
       </view>
     </view>
@@ -143,3 +167,4 @@ function ActMoonrise() {
 }
 
 export { ActMoonrise };
+export type { ActMoonriseProps };
