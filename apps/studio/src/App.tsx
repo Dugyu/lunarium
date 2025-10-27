@@ -13,7 +13,7 @@ function App() {
         </p>
       </div>
       <div className='relative w-full flex flex-1 justify-center items-center min-h-0'>
-        <div className='relative w-full h-2/3 flex justify-center items-center'>
+        <div className='relative w-full h-4/5 flex justify-center items-center translate-y-6'>
           <Studio />
         </div>
       </div>

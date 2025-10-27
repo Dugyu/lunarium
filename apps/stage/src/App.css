@@ -4,7 +4,15 @@
 
 .luna-dark {
   --color-base: #000000;
-  --color-base-content: #ffffff;
+  --color-base-content: rgba(255, 255, 255, 1);
+  --color-base-content-2: rgba(255, 255, 255, 0.88);
+  --color-base-content-3: rgba(255, 255, 255, 0.6);
+  --color-primary: #ffffff;
+  --color-primary-content: #000000;
+  --color-neutral: rgba(250, 250, 250, 1);
+  --color-neutral-2: rgba(255, 255, 255, 0.32);
+  --color-neutral-3: rgba(255, 255, 255, 0.19);
+  --color-neutral-4: rgba(255, 255, 255, 0.13);
   --gradient-a: #ff7385;
   --gradient-b: #fe69a1;
   --gradient-c: #a998bf;
@@ -13,7 +21,15 @@
 
 .luna-light {
   --color-base: #ffffff;
-  --color-base-content: #000000;
+  --color-base-content: rgba(0, 0, 0, 1);
+  --color-base-content-2: rgba(0, 0, 0, 0.65);
+  --color-base-content-3: rgba(0, 0, 0, 0.48);
+  --color-primary: #000000;
+  --color-primary-content: #ffffff;
+  --color-neutral: rgba(0, 0, 0, 1);
+  --color-neutral-2: rgba(0, 0, 0, 0.17);
+  --color-neutral-3: rgba(0, 0, 0, 0.12);
+  --color-neutral-4: rgba(0, 0, 0, 0.05);
   --gradient-a: #ff3d63;
   --gradient-b: #ff5d99;
   --gradient-c: #93a1c6;

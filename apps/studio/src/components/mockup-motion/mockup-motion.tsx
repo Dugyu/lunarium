@@ -155,7 +155,7 @@ function MotionMockup({
       </motion.div>
       {/* Device frame */}
       <motion.div
-        className='absolute origin-top-left overflow-hidden cursor-pointer pointer-events-none'
+        className='absolute origin-top-left overflow-hidden pointer-events-none'
         style={{
           width: baseWidth,
           height: baseHeight,

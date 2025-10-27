@@ -3,12 +3,14 @@ import '@lynx-js/react/debug';
 import { root } from '@lynx-js/react';
 
 import { AppTheme } from '@/App.js';
-import { ActSwitch } from '@/components/act-switch';
+import { ActBloom } from '@/components/act-bloom';
 
 export function App() {
   return (
-    <AppTheme preset={lynx.__globalProps.lunaTheme ?? 'luna-light'}>
-      <ActSwitch />
+    <AppTheme preset='luna-light'>
+      <ActBloom
+        studioViewMode={lynx.__globalProps.studioViewMode ?? 'focus'}
+      />
     </AppTheme>
   );
 }
