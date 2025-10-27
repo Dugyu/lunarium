@@ -16,6 +16,21 @@ function LunaLynxStage(
   { entry, lunaTheme, studioViewMode }: LunaLynxStageProps,
 ) {
   const ref = useRef<LynxView | null>(null);
+  // const [innerTheme, setInnerTheme] = useState(lunaTheme);
+
+  /*   useEffect(() => {
+    ref.current!.onNativeModulesCall = (
+      name,
+      data: { theme: 'light' | 'dark' },
+      moduleName,
+    ) => {
+      if (moduleName === 'bridge' && name === 'changeTheme') {
+        setInnerTheme(`luna-${data.theme}`);
+        return { entry, data };
+      }
+    };
+  }, [entry]); */
+
   useLayoutEffect(() => {
     ref.current!.url = `/${entry}.web.bundle`;
     ref.current!.style.width = '100%';
@@ -24,12 +39,8 @@ function LunaLynxStage(
   }, [entry]);
 
   useLayoutEffect(() => {
-    ref.current!.updateGlobalProps({ lunaTheme });
-  }, [lunaTheme]);
-
-  useLayoutEffect(() => {
-    ref.current!.updateGlobalProps({ studioViewMode });
-  }, [studioViewMode]);
+    ref.current!.updateGlobalProps({ lunaTheme, studioViewMode });
+  }, [lunaTheme, studioViewMode]);
 
   return (
     <lynx-view

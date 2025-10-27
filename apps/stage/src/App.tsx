@@ -12,7 +12,7 @@ function AppTheme({ preset = 'luna-dark', children }: AppThemeProps) {
   return (
     <page
       className={clsx(
-        'flex flex-col justify-center items-center bg-base',
+        'flex flex-col justify-center items-center bg-base-1',
         preset,
       )}
     >

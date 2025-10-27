@@ -12,8 +12,8 @@
   "dependencies": {
     "@headlessui/react": "^2.2.7",
     "@headlessui/tailwindcss": "^0.2.2",
-    "@lynx-js/web-core": "^0.18.0",
-    "@lynx-js/web-elements": "^0.8.8",
+    "@lynx-js/web-core": "^0.18.1",
+    "@lynx-js/web-elements": "^0.8.9",
     "clsx": "^2.1.1",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.21",

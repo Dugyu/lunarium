@@ -16,23 +16,22 @@ type DynamicViewProps = {
   mode?: ViewMode;
 };
 
-type Stage = { entry: string; theme: 'light' | 'dark' };
+type Stage = { entry: string; theme: 'luna-light' | 'luna-dark' };
 
 const STAGES: Record<string, Stage> = {
-  A1L: { entry: 'ActDynamic', theme: 'light' },
-  A1D: { entry: 'ActOneDark', theme: 'dark' },
-  A2L: { entry: 'ActTwoLight', theme: 'light' },
-  A2D: { entry: 'ActTwoDark', theme: 'dark' },
-  Switch: { entry: 'ActSwitch', theme: 'light' },
-  Slider: { entry: 'ActOneDark', theme: 'dark' },
-  Button: { entry: 'ActOneDark', theme: 'dark' },
-  Radio: { entry: 'ActOneLight', theme: 'light' },
-  Sheet: { entry: 'ActOneDark', theme: 'dark' },
-  Toast: { entry: 'ActTwoDark', theme: 'dark' },
-  Popover: { entry: 'ActTwoLight', theme: 'light' },
-  Dialog: { entry: 'ActTwoDark', theme: 'dark' },
-  Checkbox: { entry: 'ActTwoLight', theme: 'light' },
-  Input: { entry: 'ActOneDark', theme: 'dark' },
+  A1L: { entry: 'ActBloom', theme: 'luna-light' },
+  A1D: { entry: 'ActOneDark', theme: 'luna-dark' },
+  A2L: { entry: 'ActMoonrise', theme: 'luna-light' },
+  A2D: { entry: 'ActMoonrise', theme: 'luna-dark' },
+  Switch: { entry: 'ActSwitch', theme: 'luna-light' },
+  Slider: { entry: 'ActTwoDark', theme: 'luna-dark' },
+  Radio: { entry: 'ActTwoLight', theme: 'luna-light' },
+  Sheet: { entry: 'ActOneDark', theme: 'luna-dark' },
+  Toast: { entry: 'ActOneDark', theme: 'luna-dark' },
+  Popover: { entry: 'ActOneLight', theme: 'luna-light' },
+  Dialog: { entry: 'ActOneDark', theme: 'luna-dark' },
+  Checkbox: { entry: 'ActTwoLight', theme: 'luna-light' },
+  Input: { entry: 'ActTwoDark', theme: 'luna-dark' },
 };
 
 type Spec = {
@@ -44,24 +43,37 @@ type RenderData = Spec & Stage;
 
 const BASE_STATUS: Record<ViewMode, Spec[]> = {
   compare: [
-    { id: 'A1L', 'className': 'flex-1 h-full' },
-    { id: 'A1D', 'className': 'flex-1 h-full' },
-    { id: 'A2L', 'className': 'flex-1 h-full' },
-    { id: 'A2D', 'className': 'flex-1 h-full' },
+    { id: 'A1L', 'className': 'flex-1 order-1' },
+    { id: 'A2L', 'className': 'flex-1 order-3' },
+    { id: 'A1D', 'className': 'flex-1 order-2' },
+    { id: 'A2D', 'className': 'flex-1 order-4' },
   ],
-  focus: [{ id: 'A1L', 'className': 'flex-1 h-full' }, {
-    id: 'A2L',
-    'className': 'flex-1 h-full',
-  }],
+  focus: [
+    { id: 'A1L', 'className': 'flex-1 order-1' },
+    { id: 'A2L', 'className': 'flex-1 order-2' },
+  ],
   lineup: [
-    { id: 'Switch', 'className': 'flex-1 h-full' },
-    { id: 'Slider', 'className': 'flex-1 h-full' },
-    { id: 'Radio', 'className': 'flex-1 h-full' },
-    { id: 'A1L', 'className': 'flex-1 h-full' }, // Sheet
-    { id: 'Toast', 'className': 'flex-1 h-full' },
-    { id: 'A2L', 'className': 'flex-1 h-full' }, // Button
-    { id: 'Popover', 'className': 'flex-1 h-full' },
-    { id: 'Dialog', 'className': 'flex-1 h-full' },
+    { id: 'A1L', 'className': 'col-start-4 col-end-5 row-start-1 row-end-2' }, // Sheet
+    { id: 'A2L', 'className': 'col-start-2 col-end-3 row-start-2 row-end-3' }, // Button
+    {
+      id: 'Switch',
+      'className': 'col-start-1 col-end-2 row-start-1 row-end-2',
+    },
+    {
+      id: 'Slider',
+      'className': 'col-start-2 col-end-3 row-start-1 row-end-2',
+    },
+    { id: 'Radio', 'className': 'col-start-3 col-end-4 row-start-1 row-end-2' },
+    { id: 'Toast', 'className': 'col-start-1 col-end-2 row-start-2 row-end-3' },
+
+    {
+      id: 'Popover',
+      'className': 'col-start-3 col-end-4 row-start-2 row-end-3',
+    },
+    {
+      id: 'Dialog',
+      'className': 'col-start-4 col-end-5 row-start-2 row-end-3',
+    },
   ],
 };
 
@@ -100,7 +112,7 @@ function DynamicView({ mode = 'compare' }: DynamicViewProps) {
             <MotionContainer
               layoutId={stage.id}
               key={stage.id}
-              className={stage.className}
+              className={cn('h-full', stage.className)}
             >
               <MotionPresentation
                 key={stage.id}
@@ -113,16 +125,14 @@ function DynamicView({ mode = 'compare' }: DynamicViewProps) {
                 <MotionMockup
                   fitProgress={mode === 'lineup' ? 0.5 : 0}
                   fitTransition={fitTransition}
-                  className={stage.theme === 'light'
+                  className={stage.theme === 'luna-light'
                     ? 'bg-white opacity-50'
                     : 'bg-black opacity-10'}
                 >
                   {/* <LynxStage entry={stage.entry} /> */}
                   <LunaLynxStage
                     entry={stage.entry}
-                    lunaTheme={stage.theme === 'light'
-                      ? 'luna-light'
-                      : 'luna-dark'}
+                    lunaTheme={stage.theme}
                     studioViewMode={mode}
                   />
                 </MotionMockup>

@@ -18,12 +18,13 @@ export default defineConfig({
   },
   source: {
     entry: {
+      ActMoonrise: './src/demos/ActMoonrise.tsx',
+      ActBloom: './src/demos/ActBloom.tsx',
       ActOneDark: './src/demos/ActOneDark.tsx',
       ActOneLight: './src/demos/ActOneLight.tsx',
       ActTwoDark: './src/demos/ActTwoDark.tsx',
       ActTwoLight: './src/demos/ActTwoLight.tsx',
       ActSwitch: './src/demos/ActSwitch.tsx',
-      ActDynamic: './src/demos/ActDynamic.tsx',
     },
   },
   plugins: [
@@ -34,7 +35,7 @@ export default defineConfig({
       },
     }),
     pluginReactLynx({
-      enableCSSInheritance: true,
+      enableCSSInheritance: false,
       enableParallelElement: false,
     }),
     pluginTypeCheck(),

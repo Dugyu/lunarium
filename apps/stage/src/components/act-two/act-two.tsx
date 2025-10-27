@@ -6,7 +6,7 @@ function ActTwo() {
       </text>
       <view className='absolute flex flex-col justify-end items-center w-full px-[36px] pb-[48px] bottom-0 gap-[4px]'>
         <view className='flex flex-row justify-center items-center rounded-full h-[64px] w-full bg-base-content'>
-          <text className='text-base text-2xl'>Continue</text>
+          <text className='text-base text-base-1'>Continue</text>
         </view>
       </view>
     </>

@@ -3,13 +3,13 @@ import '@lynx-js/react/debug';
 import { root } from '@lynx-js/react';
 
 import { AppTheme } from '@/App.js';
-import { ActDynamic } from '@/components/act-dynamic';
+import { ActBloom } from '@/components/act-bloom';
 
 export function App() {
   return (
     <AppTheme preset='luna-light'>
-      <ActDynamic
-        studioViewMode={lynx.__globalProps.studioViewMode ?? 'compare'}
+      <ActBloom
+        studioViewMode={lynx.__globalProps.studioViewMode ?? 'focus'}
       />
     </AppTheme>
   );

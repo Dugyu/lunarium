@@ -6,7 +6,7 @@ declare module '@lynx-js/types' {
      * Define your global properties in this interface.
      * These types will be accessible through `lynx.__globalProps`.
      */
-    lunaTheme: string;
+    lunaTheme: 'luna-light' | 'luna-dark';
     studioViewMode: 'compare' | 'focus' | 'lineup';
   }
 }
