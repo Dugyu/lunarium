@@ -4,32 +4,39 @@ import '@lynx-js/web-core';
 import '@lynx-js/web-elements/all';
 
 import type { LynxView } from '@lynx-js/web-core';
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+
+import type { LynxUIComponentName } from '@/types';
 
 type LunaLynxStageProps = {
   entry: string;
   lunaTheme: 'luna-light' | 'luna-dark';
   studioViewMode: 'compare' | 'focus' | 'lineup';
+  focusedComponent: LynxUIComponentName;
+  onFocusedChange?: (name: LynxUIComponentName) => void;
 };
 
 function LunaLynxStage(
-  { entry, lunaTheme, studioViewMode }: LunaLynxStageProps,
+  { entry, lunaTheme, studioViewMode, focusedComponent, onFocusedChange }:
+    LunaLynxStageProps,
 ) {
   const ref = useRef<LynxView | null>(null);
-  // const [innerTheme, setInnerTheme] = useState(lunaTheme);
 
-  /*   useEffect(() => {
+  useEffect(() => {
     ref.current!.onNativeModulesCall = (
       name,
-      data: { theme: 'light' | 'dark' },
+      data,
       moduleName,
     ) => {
-      if (moduleName === 'bridge' && name === 'changeTheme') {
-        setInnerTheme(`luna-${data.theme}`);
-        return { entry, data };
+      if (moduleName === 'bridge' && name === 'setFocusedComponent') {
+        const name: LynxUIComponentName =
+          (data as { name: LynxUIComponentName }).name;
+
+        onFocusedChange?.(name);
+        return { entry, focusedComponent: name };
       }
     };
-  }, [entry]); */
+  }, [entry, onFocusedChange]);
 
   useLayoutEffect(() => {
     ref.current!.url = `/${entry}.web.bundle`;
@@ -39,8 +46,12 @@ function LunaLynxStage(
   }, [entry]);
 
   useLayoutEffect(() => {
-    ref.current!.updateGlobalProps({ lunaTheme, studioViewMode });
-  }, [lunaTheme, studioViewMode]);
+    ref.current!.updateGlobalProps({
+      lunaTheme,
+      studioViewMode,
+      focusedComponent,
+    });
+  }, [lunaTheme, studioViewMode, focusedComponent]);
 
   return (
     <lynx-view

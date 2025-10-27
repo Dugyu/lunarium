@@ -30,8 +30,9 @@ const DEVICE_OUTLINE_CLIP_PATH = `path("${SMOOTHING_OUTLINE_PATH}")`;
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 
-const DEFAULT_FIT: SpringOptions = { stiffness: 170, damping: 26 };
-const DEFAULT_ZOOM: SpringOptions = { stiffness: 170, damping: 26 };
+const DEFAULT_TRANSITION: SpringOptions = { stiffness: 170, damping: 26 };
+const DEFAULT_PAN: { x: number; y: number } = { x: 0, y: 0 };
+const DEFAULT_WORLD: { x: number; y: number; z: number } = { x: 0, y: 0, z: 0 };
 
 type MockupMotionProps = {
   /**
@@ -49,13 +50,23 @@ type MockupMotionProps = {
   fitProgress?: number;
   /** Extra zoom factor: 1 = no change, >1 = zoom in, <1 = zoom out */
   zoom?: number;
+  /** Extra screen translation(px), defaults to 0/0 */
+  pan?: { x?: number; y?: number };
+  world?: { x?: number; y?: number; z?: number };
   /** Optional custom spring settings */
   fitTransition?: SpringOptions;
   zoomTransition?: SpringOptions;
+  panTransition?: SpringOptions;
   align?: { x?: Align; y?: Align };
   className?: string;
   style?: CSSProperties;
   children?: ReactNode;
+
+  /**
+   * Camera (perspective) layer. When provided (focalLength > 0) enables perspective.
+   * - focalLength: f (px)
+   */
+  focalLength?: number;
 };
 
 function MotionMockup({
@@ -66,12 +77,16 @@ function MotionMockup({
   fit = 'contain',
   fitProgress,
   zoom = 1,
-  fitTransition = DEFAULT_FIT,
-  zoomTransition = DEFAULT_ZOOM,
+  pan = DEFAULT_PAN,
+  world = DEFAULT_WORLD,
+  fitTransition = DEFAULT_TRANSITION,
+  zoomTransition = DEFAULT_TRANSITION,
+  panTransition = DEFAULT_TRANSITION,
   align = { x: 'center', y: 'center' } as { x?: Align; y?: Align },
   className,
   style,
   children,
+  focalLength,
 }: MockupMotionProps) {
   const visualSizeCtx = useVisualSize();
 
@@ -117,11 +132,47 @@ function MotionMockup({
   const minScale = useTransform(() => Math.min(ratioW.get(), ratioH.get()));
   const maxScale = useTransform(() => Math.max(ratioW.get(), ratioH.get()));
 
-  const t = useSpring(tMv, fitTransition);
-  const z = useSpring(zMv, zoomTransition);
+  const fitSpring = useSpring(tMv, fitTransition);
+  const zoomSpring = useSpring(zMv, zoomTransition);
+
+  // ===== Camera (perspective) layer =====
+
+  const worldX = world.x ?? 0;
+  const worldY = world.y ?? 0;
+  const worldZ = world.z ?? 0;
+
+  // k = f/(f+z), or 1 when no perspective
+  const k = (!focalLength || focalLength <= 0)
+    ? 1
+    : focalLength / (focalLength + worldZ);
+
+  // principal-point compensation so the center stays visually fixed
+  const panX = worldX * k + (pan.x ?? 0);
+  const panY = worldY * k + (pan.y ?? 0);
+
+  const zoomCamMv = useMotionValue(k);
+  const panXMv = useMotionValue(panX);
+  const panYMv = useMotionValue(panY);
+
+  useLayoutEffect(() => {
+    zoomCamMv.set(k);
+  }, [k, zoomCamMv]);
+
+  useLayoutEffect(() => {
+    panXMv.set(panX);
+  }, [panX, panXMv]);
+
+  useLayoutEffect(() => {
+    panYMv.set(panY);
+  }, [panY, panYMv]);
+
+  const zoomCamSpring = useSpring(zoomCamMv, zoomTransition);
+  const panXSpring = useSpring(panXMv, panTransition);
+  const panYSpring = useSpring(panYMv, panTransition);
 
   const scale = useTransform(() =>
-    (minScale.get() + (maxScale.get() - minScale.get()) * t.get()) * z.get()
+    (minScale.get() + (maxScale.get() - minScale.get()) * fitSpring.get())
+    * zoomSpring.get() * zoomCamSpring.get()
   );
 
   const outlineX = useTransform(() => -(outlineW * scale.get()) * ax);
@@ -131,9 +182,9 @@ function MotionMockup({
   const frameY = useTransform(() => outlineY.get() + deltaY * scale.get());
 
   const frameTransform =
-    useMotionTemplate`translate(${frameX}px, ${frameY}px) scale(${scale})`;
+    useMotionTemplate`translate(${panXSpring}px, ${panYSpring}px) translate(${frameX}px, ${frameY}px) scale(${scale})`;
   const outlineTransform =
-    useMotionTemplate`translate(${outlineX}px, ${outlineY}px) scale(${scale})`;
+    useMotionTemplate`translate(${panXSpring}px, ${panYSpring}px) translate(${outlineX}px, ${outlineY}px) scale(${scale})`;
 
   return (
     <motion.div className='relative w-0 h-0 overflow-visible pointer-events-none'>

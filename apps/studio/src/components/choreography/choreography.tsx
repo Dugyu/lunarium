@@ -7,12 +7,17 @@ type ChoreographyViewMode = ViewMode;
 
 type ChoreographyProps = {
   viewMode: ChoreographyViewMode;
+  className?: string;
 };
 
-function Choreography({ viewMode = 'compare' }: ChoreographyProps) {
+function Choreography({ viewMode = 'compare', className }: ChoreographyProps) {
   return (
     <LayoutGroup id='luna-studio'>
-      <DynamicView mode={viewMode} key='luna-studio-dynamic-view' />
+      <DynamicView
+        mode={viewMode}
+        key='luna-studio-dynamic-view'
+        className={className}
+      />
     </LayoutGroup>
   );
 }
