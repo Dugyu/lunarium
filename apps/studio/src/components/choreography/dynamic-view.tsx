@@ -63,8 +63,6 @@ type WorldPos = {
   z: number;
 };
 
-type RenderData = Spec & Stage & { world: WorldPos } & { zIndex: number };
-
 const BASE_STATUS: Record<ViewMode, Spec[]> = {
   compare: [
     { id: 'A2D', 'className': 'flex-1 order-4' },
@@ -132,6 +130,11 @@ const BASE_STATUS: Record<ViewMode, Spec[]> = {
   ],
 };
 
+type RenderData = Spec & Stage & { world: WorldPos } & {
+  zIndex: number;
+  maskOpacity: number;
+};
+
 const slidingVariants = {
   initial: { opacity: 0, x: -300 },
   animate: { opacity: 1, x: 0 },
@@ -192,7 +195,11 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
         ? (escape ? 100 : Math.ceil(Math.abs(compOrder - mid) * 2))
         : 0;
 
-      const data = { ...d, ...stageMeta, world, zIndex: zIndex };
+      const maskOpacity = mode === 'focus'
+        ? (escape ? 0 : 1 - Math.abs(theta * 2 / Math.PI) * 0.6)
+        : 0;
+
+      const data = { ...d, ...stageMeta, world, zIndex: zIndex, maskOpacity };
       return data;
     });
     return items;
@@ -239,6 +246,8 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
                   className={stage.theme === 'luna-light'
                     ? 'bg-white opacity-50'
                     : 'bg-black opacity-10'}
+                  maskColor='#f5f5f5'
+                  maskOpacity={stage.maskOpacity}
                 >
                   {/* <LynxStage entry={stage.entry} /> */}
                   <LunaLynxStage
