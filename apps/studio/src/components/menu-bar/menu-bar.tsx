@@ -12,11 +12,17 @@ const TabIcon = forwardRef<HTMLDivElement, TabIconProps>(
 
 type MenuBarProps = {
   onViewModeChange?: (index: number) => void;
+  className?: string;
 };
 
-function MenuBar({ onViewModeChange }: MenuBarProps) {
+function MenuBar({ onViewModeChange, className }: MenuBarProps) {
   return (
-    <div className='absolute bottom-4 right-4 rounded-full shadow-sm bg-[#ffffffbb]'>
+    <div
+      className={cn(
+        'absolute bottom-4 right-4 rounded-full shadow-sm bg-[#ffffffbb]',
+        className,
+      )}
+    >
       <TabGroup
         onChange={onViewModeChange}
       >

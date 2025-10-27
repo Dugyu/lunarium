@@ -14,7 +14,10 @@ function Studio() {
       className={'pointer-events-auto relative luna-studio'}
     >
       <Choreography viewMode={viewMode} />
-      <MenuBar onViewModeChange={(i) => setViewMode(viewModes[i])} />
+      <MenuBar
+        onViewModeChange={(i) => setViewMode(viewModes[i])}
+        className='z-[1000]'
+      />
     </StudioFrame>
   );
 }
