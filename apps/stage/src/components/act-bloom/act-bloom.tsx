@@ -1,35 +1,15 @@
 import { useCallback } from '@lynx-js/react';
 
-import type { StudioViewMode } from '@/types';
+import { LynxUIComponents } from '@/constants';
+import type { ComponentMeta, ComponentName, StudioViewMode } from '@/types';
 import { cn } from '@/utils';
-
-const components = [
-  { name: 'Button', demoReady: true },
-  { name: 'Checkbox', demoReady: true },
-  { name: 'Dialog', demoReady: true },
-  { name: 'Input', demoReady: false },
-  { name: 'Popover', demoReady: true },
-  { name: 'Radio Group', demoReady: true },
-  { name: 'Sheet', demoReady: true },
-  { name: 'Slider', demoReady: false },
-  { name: 'Switch', demoReady: true },
-  { name: 'Textarea', demoReady: false },
-  { name: 'Tooltip', demoReady: false },
-  { name: 'Toast', demoReady: true },
-] as const;
-
-type ComponentName = typeof components[number]['name'];
-type ComponentMeta = {
-  name: ComponentName;
-  demoReady: boolean;
-};
 
 type ComponentDisplay = ComponentMeta & {
   checked: boolean;
   onClick?: (name: ComponentName) => void;
 };
 
-function ComponentName(
+function ComponentItem(
   { name, demoReady, onClick, checked }: ComponentDisplay,
 ) {
   return (
@@ -68,7 +48,39 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
 
   return (
     <view className='relative w-full h-full'>
-      <view className='absolute h-full w-full luna-gradient' />
+      <view className='absolute h-full w-full luna-gradient flex flex-col items-start justify-center px-[48px] gap-[10px]'>
+        <view className='flex flex-col items-start justify-center gap-[2px]'>
+          <text className='text-base text-primary-content opacity-50'>
+            I saw it bloom,
+          </text>
+          <text className='text-base text-primary-content opacity-50'>
+            Like Tokyo in the spring,
+          </text>
+          <text className='text-base text-primary-content opacity-50'>
+            One afternoon,
+          </text>
+          <text className='text-base text-primary-content opacity-50'>
+            My Tokyo, happening,
+          </text>
+          <text className='text-base text-primary-content opacity-50'>
+            The baby blue skies,
+          </text>
+          <text className='text-base text-primary-content opacity-50'>
+            Broke 'em in for the first time,
+          </text>
+          <text className='text-base text-primary-content opacity-50'>
+            As it opened right before my very eyes.
+          </text>
+        </view>
+        <view className='flex flex-col items-start justify-center self-end'>
+          <text className='text-base text-primary-content opacity-50 pt-[4px]'>
+            Tokyo by{' '}
+            <text className='text-base text-primary-content font-semibold'>
+              Luna Shadows
+            </text>
+          </text>
+        </view>
+      </view>
       <view
         className={cn(
           'absolute bottom-0 h-full w-full bg-base-1 transition-all ease-in-out duration-300 overflow-hidden',
@@ -81,20 +93,20 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
 
       <view
         className={cn(
-          'w-full h-full px-[72px] pt-[84px] transition-all ease-in-out duration-500',
+          'w-full h-full px-[72px] pt-[96px] transition-all ease-in-out duration-500',
           studioViewMode !== 'focus' && 'transform-[translateY(100%)]',
         )}
       >
-        <view className='w-full flex flex-col items-start justify-start gap-[48px]'>
+        <view className='w-full flex flex-col items-start justify-start gap-[72px]'>
           {/* Headline */}
           <text className='text-start text-xl text-base-content font-semibold'>
             Performance
           </text>
           {/* Componenets */}
           <view className='w-full flex flex-col items-start justify-start gap-[10px]'>
-            {components.map(d => {
+            {LynxUIComponents.map(d => {
               return (
-                <ComponentName
+                <ComponentItem
                   key={d.name}
                   name={d.name}
                   demoReady={d.demoReady}
@@ -111,4 +123,3 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
 }
 
 export { ActBloom };
-export type { ComponentName };
