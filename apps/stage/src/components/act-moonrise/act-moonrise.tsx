@@ -53,7 +53,7 @@ function ActMoonrise({ studioViewMode, onClick }: ActMoonriseProps) {
           >
             <view
               className={cn(
-                'rounded-[10px] p-[10px] border border-neutral flex flex-row gap-[8px]',
+                'rounded-[10px] p-[10px] border-[10px] border-neutral-1 flex flex-row gap-[8px]',
                 preset === 'luna' && ' bg-neutral-4',
               )}
             >
@@ -69,7 +69,7 @@ function ActMoonrise({ studioViewMode, onClick }: ActMoonriseProps) {
             </view>
             <view
               className={cn(
-                'rounded-[10px] p-[10px] border border-neutral flex flex-row gap-[8px]',
+                'rounded-[10px] p-[10px] border border-neutral-1 flex flex-row gap-[8px]',
                 preset === 'lunaris' && ' bg-neutral-4',
               )}
             >

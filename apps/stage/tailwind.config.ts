@@ -40,6 +40,7 @@ const config: Config = {
         },
         neutral: {
           DEFAULT: 'var(--color-neutral)',
+          '1': 'var(--color-neutral-1)',
           content: 'var(--color-neutral-content)',
           '2': 'var(--color-neutral-2)',
           '3': 'var(--color-neutral-3)',
