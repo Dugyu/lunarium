@@ -9,9 +9,10 @@ import { cn } from '@/utils';
 
 type ActMoonriseProps = {
   studioViewMode: StudioViewMode;
+  onClick?: () => void;
 };
 
-function ActMoonrise({ studioViewMode }: ActMoonriseProps) {
+function ActMoonrise({ studioViewMode, onClick }: ActMoonriseProps) {
   const [preset, setPreset] = useState<'luna' | 'lunaris'>('luna');
 
   return (
@@ -21,6 +22,7 @@ function ActMoonrise({ studioViewMode }: ActMoonriseProps) {
           'w-full rounded-[16px] px-[20px] py-[32px] border border-neutral-2 flex flex-col items-start gap-[24px] transition-transform duration-500 ease-in-out',
           studioViewMode !== 'compare' && 'transform-[translateY(-100vh)]',
         )}
+        bindtap={onClick}
       >
         {/* Headline */}
         <view className='w-full flex flex-col items-start gap-[2px]'>
@@ -51,7 +53,7 @@ function ActMoonrise({ studioViewMode }: ActMoonriseProps) {
           >
             <view
               className={cn(
-                'rounded-[10px] p-[10px] border border-neutral-2 flex flex-row gap-[8px]',
+                'rounded-[10px] p-[10px] border border-neutral flex flex-row gap-[8px]',
                 preset === 'luna' && ' bg-neutral-4',
               )}
             >
@@ -67,7 +69,7 @@ function ActMoonrise({ studioViewMode }: ActMoonriseProps) {
             </view>
             <view
               className={cn(
-                'rounded-[10px] p-[10px] border border-neutral-2 flex flex-row gap-[8px]',
+                'rounded-[10px] p-[10px] border border-neutral flex flex-row gap-[8px]',
                 preset === 'lunaris' && ' bg-neutral-4',
               )}
             >

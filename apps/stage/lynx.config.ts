@@ -18,8 +18,8 @@ export default defineConfig({
   },
   source: {
     entry: {
-      ActBlueskies: './src/demos/ActBlueskies.tsx',
       ActMoonrise: './src/demos/ActMoonrise.tsx',
+      ActBlueskies: './src/demos/ActBlueskies.tsx',
       ActBloom: './src/demos/ActBloom.tsx',
       ActOneDark: './src/demos/ActOneDark.tsx',
       ActOneLight: './src/demos/ActOneLight.tsx',
