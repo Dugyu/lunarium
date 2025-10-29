@@ -1,18 +1,46 @@
-import { useState } from 'react';
+import { useCallback } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
-import type { StudioViewMode } from '@/types';
+import type { LunaThemeVariant, StudioViewMode } from '@/types';
 import { cn } from '@/utils';
+
+type MoonriseEvent =
+  | { field: 'luna-variant'; value: LunaThemeVariant }
+  | {
+    field: 'light-mode';
+    value: boolean;
+  }
+  | { field: 'autoplay'; value: boolean }
+  | { field: 'trust'; value: boolean }
+  | { field: 'subscribe'; value: boolean };
+
+type onMoonriseEvent = (e: MoonriseEvent) => void;
 
 type ActMoonriseProps = {
   studioViewMode: StudioViewMode;
+  lunaVariant: LunaThemeVariant;
 };
 
-function ActMoonrise({ studioViewMode }: ActMoonriseProps) {
-  const [preset, setPreset] = useState<'luna' | 'lunaris'>('luna');
+function ActMoonrise(
+  { studioViewMode, lunaVariant }: ActMoonriseProps,
+) {
+  const emit = useCallback<onMoonriseEvent>(
+    ({ field, value }) => {
+      NativeModules?.bridge?.call(
+        'setMoonriseState',
+        { field, value },
+        res => {
+          if (import.meta.env.DEV) {
+            console.log('setMoonriseState:', res);
+          }
+        },
+      );
+    },
+    [],
+  );
 
   return (
     <view className='size-full flex flex-col justify-between items-center px-[16px] pt-[80px] pb-[48px] overflow-hidden'>
@@ -45,15 +73,19 @@ function ActMoonrise({ studioViewMode }: ActMoonriseProps) {
           {/* Radio Group Demo */}
           <RadioGroup
             className='w-full grid-cols-2 gap-[10px]'
-            defaultValue={preset}
-            onValueChange={(value) =>
-              setPreset(value === 'luna' ? 'luna' : 'lunaris')}
+            value={lunaVariant}
           >
             <view
               className={cn(
                 'rounded-[10px] p-[10px] border border-neutral-2 flex flex-row gap-[8px]',
-                preset === 'luna' && ' bg-neutral-4',
+                lunaVariant === 'luna' && ' bg-neutral-4',
               )}
+              bindtap={() => {
+                emit({
+                  field: 'luna-variant',
+                  value: lunaVariant === 'luna' ? 'lunaris' : 'luna',
+                });
+              }}
             >
               <RadioItem value={'luna'} />
               <view className='flex-1 flex flex-col items-start pr-[4px] pb-[4px]'>
@@ -68,8 +100,14 @@ function ActMoonrise({ studioViewMode }: ActMoonriseProps) {
             <view
               className={cn(
                 'rounded-[10px] p-[10px] border border-neutral-2 flex flex-row gap-[8px]',
-                preset === 'lunaris' && ' bg-neutral-4',
+                lunaVariant === 'lunaris' && ' bg-neutral-4',
               )}
+              bindtap={() => {
+                emit({
+                  field: 'luna-variant',
+                  value: lunaVariant === 'luna' ? 'lunaris' : 'luna',
+                });
+              }}
             >
               <RadioItem value={'lunaris'} />
               <view className='flex-1 flex flex-col items-start pr-[4px] pb-[4px]'>

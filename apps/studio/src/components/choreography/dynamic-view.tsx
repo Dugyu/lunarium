@@ -1,6 +1,6 @@
 import { AnimatePresence } from 'motion/react';
 import type { SpringOptions, Transition } from 'motion/react';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { LunaLynxStage } from '@/components/lynx-stage';
 import {
@@ -8,7 +8,11 @@ import {
   MotionMockup,
   MotionPresentation,
 } from '@/components/mockup-motion';
-import type { LynxUIComponentName } from '@/types';
+import type {
+  LunaThemeVariant,
+  LynxUIComponentName,
+  MoonriseEvent,
+} from '@/types';
 import { cn } from '@/utils';
 
 type ViewMode = 'compare' | 'focus' | 'lineup';
@@ -77,60 +81,74 @@ const BASE_STATUS: Record<ViewMode, Spec[]> = {
   focus: [
     {
       id: 'Switch',
-      'className': 'col-start-2 col-end-4 row-start-1 row-end-2',
+      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-10',
     },
     {
       id: 'Checkbox',
-      'className': 'col-start-2 col-end-4 row-start-1 row-end-2',
+      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-9',
     },
     {
       id: 'Radio',
-      'className': 'col-start-2 col-end-4 row-start-1 row-end-2',
+      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-8',
     },
     {
       id: 'Sheet',
-      'className': 'col-start-2 col-end-4 row-start-1 row-end-2',
+      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-7',
     },
-    { id: 'Toast', 'className': 'col-start-2 col-end-4 row-start-1 row-end-2' },
+    {
+      id: 'Toast',
+      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-6',
+    },
     {
       id: 'Dialog',
-      'className': 'col-start-2 col-end-4 row-start-1 row-end-2',
+      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-5',
     },
     {
       id: 'Popover',
-      'className': 'col-start-2 col-end-4 row-start-1 row-end-2',
+      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-4',
     },
-    { id: 'A2L', 'className': 'col-start-2 col-end-4 row-start-1 row-end-2' },
-    { id: 'A1L', 'className': 'col-start-1 col-end-2 row-start-1 row-end-2' },
+    {
+      id: 'A2L',
+      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-3',
+    },
+    {
+      id: 'A1L',
+      'className': 'col-start-1 col-end-2 row-start-1 row-end-2 order-1',
+    },
   ],
   lineup: [
     {
       id: 'Switch',
-      'className': 'col-start-1 col-end-2 row-start-1 row-end-2',
+      'className': 'col-start-1 col-end-2 row-start-1 row-end-2 order-10',
     },
     {
       id: 'Checkbox',
-      'className': 'col-start-2 col-end-3 row-start-1 row-end-2',
+      'className': 'col-start-2 col-end-3 row-start-1 row-end-2 order-9',
     },
     {
       id: 'Radio',
-      'className': 'col-start-3 col-end-4 row-start-1 row-end-2',
+      'className': 'col-start-3 col-end-4 row-start-1 row-end-2 order-8',
     },
     {
       id: 'Sheet',
-      'className': 'col-start-4 col-end-5 row-start-1 row-end-2',
+      'className': 'col-start-4 col-end-5 row-start-1 row-end-2 order-7',
     },
-    { id: 'Toast', 'className': 'col-start-1 col-end-2 row-start-2 row-end-3' },
+    {
+      id: 'Toast',
+      'className': 'col-start-1 col-end-2 row-start-2 row-end-3 order-6',
+    },
     {
       id: 'Dialog',
-      'className': 'col-start-4 col-end-5 row-start-2 row-end-3',
+      'className': 'col-start-4 col-end-5 row-start-2 row-end-3 order-5',
     },
     {
       id: 'Popover',
-      'className': 'col-start-3 col-end-4 row-start-2 row-end-3',
+      'className': 'col-start-3 col-end-4 row-start-2 row-end-3 order-4',
     },
-
-    { id: 'A2L', 'className': 'col-start-2 col-end-3 row-start-2 row-end-3' }, // Button
+    {
+      id: 'A2L',
+      'className': 'col-start-2 col-end-3 row-start-2 row-end-3 order-3',
+    }, // Button
   ],
 };
 
@@ -154,11 +172,21 @@ const presentationTransition: Transition = {
 const fitTransition: SpringOptions = { visualDuration: 0.8, bounce: 0.1 };
 
 const DEFAULT_FOCUSED: LynxUIComponentName = 'Button';
+const DEFAULT_LUNA_THEME_VARIANT: LunaThemeVariant = 'luna';
 
 const WORLD_ORIGIN: WorldPos = { x: 0, y: 0, z: 0 };
 
 function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
   const [focused, setFocused] = useState<LynxUIComponentName>(DEFAULT_FOCUSED);
+  const [themeVariant, setThemeVariant] = useState<LunaThemeVariant>(
+    DEFAULT_LUNA_THEME_VARIANT,
+  );
+
+  const handleMoonriseChange = useCallback((event: MoonriseEvent) => {
+    if (event.field === 'luna-variant') {
+      setThemeVariant(event.value);
+    }
+  }, []);
 
   const rendered: RenderData[] = useMemo(() => {
     const components = BASE_STATUS[mode].map(d => STAGES[d.id])
@@ -257,9 +285,11 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
                   <LunaLynxStage
                     entry={stage.entry}
                     lunaTheme={stage.theme}
+                    lunaThemeVariant={themeVariant}
                     studioViewMode={mode}
                     focusedComponent={focused}
                     onFocusedChange={setFocused}
+                    onMoonriseChange={handleMoonriseChange}
                     componentEntry={stage.componentName}
                   />
                 </MotionMockup>

@@ -1,5 +1,5 @@
 /// <reference types="@lynx-js/rspeedy/client" />
-import type { ComponentName } from '@/types';
+import type { ComponentName, LunaThemeVariant } from '@/types';
 
 declare module '@lynx-js/types' {
   interface GlobalProps {
@@ -11,5 +11,6 @@ declare module '@lynx-js/types' {
     studioViewMode: 'compare' | 'focus' | 'lineup';
     focusedComponent: ComponentName;
     componentEntry: ComponentName;
+    lunaThemeVariant: LunaThemeVariant;
   }
 }
