@@ -6,24 +6,33 @@ import '@lynx-js/web-elements/all';
 import type { LynxView } from '@lynx-js/web-core';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 
-import type { LynxUIComponentName } from '@/types';
+import type {
+  LunaTheme,
+  LunaThemeVariant,
+  LynxUIComponentName,
+  MoonriseEvent,
+} from '@/types';
 
 type LunaLynxStageProps = {
   entry: string;
-  lunaTheme: 'luna-light' | 'luna-dark';
+  lunaTheme?: LunaTheme;
+  lunaThemeVariant?: LunaThemeVariant;
   studioViewMode: 'compare' | 'focus' | 'lineup';
   focusedComponent: LynxUIComponentName;
   onFocusedChange?: (name: LynxUIComponentName) => void;
+  onMoonriseChange?: (event: MoonriseEvent) => void;
   componentEntry?: LynxUIComponentName;
 };
 
 function LunaLynxStage(
   {
     entry,
-    lunaTheme,
+    lunaTheme = 'luna-light',
+    lunaThemeVariant = 'luna',
     studioViewMode,
     focusedComponent,
     onFocusedChange,
+    onMoonriseChange,
     componentEntry,
   }: LunaLynxStageProps,
 ) {
@@ -35,15 +44,19 @@ function LunaLynxStage(
       data,
       moduleName,
     ) => {
-      if (moduleName === 'bridge' && name === 'setFocusedComponent') {
-        const name: LynxUIComponentName =
-          (data as { name: LynxUIComponentName }).name;
-
-        onFocusedChange?.(name);
-        return { entry, focusedComponent: name };
+      if (moduleName === 'bridge') {
+        if (name === 'setFocusedComponent') {
+          const componentName: LynxUIComponentName =
+            (data as { name: LynxUIComponentName }).name;
+          onFocusedChange?.(componentName);
+          return { entry, focusedComponent: name };
+        } else if (name === 'setMoonriseState') {
+          onMoonriseChange?.(data as MoonriseEvent);
+          return { ...data } as MoonriseEvent;
+        }
       }
     };
-  }, [entry, onFocusedChange]);
+  }, [entry, onFocusedChange, onMoonriseChange]);
 
   useLayoutEffect(() => {
     ref.current!.url = `/${entry}.web.bundle`;
@@ -58,8 +71,15 @@ function LunaLynxStage(
       studioViewMode,
       focusedComponent,
       componentEntry,
+      lunaThemeVariant,
     });
-  }, [lunaTheme, studioViewMode, focusedComponent, componentEntry]);
+  }, [
+    lunaTheme,
+    studioViewMode,
+    focusedComponent,
+    componentEntry,
+    lunaThemeVariant,
+  ]);
 
   return (
     <lynx-view

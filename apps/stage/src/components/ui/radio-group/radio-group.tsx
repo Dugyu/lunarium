@@ -16,14 +16,18 @@ type RadioGroupProps = {
   className?: string;
   disabled?: boolean;
   defaultValue?: string;
+  value?: string;
   onValueChange?: (value: string) => void;
   children?: ReactNode;
 };
 
 function RadioItem(
-  { disabled, value, size = 'sm', className }: RadioItemProps,
+  { disabled: disabledProp, value, size = 'sm', className }: RadioItemProps,
 ) {
-  const { selectedValue, handleValueChange } = useRadioGroup();
+  const { selectedValue, handleValueChange, disabled: groupDisabled } =
+    useRadioGroup();
+
+  const disabled = groupDisabled || disabledProp;
 
   const handleChange = () => {
     if (disabled) return;
@@ -56,18 +60,29 @@ function RadioItem(
 }
 
 function RadioGroup(
-  { disabled, onValueChange, defaultValue, children, className }:
-    RadioGroupProps,
+  {
+    disabled = false,
+    onValueChange,
+    defaultValue,
+    children,
+    className,
+    value: valueProp,
+  }: RadioGroupProps,
 ) {
-  const [value, setValue] = useState(defaultValue);
+  const isControlled = valueProp !== undefined;
+  const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue);
 
   const lastValue = useRef<string>();
+
+  const value = isControlled ? valueProp : uncontrolledValue;
 
   const handleValueChange = (value: string) => {
     if (disabled) return;
     if (lastValue.current !== value) {
       lastValue.current = value;
-      setValue(value);
+      if (!isControlled) {
+        setUncontrolledValue(value);
+      }
       onValueChange?.(value);
     }
   };
@@ -76,6 +91,7 @@ function RadioGroup(
     <RadioGroupProvider
       handleValueChange={handleValueChange}
       selectedValue={value}
+      disabled={disabled}
     >
       <view className={cn('grid gap-[10px]', className)}>
         {children}

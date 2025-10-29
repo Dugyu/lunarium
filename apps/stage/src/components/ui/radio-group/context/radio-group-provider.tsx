@@ -11,14 +11,17 @@ type RadioGroupProviderProps = RadioGroupContextValue & {
 export function RadioGroupProvider({
   selectedValue,
   handleValueChange,
+  disabled,
   children,
 }: RadioGroupProviderProps) {
   const value: RadioGroupContextValue = useMemo(() => ({
     selectedValue,
     handleValueChange,
+    disabled,
   }), [
     selectedValue,
     handleValueChange,
+    disabled,
   ]);
 
   return (
