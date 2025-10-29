@@ -1,6 +1,6 @@
 # L.U.N.A Stage
 
-**Stage** is the runtime rendering environment in **L.U.N.A.rium**.
+**Stage** is the runtime rendering environment in [**L.U.N.A.rium**](../../README.md).
 
 It renders Lynx components in their actual execution context.
 When embedded back into [**Studio**](../studio/README.md) via [**Lynx for Web**](https://lynxjs.org/guide/start/integrate-with-existing-apps.html#platform=web), Stage becomes the integrated performance space where authored components are previewed exactly as they will appear in reality.

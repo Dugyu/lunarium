@@ -1,6 +1,6 @@
 # L.U.N.A Studio
 
-**Studio** is the authoring environment in **L.U.N.A.rium**.
+**Studio** is the authoring environment in [**L.U.N.A.rium**](../../README.md).
 
 It provides editing, configuration, and orchestration over Lynx components.
 By embedding a [**Stage**](../stage/README.md) instance through [**Lynx for Web**](https://lynxjs.org/guide/start/integrate-with-existing-apps.html#platform=web), Studio ensures that every authoring action is mirrored in live rendering, letting you design not in abstraction, but in reality.
