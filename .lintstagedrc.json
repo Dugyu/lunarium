@@ -1,7 +1,7 @@
 {
   "*.{ts,tsx,js,jsx,json,md,mdx,yaml}": [
-    "dprint check",
-    "biome check",
-    "eslint"
+    "dprint fmt --allow-no-files --",
+    "biome check --write --no-errors-on-unmatched --files-ignore-unknown=true",
+    "eslint --cache --fix --no-warn-ignored"
   ]
 }
