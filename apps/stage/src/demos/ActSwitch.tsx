@@ -9,6 +9,7 @@ export function App() {
   useEffect(() => {
     console.log('Explorer theme:', lynx.__globalProps.theme);
     console.log('Explorer frontendTheme:', lynx.__globalProps.frontendTheme);
+    console.log('Explorer preferredTheme:', lynx.__globalProps.preferredTheme);
     console.log('Final theme:', getTheme());
   }, []);
 
@@ -29,8 +30,9 @@ if (import.meta.webpackHot) {
 
 function getTheme(): 'light' | 'dark' {
   const theme =
-    (lynx.__globalProps.frontendTheme ?? lynx.__globalProps.theme) as
-      | 'light'
-      | 'dark';
+    (lynx.__globalProps.preferredTheme ?? lynx.__globalProps.frontendTheme
+      ?? lynx.__globalProps.theme) as
+        | 'light'
+        | 'dark';
   return (theme === 'dark') ? 'dark' : 'light';
 }

@@ -19,6 +19,7 @@ declare module '@lynx-js/types' {
     lunaThemeVariant: LunaThemeVariant;
     theme: 'light' | 'dark' | 'Light' | 'Dark';
     frontendTheme: 'light' | 'dark' | 'Light' | 'Dark';
+    preferredTheme: 'light' | 'dark' | 'Light' | 'Dark';
   }
 }
 
