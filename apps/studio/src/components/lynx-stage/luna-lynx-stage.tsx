@@ -7,17 +7,18 @@ import type { LynxView } from '@lynx-js/web-core';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 
 import type {
-  LunaTheme,
+  LunaThemeKey,
   LunaThemeVariant,
   LynxUIComponentName,
   MoonriseEvent,
+  StudioViewMode,
 } from '@/types';
 
 type LunaLynxStageProps = {
   entry: string;
-  lunaTheme?: LunaTheme;
+  lunaTheme?: LunaThemeKey;
   lunaThemeVariant?: LunaThemeVariant;
-  studioViewMode: 'compare' | 'focus' | 'lineup';
+  studioViewMode: StudioViewMode;
   focusedComponent: LynxUIComponentName;
   onFocusedChange?: (name: LynxUIComponentName) => void;
   onMoonriseChange?: (event: MoonriseEvent) => void;
@@ -49,10 +50,10 @@ function LunaLynxStage(
           const componentName: LynxUIComponentName =
             (data as { name: LynxUIComponentName }).name;
           onFocusedChange?.(componentName);
-          return { entry, focusedComponent: name };
+          return { entry, focusedComponent: componentName };
         } else if (name === 'setMoonriseState') {
           onMoonriseChange?.(data as MoonriseEvent);
-          return { ...data } as MoonriseEvent;
+          return { entry, moonriseEvent: data as MoonriseEvent };
         }
       }
     };
