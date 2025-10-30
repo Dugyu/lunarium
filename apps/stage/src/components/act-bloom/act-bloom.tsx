@@ -44,10 +44,14 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
         }
       },
     );
+    NativeModules?.ExplorerModule?.openSchema(
+      `${process.env
+        .ASSET_PREFIX as string}/ActBlueskies.lynx.bundle?fullscreen=true`,
+    );
   }, []);
 
   return (
-    <view className='relative w-full h-full'>
+    <view className='relative size-full'>
       <view className='absolute h-full w-full luna-gradient flex flex-col items-start justify-center px-[48px] gap-[10px]'>
         <view className='flex flex-col items-start justify-center gap-[2px]'>
           <text className='text-base text-primary-content opacity-50'>
@@ -93,7 +97,7 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
 
       <view
         className={cn(
-          'w-full h-full px-[72px] pt-[96px] transition-all ease-in-out duration-500',
+          'size-full px-[72px] pt-[96px] transition-all ease-in-out duration-500',
           studioViewMode !== 'focus' && 'transform-[translateY(100%)]',
         )}
       >

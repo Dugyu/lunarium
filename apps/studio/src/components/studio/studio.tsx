@@ -1,14 +1,14 @@
 import { useState } from 'react';
 
 import { Choreography } from '@/components/choreography';
-import type { ChoreographyViewMode } from '@/components/choreography';
 import { MenuBar } from '@/components/menu-bar';
 import { StudioFrame } from '@/components/studio-frame';
+import type { StudioViewMode } from '@/types';
 
-const viewModes: ChoreographyViewMode[] = ['compare', 'focus', 'lineup'];
+const viewModes: StudioViewMode[] = ['compare', 'focus', 'lineup'];
 
 function Studio() {
-  const [viewMode, setViewMode] = useState<ChoreographyViewMode>('compare');
+  const [viewMode, setViewMode] = useState<StudioViewMode>('compare');
   return (
     <StudioFrame
       className={'pointer-events-auto relative luna-studio'}

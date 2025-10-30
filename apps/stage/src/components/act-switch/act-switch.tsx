@@ -27,7 +27,7 @@ function ActSwitch() {
       {/* Track */}
       <view
         className={clsx(
-          'w-full h-full bg-[#959595] transition-all ui-checked:luna-gradient',
+          'size-full bg-[#959595] transition-all ui-checked:luna-gradient',
           checked && 'ui-checked',
         )}
       />

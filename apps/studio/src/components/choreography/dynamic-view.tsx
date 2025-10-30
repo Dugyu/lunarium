@@ -12,58 +12,12 @@ import type {
   LunaThemeVariant,
   LynxUIComponentName,
   MoonriseEvent,
+  StudioViewMode,
 } from '@/types';
 import { cn } from '@/utils';
 
-type ViewMode = 'compare' | 'focus' | 'lineup';
-
-type DynamicViewProps = {
-  mode?: ViewMode;
-  className?: string;
-};
-
-type Stage = {
-  entry: string;
-  theme: 'luna-light' | 'luna-dark';
-  componentName?: LynxUIComponentName;
-};
-
-const STAGES: Record<string, Stage> = {
-  A1L: { entry: 'ActBloom', theme: 'luna-light' },
-  A1D: { entry: 'ActOneDark', theme: 'luna-dark' },
-  A2L: { entry: 'ActMoonrise', theme: 'luna-light', componentName: 'Button' },
-  A2D: { entry: 'ActMoonrise', theme: 'luna-dark' },
-  Switch: {
-    entry: 'ActBlueskies',
-    theme: 'luna-light',
-    componentName: 'Switch',
-  },
-  Slider: { entry: 'ActTwoDark', theme: 'luna-dark', componentName: 'Slider' },
-  Radio: {
-    entry: 'ActBlueskies',
-    theme: 'luna-light',
-    componentName: 'Radio Group',
-  },
-  Toast: { entry: 'ActOneDark', theme: 'luna-dark', componentName: 'Toast' },
-  Popover: {
-    entry: 'ActOneLight',
-    theme: 'luna-light',
-    componentName: 'Popover',
-  },
-  Sheet: { entry: 'ActOneLight', theme: 'luna-light', componentName: 'Sheet' },
-  Dialog: { entry: 'ActOneDark', theme: 'luna-dark', componentName: 'Dialog' },
-  Checkbox: {
-    entry: 'ActBlueskies',
-    theme: 'luna-light',
-    componentName: 'Checkbox',
-  },
-  Input: { entry: 'ActTwoDark', theme: 'luna-dark', componentName: 'Input' },
-};
-
-type Spec = {
-  id: string;
-  className: string;
-};
+import { BASE_STATUS, STAGES } from './data.ts';
+import type { StageMeta, ViewSpec } from './types.ts';
 
 type WorldPos = {
   x: number;
@@ -71,88 +25,8 @@ type WorldPos = {
   z: number;
 };
 
-const BASE_STATUS: Record<ViewMode, Spec[]> = {
-  compare: [
-    { id: 'A2D', 'className': 'flex-1 order-4' },
-    { id: 'A1D', 'className': 'flex-1 order-2' },
-    { id: 'A2L', 'className': 'flex-1 order-3' },
-    { id: 'A1L', 'className': 'flex-1 order-1' },
-  ],
-  focus: [
-    {
-      id: 'Switch',
-      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-10',
-    },
-    {
-      id: 'Checkbox',
-      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-9',
-    },
-    {
-      id: 'Radio',
-      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-8',
-    },
-    {
-      id: 'Sheet',
-      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-7',
-    },
-    {
-      id: 'Toast',
-      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-6',
-    },
-    {
-      id: 'Dialog',
-      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-5',
-    },
-    {
-      id: 'Popover',
-      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-4',
-    },
-    {
-      id: 'A2L',
-      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-3',
-    },
-    {
-      id: 'A1L',
-      'className': 'col-start-1 col-end-2 row-start-1 row-end-2 order-1',
-    },
-  ],
-  lineup: [
-    {
-      id: 'Switch',
-      'className': 'col-start-1 col-end-2 row-start-1 row-end-2 order-10',
-    },
-    {
-      id: 'Checkbox',
-      'className': 'col-start-2 col-end-3 row-start-1 row-end-2 order-9',
-    },
-    {
-      id: 'Radio',
-      'className': 'col-start-3 col-end-4 row-start-1 row-end-2 order-8',
-    },
-    {
-      id: 'Sheet',
-      'className': 'col-start-4 col-end-5 row-start-1 row-end-2 order-7',
-    },
-    {
-      id: 'Toast',
-      'className': 'col-start-1 col-end-2 row-start-2 row-end-3 order-6',
-    },
-    {
-      id: 'Dialog',
-      'className': 'col-start-4 col-end-5 row-start-2 row-end-3 order-5',
-    },
-    {
-      id: 'Popover',
-      'className': 'col-start-3 col-end-4 row-start-2 row-end-3 order-4',
-    },
-    {
-      id: 'A2L',
-      'className': 'col-start-2 col-end-3 row-start-2 row-end-3 order-3',
-    }, // Button
-  ],
-};
-
-type RenderData = Spec & Stage & { world: WorldPos } & {
+type RenderData = ViewSpec & StageMeta & {
+  world: WorldPos;
   zIndex: number;
   maskOpacity: number;
 };
@@ -175,6 +49,11 @@ const DEFAULT_FOCUSED: LynxUIComponentName = 'Button';
 const DEFAULT_LUNA_THEME_VARIANT: LunaThemeVariant = 'luna';
 
 const WORLD_ORIGIN: WorldPos = { x: 0, y: 0, z: 0 };
+
+type DynamicViewProps = {
+  mode?: StudioViewMode;
+  className?: string;
+};
 
 function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
   const [focused, setFocused] = useState<LynxUIComponentName>(DEFAULT_FOCUSED);
@@ -240,7 +119,7 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
   return (
     <div
       className={cn(
-        'w-full h-full gap-4 pointer-events-none relative',
+        'size-full gap-4 pointer-events-none relative',
         mode === 'compare' && 'flex flex-row items-center justify-between',
         mode === 'focus' && 'grid grid-cols-3 grid-rows-1',
         mode === 'lineup' && 'grid grid-cols-4 grid-rows-2',
@@ -281,7 +160,6 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
                   maskColor='#f5f5f5'
                   maskOpacity={stage.maskOpacity}
                 >
-                  {/* <LynxStage entry={stage.entry} /> */}
                   <LunaLynxStage
                     entry={stage.entry}
                     lunaTheme={stage.theme}
@@ -302,6 +180,6 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
   );
 }
 
-export type { ViewMode };
+export type { DynamicViewProps };
 
 export { DynamicView };

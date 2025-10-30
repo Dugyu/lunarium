@@ -164,13 +164,13 @@ function ActMoonrise(
         <view className='w-full flex flex-col items-start gap-[10px] pt-[16px]'>
           {/* Checkbox Demo */}
           <view className='flex flex-row items-center gap-[10px]'>
-            <Checkbox defaultChecked />
+            <Checkbox />
             <text className='text-p2 text-base-content'>
               I trust the rhythm of light and code
             </text>
           </view>
           <view className='flex flex-row items-center gap-[10px]'>
-            <Checkbox />
+            <Checkbox defaultChecked />
             <text className='text-p2 text-base-content'>
               Let Lynx UI send me gentle updates
             </text>
@@ -196,7 +196,7 @@ function ActMoonrise(
               studioViewMode === 'lineup' && 'transform-[translateY(60px)]',
             )}
           >
-            Stay Asleep
+            Stay asleep
           </Button>
         </view>
       </view>

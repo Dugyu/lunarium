@@ -1,12 +1,11 @@
 import { LayoutGroup } from 'motion/react';
 
-import { DynamicView } from './dynamic-view.tsx';
-import type { ViewMode } from './dynamic-view.tsx';
+import type { StudioViewMode } from '@/types';
 
-type ChoreographyViewMode = ViewMode;
+import { DynamicView } from './dynamic-view.tsx';
 
 type ChoreographyProps = {
-  viewMode: ChoreographyViewMode;
+  viewMode: StudioViewMode;
   className?: string;
 };
 
@@ -24,4 +23,4 @@ function Choreography({ viewMode = 'compare', className }: ChoreographyProps) {
 
 export { Choreography };
 
-export type { ChoreographyViewMode };
+export type { ChoreographyProps };

@@ -1,10 +1,12 @@
 import type { ReactNode } from '@lynx-js/react';
 import { clsx } from 'clsx';
 
+import type { LunaNeutralThemeKey } from '@/types';
+
 import './App.css';
 
 type AppThemeProps = {
-  preset?: 'luna-dark' | 'luna-light';
+  preset?: LunaNeutralThemeKey;
   children?: ReactNode;
 };
 

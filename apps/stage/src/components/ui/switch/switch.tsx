@@ -26,7 +26,7 @@ function Switch(
       {/* Track */}
       <view
         className={cn(
-          'w-full h-full transition-all bg-neutral-3 ui-checked:bg-primary',
+          'size-full transition-all bg-neutral-3 ui-checked:bg-primary',
           checked && 'ui-checked',
         )}
       />

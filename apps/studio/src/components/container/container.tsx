@@ -19,7 +19,7 @@ const Container = forwardRef<
       <div
         ref={ref}
         className={cn(
-          'w-full h-full flex',
+          'size-full flex',
           column ? 'flex-col' : 'flex-row',
           center && 'justify-center items-center',
           className,
