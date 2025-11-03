@@ -17,6 +17,12 @@ Install the dependencies:
 pnpm install
 ```
 
+Then build all shared packages:
+
+```bash
+pnpm turbo build
+```
+
 Run the development server:
 
 ```bash

@@ -69,17 +69,20 @@ pnpm preview
 
 - `demo`: Build **Stage** → Build **Studio** → Preview (end-to-end).
 
-- `build`: Build **Stag**e → Build **Studio** (no preview).
+- `build`: Build **Studio** only with Rsbuild (does **not** rebuild **Stage**).
 
 - `dev`: **Studio** dev server (does not rebuild **Stage** automatically).
 
 - `preview`: Preview the last **Studio** production build (does not rebuild **Stage** automatically).
 
+You can run `pnpm turbo build` either from the repo root or directly inside **Studio** —\
+Turbo will resolve and build all necessary dependencies automatically.
+
 ```json
 {
   "scripts": {
-    "demo": "pnpm --filter ../stage build && cross-env rsbuild --config ./rsbuild.config.ts build && rsbuild preview",
-    "build": "pnpm --filter ../stage build && cross-env rsbuild --config ./rsbuild.config.ts build",
+    "demo": "turbo run build && rsbuild preview",
+    "build": "rsbuild --config ./rsbuild.config.ts build",
     "dev": "rsbuild dev --open",
     "preview": "rsbuild preview"
   }

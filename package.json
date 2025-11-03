@@ -11,7 +11,7 @@
     "demo": "pnpm --filter ./apps/studio demo",
     "preview": "pnpm --filter ./apps/studio preview",
     "stage:dev": "pnpm --filter ./apps/stage dev",
-    "stage:build": "pnpm --filter ./apps/stage build",
+    "stage:build": "turbo run build --filter ./apps/stage build",
     "studio:demo": "pnpm --filter ./apps/studio run demo",
     "studio:dev": "pnpm --filter ./apps/studio dev",
     "studio:build": "pnpm --filter ./apps/studio build",
