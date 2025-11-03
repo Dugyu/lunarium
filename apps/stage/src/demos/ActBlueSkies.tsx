@@ -10,7 +10,7 @@ export function App() {
     <AppTheme preset='luna-light'>
       <ActBlueskies
         studioViewMode={lynx.__globalProps.studioViewMode ?? 'focus'}
-        componentEntry={lynx.__globalProps.componentEntry ?? 'Switch'}
+        componentEntry={lynx.__globalProps.componentEntry ?? 'switch'}
       />
     </AppTheme>
   );

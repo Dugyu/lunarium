@@ -10,7 +10,7 @@ export function App() {
     <AppTheme preset='luna-light'>
       <ActBloom
         studioViewMode={lynx.__globalProps.studioViewMode ?? 'focus'}
-        focusedComponent={lynx.__globalProps.focusedComponent ?? 'Button'}
+        focusedComponent={lynx.__globalProps.focusedComponent ?? 'button'}
       />
     </AppTheme>
   );

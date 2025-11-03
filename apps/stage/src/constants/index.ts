@@ -1,1 +1,1 @@
-export { LynxUIComponents } from './component-data.js';
+export { LynxUIComponentsRegistry } from './component-data.js';

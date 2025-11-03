@@ -1,0 +1,30 @@
+{
+  "name": "@dugyu/luna-core",
+  "version": "0.1.0",
+  "description": "Core constants, types, and utilities for the L.U.N.A project (no CSS)",
+  "type": "module",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./component": {
+      "types": "./dist/component/index.d.ts",
+      "import": "./dist/component/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": ["dist", "README.md"],
+  "keywords": ["luna", "core", "constants", "types", "utils"],
+  "author": "The Lynx Authors",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}

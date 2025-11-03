@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "demo": "pnpm --filter ../stage build && cross-env rsbuild --config ./rsbuild.config.ts build && rsbuild preview",
-    "build": "pnpm --filter ../stage build && cross-env rsbuild --config ./rsbuild.config.ts build",
+    "demo": "turbo run build && rsbuild preview",
+    "build": "rsbuild --config ./rsbuild.config.ts build",
     "dev": "rsbuild dev --open",
     "preview": "rsbuild preview"
   },
@@ -22,6 +22,7 @@
     "tailwind-merge": "catalog:"
   },
   "devDependencies": {
+    "@dugyu/luna-core": "workspace:*",
     "@rsbuild/core": "catalog:rsbuild",
     "@rsbuild/plugin-react": "catalog:rsbuild",
     "@types/react": "catalog:react18",

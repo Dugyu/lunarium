@@ -25,5 +25,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
   },
-  "include": ["src", "src/types"],
+  "include": ["src", "src/types", "rsbuild.config.ts", "tailwind.config.ts"],
+  "references": [
+    { "path": "../../packages/core/tsconfig.build.json" },
+  ],
 }

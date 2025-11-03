@@ -1,0 +1,14 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["@dugyu/luna-stage#build", "@dugyu/luna-core#build"],
+      "inputs": [
+        "src/**",
+        "rsbuild.config.ts"
+      ],
+      "outputs": ["dist/**"]
+    }
+  }
+}

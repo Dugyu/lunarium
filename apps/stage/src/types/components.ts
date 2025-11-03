@@ -1,8 +1,6 @@
-import type { LynxUIComponents } from '@/constants';
+import type { LynxUIComponentsRegistry } from '@/constants';
 
-export type ComponentName = typeof LynxUIComponents[number]['name'];
-
-export type ComponentMeta = {
-  name: ComponentName;
-  demoReady: boolean;
-};
+export type LynxUIComponentId = (typeof LynxUIComponentsRegistry.ids)[number];
+export type LynxUIComponentDef = (typeof LynxUIComponentsRegistry.list)[number];
+export type LynxUIComponentIdReady =
+  (typeof LynxUIComponentsRegistry.readyIds)[number];

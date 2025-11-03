@@ -18,6 +18,7 @@ export default defineConfig({
   },
   source: {
     entry: {
+      ActSwitch: './src/demos/ActSwitch.tsx',
       ActBlueskies: './src/demos/ActBlueskies.tsx',
       ActMoonrise: './src/demos/ActMoonrise.tsx',
       ActBloom: './src/demos/ActBloom.tsx',
@@ -25,14 +26,13 @@ export default defineConfig({
       ActOneLight: './src/demos/ActOneLight.tsx',
       ActTwoDark: './src/demos/ActTwoDark.tsx',
       ActTwoLight: './src/demos/ActTwoLight.tsx',
-      ActSwitch: './src/demos/ActSwitch.tsx',
     },
   },
   plugins: [
     pluginQRCode({
       schema(url) {
         // We use `?fullscreen=true` to open the page in LynxExplorer in full screen mode
-        return `${url}?fullscreen=true`;
+        return `${url}?bar_color=fe69a1&title=Switch&title_color=fefefe&back_button_style=dark`;
       },
     }),
     pluginReactLynx({

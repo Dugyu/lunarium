@@ -1,52 +1,83 @@
-import { useCallback } from '@lynx-js/react';
+import { useCallback, useState } from '@lynx-js/react';
 
-import { LynxUIComponents } from '@/constants';
-import type { ComponentMeta, ComponentName, StudioViewMode } from '@/types';
+import { LynxUIComponentsRegistry } from '@/constants';
+import type {
+  LynxUIComponentDef,
+  LynxUIComponentId,
+  StudioViewMode,
+} from '@/types';
 import { cn } from '@/utils';
 
-type ComponentDisplay = ComponentMeta & {
+type ComponentDisplay = {
+  data: LynxUIComponentDef;
   checked: boolean;
-  onClick?: (name: ComponentName) => void;
+  onClick?: (id: LynxUIComponentId) => void;
 };
 
+const LynxUIComponents = LynxUIComponentsRegistry.list;
+
 function ComponentItem(
-  { name, demoReady, onClick, checked }: ComponentDisplay,
+  { data, checked, onClick }: ComponentDisplay,
 ) {
   return (
     <text
       className={cn(
         'px-[8px] py-[2px] ui-checked:py-[12px] text-lg ui-checked:transform-[scale(1.2)] ui-checked:font-semibold transition-all duration-300 ease-in-out',
-        demoReady
+        data.demoReady
           ? 'text-base-content hover:opacity-50'
           : 'text-base-content-3 opacity-50',
         checked && 'ui-checked',
       )}
-      bindtap={demoReady ? () => onClick?.(name) : undefined}
+      bindtap={data.demoReady ? () => onClick?.(data.id) : undefined}
     >
-      {name}
+      {data.name}
     </text>
   );
 }
 
 type ActBloomProps = {
   studioViewMode: StudioViewMode;
-  focusedComponent: ComponentName;
+  focusedComponent: LynxUIComponentId;
 };
 
+function getSavedComponent(): LynxUIComponentId {
+  const savedComponent: string | null = NativeModules?.ExplorerModule
+    ?.readFromLocalStorage('luna-component');
+  if (
+    savedComponent
+    && LynxUIComponents.some(component => component.id === savedComponent)
+  ) {
+    return savedComponent as LynxUIComponentId;
+  }
+  return 'button';
+}
+
+function saveComponent(id: LynxUIComponentId) {
+  NativeModules?.ExplorerModule?.saveToLocalStorage('luna-component', id);
+}
+
 function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
-  const handleComponentClick = useCallback((name: ComponentName) => {
-    NativeModules?.bridge?.call(
-      'setFocusedComponent',
-      { name },
-      res => {
-        if (import.meta.env.DEV) {
-          console.log('setFocusedComponent:', res);
-        }
-      },
-    );
+  const [focused, setFocused] = useState<LynxUIComponentId>(getSavedComponent);
+
+  const handleComponentClick = useCallback((id: LynxUIComponentId) => {
+    setFocused(id);
+    if (__WEB__) {
+      NativeModules?.bridge?.call(
+        'setFocusedComponent',
+        { id },
+        res => {
+          if (import.meta.env.DEV) {
+            console.log('setFocusedComponent:', res);
+          }
+        },
+      );
+    }
+    saveComponent(id);
     NativeModules?.ExplorerModule?.openSchema(
       `${process.env
-        .ASSET_PREFIX as string}/ActBlueskies.lynx.bundle?fullscreen=true`,
+        .ASSET_PREFIX as string}/ActSwitch.lynx.bundle?fullscreen=true&test_theme=${
+        id === 'button' ? 'light' : 'dark'
+      }`,
     );
   }, []);
 
@@ -109,13 +140,22 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
           {/* Componenets */}
           <view className='w-full flex flex-col items-start justify-start gap-[10px]'>
             {LynxUIComponents.map(d => {
+              if (__WEB__) {
+                return (
+                  <ComponentItem
+                    key={d.id}
+                    data={d}
+                    onClick={handleComponentClick}
+                    checked={focusedComponent === d.id}
+                  />
+                );
+              }
               return (
                 <ComponentItem
-                  key={d.name}
-                  name={d.name}
-                  demoReady={d.demoReady}
+                  key={d.id}
+                  data={d}
                   onClick={handleComponentClick}
-                  checked={focusedComponent === d.name}
+                  checked={focused === d.id}
                 />
               );
             })}

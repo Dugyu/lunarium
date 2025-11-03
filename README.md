@@ -8,6 +8,8 @@ The experimental realm of **Lynx UI New Aesthetics**, where tokens, variants, an
 
 Inside the **L.U.N.A** project, **Studio** and **Stage** form a dual orbit, authoring and rendering.
 
+> Naming Notes: The dots in **L.U.N.A** are purely visual. The name ends without the last dot to suggest openness.
+
 [**Studio**](./apps/studio/README.md) is the creative workspace — a **Web** app for composing, editing, and orchestrating Lynx components.
 
 [**Stage**](./apps/stage/README.md) is the live runtime — a [**Lynx**](https://lynxjs.org/) app that renders components in their authentic execution environment.

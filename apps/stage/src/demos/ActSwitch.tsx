@@ -29,7 +29,7 @@ if (import.meta.webpackHot) {
 
 function getTheme(): 'light' | 'dark' {
   const theme =
-    (lynx.__globalProps.frontendTheme ?? lynx.__globalProps.theme) as
+    (lynx.__globalProps.testTheme ?? lynx.__globalProps.frontendTheme) as
       | 'light'
       | 'dark';
   return (theme === 'dark') ? 'dark' : 'light';

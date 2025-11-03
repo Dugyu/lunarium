@@ -9,7 +9,7 @@ import { useEffect, useLayoutEffect, useRef } from 'react';
 import type {
   LunaThemeKey,
   LunaThemeVariant,
-  LynxUIComponentName,
+  LynxUIComponentId,
   MoonriseEvent,
   StudioViewMode,
 } from '@/types';
@@ -19,10 +19,10 @@ type LunaLynxStageProps = {
   lunaTheme?: LunaThemeKey;
   lunaThemeVariant?: LunaThemeVariant;
   studioViewMode: StudioViewMode;
-  focusedComponent: LynxUIComponentName;
-  onFocusedChange?: (name: LynxUIComponentName) => void;
+  focusedComponent: LynxUIComponentId;
+  onFocusedChange?: (name: LynxUIComponentId) => void;
   onMoonriseChange?: (event: MoonriseEvent) => void;
-  componentEntry?: LynxUIComponentName;
+  componentEntry?: LynxUIComponentId;
 };
 
 function LunaLynxStage(
@@ -47,10 +47,10 @@ function LunaLynxStage(
     ) => {
       if (moduleName === 'bridge') {
         if (name === 'setFocusedComponent') {
-          const componentName: LynxUIComponentName =
-            (data as { name: LynxUIComponentName }).name;
-          onFocusedChange?.(componentName);
-          return { entry, focusedComponent: componentName };
+          const component: LynxUIComponentId =
+            (data as { id: LynxUIComponentId }).id;
+          onFocusedChange?.(component);
+          return { entry, focusedComponent: component };
         } else if (name === 'setMoonriseState') {
           onMoonriseChange?.(data as MoonriseEvent);
           return { entry, moonriseEvent: data as MoonriseEvent };
