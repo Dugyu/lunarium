@@ -14,5 +14,5 @@
 
     "noEmit": true
   },
-  "include": ["lynx.config.mjs"]
+  "include": ["lynx.config.ts"]
 }

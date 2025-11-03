@@ -1,37 +1,74 @@
 import type { StudioViewMode } from '@/types';
 
 import type { StageMeta, ViewSpec } from './types.ts';
+import { LynxUIComponentsRegistry } from '../../constants/component-data.ts';
+
+const getMeta = LynxUIComponentsRegistry.getMeta;
 
 const STAGES: Record<string, StageMeta> = {
   A1L: { entry: 'ActBloom', theme: 'luna-light' },
   A1D: { entry: 'ActOneDark', theme: 'luna-dark' },
-  A2L: { entry: 'ActMoonrise', theme: 'luna-light', componentName: 'Button' },
+  A2L: {
+    entry: 'ActMoonrise',
+    theme: 'luna-light',
+    meta: getMeta('button'),
+    componentId: 'button',
+  },
   A2D: { entry: 'ActMoonrise', theme: 'luna-dark' },
   Switch: {
     entry: 'ActBlueskies',
     theme: 'luna-light',
-    componentName: 'Switch',
+    meta: getMeta('switch'),
+    componentId: 'switch',
   },
-  Slider: { entry: 'ActTwoDark', theme: 'luna-dark', componentName: 'Slider' },
+  Slider: {
+    entry: 'ActTwoDark',
+    theme: 'luna-dark',
+    meta: getMeta('slider'),
+    componentId: 'slider',
+  },
   Radio: {
     entry: 'ActBlueskies',
     theme: 'luna-light',
-    componentName: 'Radio Group',
+    meta: getMeta('radio-group'),
+    componentId: 'radio-group',
   },
-  Toast: { entry: 'ActOneDark', theme: 'luna-dark', componentName: 'Toast' },
+  Toast: {
+    entry: 'ActOneDark',
+    theme: 'luna-dark',
+    meta: getMeta('toast'),
+    componentId: 'toast',
+  },
   Popover: {
     entry: 'ActOneLight',
     theme: 'luna-light',
-    componentName: 'Popover',
+    meta: getMeta('popover'),
+    componentId: 'popover',
   },
-  Sheet: { entry: 'ActOneLight', theme: 'luna-light', componentName: 'Sheet' },
-  Dialog: { entry: 'ActOneDark', theme: 'luna-dark', componentName: 'Dialog' },
+  Sheet: {
+    entry: 'ActOneLight',
+    theme: 'luna-light',
+    meta: getMeta('sheet'),
+    componentId: 'sheet',
+  },
+  Dialog: {
+    entry: 'ActOneDark',
+    theme: 'luna-dark',
+    meta: getMeta('dialog'),
+    componentId: 'dialog',
+  },
   Checkbox: {
     entry: 'ActBlueskies',
     theme: 'luna-light',
-    componentName: 'Checkbox',
+    meta: getMeta('checkbox'),
+    componentId: 'checkbox',
   },
-  Input: { entry: 'ActTwoDark', theme: 'luna-dark', componentName: 'Input' },
+  Input: {
+    entry: 'ActTwoDark',
+    theme: 'luna-dark',
+    meta: getMeta('input'),
+    componentId: 'input',
+  },
 };
 
 const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {

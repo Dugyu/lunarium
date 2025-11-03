@@ -1,8 +1,8 @@
 /// <reference types="@lynx-js/rspeedy/client" />
 import type {
-  ComponentName,
   LunaNeutralThemeKey,
   LunaThemeVariant,
+  LynxUIComponentId,
   StudioViewMode,
 } from '@/types';
 
@@ -14,9 +14,10 @@ declare module '@lynx-js/types' {
      */
     lunaTheme: LunaNeutralThemeKey;
     studioViewMode: StudioViewMode;
-    focusedComponent: ComponentName;
-    componentEntry: ComponentName;
+    focusedComponent: LynxUIComponentId;
+    componentEntry: LynxUIComponentId;
     lunaThemeVariant: LunaThemeVariant;
+    testTheme: 'light' | 'dark' | 'Light' | 'Dark';
     theme: 'light' | 'dark' | 'Light' | 'Dark';
     frontendTheme: 'light' | 'dark' | 'Light' | 'Dark';
   }
@@ -26,12 +27,14 @@ declare module '@lynx-js/types' {
   interface NativeModules {
     ExplorerModule: {
       openSchema(url: string): void;
-      saveThemePreferences(key: string, value: string): void;
+      saveToLocalStorage(key: string, value: string): void;
+      readFromLocalStorage(key: string): string | null;
     };
   }
 }
 
 declare global {
+  const __WEB__: boolean;
   const process: {
     env: {
       ASSET_PREFIX?: string;

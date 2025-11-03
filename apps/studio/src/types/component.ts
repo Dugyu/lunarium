@@ -1,16 +1,6 @@
-export const LYNX_UI_COMPONENTS = [
-  'Button',
-  'Checkbox',
-  'Dialog',
-  'Input',
-  'Popover',
-  'Radio Group',
-  'Sheet',
-  'Slider',
-  'Switch',
-  'Textarea',
-  'Tooltip',
-  'Toast',
-] as const;
+import type { LynxUIComponentsRegistry } from '@/constants';
 
-export type LynxUIComponentName = typeof LYNX_UI_COMPONENTS[number];
+export type LynxUIComponentId = (typeof LynxUIComponentsRegistry.ids)[number];
+export type LynxUIComponentDef = (typeof LynxUIComponentsRegistry.list)[number];
+export type LynxUIComponentIdReady =
+  (typeof LynxUIComponentsRegistry.readyIds)[number];

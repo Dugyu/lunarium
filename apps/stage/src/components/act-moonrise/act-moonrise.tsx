@@ -25,7 +25,7 @@ type ActMoonriseProps = {
 };
 
 function ActMoonrise(
-  { studioViewMode, lunaVariant }: ActMoonriseProps,
+  { studioViewMode = 'compare', lunaVariant }: ActMoonriseProps,
 ) {
   const emit = useCallback<onMoonriseEvent>(
     ({ field, value }) => {

@@ -15,6 +15,7 @@
   "references": [
     { "path": "./tsconfig.node.json" },
     { "path": "./src" },
+    { "path": "../../packages/core/tsconfig.build.json" },
   ],
   "files": [],
 }

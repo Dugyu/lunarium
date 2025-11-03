@@ -10,7 +10,7 @@ import {
 } from '@/components/mockup-motion';
 import type {
   LunaThemeVariant,
-  LynxUIComponentName,
+  LynxUIComponentId,
   MoonriseEvent,
   StudioViewMode,
 } from '@/types';
@@ -45,7 +45,7 @@ const presentationTransition: Transition = {
 
 const fitTransition: SpringOptions = { visualDuration: 0.8, bounce: 0.1 };
 
-const DEFAULT_FOCUSED: LynxUIComponentName = 'Button';
+const DEFAULT_FOCUSED: LynxUIComponentId = 'button';
 const DEFAULT_LUNA_THEME_VARIANT: LunaThemeVariant = 'luna';
 
 const WORLD_ORIGIN: WorldPos = { x: 0, y: 0, z: 0 };
@@ -56,7 +56,7 @@ type DynamicViewProps = {
 };
 
 function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
-  const [focused, setFocused] = useState<LynxUIComponentName>(DEFAULT_FOCUSED);
+  const [focused, setFocused] = useState<LynxUIComponentId>(DEFAULT_FOCUSED);
   const [themeVariant, setThemeVariant] = useState<LunaThemeVariant>(
     DEFAULT_LUNA_THEME_VARIANT,
   );
@@ -69,19 +69,19 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
 
   const rendered: RenderData[] = useMemo(() => {
     const components = BASE_STATUS[mode].map(d => STAGES[d.id])
-      .filter(d => d.componentName);
+      .filter(d => d.componentId);
     const backgroundComponents = components.filter(d =>
-      d.componentName !== focused
+      d.componentId !== focused
     );
 
     const mid = (backgroundComponents.length - 1) / 2;
 
-    const focusedIndex = components.findIndex(d => d.componentName === focused);
+    const focusedIndex = components.findIndex(d => d.componentId === focused);
 
     const items = BASE_STATUS[mode].map((d) => {
       const stageMeta = STAGES[d.id];
       const compOrder = backgroundComponents.findIndex(d =>
-        d.componentName === stageMeta.componentName
+        d.componentId === stageMeta.componentId
       );
       const escape = compOrder === -1;
 
@@ -168,7 +168,7 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
                     focusedComponent={focused}
                     onFocusedChange={setFocused}
                     onMoonriseChange={handleMoonriseChange}
-                    componentEntry={stage.componentName}
+                    componentEntry={stage.componentId}
                   />
                 </MotionMockup>
               </MotionPresentation>

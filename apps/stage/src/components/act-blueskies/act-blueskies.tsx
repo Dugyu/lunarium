@@ -1,12 +1,12 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
-import type { ComponentName, StudioViewMode } from '@/types';
+import type { LynxUIComponentId, StudioViewMode } from '@/types';
 import { cn } from '@/utils';
 
 type ActBlueskiesProps = {
   studioViewMode: StudioViewMode;
-  componentEntry: ComponentName;
+  componentEntry: LynxUIComponentId;
 };
 
 function ActBlueskies(
@@ -14,7 +14,7 @@ function ActBlueskies(
 ) {
   return (
     <view className='absolute size-full flex flex-col justify-center items-center'>
-      {componentEntry === 'Switch' && (
+      {componentEntry === 'switch' && (
         <view className='flex flex-col items-start gap-[24px] px-[84px]'>
           <view className='flex flex-col items-start gap-[10px]'>
             {/* Switch Demo Medium */}
@@ -33,7 +33,7 @@ function ActBlueskies(
           </view>
         </view>
       )}
-      {componentEntry === 'Checkbox'
+      {componentEntry === 'checkbox'
         && (
           <view className='flex flex-col items-start gap-[24px] pt-[16px] overflow-hidden'>
             {/* Checkbox Demo Medium */}
@@ -81,7 +81,7 @@ function ActBlueskies(
             </view>
           </view>
         )}
-      {componentEntry === 'Radio Group'
+      {componentEntry === 'radio-group'
         && (
           <view className='flex flex-col justify-center items-start gap-[24px] pt-[16px]'>
             <RadioGroup

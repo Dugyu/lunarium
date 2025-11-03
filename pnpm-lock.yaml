@@ -121,6 +121,9 @@ importers:
         specifier: 'catalog:'
         version: 2.6.0
     devDependencies:
+      '@dugyu/luna-core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@lynx-js/preact-devtools':
         specifier: ^5.0.1-6664329
         version: 5.0.1-6664329
@@ -188,6 +191,9 @@ importers:
         specifier: 'catalog:'
         version: 2.6.0
     devDependencies:
+      '@dugyu/luna-core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@rsbuild/core':
         specifier: catalog:rsbuild
         version: 1.5.4
@@ -209,6 +215,12 @@ importers:
       tailwindcss:
         specifier: 'catalog:'
         version: 3.4.17
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.2
+
+  packages/core:
+    devDependencies:
       typescript:
         specifier: 'catalog:'
         version: 5.9.2

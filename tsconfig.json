@@ -28,6 +28,10 @@
     {
       "path": "./apps/stage/tsconfig.json",
     },
+    {
+      "path": "./packages/core/tsconfig.json",
+    },
     /** packages-end */
   ],
+  "include": [],
 }

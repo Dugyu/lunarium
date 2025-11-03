@@ -1,4 +1,4 @@
-import type { LunaThemeVariant } from './theme.ts';
+import type { LunaThemeVariant } from './index.ts';
 
 export type MoonriseEvent =
   | { field: 'luna-variant'; value: LunaThemeVariant }
