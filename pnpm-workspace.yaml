@@ -7,6 +7,7 @@ catalog:
   tailwindcss: 3.4.17
   tailwind-merge: 2.6.0
   typescript: 5.9.2
+  "@typescript/native-preview": 7.0.0-dev.20251103.1
 
 catalogs:
   lynx:
@@ -19,6 +20,8 @@ catalogs:
   rsbuild:
     "@rsbuild/core": 1.5.4
     "@rsbuild/plugin-react": 1.4.0
+  rslib:
+    "@rslib/core": 0.13.3
   rspack:
     "@rspack/cli": 1.5.2
     "@rspack/core": 1.5.2

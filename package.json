@@ -16,7 +16,6 @@
     "studio:dev": "pnpm --filter ./apps/studio dev",
     "studio:build": "pnpm --filter ./apps/studio build",
     "studio:preview": "pnpm --filter ./apps/studio preview",
-
     "test": "turbo run test",
     "format": "dprint fmt",
     "format:check": "dprint check",
@@ -30,6 +29,7 @@
     "@biomejs/biome": "^2.2.3",
     "@eslint/js": "^9.35.0",
     "@eslint/markdown": "^7.2.0",
+    "@typescript/native-preview": "catalog:",
     "@vitest/eslint-plugin": "^1.3.9",
     "dprint": "^0.50.1",
     "eslint": "^9.35.0",

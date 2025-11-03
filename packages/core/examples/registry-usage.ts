@@ -1,5 +1,5 @@
-import type { RegistryDef, RegistryIds } from '../index.js';
-import { defineComponents } from '../index.js';
+import type { RegistryDef, RegistryIds } from '../src/index.js';
+import { defineComponents } from '../src/index.js';
 
 const components = [
   { id: 'button', demoReady: true },
