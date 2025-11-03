@@ -5,7 +5,8 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": [
-        "src/**"
+        "src/**",
+        "rslib.config.ts"
       ],
       "outputs": ["dist/**"]
     }

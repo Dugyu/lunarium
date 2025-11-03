@@ -4,15 +4,18 @@
   "description": "Core constants, types, and utilities for the L.U.N.A project (no CSS)",
   "type": "module",
   "module": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./component": {
       "types": "./dist/component/index.d.ts",
-      "import": "./dist/component/index.js"
+      "import": "./dist/component/index.js",
+      "require": "./dist/scomponent/index.cjs"
     }
   },
   "sideEffects": false,
@@ -21,10 +24,12 @@
   "author": "The Lynx Authors",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json"
+    "build": "rslib build"
   },
   "dependencies": {},
   "devDependencies": {
+    "@rslib/core": "catalog:rslib",
+    "@typescript/native-preview": "catalog:",
     "typescript": "catalog:"
   }
 }
