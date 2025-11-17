@@ -3,7 +3,7 @@ export type {
   LunaThemeKey,
   LunaThemeMode,
   LunaThemeVariant,
-} from './theme.js';
+} from './theme/index.js';
 
 export type { StudioViewMode } from './studio.js';
 
