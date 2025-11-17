@@ -241,6 +241,21 @@ importers:
         specifier: 'catalog:'
         version: 5.9.2
 
+  packages/tokens:
+    devDependencies:
+      '@dugyu/luna-core':
+        specifier: workspace:*
+        version: link:../core
+      '@rslib/core':
+        specifier: catalog:rslib
+        version: 0.13.3(@typescript/native-preview@7.0.0-dev.20251103.1)(typescript@5.9.2)
+      '@typescript/native-preview':
+        specifier: 'catalog:'
+        version: 7.0.0-dev.20251103.1
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.2
+
 packages:
 
   '@alloc/quick-lru@5.2.0':
