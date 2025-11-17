@@ -179,7 +179,7 @@ export default defineConfig([
         ecmaVersion: 'latest',
         sourceType: 'module',
         projectService: {
-          allowDefaultProject: ['./*.js'],
+          allowDefaultProject: ['./*.js', './tailwind.config.ts'],
           defaultProject: './tsconfig.json',
         },
         tsconfigRootDir: import.meta.dirname,
