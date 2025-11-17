@@ -15,7 +15,7 @@
     "./component": {
       "types": "./dist/component/index.d.ts",
       "import": "./dist/component/index.js",
-      "require": "./dist/scomponent/index.cjs"
+      "require": "./dist/component/index.cjs"
     }
   },
   "sideEffects": false,
