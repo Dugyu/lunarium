@@ -4,7 +4,7 @@ import type {
   LunaThemeVariant,
 } from '@dugyu/luna-core/theme';
 
-export const lunaLightTheme = {
+export const lunaLightTokens = {
   key: 'luna-light' as LunaThemeKey,
   variant: 'luna' as LunaThemeVariant,
   mode: 'light' as LunaThemeMode,
