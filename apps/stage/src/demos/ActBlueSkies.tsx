@@ -7,7 +7,7 @@ import { ActBlueskies } from '@/components/act-blueskies';
 
 export function App() {
   return (
-    <AppTheme preset='luna-light'>
+    <AppTheme preset={lynx.__globalProps.lunaTheme ?? 'luna-light'}>
       <ActBlueskies
         studioViewMode={lynx.__globalProps.studioViewMode ?? 'focus'}
         componentEntry={lynx.__globalProps.componentEntry ?? 'switch'}

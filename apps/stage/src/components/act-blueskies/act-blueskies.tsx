@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
@@ -137,6 +138,23 @@ function ActBlueskies(
             </RadioGroup>
           </view>
         )}
+
+      {componentEntry === 'button' && (
+        <view className='flex flex-col justify-center items-center w-full gap-[8px] px-[64px]'>
+          {/* Button Demo */}
+          <Button size='lg'>Let it bloom</Button>
+          <Button
+            size='lg'
+            variant='secondary'
+            className={cn(
+              'transition-all',
+              studioViewMode === 'lineup' && 'transform-[translateY(60px)]',
+            )}
+          >
+            Stay asleep
+          </Button>
+        </view>
+      )}
     </view>
   );
 }

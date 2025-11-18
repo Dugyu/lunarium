@@ -75,8 +75,16 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
     saveComponent(id);
     NativeModules?.ExplorerModule?.openSchema(
       `${process.env
-        .ASSET_PREFIX as string}/ActSwitch.lynx.bundle?fullscreen=true&test_theme=${
-        id === 'button' ? 'light' : 'dark'
+        .ASSET_PREFIX as string}/ActBlueSkies.lynx.bundle?fullscreen=true&luna_theme=${
+        (id === 'switch' || id === 'radio-group' || id === 'checkbox'
+            || id === 'button')
+          ? 'luna-light'
+          : 'luna-dark'
+      }&component_entry=${
+        (id === 'switch' || id === 'radio-group' || id === 'checkbox'
+            || id === 'button')
+          ? id
+          : 'checkbox'
       }`,
     );
   }, []);
@@ -122,7 +130,7 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
           studioViewMode === 'compare' && 'transform-[translateY(66.7%)]',
           studioViewMode === 'focus' && 'transform-[translateY(0%)]',
           studioViewMode === 'lineup' && 'transform-[translateY(100%)]',
-          studioViewMode !== 'lineup' && 'rounded-t-[36px]',
+          studioViewMode === 'compare' && 'rounded-t-[36px]',
         )}
       />
 
