@@ -1,0 +1,37 @@
+{
+  "name": "@dugyu/luna-reactlynx",
+  "version": "0.1.0",
+  "description": "Reactlynx runtime theming hooks and utilities for the L.U.N.A project.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.jsx"
+    }
+  },
+  "sideEffects": false,
+  "files": ["dist", "README.md"],
+  "keywords": ["luna", "theme", "theming", "reactlynx", "lynx-ui", "react", "lynx"],
+  "author": "The Lynx Authors",
+  "license": "MIT",
+  "scripts": {
+    "build": "rslib build"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@dugyu/luna-core": "workspace:*",
+    "@lynx-js/react": "catalog:lynx",
+    "@lynx-js/rspeedy": "catalog:lynx",
+    "@lynx-js/types": "catalog:lynx",
+    "@rslib/core": "catalog:rslib",
+    "@rsbuild/plugin-react": "catalog:rsbuild",
+    "@typescript/native-preview": "catalog:",
+    "@types/react": "catalog:react18",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "@lynx-js/react": ">=0.100.0",
+    "@lynx-js/types": "*",
+    "@types/react": "^18"
+  }
+}

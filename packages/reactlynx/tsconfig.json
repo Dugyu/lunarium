@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": ".",
+    "noEmit": true,
+    "paths": { "*": ["./*"] },
+    "outDir": "dist",
+  },
+  "include": ["src/**/*.ts"],
+}

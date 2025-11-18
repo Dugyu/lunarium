@@ -11,21 +11,22 @@ catalog:
 
 catalogs:
   lynx:
+    "@lynx-js/qrcode-rsbuild-plugin": 0.3.3
+    "@lynx-js/react": 0.114.4
+    "@lynx-js/react-rsbuild-plugin": 0.11.4
+    "@lynx-js/rspeedy": 0.11.8
     "@lynx-js/types": 3.4.11
+    "@lynx-js/tailwind-preset": 0.4.0
   react18:
     "@types/react": 18.3.24
     "@types/react-dom": 18.3.7
     react: 18.3.1
     react-dom: 18.3.1
   rsbuild:
-    "@rsbuild/core": 1.5.4
-    "@rsbuild/plugin-react": 1.4.0
+    "@rsbuild/core": 1.6.1
+    "@rsbuild/plugin-react": 1.4.2
   rslib:
-    "@rslib/core": 0.13.3
-  rspack:
-    "@rspack/cli": 1.5.2
-    "@rspack/core": 1.5.2
-    "@rspack/test-tools": 1.5.2
+    "@rslib/core": 0.17.1
 
 enablePrePostScripts: false
 
@@ -43,10 +44,6 @@ onlyBuiltDependencies:
   - esbuild
 
 optimisticRepeatInstall: true
-
-overrides:
-  "@rsbuild/core>@rspack/core": catalog:rspack
-  "@rspack/core": catalog:rspack
 
 resolutionMode: lowest-direct
 

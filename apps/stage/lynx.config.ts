@@ -37,7 +37,6 @@ export default defineConfig({
     }),
     pluginReactLynx({
       enableCSSInheritance: false,
-      enableParallelElement: false,
     }),
     pluginTypeCheck(),
     pluginTailwindCSS({ config: 'tailwind.config.ts' }),
