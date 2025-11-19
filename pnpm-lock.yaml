@@ -145,6 +145,12 @@ importers:
       '@dugyu/luna-core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@dugyu/luna-reactlynx':
+        specifier: workspace:*
+        version: link:../../packages/reactlynx
+      '@dugyu/luna-tokens':
+        specifier: workspace:*
+        version: link:../../packages/tokens
       '@lynx-js/preact-devtools':
         specifier: ^5.0.1-cf9aef5
         version: 5.0.1-cf9aef5

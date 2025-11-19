@@ -15,6 +15,8 @@
   },
   "devDependencies": {
     "@dugyu/luna-core": "workspace:*",
+    "@dugyu/luna-reactlynx": "workspace:*",
+    "@dugyu/luna-tokens": "workspace:*",
     "@lynx-js/preact-devtools": "^5.0.1-cf9aef5",
     "@lynx-js/qrcode-rsbuild-plugin": "catalog:lynx",
     "@lynx-js/react-rsbuild-plugin": "catalog:lynx",
