@@ -1,0 +1,48 @@
+{
+  "name": "@dugyu/luna-tokens",
+  "version": "0.1.0",
+  "description": "Design tokens for the L.U.N.A project",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./luna-light": {
+      "types": "./dist/luna-light.d.ts",
+      "import": "./dist/luna-light.js",
+      "require": "./dist/luna-light.cjs"
+    },
+    "./luna-dark": {
+      "types": "./dist/luna-dark.d.ts",
+      "import": "./dist/luna-dark.js",
+      "require": "./dist/luna-dark.cjs"
+    },
+    "./lunaris-light": {
+      "types": "./dist/lunaris-light.d.ts",
+      "import": "./dist/lunaris-light.js",
+      "require": "./dist/lunaris-light.cjs"
+    },
+    "./lunaris-dark": {
+      "types": "./dist/lunaris-dark.d.ts",
+      "import": "./dist/lunaris-dark.js",
+      "require": "./dist/lunaris-dark.cjs"
+    }
+  },
+  "sideEffects": false,
+  "files": ["dist", "README.md"],
+  "keywords": ["luna", "tokens", "design tokens", "theme", "colors"],
+  "author": "The Lynx Authors",
+  "license": "MIT",
+  "scripts": {
+    "build": "rslib build"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@dugyu/luna-core": "workspace:*",
+    "@rslib/core": "catalog:rslib",
+    "@typescript/native-preview": "catalog:",
+    "typescript": "catalog:"
+  }
+}

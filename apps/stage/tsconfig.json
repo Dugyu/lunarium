@@ -13,8 +13,9 @@
     "skipLibCheck": true,
   },
   "references": [
-    { "path": "./tsconfig.node.json" },
     { "path": "./src" },
+    { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.tailwind.json" },
     { "path": "../../packages/core/tsconfig.build.json" },
   ],
   "files": [],

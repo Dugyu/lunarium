@@ -3,8 +3,12 @@
   "compilerOptions": {
     "composite": true,
     "rootDir": "src",
+
+    "jsx": "preserve",
+    "jsxImportSource": "@lynx-js/react",
+
     "target": "ES2022",
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM"],
 
     "module": "ESNext",
     "moduleResolution": "bundler",
@@ -15,8 +19,11 @@
     "emitDeclarationOnly": false,
     "outDir": "dist",
 
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "sourceMap": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["**/*.test.ts", "**/__tests__/**"]
 }

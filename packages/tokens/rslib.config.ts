@@ -4,8 +4,10 @@ export default defineConfig({
   source: {
     entry: {
       index: './src/index.ts',
-      'component/index': './src/component/index.ts',
-      'theme/index': './src/theme/index.ts',
+      'luna-light': './src/luna-light.ts',
+      'luna-dark': './src/luna-dark.ts',
+      'lunaris-light': './src/lunaris-light.ts',
+      'lunaris-dark': './src/lunaris-dark.ts',
     },
     tsconfigPath: './tsconfig.build.json',
   },
@@ -13,19 +15,9 @@ export default defineConfig({
     {
       dts: { tsgo: true },
       format: 'esm',
-      output: {
-        filename: {
-          js: '[name].js',
-        },
-      },
     },
     {
       format: 'cjs',
-      output: {
-        filename: {
-          js: '[name].cjs',
-        },
-      },
     },
   ],
 });

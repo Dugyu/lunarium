@@ -3,7 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "dependsOn": ["@dugyu/luna-core#build"],
+      "dependsOn": ["@dugyu/luna-reactlynx#build", "@dugyu/luna-tokens#build", "@dugyu/luna-core#build"],
       "inputs": [
         "src/**",
         "lynx.config.ts"

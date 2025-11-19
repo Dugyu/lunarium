@@ -179,7 +179,7 @@ export default defineConfig([
         ecmaVersion: 'latest',
         sourceType: 'module',
         projectService: {
-          allowDefaultProject: ['./*.js'],
+          allowDefaultProject: ['./*.js', '*.config.ts'],
           defaultProject: './tsconfig.json',
         },
         tsconfigRootDir: import.meta.dirname,
