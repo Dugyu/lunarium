@@ -1,17 +1,14 @@
-import type {
-  LunaThemeKey,
-  LunaThemeMode,
-  LunaThemeVariant,
-} from '@dugyu/luna-core/theme';
+import type { LunaThemeTokens } from '@dugyu/luna-core/theme';
 
-export const lunarisLightTokens = {
-  key: 'lunaris-light' as LunaThemeKey,
-  variant: 'lunaris' as LunaThemeVariant,
-  mode: 'light' as LunaThemeMode,
+export const lunarisLightTokens: LunaThemeTokens = {
+  key: 'lunaris-light',
+  variant: 'lunaris',
+  mode: 'light',
   colors: {
     primary: '#FF1A6E',
-    onPrimary: '#FFFFFF',
+    'on-primary': '#FFFFFF',
     neutral: '#010101',
-    onNeutral: '#F8F8F8',
+    'on-neutral': '#F8F8F8',
+    'canvas': '#F4F4F4',
   },
 } as const;

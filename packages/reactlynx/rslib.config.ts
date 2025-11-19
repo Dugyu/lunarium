@@ -6,9 +6,6 @@ export default defineConfig({
     pluginReact({ swcReactOptions: { runtime: 'preserve' } }),
   ],
   source: {
-    entry: {
-      index: './src/index.ts',
-    },
     tsconfigPath: './tsconfig.build.json',
   },
   lib: [{

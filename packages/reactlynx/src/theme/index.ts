@@ -1,10 +1,8 @@
-export {
-  LunaThemeContext,
-  LunaThemeProvider,
-  createLunaTheme,
-  useLunaTheme,
-  useLunaColor,
-} from './theme/index.js';
+export { LunaThemeContext } from './theme-context.js';
+export { LunaThemeProvider } from './theme-provider.js';
+export { createLunaTheme } from './create-theme.js';
+export { useLunaTheme } from './use-theme.js';
+export { useLunaColor } from './use-color.js';
 
 export type {
   LunaColorId,
@@ -28,4 +26,4 @@ export type {
   LunaThemeProviderProps,
   UseLunaColorOptions,
   NonEmptyArray,
-} from './theme/index.js';
+} from './types.js';

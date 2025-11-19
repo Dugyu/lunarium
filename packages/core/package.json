@@ -18,7 +18,9 @@
       "require": "./dist/component/index.cjs"
     },
     "./theme": {
-      "types": "./dist/theme/index.d.ts"
+      "types": "./dist/theme/index.d.ts",
+      "import": "./dist/theme/index.js",
+      "require": "./dist/theme/index.cjs"
     }
   },
   "sideEffects": false,

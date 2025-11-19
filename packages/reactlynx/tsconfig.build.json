@@ -1,19 +1,29 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "noEmit": false,
     "composite": true,
+    "rootDir": "src",
+
+    "jsx": "preserve",
+    "jsxImportSource": "@lynx-js/react",
+
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+
+    "noEmit": false,
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": false,
     "outDir": "dist",
-    "rootDir": "src",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "sourceMap": true,
-    "target": "ES2022",
-    "lib": ["ES2022"]
+
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "sourceMap": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["**/*.test.ts", "**/__tests__/**"]
 }

@@ -4,6 +4,8 @@ export default defineConfig({
   source: {
     entry: {
       index: './src/index.ts',
+      'component/index': './src/component/index.ts',
+      'theme/index': './src/theme/index.ts',
     },
     tsconfigPath: './tsconfig.build.json',
   },
@@ -11,9 +13,19 @@ export default defineConfig({
     {
       dts: { tsgo: true },
       format: 'esm',
+      output: {
+        filename: {
+          js: '[name].js',
+        },
+      },
     },
     {
       format: 'cjs',
+      output: {
+        filename: {
+          js: '[name].cjs',
+        },
+      },
     },
   ],
 });
