@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@lynx-js/react": "catalog:lynx",
-    "clsx": "^2.1.1",
+    "clsx": "catalog:",
     "tailwind-merge": "catalog:"
   },
   "devDependencies": {
