@@ -37,6 +37,9 @@
     {
       "path": "./packages/reactlynx/tsconfig.json",
     },
+    {
+      "path": "./packages/styles/tsconfig.json",
+    },
     /** packages-end */
   ],
   "include": [],

@@ -1,0 +1,58 @@
+import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+import type { RsbuildPlugin } from '@rslib/core';
+
+import { LUNA_COLOR_IDS } from '@dugyu/luna-core/theme';
+import type { LunaThemeTokens } from '@dugyu/luna-core/theme';
+
+export function generateLunaCssPlugin(
+  themes: LunaThemeTokens[],
+  prefix = 'luna',
+): RsbuildPlugin {
+  return {
+    name: 'generate-luna-css',
+    setup(api) {
+      api.onAfterBuild(() => {
+        const dist = join(process.cwd(), 'dist');
+        mkdirSync(dist, { recursive: true });
+
+        for (const theme of themes) {
+          const lines = LUNA_COLOR_IDS.map(id => {
+            const value = theme.colors[id];
+            if (!value) {
+              throw new Error(`Missing "${id}" in ${theme.key}`);
+            }
+            return `  --${prefix}-${id}: ${value};`;
+          }).join('\n');
+
+          const css = `.${theme.key} {\n${lines}\n}\n`;
+          writeFileSync(join(dist, `${theme.key}.css`), css, 'utf8');
+          process.stderr.write(`Generated: ${theme.key}.css`);
+        }
+
+        const indexContent = themes
+          .map(t => `@import "./${t.key}.css";`)
+          .join('\n');
+
+        writeFileSync(join(dist, 'index.css'), indexContent, 'utf8');
+        process.stderr.write(`Generated: index.css`);
+
+        try {
+          const files = readdirSync(dist);
+          const jsFiles = files.filter(f =>
+            f.endsWith('.js') || f.endsWith('.mjs')
+          );
+          for (const file of jsFiles) {
+            const filePath = join(dist, file);
+            rmSync(filePath);
+            process.stderr.write(`Deleted: ${file}`);
+          }
+        } catch (error) {
+          console.warn('Error when cleaning up entry file:', error);
+        }
+        process.stderr.write(`\n L.U.N.A CSS Files Generated\n`);
+      });
+    },
+  };
+}

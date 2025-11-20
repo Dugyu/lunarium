@@ -8,6 +8,7 @@ catalog:
   tailwindcss: 3.4.17
   tailwind-merge: 2.6.0
   typescript: 5.9.2
+  "@types/node": 24.6.1
   "@typescript/native-preview": 7.0.0-dev.20251103.1
 
 catalogs:
