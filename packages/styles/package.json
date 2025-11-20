@@ -1,0 +1,40 @@
+{
+  "name": "@dugyu/luna-styles",
+  "version": "0.1.0",
+  "description": "CSS theme variables for the L.U.N.A project",
+  "type": "module",
+  "main": "dist/index.css",
+  "exports": {
+    ".": {
+      "default": "./dist/index.css"
+    },
+    "./index.css": {
+      "default": "./dist/index.css"
+    },
+    "./luna-light.css": {
+      "default": "./dist/luna-light.css"
+    },
+    "./luna-dark.css": {
+      "default": "./dist/luna-dark.css"
+    },
+    "./lunaris-light.css": {
+      "default": "./dist/lunaris-light.css"
+    },
+    "./lunaris-dark.css": {
+      "default": "./dist/lunaris-dark.css"
+    }
+  },
+  "sideEffects": [
+    "./dist/*.css"
+  ],
+  "scripts": {
+    "build": "rslib build"
+  },
+  "devDependencies": {
+    "@dugyu/luna-core": "workspace:",
+    "@dugyu/luna-tokens": "workspace:",
+    "@rslib/core": "catalog:rslib",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
