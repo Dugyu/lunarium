@@ -1,7 +1,7 @@
 {
   "name": "@dugyu/luna-tokens",
   "version": "0.1.0",
-  "description": "Design tokens for the L.U.N.A project",
+  "description": "Design tokens for the L.U.N.A project.",
   "type": "module",
   "exports": {
     ".": {

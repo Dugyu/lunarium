@@ -40,6 +40,9 @@
     {
       "path": "./packages/styles/tsconfig.json",
     },
+    {
+      "path": "./packages/tailwind/tsconfig.json",
+    },
     /** packages-end */
   ],
   "include": [],

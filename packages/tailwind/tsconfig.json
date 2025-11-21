@@ -4,10 +4,11 @@
     "composite": true,
     "rootDir": ".",
     "noEmit": true,
-    "paths": { "*": ["./*"] },
+    "baseUrl": ".",
+    "paths": {},
     "outDir": "dist",
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src/**/*.ts"],
   "references": [
     { "path": "../core/tsconfig.build.json" },
   ],
