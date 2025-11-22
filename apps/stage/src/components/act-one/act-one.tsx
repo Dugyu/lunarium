@@ -18,7 +18,7 @@ function ActOne({ defaultOpen = false }: ActOneProps) {
       </view>
       <view
         className={clsx(
-          'absolute bottom-0 h-2/3 w-full bg-base-1 rounded-t-[36px] transition-transform ease-in-out duration-500',
+          'absolute bottom-0 h-2/3 w-full bg-canvas rounded-t-[36px] transition-transform ease-in-out duration-500',
           !open && 'transform-[translateY(50%)]',
         )}
         bindtap={handleTap}

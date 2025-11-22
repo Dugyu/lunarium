@@ -4,7 +4,7 @@ import { cn } from '@/utils';
 
 type ButtonProps = {
   size?: 'xs' | 'sm' | 'md' | 'lg';
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  variant?: 'neutral' | 'primary' | 'secondary' | 'outline' | 'ghost';
   shape?: 'normal' | 'capsule';
   disabled?: boolean;
   children?: ReactNode;
@@ -12,13 +12,15 @@ type ButtonProps = {
 };
 
 function Button(props: ButtonProps) {
-  const { size = 'md', variant = 'primary', children, className } = props;
+  const { size = 'md', variant = 'neutral', children, className } = props;
 
   return (
     <view
       className={cn(
         'flex flex-row justify-center items-center rounded-full h-[48px] w-full',
-        variant === 'secondary' ? 'bg-neutral-4' : 'bg-primary',
+        variant === 'neutral'
+          ? 'bg-neutral'
+          : (variant === 'secondary' ? 'bg-neutral-subtle' : 'bg-primary-1'),
         size
             === 'lg'
           ? 'h-[48px]'
@@ -29,9 +31,11 @@ function Button(props: ButtonProps) {
       <text
         className={cn(
           'text-base font-semibold',
-          variant === 'secondary'
-            ? 'text-base-content'
-            : 'text-primary-content',
+          variant === 'neutral'
+            ? 'text-neutral-content'
+            : (variant === 'secondary'
+              ? 'text-content-1'
+              : 'text-primary-content'),
         )}
       >
         {children}

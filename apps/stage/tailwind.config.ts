@@ -19,31 +19,28 @@ const config: Config = {
         '2xl': ['20px', { lineHeight: '25px' }],
       },
       colors: {
-        base: {
-          '1': 'var(--color-base)',
-          content: 'var(--color-base-content)',
-          'content-2': 'var(--color-base-content-2)',
-          'content-3': 'var(--color-base-content-3)',
+        canvas: {
+          DEFAULT: 'var(--canvas)',
         },
-        content: 'var(--color-base-content)',
+        content: {
+          '1': 'var(--content-1)',
+          '2': 'var(--content-2)',
+        },
+        'content-muted': {
+          '1': 'var(--content-muted-1)',
+        },
         primary: {
-          DEFAULT: 'var(--color-primary)',
-          content: 'var(--color-primary-content)',
+          '1': 'var(--primary-1)',
+          content: 'var(--primary-content)',
         },
-        secondary: {
-          DEFAULT: 'var(--color-secondary)',
-          content: 'var(--color-secondary-content)',
-        },
-        muted: {
-          DEFAULT: 'var(--color-muted)',
-          content: 'var(--color-muted-content)',
-        },
+        line: 'var(--line)',
         neutral: {
-          DEFAULT: 'var(--color-neutral)',
-          content: 'var(--color-neutral-content)',
-          '2': 'var(--color-neutral-2)',
-          '3': 'var(--color-neutral-3)',
-          '4': 'var(--color-neutral-4)',
+          DEFAULT: 'var(--neutral)',
+          content: 'var(--neutral-content)',
+          faint: 'var(--neutral-faint)',
+          subtle: 'var(--neutral-subtle)',
+          veil: 'var(--neutral-veil)',
+          film: 'var(--neutral-film)',
         },
         gradient: {
           a: 'var(--gradient-a)',

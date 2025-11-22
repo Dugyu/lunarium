@@ -24,8 +24,8 @@ function ComponentItem(
       className={cn(
         'px-[8px] py-[2px] ui-checked:py-[12px] text-lg ui-checked:transform-[scale(1.2)] ui-checked:font-semibold transition-all duration-300 ease-in-out',
         data.demoReady
-          ? 'text-base-content hover:opacity-50'
-          : 'text-base-content-3 opacity-50',
+          ? 'text-content-1 hover:opacity-50'
+          : 'text-content-muted-1 opacity-50',
         checked && 'ui-checked',
       )}
       bindtap={data.demoReady ? () => onClick?.(data.id) : undefined}
@@ -118,7 +118,7 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
       </view>
       <view
         className={cn(
-          'absolute bottom-0 h-full w-full bg-base-1 transition-all ease-in-out duration-300 overflow-hidden',
+          'absolute bottom-0 h-full w-full bg-canvas transition-all ease-in-out duration-300 overflow-hidden',
           studioViewMode === 'compare' && 'transform-[translateY(66.7%)]',
           studioViewMode === 'focus' && 'transform-[translateY(0%)]',
           studioViewMode === 'lineup' && 'transform-[translateY(100%)]',
@@ -134,7 +134,7 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
       >
         <view className='w-full flex flex-col items-start justify-start gap-[72px]'>
           {/* Headline */}
-          <text className='text-start text-xl text-base-content font-semibold'>
+          <text className='text-start text-xl text-content-1 font-semibold'>
             Performance
           </text>
           {/* Componenets */}
