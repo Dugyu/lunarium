@@ -3,11 +3,10 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "dependsOn": ["@dugyu/luna-stage#build", "@dugyu/luna-core#build"],
+      "dependsOn": ["@dugyu/luna-core#build"],
       "inputs": [
         "src/**",
-        "public/**",
-        "rsbuild.config.ts"
+        "rslib.config.ts"
       ],
       "outputs": ["dist/**"]
     }

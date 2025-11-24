@@ -1,7 +1,7 @@
 {
-  "name": "@dugyu/luna-core",
+  "name": "@dugyu/luna-tailwind",
   "version": "0.1.0",
-  "description": "Core constants, types, and utilities for the L.U.N.A project (no CSS).",
+  "description": "TailwindCSS preset for the L.U.N.A project.",
   "type": "module",
   "module": "./dist/index.js",
   "main": "./dist/index.cjs",
@@ -11,21 +11,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    },
-    "./component": {
-      "types": "./dist/component/index.d.ts",
-      "import": "./dist/component/index.js",
-      "require": "./dist/component/index.cjs"
-    },
-    "./theme": {
-      "types": "./dist/theme/index.d.ts",
-      "import": "./dist/theme/index.js",
-      "require": "./dist/theme/index.cjs"
     }
   },
   "sideEffects": false,
   "files": ["dist", "README.md"],
-  "keywords": ["luna", "core", "constants", "types", "utils"],
+  "keywords": ["luna", "tailwind", "preset", "colors", "tokens"],
   "author": "The Lynx Authors",
   "license": "MIT",
   "scripts": {
@@ -33,8 +23,13 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@dugyu/luna-core": "workspace:*",
     "@rslib/core": "catalog:rslib",
     "@typescript/native-preview": "catalog:",
+    "tailwindcss": "catalog:",
     "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "tailwindcss": "^3.4.0"
   }
 }

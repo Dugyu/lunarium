@@ -17,8 +17,6 @@ declare module '@lynx-js/types' {
     focusedComponent: LynxUIComponentId;
     componentEntry: LynxUIComponentId;
     lunaThemeVariant: LunaThemeVariant;
-    testTheme: 'light' | 'dark' | 'Light' | 'Dark';
-    theme: 'light' | 'dark' | 'Light' | 'Dark';
     frontendTheme: 'light' | 'dark' | 'Light' | 'Dark';
   }
 }

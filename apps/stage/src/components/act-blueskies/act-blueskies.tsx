@@ -20,13 +20,13 @@ function ActBlueskies(
             {/* Switch Demo Medium */}
             <view className='flex flex-row items-center justify-start gap-[10px]'>
               <Switch defaultChecked size='lg' />
-              <text className='text-start text-base text-base-content-3'>
+              <text className='text-start text-base text-content-muted-1'>
                 Illuminate
               </text>
             </view>
             <view className='flex flex-row items-center justify-start gap-[10px]'>
               <Switch size='lg' />
-              <text className='text-start text-base text-base-content-3'>
+              <text className='text-start text-base text-content-muted-1'>
                 In Play
               </text>
             </view>
@@ -40,7 +40,7 @@ function ActBlueskies(
             <view className='flex flex-col items-start gap-[10px]'>
               <view className='flex flex-row items-center gap-[10px]'>
                 <Checkbox defaultChecked size='md' />
-                <text className='text-base text-base-content-3'>
+                <text className='text-base text-content-muted-1'>
                   awakened
                 </text>
               </view>
@@ -50,7 +50,7 @@ function ActBlueskies(
                 )}
               >
                 <Checkbox size='md' />
-                <text className='text-base text-base-content-3'>
+                <text className='text-base text-content-muted-1'>
                   sleep
                 </text>
               </view>
@@ -64,7 +64,7 @@ function ActBlueskies(
               {/* Checkbox Demo Small */}
               <view className='flex flex-row items-center gap-[10px]'>
                 <Checkbox defaultChecked />
-                <text className='text-p2 text-base-content-3'>
+                <text className='text-p2 text-content-muted-1'>
                   awakened
                 </text>
               </view>
@@ -74,7 +74,7 @@ function ActBlueskies(
                 )}
               >
                 <Checkbox />
-                <text className='text-p2 text-base-content-3'>
+                <text className='text-p2 text-content-muted-1'>
                   sleep
                 </text>
               </view>
@@ -91,19 +91,19 @@ function ActBlueskies(
               {/* Radio Group Demo Medium */}
               <view className='flex flex-row items-center gap-[10px]'>
                 <RadioItem value='drift' size='md' />
-                <text className='text-start text-lg text-base-content-3 font-medium'>
+                <text className='text-start text-lg text-content-muted-1 font-medium'>
                   Drift
                 </text>
               </view>
               <view className='flex flex-row items-center gap-[10px]'>
                 <RadioItem value='sink' size='md' />
-                <text className='text-start text-lg  text-base-content-3 font-medium'>
+                <text className='text-start text-lg  text-content-muted-1 font-medium'>
                   Sink
                 </text>
               </view>
               <view className='flex flex-row items-center gap-[10px]'>
                 <RadioItem value='wake' size='md' />
-                <text className='text-start text-lg text-base-content-3 font-medium'>
+                <text className='text-start text-lg text-content-muted-1 font-medium'>
                   Wake
                 </text>
               </view>
@@ -118,19 +118,19 @@ function ActBlueskies(
               {/* Radio Group Demo Small */}
               <view className='flex flex-row items-center gap-[10px]'>
                 <RadioItem value='drift' />
-                <text className='text-start text-base text-base-content-3 font-medium'>
+                <text className='text-start text-base text-content-muted-1 font-medium'>
                   Drift
                 </text>
               </view>
               <view className='flex flex-row items-center gap-[10px]'>
                 <RadioItem value='sink' />
-                <text className='text-start text-base  text-base-content-3 font-medium'>
+                <text className='text-start text-base  text-content-muted-1 font-medium'>
                   Sink
                 </text>
               </view>
               <view className='flex flex-row items-center gap-[10px]'>
                 <RadioItem value='wake' />
-                <text className='text-start text-base text-base-content-3 font-medium'>
+                <text className='text-start text-base text-content-muted-1 font-medium'>
                   Wake
                 </text>
               </view>

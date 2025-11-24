@@ -37,7 +37,7 @@ function RadioItem(
   return (
     <view
       className={cn(
-        'border-neutral-2 rounded-full border-[1.5px] ui-checked:border-none ui-checked:bg-primary ui-disabled:opacity-40',
+        'border-line rounded-full border-[1.5px] ui-checked:border-none ui-checked:bg-primary-1 ui-disabled:opacity-40',
         size === 'sm' ? 'size-[16px]' : 'size-[22px]',
         disabled && 'ui-disabled',
         selectedValue === value && 'ui-checked',

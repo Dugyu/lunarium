@@ -24,6 +24,13 @@ export default defineConfig({
     publicDir: [
       {
         name: path.join(__dirname, '../', 'stage', 'dist'),
+        watch: true,
+        copyOnBuild: true,
+      },
+      {
+        name: 'public',
+        watch: true,
+        copyOnBuild: true,
       },
     ],
   },
