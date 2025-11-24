@@ -3,16 +3,16 @@
 @tailwind utilities;
 
 .luna-dark {
+  --primary-1: #e0e0e0;
+  --primary-2: #a4a4a4;
+  --primary-3: #7a7a7a;
+  --primary-content: #010101;
   --canvas: #0d0d0d;
-
   --content-1: #f8f8f8;
   --content-2: #d9d9d9;
   --content-muted-1: #b3b3b3;
-
-  --primary-1: #e0e0e0;
-  --primary-content: #010101;
-
-  --neutral: #f8f8f8;
+  --neutral-1: #f8f8f8;
+  --neutral-2: #d0d0d0;
   --neutral-content: #010101;
   --neutral-muted: #dcdcdc;
   --neutral-faint: #505050;
@@ -27,16 +27,15 @@
 }
 
 .luna-light {
+  --primary-1: #1a1a1a;
+  --primary-2: #545454;
+  --primary-3: #9b9b9b;
+  --primary-content: #fafafa;
   --canvas: #ffffff;
-
   --content-1: #010101;
   --content-2: #333333;
   --content-muted-1: #5d5d5d;
-
-  --primary-1: #ff1a6e;
-  --primary-content: #fafafa;
-
-  --neutral: #010101;
+  --neutral-1: #010101;
   --neutral-content: #f8f8f8;
   --neutral-muted: #404040;
   --neutral-faint: #d9d9d9;
@@ -48,6 +47,52 @@
   --gradient-b: #ff5d99;
   --gradient-c: #93a1c6;
   --gradient-d: #3dd5e9;
+}
+
+.lunaris-light {
+  --primary-1: #ff1a6e;
+  --primary-2: #ff558e;
+  --primary-3: #ff8db3;
+  --canvas: #ffffff;
+  --content-1: #010101;
+  --content-2: #333333;
+  --content-muted-1: #5d5d5d;
+  --neutral-1: #010101;
+  --neutral-content: #f8f8f8;
+  --neutral-muted: #404040;
+  --neutral-faint: #d9d9d9;
+  --neutral-subtle: #eeeeee;
+  --neutral-veil: rgba(0, 0, 0, 0.24);
+  --neutral-film: rgba(0, 0, 0, 0.05);
+  --line: rgba(0, 0, 0, 0.17);
+  --gradient-a: rgb(255, 61, 99);
+  --gradient-b: #ff5d99;
+  --gradient-c: #93a1c6;
+  --gradient-d: #3dd5e9;
+}
+
+.lunaris-dark {
+  --primary-1: #ff8ab5;
+  --primary-2: #ff4f8f;
+  --primary-3: #e43072;
+  --primary-content: #010101;
+  --canvas: #0d0d0d;
+  --content-1: #f8f8f8;
+  --content-2: #d9d9d9;
+  --content-muted-1: #b3b3b3;
+  --neutral-1: #f8f8f8;
+  --neutral-2: #d0d0d0;
+  --neutral-content: #010101;
+  --neutral-muted: #dcdcdc;
+  --neutral-faint: #505050;
+  --neutral-subtle: #2c2c2c;
+  --neutral-veil: rgba(248, 248, 248, 0.5);
+  --neutral-film: rgba(248, 248, 248, 0.08);
+  --line: rgba(255, 255, 255, 0.32);
+  --gradient-a: #ff7385;
+  --gradient-b: #fe69a1;
+  --gradient-c: #a998bf;
+  --gradient-d: #00d0f1;
 }
 
 @layer components {

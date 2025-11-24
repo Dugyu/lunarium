@@ -19,7 +19,7 @@ function Button(props: ButtonProps) {
       className={cn(
         'flex flex-row justify-center items-center rounded-full h-[48px] w-full',
         variant === 'neutral'
-          ? 'bg-neutral'
+          ? 'bg-neutral-1'
           : (variant === 'secondary' ? 'bg-neutral-subtle' : 'bg-primary-1'),
         size
             === 'lg'

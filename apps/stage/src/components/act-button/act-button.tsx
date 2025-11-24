@@ -37,16 +37,16 @@ function Button(props: ButtonProps) {
       )}
       style={{
         backgroundColor: variant === 'primary'
-          ? color('primary')
-          : color('neutral'),
+          ? color('primary1')
+          : color('neutral1'),
       }}
     >
       <text
         className={'text-base font-semibold'}
         style={{
           color: variant === 'primary'
-            ? color('onPrimary')
-            : color('onNeutral'),
+            ? color('primaryContent')
+            : color('neutralContent'),
         }}
       >
         {children}

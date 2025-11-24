@@ -4,11 +4,11 @@ export type LunaThemeKey = `${LunaThemeVariant}-${LunaThemeMode}`;
 export type LunaNeutralThemeKey = `luna-${LunaThemeMode}`;
 
 export const LUNA_COLOR_IDS = [
-  'primary',
-  'on-primary',
-  'neutral',
-  'on-neutral',
   'canvas',
+  'primary-1',
+  'primary-content',
+  'neutral-1',
+  'neutral-content',
 ] as const;
 
 export type LunaColorId = typeof LUNA_COLOR_IDS[number];

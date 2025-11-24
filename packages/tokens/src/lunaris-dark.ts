@@ -5,10 +5,10 @@ export const lunarisDarkTokens: LunaThemeTokens = {
   variant: 'lunaris',
   mode: 'dark',
   colors: {
-    primary: '#FF8AB5',
-    'on-primary': '#010101',
-    neutral: '#F8F8F8',
-    'on-neutral': '#010101',
+    'primary-1': '#FF8AB5',
+    'primary-content': '#010101',
+    'neutral-1': '#F8F8F8',
+    'neutral-content': '#010101',
     'canvas': '#000000',
   },
 } as const;
