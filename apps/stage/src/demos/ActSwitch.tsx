@@ -7,9 +7,7 @@ import { ActSwitch } from '@/components/act-switch';
 
 export function App() {
   useEffect(() => {
-    console.log('Explorer theme:', lynx.__globalProps.theme);
     console.log('Explorer frontendTheme:', lynx.__globalProps.frontendTheme);
-    console.log('Final theme:', getTheme());
   }, []);
 
   return (
@@ -28,9 +26,8 @@ if (import.meta.webpackHot) {
 }
 
 function getTheme(): 'light' | 'dark' {
-  const theme =
-    (lynx.__globalProps.testTheme ?? lynx.__globalProps.frontendTheme) as
-      | 'light'
-      | 'dark';
+  const theme = (lynx.__globalProps.frontendTheme) as
+    | 'light'
+    | 'dark';
   return (theme === 'dark') ? 'dark' : 'light';
 }

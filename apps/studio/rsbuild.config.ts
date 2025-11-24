@@ -28,7 +28,7 @@ export default defineConfig({
         copyOnBuild: true,
       },
       {
-        name: 'public/offstage',
+        name: 'public',
         watch: true,
         copyOnBuild: true,
       },

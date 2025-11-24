@@ -5,6 +5,7 @@
     "build": {
       "dependsOn": ["@dugyu/luna-reactlynx#build", "@dugyu/luna-tokens#build", "@dugyu/luna-core#build"],
       "inputs": [
+        "public/**",
         "src/**",
         "lynx.config.ts"
       ],
