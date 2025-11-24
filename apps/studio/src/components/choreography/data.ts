@@ -52,7 +52,7 @@ const STAGES: Record<string, StageMeta> = {
     componentId: 'sheet',
   },
   Dialog: {
-    entry: 'ActOneDark',
+    entry: 'OffstageActDialog',
     theme: 'luna-dark',
     meta: getMeta('dialog'),
     componentId: 'dialog',

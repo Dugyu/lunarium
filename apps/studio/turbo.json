@@ -6,6 +6,7 @@
       "dependsOn": ["@dugyu/luna-stage#build", "@dugyu/luna-core#build"],
       "inputs": [
         "src/**",
+        "public/**",
         "rsbuild.config.ts"
       ],
       "outputs": ["dist/**"]
