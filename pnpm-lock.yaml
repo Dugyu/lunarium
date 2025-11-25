@@ -154,6 +154,9 @@ importers:
       '@dugyu/luna-reactlynx':
         specifier: workspace:*
         version: link:../../packages/reactlynx
+      '@dugyu/luna-styles':
+        specifier: workspace:*
+        version: link:../../packages/styles
       '@dugyu/luna-tokens':
         specifier: workspace:*
         version: link:../../packages/tokens

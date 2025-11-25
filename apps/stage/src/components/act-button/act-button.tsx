@@ -37,8 +37,8 @@ function Button(props: ButtonProps) {
       )}
       style={{
         backgroundColor: variant === 'primary'
-          ? color('primary1')
-          : color('neutral1'),
+          ? color('primary')
+          : color('neutral'),
       }}
     >
       <text
