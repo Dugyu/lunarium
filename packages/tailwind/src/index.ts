@@ -1,62 +1,34 @@
 import type { Config } from 'tailwindcss';
 
+import { LUNA_COLOR_IDS } from '@dugyu/luna-core/theme';
+
+import { buildLunaTailwindColors } from './color.js';
+
 // Options for the Luna Tailwind plugin
-export type LunaTailwindOptions = {
+type LunaTailwindOptions = {
   /**
-   * Optional namespace for colors.
+   * Optional CSS variable prefix used in the theme.
    *
-   * - undefined: colors are registered at root (primary, neutral, ...)
-   * - "luna"   : colors are under `colors.luna.*` => e.g. `text-luna-primary`
+   * - undefined / empty: uses `var(--primary)` style
+   * - "luna"           : uses `var(--luna-primary)` style
+   *
+   * This should stay in sync with your CSS generator:
+   *  `--${prefix}-${id}` / `--${id}`.
    */
-  colorNamespace?: string;
+  cssVarPrefix?: string;
 };
 
 // Internal helper to build the theme extension
-export const createLunaPreset = (
+function createLunaPreset(
   options?: LunaTailwindOptions,
-) => {
-  const colorExtensions = {
-    base: {
-      '1': 'var(--color-base)',
-      content: 'var(--color-base-content)',
-      'content-2': 'var(--color-base-content-2)',
-      'content-3': 'var(--color-base-content-3)',
-    },
-    content: 'var(--color-base-content)',
-    primary: {
-      DEFAULT: 'var(--color-primary)',
-      content: 'var(--color-primary-content)',
-    },
-    secondary: {
-      DEFAULT: 'var(--color-secondary)',
-      content: 'var(--color-secondary-content)',
-    },
-    muted: {
-      DEFAULT: 'var(--color-muted)',
-      content: 'var(--color-muted-content)',
-    },
-    neutral: {
-      DEFAULT: 'var(--color-neutral)',
-      content: 'var(--color-neutral-content)',
-      '2': 'var(--color-neutral-2)',
-      '3': 'var(--color-neutral-3)',
-      '4': 'var(--color-neutral-4)',
-    },
-    gradient: {
-      a: 'var(--gradient-a)',
-      b: 'var(--gradient-b)',
-      c: 'var(--gradient-c)',
-      d: 'var(--gradient-d)',
-    },
-  };
+) {
+  const { cssVarPrefix } = options ?? {};
 
-  const colors = options?.colorNamespace != null
-    ? {
-      // Nest the whole palette under a namespace:
-      // colors.luna.primary => class `text-luna-primary`
-      [options.colorNamespace]: colorExtensions,
-    }
-    : colorExtensions;
+  const colorExtensions = buildLunaTailwindColors(
+    LUNA_COLOR_IDS,
+    cssVarPrefix,
+  );
+
   return {
     theme: {
       extend: {
@@ -70,10 +42,15 @@ export const createLunaPreset = (
           xl: ['17px', { lineHeight: '22px' }],
           '2xl': ['20px', { lineHeight: '25px' }],
         },
-        colors,
+        colors: colorExtensions,
       },
     },
   } satisfies Partial<Config>;
-};
+}
 
-export default createLunaPreset;
+const LunaPreset = createLunaPreset();
+
+export { createLunaPreset, LunaPreset };
+export type { LunaTailwindOptions };
+
+export default LunaPreset;
