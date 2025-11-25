@@ -7,7 +7,8 @@
         "@dugyu/luna-core#build",
         "@dugyu/luna-reactlynx#build",
         "@dugyu/luna-tokens#build",
-        "@dugyu/luna-styles#build"
+        "@dugyu/luna-styles#build",
+        "@dugyu/luna-tailwind#build"
       ],
       "inputs": [
         "public/**",

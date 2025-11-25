@@ -157,6 +157,9 @@ importers:
       '@dugyu/luna-styles':
         specifier: workspace:*
         version: link:../../packages/styles
+      '@dugyu/luna-tailwind':
+        specifier: workspace:*
+        version: link:../../packages/tailwind
       '@dugyu/luna-tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
