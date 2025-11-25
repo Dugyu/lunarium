@@ -3,6 +3,8 @@ import type { Config } from 'tailwindcss';
 import { LUNA_COLOR_IDS } from '@dugyu/luna-core/theme';
 
 import { buildLunaTailwindColors } from './color.js';
+import { lunaGradientPlugin } from './gradient.js';
+import type { LunaTailwindPlugin } from './types.js';
 
 // Options for the Luna Tailwind plugin
 type LunaTailwindOptions = {
@@ -30,6 +32,7 @@ function createLunaPreset(
   );
 
   return {
+    plugins: [lunaGradientPlugin],
     theme: {
       extend: {
         fontSize: {
@@ -51,6 +54,6 @@ function createLunaPreset(
 const LunaPreset = createLunaPreset();
 
 export { createLunaPreset, LunaPreset };
-export type { LunaTailwindOptions };
+export type { LunaTailwindOptions, LunaTailwindPlugin };
 
 export default LunaPreset;
