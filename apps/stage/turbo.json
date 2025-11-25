@@ -12,7 +12,8 @@
       "inputs": [
         "public/**",
         "src/**",
-        "lynx.config.ts"
+        "lynx.config.ts",
+        "tailwind.config.ts"
       ],
       "outputs": ["dist"]
     }

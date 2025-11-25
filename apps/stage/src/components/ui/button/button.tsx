@@ -20,7 +20,7 @@ function Button(props: ButtonProps) {
         'flex flex-row justify-center items-center rounded-full h-[48px] w-full',
         variant === 'neutral'
           ? 'bg-neutral'
-          : (variant === 'secondary' ? 'bg-neutral-subtle' : 'bg-primary'),
+          : (variant === 'secondary' ? 'bg-neutral-ambient' : 'bg-primary'),
         size
             === 'lg'
           ? 'h-[48px]'
