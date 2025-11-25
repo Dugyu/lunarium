@@ -4,11 +4,33 @@ export type LunaThemeKey = `${LunaThemeVariant}-${LunaThemeMode}`;
 export type LunaNeutralThemeKey = `luna-${LunaThemeMode}`;
 
 export const LUNA_COLOR_IDS = [
-  'primary',
-  'on-primary',
-  'neutral',
-  'on-neutral',
   'canvas',
+  'canvas-ambient',
+  'content',
+  'content-2',
+  'content-muted',
+  'content-muted-2',
+  'content-subtle',
+  'content-faint',
+  'paper',
+  'paper-clear',
+  'primary',
+  'primary-2',
+  'primary-muted',
+  'primary-content',
+  'neutral',
+  'neutral-2',
+  'neutral-subtle',
+  'neutral-faint',
+  'neutral-ambient',
+  'neutral-content',
+  'neutral-veil',
+  'neutral-film',
+  'line',
+  'gradient-a',
+  'gradient-b',
+  'gradient-c',
+  'gradient-d',
 ] as const;
 
 export type LunaColorId = typeof LUNA_COLOR_IDS[number];
@@ -20,13 +42,13 @@ type CamelCase<S extends string> = S extends `${infer Head}-${infer Tail}`
 /**
  * Runtime color keys exposed to components/hooks: camelCase.
  * Example:
- *   LunaColorId:  "on-primary"
- *   LunaColorKey: "onPrimary"
+ *   LunaColorId:  "primary-content"
+ *   LunaColorKey: "primaryContent"
  */
 export type LunaColorKey = CamelCase<LunaColorId>;
 
 /**
- * "on-primary" -> "onPrimary"
+ * "primary-content" -> "primaryContent"
  */
 export function colorIdToColorKey(id: LunaColorId): LunaColorKey {
   return id
@@ -36,7 +58,7 @@ export function colorIdToColorKey(id: LunaColorId): LunaColorKey {
 }
 
 /**
- * "onPrimary" -> "on-primary"
+ * "primaryContent" -> "primary-content"
  */
 export function colorKeyToColorId(key: LunaColorKey): LunaColorId {
   return key.replace(/([A-Z])/g, '-$1').toLowerCase() as LunaColorId;

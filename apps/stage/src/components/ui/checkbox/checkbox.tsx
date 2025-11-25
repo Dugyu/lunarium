@@ -25,7 +25,7 @@ function Checkbox({ defaultChecked, size = 'sm', disabled }: CheckboxProps) {
   return (
     <view
       className={cn(
-        'border-line border-[1.5px] ui-checked:border-0 ui-checked:bg-primary-1 rounded-[4px] ui-disabled:opacity-40',
+        'border-line border-[1.5px] ui-checked:border-0 ui-checked:bg-primary rounded-[4px] ui-disabled:opacity-40',
         size === 'sm' ? 'size-[16px]' : 'size-[20px]',
         checked && 'ui-checked',
         disabled && 'ui-disabled',

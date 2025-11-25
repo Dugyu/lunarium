@@ -45,8 +45,8 @@ function Button(props: ButtonProps) {
         className={'text-base font-semibold'}
         style={{
           color: variant === 'primary'
-            ? color('onPrimary')
-            : color('onNeutral'),
+            ? color('primaryContent')
+            : color('neutralContent'),
         }}
       >
         {children}

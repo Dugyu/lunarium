@@ -52,7 +52,7 @@ function ActMoonrise(
       >
         {/* Headline */}
         <view className='w-full flex flex-col items-start gap-[2px]'>
-          <text className='text-start text-xl text-content-1 font-semibold'>
+          <text className='text-start text-xl text-content font-semibold'>
             Awaken your interface
           </text>
           <text className='text-start text-p2 text-content-2'>
@@ -63,7 +63,7 @@ function ActMoonrise(
         {/* Theme: Choose from Neutral & Signature Gradient */}
         <view className='w-full flex flex-col items-start gap-[10px]'>
           <view className='w-full flex flex-col items-start gap-[2px]'>
-            <text className='text-start text-base text-content-1 font-medium'>
+            <text className='text-start text-base text-content font-medium'>
               Theme
             </text>
             <text className='text-start text-p2 text-content-2'>
@@ -92,7 +92,7 @@ function ActMoonrise(
             >
               <RadioItem value={'luna'} />
               <view className='flex-1 flex flex-col items-start pr-[4px] pb-[4px]'>
-                <text className='text-start text-base text-content-1 font-medium'>
+                <text className='text-start text-base text-content font-medium'>
                   LUNA
                 </text>
                 <text className='text-start text-xs text-content-2'>
@@ -117,7 +117,7 @@ function ActMoonrise(
             >
               <RadioItem value={'lunaris'} />
               <view className='flex-1 flex flex-col items-start pr-[4px] pb-[4px]'>
-                <text className='text-start text-base text-content-1 font-medium'>
+                <text className='text-start text-base text-content font-medium'>
                   Lunaris
                 </text>
                 <text className='text-start text-xs text-content-2'>
@@ -129,12 +129,12 @@ function ActMoonrise(
         </view>
         {/* Moodline: Potential Prompt for AI Gen */}
         <view className='w-full flex flex-col items-start gap-[10px]'>
-          <text className='text-start text-base text-content-1 font-medium'>
+          <text className='text-start text-base text-content font-medium'>
             Moodline
           </text>
           {/* Reserved for TextArea Demo */}
           <view className='w-full h-[52px] rounded-[10px] p-[10px] border border-line'>
-            <text className='text-start text-sm text-content-muted-1'>
+            <text className='text-start text-sm text-content-muted'>
               Leave a trace of your dream
             </text>
           </view>
@@ -143,7 +143,7 @@ function ActMoonrise(
         {/* Set the stage: App config */}
         <view className='w-full flex flex-col items-start gap-[16px]'>
           <view className='w-full flex flex-col items-start gap-[2px]'>
-            <text className='text-start text-base text-content-1 font-medium'>
+            <text className='text-start text-base text-content font-medium'>
               Set the stage
             </text>
             <text className='text-start text-p2 text-content-2'>
@@ -152,13 +152,13 @@ function ActMoonrise(
           </view>
           <view className='w-full flex flex-col items-start gap-[10px]'>
             <view className='w-full flex flex-row items-center justify-between gap-[10px]'>
-              <text className='text-start text-sm text-content-muted-1'>
+              <text className='text-start text-sm text-content-muted'>
                 Lights on
               </text>
               <Switch defaultChecked size='sm' />
             </view>
             <view className='w-full flex flex-row items-center justify-between gap-[10px]'>
-              <text className='text-start text-sm text-content-muted-1'>
+              <text className='text-start text-sm text-content-muted'>
                 Play itself
               </text>
               <Switch size='sm' />
@@ -171,13 +171,13 @@ function ActMoonrise(
           {/* Checkbox Demo */}
           <view className='flex flex-row items-center gap-[10px]'>
             <Checkbox />
-            <text className='text-p2 text-content-1'>
+            <text className='text-p2 text-content'>
               I trust the rhythm of light and code
             </text>
           </view>
           <view className='flex flex-row items-center gap-[10px]'>
             <Checkbox defaultChecked />
-            <text className='text-p2 text-content-1'>
+            <text className='text-p2 text-content'>
               Let Lynx UI send me gentle updates
             </text>
           </view>

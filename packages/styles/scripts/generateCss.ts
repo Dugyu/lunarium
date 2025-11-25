@@ -8,7 +8,7 @@ import type { LunaThemeTokens } from '@dugyu/luna-core/theme';
 
 export function generateLunaCssPlugin(
   themes: LunaThemeTokens[],
-  prefix = 'luna',
+  prefix = '',
 ): RsbuildPlugin {
   return {
     name: 'generate-luna-css',
@@ -23,7 +23,12 @@ export function generateLunaCssPlugin(
             if (!value) {
               throw new Error(`Missing "${id}" in ${theme.key}`);
             }
-            return `  --${prefix}-${id}: ${value};`;
+
+            // Compute CSS variable name.
+            // If prefix is empty, use "--id"; otherwise "--prefix-id".
+            const varName = prefix ? `--${prefix}-${id}` : `--${id}`;
+
+            return `  ${varName}: ${value};`;
           }).join('\n');
 
           const css = `.${theme.key} {\n${lines}\n}\n`;

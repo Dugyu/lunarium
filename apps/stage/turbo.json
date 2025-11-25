@@ -3,7 +3,12 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "dependsOn": ["@dugyu/luna-reactlynx#build", "@dugyu/luna-tokens#build", "@dugyu/luna-core#build"],
+      "dependsOn": [
+        "@dugyu/luna-core#build",
+        "@dugyu/luna-reactlynx#build",
+        "@dugyu/luna-tokens#build",
+        "@dugyu/luna-styles#build"
+      ],
       "inputs": [
         "public/**",
         "src/**",

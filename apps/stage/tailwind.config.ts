@@ -23,25 +23,26 @@ const config: Config = {
           DEFAULT: 'var(--canvas)',
         },
         content: {
-          '1': 'var(--content-1)',
+          DEFAULT: 'var(--content)',
           '2': 'var(--content-2)',
-        },
-        'content-muted': {
-          '1': 'var(--content-muted-1)',
+          'muted': 'var(--content-muted)',
         },
         primary: {
-          '1': 'var(--primary-1)',
+          DEFAULT: 'var(--primary)',
+          '2': 'var(--primary-2)',
+          '3': 'var(--primary-3)',
           content: 'var(--primary-content)',
         },
-        line: 'var(--line)',
         neutral: {
           DEFAULT: 'var(--neutral)',
+          '2': 'var(--neutral-2)',
           content: 'var(--neutral-content)',
           faint: 'var(--neutral-faint)',
-          subtle: 'var(--neutral-subtle)',
+          ambient: 'var(--neutral-ambient)',
           veil: 'var(--neutral-veil)',
           film: 'var(--neutral-film)',
         },
+        line: 'var(--line)',
         gradient: {
           a: 'var(--gradient-a)',
           b: 'var(--gradient-b)',
