@@ -6,6 +6,7 @@ export type LunaNeutralThemeKey = `luna-${LunaThemeMode}`;
 export const LUNA_COLOR_IDS = [
   'canvas',
   'canvas-ambient',
+  'backdrop',
   'content',
   'content-2',
   'content-muted',
