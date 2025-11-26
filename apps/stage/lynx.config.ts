@@ -37,7 +37,7 @@ export default defineConfig({
       },
     }),
     pluginReactLynx({
-      enableCSSInheritance: false,
+      enableCSSInheritance: true,
     }),
     pluginTypeCheck(),
     pluginTailwindCSS({ config: 'tailwind.config.ts' }),

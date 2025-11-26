@@ -7,6 +7,7 @@ export const lunaDarkTokens: LunaThemeTokens = {
   colors: {
     'canvas': '#0d0d0d',
     'canvas-ambient': '#000000',
+    'backdrop': 'rgba(0, 0, 0, 0.7)',
     'content': '#f8f8f8',
     'content-2': '#d9d9d9',
     'content-muted': '#b3b3b3',
