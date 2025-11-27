@@ -23,4 +23,5 @@ export {
 // ---------- Utilities (public, handy in Studio/Stage) ----------
 export {
   titleFromSlug, // "radio-group" -> "Radio Group"
+  demoTitleFromSlug, // "radio-group" -> "RadioGroup"
 } from './normalize.js';

@@ -30,6 +30,7 @@ export {
   defineComponentsRaw,
   // --- Utils ---
   titleFromSlug,
+  demoTitleFromSlug,
 } from './component/index.js';
 
 // --- Types ---

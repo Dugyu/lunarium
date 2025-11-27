@@ -33,11 +33,23 @@ const STAGES: Record<string, StageMeta> = {
     meta: getMeta('radio-group'),
     componentId: 'radio-group',
   },
-  Toast: {
-    entry: 'ActOneDark',
+  ScrollView: {
+    entry: 'OffstageActScrollView',
     theme: 'luna-dark',
-    meta: getMeta('toast'),
-    componentId: 'toast',
+    meta: getMeta('scroll-view'),
+    componentId: 'scroll-view',
+  },
+  FeedList: {
+    entry: 'OffstageActFeedList',
+    theme: 'luna-dark',
+    meta: getMeta('feed-list'),
+    componentId: 'feed-list',
+  },
+  Swiper: {
+    entry: 'OffstageActSwiper',
+    theme: 'luna-dark',
+    meta: getMeta('swiper'),
+    componentId: 'swiper',
   },
   Popover: {
     entry: 'ActOneLight',
@@ -46,7 +58,7 @@ const STAGES: Record<string, StageMeta> = {
     componentId: 'popover',
   },
   Sheet: {
-    entry: 'ActOneLight',
+    entry: 'OffstageActSheet',
     theme: 'luna-light',
     meta: getMeta('sheet'),
     componentId: 'sheet',
@@ -80,7 +92,15 @@ const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
   ],
   focus: [
     {
+      id: 'Radio',
+      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-12',
+    },
+    {
       id: 'Switch',
+      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-11',
+    },
+    {
+      id: 'ScrollView',
       'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-10',
     },
     {
@@ -88,7 +108,7 @@ const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
       'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-9',
     },
     {
-      id: 'Radio',
+      id: 'FeedList',
       'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-8',
     },
     {
@@ -96,7 +116,7 @@ const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
       'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-7',
     },
     {
-      id: 'Toast',
+      id: 'Swiper',
       'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-6',
     },
     {
@@ -108,25 +128,34 @@ const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
       'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-4',
     },
     {
-      id: 'A2L',
+      id: 'A2L', // Button
       'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-3',
     },
     {
-      id: 'A1L',
+      id: 'A1L', // Bloom, Performance
       'className': 'col-start-1 col-end-2 row-start-1 row-end-2 order-1',
     },
   ],
   lineup: [
     {
-      id: 'Switch',
-      'className': 'col-start-1 col-end-2 row-start-1 row-end-2 order-10',
+      id: 'Radio',
+      'className': 'col-start-5 col-end-6 row-start-1 row-end-2 order-12',
     },
+    {
+      id: 'Switch',
+      'className': 'col-start-1 col-end-2 row-start-1 row-end-2 order-11',
+    },
+    {
+      id: 'ScrollView',
+      'className': 'col-start-5 col-end-6 row-start-2 row-end-2 order-10',
+    },
+
     {
       id: 'Checkbox',
       'className': 'col-start-2 col-end-3 row-start-1 row-end-2 order-9',
     },
     {
-      id: 'Radio',
+      id: 'FeedList',
       'className': 'col-start-3 col-end-4 row-start-1 row-end-2 order-8',
     },
     {
@@ -134,7 +163,7 @@ const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
       'className': 'col-start-4 col-end-5 row-start-1 row-end-2 order-7',
     },
     {
-      id: 'Toast',
+      id: 'Swiper',
       'className': 'col-start-1 col-end-2 row-start-2 row-end-3 order-6',
     },
     {
