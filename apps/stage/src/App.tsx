@@ -3,8 +3,6 @@ import { clsx } from 'clsx';
 
 import type { LunaNeutralThemeKey } from '@/types';
 
-import '@dugyu/luna-styles/luna-dark.css';
-import '@dugyu/luna-styles/luna-light.css';
 import './App.css';
 
 type AppThemeProps = {

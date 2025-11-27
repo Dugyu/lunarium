@@ -1,14 +1,20 @@
-import { useCallback, useState } from '@lynx-js/react';
+import { useState } from '@lynx-js/react';
 
 import {
+  ALL_LUNA_THEME_KEYS,
   LUNA_DEFAULT_COMPONENT,
   LUNA_OFFSTAGE_COMPONENTS,
   LUNA_SAVED_COMPONENT,
+  LUNA_SAVED_THEME,
+  LUNA_STAGE_COMPONENTS,
+  LUNA_STAGE_DEFAULT_THEME,
   LUNA_STAGE_ONLY_COMPONENTS,
+  LUNA_STUDIO_DEFAULT_THEME,
   LynxUIComponentsRegistry,
 } from '@/constants';
 import { explorerRead, explorerSave } from '@/native';
 import type {
+  LunaThemeKey,
   LynxUIComponentDef,
   LynxUIComponentId,
   StudioViewMode,
@@ -17,6 +23,8 @@ import { cn } from '@/utils';
 import { demoTitleFromSlug } from '@dugyu/luna-core/component';
 
 import { LyricBlock } from './lyric-block.js';
+import { parseLunaThemeKey } from './parse-theme.js';
+import { ThemeControl } from './theme-control.js';
 
 const LynxUIComponents = LynxUIComponentsRegistry.list;
 
@@ -43,8 +51,9 @@ type ActBloomProps = {
 
 function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
   const [focused, setFocused] = useState<LynxUIComponentId>(getSavedComponent);
+  const [theme, setTheme] = useState<LunaThemeKey>(getSavedTheme);
 
-  const handleComponentClick = useCallback((id: LynxUIComponentId) => {
+  const handleComponentClick = (id: LynxUIComponentId) => {
     setFocused(id);
     if (__WEB__) {
       NativeModules?.bridge?.call(
@@ -56,22 +65,53 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
           }
         },
       );
+    } else {
+      saveComponent(id);
+      NativeModules?.ExplorerModule?.openSchema(
+        `${process.env
+          .ASSET_PREFIX as string}/${
+          LUNA_OFFSTAGE_COMPONENTS.includes(id)
+            ? `OffstageAct${demoTitleFromSlug(id)}`
+            : (LUNA_STAGE_COMPONENTS.includes(id)
+              ? `Act${demoTitleFromSlug(id)}`
+              : 'ActSwitch')
+        }.lynx.bundle?fullscreen=true&luna_theme=${theme}&bar_color=${
+          theme.endsWith('dark') ? '0d0d0d' : 'ffffff'
+        }`,
+      );
     }
-    saveComponent(id);
-    NativeModules?.ExplorerModule?.openSchema(
-      `${process.env
-        .ASSET_PREFIX as string}/${
-        LUNA_OFFSTAGE_COMPONENTS.includes(id)
-          ? `OffstageAct${demoTitleFromSlug(id)}`
-          : 'ActSwitch'
-      }.lynx.bundle?fullscreen=true&luna_theme=${
-        id === 'button' ? 'lunaris-light' : 'lunaris-dark'
-      }`,
-    );
-  }, []);
+  };
+
+  const handleThemeChange = (themeKey: LunaThemeKey) => {
+    setTheme(themeKey);
+    if (__WEB__) {
+      const { variant, mode } = parseLunaThemeKey(themeKey);
+      NativeModules?.bridge?.call(
+        'setMoonriseState',
+        { field: 'luna-variant', value: variant },
+        res => {
+          console.log('setMoonriseState:', res);
+        },
+      );
+      NativeModules?.bridge?.call(
+        'setMoonriseState',
+        { field: 'light-mode', value: mode === 'light' },
+        res => {
+          console.log('setMoonriseState:', res);
+        },
+      );
+    } else {
+      saveTheme(themeKey);
+    }
+  };
 
   return (
-    <view className='relative size-full'>
+    <page
+      className={cn(
+        'relative size-full bg-canvas',
+        studioViewMode === 'compare' ? 'luna-light' : theme,
+      )}
+    >
       <view className='absolute h-full w-full luna-gradient flex flex-col justify-center px-[48px]'>
         <LyricBlock
           lines={lyricLines}
@@ -97,9 +137,11 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
       >
         <view className='w-full flex flex-col items-start justify-start gap-[72px]'>
           {/* Headline */}
-          <text className='text-start text-xl text-content font-semibold'>
-            Performance
-          </text>
+          <view className='w-full flex flex-col items-start justify-start gap-[10px]'>
+            <text className='text-start text-xl text-content font-semibold'>
+              L.U.N.A Performance
+            </text>
+          </view>
           {/* Componenets */}
           <view className='w-full flex flex-col items-start justify-start gap-[10px]'>
             {LynxUIComponents.map(d => {
@@ -127,9 +169,14 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
               );
             })}
           </view>
+          {/* Theme Control */}
+          <ThemeControl
+            defaultTheme={theme}
+            onThemeChange={handleThemeChange}
+          />
         </view>
       </view>
-    </view>
+    </page>
   );
 }
 
@@ -154,13 +201,35 @@ function saveComponent(id: LynxUIComponentId) {
   explorerSave(LUNA_SAVED_COMPONENT, id);
 }
 
+/**
+ * Load theme from Explorer's local storage with validation.
+ */
+function getSavedTheme(): LunaThemeKey {
+  if (__WEB__) {
+    return LUNA_STUDIO_DEFAULT_THEME;
+  }
+  const saved: string | null = explorerRead(LUNA_SAVED_THEME, null);
+
+  if (saved && ALL_LUNA_THEME_KEYS.includes(saved as LunaThemeKey)) {
+    return saved as LunaThemeKey;
+  }
+  return LUNA_STAGE_DEFAULT_THEME;
+}
+
+/**
+ * Persist theme key to Explorer local storage.
+ */
+function saveTheme(key: LunaThemeKey) {
+  explorerSave(LUNA_SAVED_THEME, key);
+}
+
 function ComponentItem(
   { data, checked, onClick }: ComponentDisplay,
 ) {
   return (
     <text
       className={cn(
-        'px-[8px] py-[2px] ui-checked:py-[12px] text-lg ui-checked:transform-[scale(1.2)] ui-checked:font-semibold transition-all duration-300 ease-in-out',
+        'px-[8px] py-[2px] ui-checked:py-[12px] text-lg ui-checked:transform-[scale(1.2)] ui-checked:text-primary ui-checked:font-semibold transition-all duration-300 ease-in-out',
         data.demoReady
           ? 'text-content hover:opacity-50'
           : 'text-content-muted opacity-50',

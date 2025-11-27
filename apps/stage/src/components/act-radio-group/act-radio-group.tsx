@@ -2,8 +2,8 @@ import { RadioGroup, RadioItem } from '@/components/ui/radio-group';
 
 function ActRadioGroup() {
   return (
-    <view className='absolute size-full bg-canvas flex flex-col justify-center items-center'>
-      <view className='bg-canvas flex flex-col justify-center items-start gap-[48px] px-[60px] py-[80px] rounded-[16px] border border-line'>
+    <view className='absolute size-full luna-gradient-rose flex flex-col justify-center items-center'>
+      <view className='bg-canvas flex flex-col justify-center items-start gap-[48px] px-[60px] py-[80px] rounded-[16px]'>
         <RadioGroup
           className='flex flex-col items-start gap-[16px]'
           defaultValue='sink'

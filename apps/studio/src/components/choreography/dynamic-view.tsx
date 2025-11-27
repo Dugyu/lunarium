@@ -9,6 +9,7 @@ import {
   MotionPresentation,
 } from '@/components/mockup-motion';
 import type {
+  LunaThemeMode,
   LunaThemeVariant,
   LynxUIComponentId,
   MoonriseEvent,
@@ -47,6 +48,7 @@ const fitTransition: SpringOptions = { visualDuration: 0.8, bounce: 0.1 };
 
 const DEFAULT_FOCUSED: LynxUIComponentId = 'button';
 const DEFAULT_LUNA_THEME_VARIANT: LunaThemeVariant = 'luna';
+const DEFAULT_LUNA_THEME_MODE: LunaThemeMode = 'dark';
 
 const WORLD_ORIGIN: WorldPos = { x: 0, y: 0, z: 0 };
 
@@ -60,10 +62,15 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
   const [themeVariant, setThemeVariant] = useState<LunaThemeVariant>(
     DEFAULT_LUNA_THEME_VARIANT,
   );
+  const [themeMode, setThemeMode] = useState<LunaThemeMode>(
+    DEFAULT_LUNA_THEME_MODE,
+  );
 
   const handleMoonriseChange = useCallback((event: MoonriseEvent) => {
     if (event.field === 'luna-variant') {
       setThemeVariant(event.value);
+    } else if (event.field === 'light-mode') {
+      setThemeMode(event.value === true ? 'light' : 'dark');
     }
   }, []);
 
@@ -154,15 +161,21 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
                   fitTransition={fitTransition}
                   world={stage.world}
                   focalLength={mode === 'focus' ? 500 : 0}
-                  className={stage.theme.endsWith('light')
-                    ? 'bg-white opacity-50'
-                    : 'bg-black opacity-10'}
+                  className={mode === 'compare'
+                    ? (stage.theme.endsWith('light')
+                      ? 'bg-white opacity-50'
+                      : 'bg-black opacity-10')
+                    : (themeMode === 'light'
+                      ? 'bg-white opacity-50'
+                      : 'bg-black opacity-10')}
                   maskColor='#f5f5f5'
                   maskOpacity={stage.maskOpacity}
                 >
                   <LunaLynxStage
                     entry={stage.entry}
-                    lunaTheme={stage.theme}
+                    lunaTheme={mode === 'compare'
+                      ? stage.theme
+                      : `${themeVariant}-${themeMode}`}
                     lunaThemeVariant={themeVariant}
                     studioViewMode={mode}
                     focusedComponent={focused}

@@ -5,19 +5,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
 import type { LunaThemeVariant, StudioViewMode } from '@/types';
+import type { onMoonriseEvent } from '@/types/event.js';
 import { cn } from '@/utils';
-
-type MoonriseEvent =
-  | { field: 'luna-variant'; value: LunaThemeVariant }
-  | {
-    field: 'light-mode';
-    value: boolean;
-  }
-  | { field: 'autoplay'; value: boolean }
-  | { field: 'trust'; value: boolean }
-  | { field: 'subscribe'; value: boolean };
-
-type onMoonriseEvent = (e: MoonriseEvent) => void;
 
 type ActMoonriseProps = {
   studioViewMode: StudioViewMode;
