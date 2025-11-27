@@ -33,11 +33,17 @@ const STAGES: Record<string, StageMeta> = {
     meta: getMeta('radio-group'),
     componentId: 'radio-group',
   },
-  Toast: {
-    entry: 'ActOneDark',
+  ScrollView: {
+    entry: 'OffstageActScrollView',
     theme: 'luna-dark',
-    meta: getMeta('toast'),
-    componentId: 'toast',
+    meta: getMeta('scroll-view'),
+    componentId: 'scroll-view',
+  },
+  FeedList: {
+    entry: 'OffstageActFeedList',
+    theme: 'luna-dark',
+    meta: getMeta('feed-list'),
+    componentId: 'feed-list',
   },
   Swiper: {
     entry: 'OffstageActSwiper',
@@ -86,7 +92,15 @@ const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
   ],
   focus: [
     {
+      id: 'Radio',
+      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-12',
+    },
+    {
       id: 'Switch',
+      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-11',
+    },
+    {
+      id: 'ScrollView',
       'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-10',
     },
     {
@@ -94,7 +108,7 @@ const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
       'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-9',
     },
     {
-      id: 'Radio',
+      id: 'FeedList',
       'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-8',
     },
     {
@@ -124,15 +138,24 @@ const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
   ],
   lineup: [
     {
-      id: 'Switch',
-      'className': 'col-start-1 col-end-2 row-start-1 row-end-2 order-10',
+      id: 'Radio',
+      'className': 'col-start-5 col-end-6 row-start-1 row-end-2 order-12',
     },
+    {
+      id: 'Switch',
+      'className': 'col-start-1 col-end-2 row-start-1 row-end-2 order-11',
+    },
+    {
+      id: 'ScrollView',
+      'className': 'col-start-5 col-end-6 row-start-2 row-end-2 order-10',
+    },
+
     {
       id: 'Checkbox',
       'className': 'col-start-2 col-end-3 row-start-1 row-end-2 order-9',
     },
     {
-      id: 'Radio',
+      id: 'FeedList',
       'className': 'col-start-3 col-end-4 row-start-1 row-end-2 order-8',
     },
     {

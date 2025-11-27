@@ -122,7 +122,7 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
         'size-full gap-4 pointer-events-none relative',
         mode === 'compare' && 'flex flex-row items-center justify-between',
         mode === 'focus' && 'grid grid-cols-3 grid-rows-1',
-        mode === 'lineup' && 'grid grid-cols-4 grid-rows-2',
+        mode === 'lineup' && 'grid grid-cols-5 grid-rows-2',
         className,
       )}
     >

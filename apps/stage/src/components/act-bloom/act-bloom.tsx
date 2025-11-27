@@ -39,7 +39,14 @@ type ActBloomProps = {
   focusedComponent: LynxUIComponentId;
 };
 
-const offstageDemos: LynxUIComponentId[] = ['sheet', 'swiper', 'dialog'];
+const offstageDemos: LynxUIComponentId[] = [
+  'sheet',
+  'swiper',
+  'dialog',
+  'scroll-view',
+  'feed-list',
+  'swipe-action',
+];
 
 function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
   const [focused, setFocused] = useState<LynxUIComponentId>(getSavedComponent);
