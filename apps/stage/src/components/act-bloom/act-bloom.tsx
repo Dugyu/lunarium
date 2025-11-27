@@ -12,6 +12,7 @@ import type {
   StudioViewMode,
 } from '@/types';
 import { cn } from '@/utils';
+import { demoTitleFromSlug } from '@dugyu/luna-core/component';
 
 import { LyricBlock } from './lyric-block.js';
 
@@ -38,6 +39,8 @@ type ActBloomProps = {
   focusedComponent: LynxUIComponentId;
 };
 
+const offstageDemos: LynxUIComponentId[] = ['sheet', 'swiper', 'dialog'];
+
 function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
   const [focused, setFocused] = useState<LynxUIComponentId>(getSavedComponent);
 
@@ -58,7 +61,9 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
     NativeModules?.ExplorerModule?.openSchema(
       `${process.env
         .ASSET_PREFIX as string}/${
-        id === 'dialog' ? 'OffstageActDialog' : 'ActButton'
+        offstageDemos.includes(id)
+          ? `OffstageAct${demoTitleFromSlug(id)}`
+          : 'ActButton'
       }.lynx.bundle?fullscreen=true&luna_theme=${
         id === 'button' ? 'light' : 'dark'
       }`,

@@ -39,6 +39,12 @@ const STAGES: Record<string, StageMeta> = {
     meta: getMeta('toast'),
     componentId: 'toast',
   },
+  Swiper: {
+    entry: 'OffstageActSwiper',
+    theme: 'luna-dark',
+    meta: getMeta('swiper'),
+    componentId: 'swiper',
+  },
   Popover: {
     entry: 'ActOneLight',
     theme: 'luna-light',
@@ -46,7 +52,7 @@ const STAGES: Record<string, StageMeta> = {
     componentId: 'popover',
   },
   Sheet: {
-    entry: 'ActOneLight',
+    entry: 'OffstageActSheet',
     theme: 'luna-light',
     meta: getMeta('sheet'),
     componentId: 'sheet',
@@ -96,7 +102,7 @@ const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
       'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-7',
     },
     {
-      id: 'Toast',
+      id: 'Swiper',
       'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-6',
     },
     {
@@ -108,11 +114,11 @@ const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
       'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-4',
     },
     {
-      id: 'A2L',
+      id: 'A2L', // Button
       'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-3',
     },
     {
-      id: 'A1L',
+      id: 'A1L', // Bloom, Performance
       'className': 'col-start-1 col-end-2 row-start-1 row-end-2 order-1',
     },
   ],
@@ -134,7 +140,7 @@ const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
       'className': 'col-start-4 col-end-5 row-start-1 row-end-2 order-7',
     },
     {
-      id: 'Toast',
+      id: 'Swiper',
       'className': 'col-start-1 col-end-2 row-start-2 row-end-3 order-6',
     },
     {

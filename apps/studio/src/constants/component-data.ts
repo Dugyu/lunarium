@@ -10,7 +10,7 @@ const components = [
   { id: 'sheet', demoReady: true },
   { id: 'slider', demoReady: false },
   { id: 'switch', demoReady: true },
-  { id: 'textarea', demoReady: false },
+  { id: 'swiper', demoReady: true },
   { id: 'tooltip', demoReady: false },
   { id: 'toast', demoReady: true },
 ] as const;
