@@ -19,6 +19,10 @@ export const LUNA_COLOR_IDS = [
   'primary-2',
   'primary-muted',
   'primary-content',
+  'primary-content-faded',
+  'secondary',
+  'secondary-2',
+  'secondary-content',
   'neutral',
   'neutral-2',
   'neutral-subtle',
@@ -28,10 +32,13 @@ export const LUNA_COLOR_IDS = [
   'neutral-veil',
   'neutral-film',
   'line',
+  'rule',
   'gradient-a',
   'gradient-b',
   'gradient-c',
   'gradient-d',
+  'gradient-content',
+  'gradient-content-faded',
 ] as const;
 
 export type LunaColorId = typeof LUNA_COLOR_IDS[number];
