@@ -9,6 +9,15 @@ export function titleFromSlug(id: string): string {
     .join(' ');
 }
 
+/** Turn a kebab/underscore id into Capitalized Camel Case name: "radio-group" → "RadioGroup" */
+export function demoTitleFromSlug(id: string): string {
+  return id
+    .split(/[-_]+/)
+    .filter(Boolean)
+    .map(w => w[0] ? w[0].toUpperCase() + w.slice(1) : w)
+    .join('');
+}
+
 /** Normalize mixed inputs into fully-specified definitions */
 function normalizeDefs<
   const T extends readonly ComponentDefInput[],
