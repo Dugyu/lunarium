@@ -150,11 +150,11 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
                 transition={presentationTransition}
               >
                 <MotionMockup
-                  fitProgress={mode === 'lineup' ? 0.5 : 0}
+                  fitProgress={0}
                   fitTransition={fitTransition}
                   world={stage.world}
                   focalLength={mode === 'focus' ? 500 : 0}
-                  className={stage.theme === 'luna-light'
+                  className={stage.theme.endsWith('light')
                     ? 'bg-white opacity-50'
                     : 'bg-black opacity-10'}
                   maskColor='#f5f5f5'

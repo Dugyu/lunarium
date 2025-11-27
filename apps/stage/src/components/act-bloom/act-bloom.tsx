@@ -2,7 +2,9 @@ import { useCallback, useState } from '@lynx-js/react';
 
 import {
   LUNA_DEFAULT_COMPONENT,
+  LUNA_OFFSTAGE_COMPONENTS,
   LUNA_SAVED_COMPONENT,
+  LUNA_STAGE_ONLY_COMPONENTS,
   LynxUIComponentsRegistry,
 } from '@/constants';
 import { explorerRead, explorerSave } from '@/native';
@@ -39,15 +41,6 @@ type ActBloomProps = {
   focusedComponent: LynxUIComponentId;
 };
 
-const offstageDemos: LynxUIComponentId[] = [
-  'sheet',
-  'swiper',
-  'dialog',
-  'scroll-view',
-  'feed-list',
-  'swipe-action',
-];
-
 function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
   const [focused, setFocused] = useState<LynxUIComponentId>(getSavedComponent);
 
@@ -68,11 +61,11 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
     NativeModules?.ExplorerModule?.openSchema(
       `${process.env
         .ASSET_PREFIX as string}/${
-        offstageDemos.includes(id)
+        LUNA_OFFSTAGE_COMPONENTS.includes(id)
           ? `OffstageAct${demoTitleFromSlug(id)}`
-          : 'ActButton'
+          : 'ActSwitch'
       }.lynx.bundle?fullscreen=true&luna_theme=${
-        id === 'button' ? 'light' : 'dark'
+        id === 'button' ? 'lunaris-light' : 'lunaris-dark'
       }`,
     );
   }, []);
@@ -112,12 +105,16 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
             {LynxUIComponents.map(d => {
               if (__WEB__) {
                 return (
-                  <ComponentItem
-                    key={d.id}
-                    data={d}
-                    onClick={handleComponentClick}
-                    checked={focusedComponent === d.id}
-                  />
+                  LUNA_STAGE_ONLY_COMPONENTS.includes(d.id)
+                    ? null
+                    : (
+                      <ComponentItem
+                        key={d.id}
+                        data={d}
+                        onClick={handleComponentClick}
+                        checked={focusedComponent === d.id}
+                      />
+                    )
                 );
               }
               return (

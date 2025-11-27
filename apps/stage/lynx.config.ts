@@ -27,6 +27,8 @@ export default defineConfig({
       ActTwoLight: './src/demos/ActTwoLight.tsx',
       ActButton: './src/demos/ActButton.tsx',
       ActSwitch: './src/demos/ActSwitch.tsx',
+      ActCheckbox: './src/demos/ActCheckbox.tsx',
+      ActRadioGroup: './src/demos/ActRadioGroup.tsx',
     },
   },
   plugins: [

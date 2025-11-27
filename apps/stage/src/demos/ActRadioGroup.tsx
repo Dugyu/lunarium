@@ -2,13 +2,13 @@ import '@lynx-js/preact-devtools';
 import '@lynx-js/react/debug';
 import { root } from '@lynx-js/react';
 
-import { ActSwitch } from '@/components/act-switch';
+import { ActRadioGroup } from '@/components/act-radio-group';
 import { LunaTheme } from '@/LunaTheme.js';
 
 export function App() {
   return (
     <LunaTheme variant='all'>
-      <ActSwitch />
+      <ActRadioGroup />
     </LunaTheme>
   );
 }

@@ -6,18 +6,18 @@ import { LynxUIComponentsRegistry } from '../../constants/component-data.ts';
 const getMeta = LynxUIComponentsRegistry.getMeta;
 
 const STAGES: Record<string, StageMeta> = {
-  A1L: { entry: 'ActBloom', theme: 'luna-light' },
-  A1D: { entry: 'ActOneDark', theme: 'luna-dark' },
-  A2L: {
+  Bloom: { entry: 'ActBloom', theme: 'luna-light' },
+  BloomDark: { entry: 'ActOneDark', theme: 'luna-dark' },
+  MoonRise: {
     entry: 'ActMoonrise',
     theme: 'luna-light',
     meta: getMeta('button'),
     componentId: 'button',
   },
-  A2D: { entry: 'ActMoonrise', theme: 'luna-dark' },
+  MoonRiseDark: { entry: 'ActMoonrise', theme: 'luna-dark' },
   Switch: {
-    entry: 'ActBlueskies',
-    theme: 'luna-light',
+    entry: 'ActSwitch',
+    theme: 'lunaris-dark',
     meta: getMeta('switch'),
     componentId: 'switch',
   },
@@ -28,8 +28,8 @@ const STAGES: Record<string, StageMeta> = {
     componentId: 'slider',
   },
   Radio: {
-    entry: 'ActBlueskies',
-    theme: 'luna-light',
+    entry: 'ActRadioGroup',
+    theme: 'lunaris-dark',
     meta: getMeta('radio-group'),
     componentId: 'radio-group',
   },
@@ -70,8 +70,8 @@ const STAGES: Record<string, StageMeta> = {
     componentId: 'dialog',
   },
   Checkbox: {
-    entry: 'ActBlueskies',
-    theme: 'luna-light',
+    entry: 'ActCheckbox',
+    theme: 'lunaris-dark',
     meta: getMeta('checkbox'),
     componentId: 'checkbox',
   },
@@ -85,10 +85,10 @@ const STAGES: Record<string, StageMeta> = {
 
 const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
   compare: [
-    { id: 'A2D', 'className': 'flex-1 order-4' },
-    { id: 'A1D', 'className': 'flex-1 order-2' },
-    { id: 'A2L', 'className': 'flex-1 order-3' },
-    { id: 'A1L', 'className': 'flex-1 order-1' },
+    { id: 'MoonRiseDark', 'className': 'flex-1 order-4' },
+    { id: 'BloomDark', 'className': 'flex-1 order-2' },
+    { id: 'MoonRise', 'className': 'flex-1 order-3' },
+    { id: 'Bloom', 'className': 'flex-1 order-1' },
   ],
   focus: [
     {
@@ -128,11 +128,11 @@ const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
       'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-4',
     },
     {
-      id: 'A2L', // Button
+      id: 'MoonRise', // Button
       'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-3',
     },
     {
-      id: 'A1L', // Bloom, Performance
+      id: 'Bloom', // Bloom, Performance
       'className': 'col-start-1 col-end-2 row-start-1 row-end-2 order-1',
     },
   ],
@@ -175,7 +175,7 @@ const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
       'className': 'col-start-3 col-end-4 row-start-2 row-end-3 order-4',
     },
     {
-      id: 'A2L',
+      id: 'MoonRise',
       'className': 'col-start-2 col-end-3 row-start-2 row-end-3 order-3',
     }, // Button
   ],
