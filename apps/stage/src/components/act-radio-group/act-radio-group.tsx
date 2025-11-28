@@ -11,19 +11,19 @@ function ActRadioGroup() {
           {/* Radio Group Demo Medium */}
           <view className='flex flex-row items-center gap-[10px]'>
             <RadioItem value='drift' size='md' />
-            <text className='text-start text-lg text-content-muted font-medium'>
+            <text className='text-start text-lg text-content-2 font-medium'>
               Drift
             </text>
           </view>
           <view className='flex flex-row items-center gap-[10px]'>
             <RadioItem value='sink' size='md' />
-            <text className='text-start text-lg  text-content-muted font-medium'>
+            <text className='text-start text-lg  text-content-2 font-medium'>
               Sink
             </text>
           </view>
           <view className='flex flex-row items-center gap-[10px]'>
             <RadioItem value='wake' size='md' />
-            <text className='text-start text-lg text-content-muted font-medium'>
+            <text className='text-start text-lg text-content-2 font-medium'>
               Wake
             </text>
           </view>

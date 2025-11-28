@@ -21,6 +21,9 @@ type RadioGroupProps = {
   children?: ReactNode;
 };
 
+const hitSlopLg = { top: '8px', left: '8px', right: '8px', bottom: '8px' };
+const hitSlopSM = { top: '10px', left: '10px', right: '10px', bottom: '10px' };
+
 function RadioItem(
   { disabled: disabledProp, value, size = 'sm', className }: RadioItemProps,
 ) {
@@ -44,6 +47,7 @@ function RadioItem(
         className,
       )}
       bindtap={handleChange}
+      hit-slop={size === 'sm' ? hitSlopSM : hitSlopLg}
     >
       {/* Indicator */}
       <view className={'size-full flex justify-center items-center'}>
