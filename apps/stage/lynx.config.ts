@@ -27,13 +27,15 @@ export default defineConfig({
       ActTwoLight: './src/demos/ActTwoLight.tsx',
       ActButton: './src/demos/ActButton.tsx',
       ActSwitch: './src/demos/ActSwitch.tsx',
+      ActCheckbox: './src/demos/ActCheckbox.tsx',
+      ActRadioGroup: './src/demos/ActRadioGroup.tsx',
     },
   },
   plugins: [
     pluginQRCode({
       schema(url) {
         // We use `?fullscreen=true` to open the page in LynxExplorer in full screen mode
-        return `${url}?fullscreen=true`;
+        return `${url}?fullscreen=true&luna_theme=lunaris-dark`;
       },
     }),
     pluginReactLynx({

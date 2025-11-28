@@ -1,44 +1,23 @@
-import { useCallback, useState } from '@lynx-js/react';
-import { clsx } from 'clsx';
+import { Switch } from '@/components/ui/switch';
 
 function ActSwitch() {
-  const [checked, setChecked] = useState(true);
-
-  const handleClick = useCallback(() => {
-    setChecked(prev => {
-      const next = !prev;
-      NativeModules?.bridge?.call(
-        'changeTheme',
-        { theme: next ? 'light' : 'dark' },
-        res => {
-          console.log('changedTheme:', res);
-        },
-      );
-
-      return !prev;
-    });
-  }, []);
-
   return (
-    <view
-      className='w-[64px] h-[32px] rounded-full overflow-hidden flex flex-row items-center ui-disabled:opacity-50'
-      bindtap={handleClick}
-    >
-      {/* Track */}
-      <view
-        className={clsx(
-          'size-full bg-[#959595] transition-all ui-checked:luna-gradient',
-          checked && 'ui-checked',
-        )}
-      />
-      {/* Thumb */}
-      <view
-        className={clsx(
-          'absolute w-[24px] h-[24px] ui-active:w-[36px] rounded-full bg-[#f5f5f5] transform-[translateX(4px)] ui-checked:transform-[translateX(36px)] ui-checked:ui-active:transform-[translateX(24px)] transition-all shadow',
-          checked && 'ui-checked',
-        )}
-      />
-      <view />
+    <view className='size-full luna-gradient-berry flex flex-col justify-center items-center gap-[10px]'>
+      <view className='bg-canvas flex flex-col items-start gap-[12px] py-[128px] px-[84px] rounded-[36px]'>
+        {/* Switch Demo Large */}
+        <view className='flex flex-row items-center justify-start gap-[16px]'>
+          <Switch defaultChecked size='lg' />
+          <text className='text-start text-base text-content'>
+            Illuminate
+          </text>
+        </view>
+        <view className='flex flex-row items-center justify-start gap-[16px]'>
+          <Switch size='lg' />
+          <text className='text-start text-base text-content'>
+            In Play
+          </text>
+        </view>
+      </view>
     </view>
   );
 }

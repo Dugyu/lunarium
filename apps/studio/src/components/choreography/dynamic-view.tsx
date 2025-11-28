@@ -9,6 +9,7 @@ import {
   MotionPresentation,
 } from '@/components/mockup-motion';
 import type {
+  LunaThemeMode,
   LunaThemeVariant,
   LynxUIComponentId,
   MoonriseEvent,
@@ -46,26 +47,37 @@ const presentationTransition: Transition = {
 const fitTransition: SpringOptions = { visualDuration: 0.8, bounce: 0.1 };
 
 const DEFAULT_FOCUSED: LynxUIComponentId = 'button';
-const DEFAULT_LUNA_THEME_VARIANT: LunaThemeVariant = 'luna';
+const DEFAULT_LUNA_THEME_VARIANT: LunaThemeVariant = 'lunaris';
+export const DEFAULT_LUNA_THEME_MODE: LunaThemeMode = 'light';
 
 const WORLD_ORIGIN: WorldPos = { x: 0, y: 0, z: 0 };
 
 type DynamicViewProps = {
   mode?: StudioViewMode;
   className?: string;
+  onThemeModeChange?: (mode: 'light' | 'dark') => void;
 };
 
-function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
+function DynamicView(
+  { mode = 'compare', className, onThemeModeChange }: DynamicViewProps,
+) {
   const [focused, setFocused] = useState<LynxUIComponentId>(DEFAULT_FOCUSED);
   const [themeVariant, setThemeVariant] = useState<LunaThemeVariant>(
     DEFAULT_LUNA_THEME_VARIANT,
+  );
+  const [themeMode, setThemeMode] = useState<LunaThemeMode>(
+    DEFAULT_LUNA_THEME_MODE,
   );
 
   const handleMoonriseChange = useCallback((event: MoonriseEvent) => {
     if (event.field === 'luna-variant') {
       setThemeVariant(event.value);
+    } else if (event.field === 'light-mode') {
+      const next: 'light' | 'dark' = event.value === true ? 'light' : 'dark';
+      setThemeMode(next);
+      onThemeModeChange?.(next);
     }
-  }, []);
+  }, [onThemeModeChange]);
 
   const rendered: RenderData[] = useMemo(() => {
     const components = BASE_STATUS[mode].map(d => STAGES[d.id])
@@ -110,7 +122,13 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
         ? (escape ? 0 : 1 - Math.abs(theta * 2 / Math.PI) * 0.6)
         : 0;
 
-      const data = { ...d, ...stageMeta, world, zIndex: zIndex, maskOpacity };
+      const data = {
+        ...d,
+        ...stageMeta,
+        world,
+        zIndex: zIndex,
+        maskOpacity: maskOpacity * 0.5,
+      };
       return data;
     });
     return items;
@@ -150,19 +168,23 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
                 transition={presentationTransition}
               >
                 <MotionMockup
-                  fitProgress={mode === 'lineup' ? 0.5 : 0}
+                  fitProgress={0}
                   fitTransition={fitTransition}
                   world={stage.world}
                   focalLength={mode === 'focus' ? 500 : 0}
-                  className={stage.theme === 'luna-light'
-                    ? 'bg-white opacity-50'
-                    : 'bg-black opacity-10'}
-                  maskColor='#f5f5f5'
-                  maskOpacity={stage.maskOpacity}
+                  className={themeMode === 'light'
+                    ? 'bg-black opacity-[0.04]'
+                    : 'bg-white opacity-5'}
+                  maskColor={themeMode === 'light' ? '#f5f5f5' : '#0000000'}
+                  maskOpacity={themeMode === 'light'
+                    ? stage.maskOpacity
+                    : stage.maskOpacity * 0.2}
                 >
                   <LunaLynxStage
                     entry={stage.entry}
-                    lunaTheme={stage.theme}
+                    lunaTheme={mode === 'compare'
+                      ? stage.theme
+                      : `${themeVariant}-${themeMode}`}
                     lunaThemeVariant={themeVariant}
                     studioViewMode={mode}
                     focusedComponent={focused}

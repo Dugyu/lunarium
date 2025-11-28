@@ -13,13 +13,17 @@ const TabIcon = forwardRef<HTMLDivElement, TabIconProps>(
 type MenuBarProps = {
   onViewModeChange?: (index: number) => void;
   className?: string;
+  themeMode?: 'light' | 'dark';
 };
 
-function MenuBar({ onViewModeChange, className }: MenuBarProps) {
+function MenuBar(
+  { onViewModeChange, className, themeMode = 'light' }: MenuBarProps,
+) {
   return (
     <div
       className={cn(
-        'absolute bottom-4 right-4 rounded-full shadow-sm bg-[#ffffffbb]',
+        'absolute bottom-4 right-4 rounded-full shadow-sm',
+        themeMode === 'light' ? 'bg-[#ffffffbb]' : 'bg-[#0000001a]',
         className,
       )}
     >
@@ -27,9 +31,18 @@ function MenuBar({ onViewModeChange, className }: MenuBarProps) {
         onChange={onViewModeChange}
       >
         <TabList className='flex md:flex-col justify-between items-center px-3 py-2 md:px-3 md:py-5 gap-4 md:gap-5'>
-          <TabIcon icon={Columns2} />
-          <TabIcon icon={GalleryHorizontalEnd} />
-          <TabIcon icon={Grid3x2} />
+          <TabIcon
+            icon={Columns2}
+            color={themeMode === 'light' ? '#000000' : '#ffffff'}
+          />
+          <TabIcon
+            icon={GalleryHorizontalEnd}
+            color={themeMode === 'light' ? '#000000' : '#ffffff'}
+          />
+          <TabIcon
+            icon={Grid3x2}
+            color={themeMode === 'light' ? '#000000' : '#ffffff'}
+          />
         </TabList>
       </TabGroup>
     </div>
@@ -42,7 +55,7 @@ type TabIconProps =
   & { icon: LucideIcon };
 
 function TabIconImpl(props: TabIconProps, ref: ForwardedRef<HTMLDivElement>) {
-  const { icon: Icon, className, ...restProps } = props;
+  const { icon: Icon, className, color, ...restProps } = props;
 
   return (
     <Tab
@@ -53,7 +66,7 @@ function TabIconImpl(props: TabIconProps, ref: ForwardedRef<HTMLDivElement>) {
       )}
       {...restProps}
     >
-      <Icon className='w-4 h-4 md:w-5 md:h-5' />
+      <Icon className='w-4 h-4 md:w-5 md:h-5' color={color} />
     </Tab>
   );
 }

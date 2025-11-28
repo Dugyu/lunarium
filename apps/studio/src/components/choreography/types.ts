@@ -1,4 +1,4 @@
-import type { LunaThemeMode, LynxUIComponentId } from '@/types';
+import type { LunaThemeKey, LynxUIComponentId } from '@/types';
 
 type ViewSpec = {
   id: string;
@@ -7,7 +7,7 @@ type ViewSpec = {
 
 type StageMeta = {
   entry: string;
-  theme: `luna-${LunaThemeMode}`;
+  theme: LunaThemeKey;
   componentId?: LynxUIComponentId;
 } & Record<string, unknown>;
 

@@ -3,8 +3,6 @@ import { clsx } from 'clsx';
 
 import type { LunaNeutralThemeKey } from '@/types';
 
-import '@dugyu/luna-styles/luna-dark.css';
-import '@dugyu/luna-styles/luna-light.css';
 import './App.css';
 
 type AppThemeProps = {
@@ -16,7 +14,7 @@ function AppTheme({ preset = 'luna-dark', children }: AppThemeProps) {
   return (
     <page
       className={clsx(
-        'flex flex-col justify-center items-center bg-canvas text-content',
+        'flex flex-col justify-center items-center bg-canvas text-content transition-colors duration-300 ease-in-out',
         preset,
       )}
     >

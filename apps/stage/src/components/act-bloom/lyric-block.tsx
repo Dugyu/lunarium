@@ -11,7 +11,7 @@ export function LyricBlock({ lines, artist, title }: LyricBlockProps) {
         {lines.map((line, i) => (
           <text
             key={i}
-            className='text-base text-primary-content opacity-50'
+            className='text-base text-primary-content opacity-50 transition-colors duration-300 ease-in-out'
           >
             {line}
           </text>
@@ -20,9 +20,9 @@ export function LyricBlock({ lines, artist, title }: LyricBlockProps) {
 
       {artist && (
         <view className='flex flex-col items-start justify-center self-end'>
-          <text className='text-base text-primary-content opacity-50 pt-[4px]'>
+          <text className='text-base text-primary-content opacity-50 pt-[4px] transition-colors duration-300 ease-in-out'>
             {title ? `${title} by ` : ''}
-            <text className='text-base text-primary-content font-semibold'>
+            <text className='text-base text-primary-content font-semibold transition-colors duration-300 ease-in-out'>
               {artist}
             </text>
           </text>

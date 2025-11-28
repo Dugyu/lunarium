@@ -2,14 +2,14 @@ import '@lynx-js/preact-devtools';
 import '@lynx-js/react/debug';
 import { root } from '@lynx-js/react';
 
-import { AppTheme } from '@/App.js';
-import { ActOne } from '@/components/act-one';
+import { ActCheckbox } from '@/components/act-checkbox';
+import { LunaTheme } from '@/LunaTheme.js';
 
 export function App() {
   return (
-    <AppTheme preset={lynx.__globalProps.lunaTheme ?? 'luna-dark'}>
-      <ActOne />
-    </AppTheme>
+    <LunaTheme variant='all'>
+      <ActCheckbox />
+    </LunaTheme>
   );
 }
 

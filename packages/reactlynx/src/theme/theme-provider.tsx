@@ -46,20 +46,6 @@ function toNonEmptyThemes(
   return themes as NonEmptyArray<LunaRuntimeTheme>;
 }
 
-/* function resolveTheme(
-  themes: LunaRuntimeTheme[],
-  requestedKey: LunaThemeKey | undefined,
-): LunaRuntimeTheme {
-  assertNonEmptyThemes(themes);
-
-  const effectiveKey = pickThemeKey(themes, requestedKey);
-
-  // We know this must exist because pickThemeKey only returns keys from themes
-  const theme = themes.find(t => t.key === effectiveKey)!;
-
-  return theme;
-}
- */
 /**
  * Resolve the active runtime theme based on requested key and strategy.
  */

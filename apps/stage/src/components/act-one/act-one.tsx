@@ -1,15 +1,11 @@
 import { useState } from '@lynx-js/react';
 import { clsx } from 'clsx';
 
-type ActOneProps = {
-  defaultOpen?: boolean;
-};
-
-function ActOne({ defaultOpen = false }: ActOneProps) {
-  const [open, setOpen] = useState(defaultOpen);
+function ActOne() {
+  const [snapIndex, setSnapIndex] = useState(1);
 
   const handleTap = () => {
-    setOpen(prev => !prev);
+    setSnapIndex(prev => (prev + 1) % 3);
   };
 
   return (
@@ -18,8 +14,9 @@ function ActOne({ defaultOpen = false }: ActOneProps) {
       </view>
       <view
         className={clsx(
-          'absolute bottom-0 h-2/3 w-full bg-canvas rounded-t-[36px] transition-transform ease-in-out duration-500',
-          !open && 'transform-[translateY(50%)]',
+          'absolute -bottom-1/3 h-full w-full bg-canvas rounded-t-[36px] transition-all ease-in-out duration-500',
+          snapIndex === 0 && 'transform-[translateY(37%)]',
+          snapIndex === 2 && 'transform-[translateY(-20%)]',
         )}
         bindtap={handleTap}
       >
