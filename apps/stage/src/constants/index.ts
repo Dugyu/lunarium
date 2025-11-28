@@ -15,15 +15,25 @@ export const LUNA_DEFAULT_COMPONENT: LynxUIComponentId = 'button';
 export const LUNA_STAGE_DEFAULT_THEME: LunaThemeKey = 'lunaris-dark';
 export const LUNA_STUDIO_DEFAULT_THEME: LunaThemeKey = 'lunaris-light';
 
-export const LUNA_STAGE_ONLY_COMPONENTS: LynxUIComponentId[] = ['swipe-action'];
+export const LUNA_STAGE_ONLY_COMPONENTS: LynxUIComponentId[] = [
+  'swipe-action',
+  'sortable',
+  'motion-basic',
+  'motion-spring',
+  'motion-stagger',
+  'motion-slider',
+];
 export const LUNA_OFFSTAGE_COMPONENTS: LynxUIComponentId[] = [
   'sheet',
   'swiper',
   'dialog',
   'scroll-view',
-  'feed-list',
   'swipe-action',
-  'popover',
+  'sortable',
+  'motion-basic',
+  'motion-spring',
+  'motion-stagger',
+  'motion-slider',
 ];
 
 export const LUNA_STAGE_COMPONENTS: LynxUIComponentId[] = [

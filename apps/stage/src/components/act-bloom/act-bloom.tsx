@@ -144,7 +144,7 @@ function ActBloom(
           studioViewMode !== 'focus' && 'transform-[translateY(100%)]',
         )}
       >
-        <view className='w-full flex flex-col items-start justify-start gap-[72px]'>
+        <view className='w-full flex flex-col items-start justify-start gap-[54px]'>
           {/* Headline */}
           <view className='w-full flex flex-col items-start justify-start gap-[10px]'>
             <text className='text-start text-xl text-content font-semibold'>
@@ -152,7 +152,7 @@ function ActBloom(
             </text>
           </view>
           {/* Componenets */}
-          <view className='w-full flex flex-col items-start justify-start gap-[10px]'>
+          <view className='w-full flex flex-col items-start justify-start gap-[6px]'>
             {LynxUIComponents.map(d => {
               if (__WEB__) {
                 return (
@@ -238,7 +238,7 @@ function ComponentItem(
   return (
     <text
       className={cn(
-        'px-[8px] py-[2px] ui-checked:py-[12px] text-lg ui-checked:transform-[scale(1.2)] ui-checked:text-primary ui-checked:font-semibold transition-all duration-300 ease-in-out',
+        'px-[8px] py-[2px] ui-checked:py-[12px] text-lg ui-checked:transform-[scale(1.2)] ui-checked:text-primary ui-checked:font-semibold active:text-primary-2 transition-all duration-300 ease-in-out',
         data.demoReady
           ? 'text-content hover:opacity-50'
           : 'text-content-muted opacity-50',

@@ -9,7 +9,7 @@ function ActCheckbox() {
         <view className='flex flex-col items-start gap-[10px]'>
           <view className='flex flex-row items-center gap-[10px]'>
             <Checkbox defaultChecked size='md' />
-            <text className='text-base text-content-muted'>
+            <text className='text-base text-content-2'>
               awakened
             </text>
           </view>
@@ -19,7 +19,7 @@ function ActCheckbox() {
             )}
           >
             <Checkbox size='md' />
-            <text className='text-base text-content-muted'>
+            <text className='text-base text-content-2'>
               sleep
             </text>
           </view>
@@ -30,7 +30,7 @@ function ActCheckbox() {
           {/* Checkbox Demo Small */}
           <view className='flex flex-row items-center gap-[10px]'>
             <Checkbox defaultChecked />
-            <text className='text-p2 text-content-muted'>
+            <text className='text-p2 text-content-2'>
               awakened
             </text>
           </view>
@@ -40,7 +40,7 @@ function ActCheckbox() {
             )}
           >
             <Checkbox />
-            <text className='text-p2 text-content-muted'>
+            <text className='text-p2 text-content-2'>
               sleep
             </text>
           </view>
