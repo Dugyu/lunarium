@@ -61,6 +61,10 @@ export default defineConfig({
           __WEB__: 'false',
         },
       },
+      output: {
+        assetPrefix:
+          'https://sf16-va.tiktokcdn.com/obj/eden-va2/zalzzh-ukj-lapzild-shpjpmmv-eufs/ljhwZthlaukjlkulzlp/Luna/stage/',
+      },
     },
   },
 });
