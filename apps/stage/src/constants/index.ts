@@ -23,6 +23,7 @@ export const LUNA_OFFSTAGE_COMPONENTS: LynxUIComponentId[] = [
   'scroll-view',
   'feed-list',
   'swipe-action',
+  'popover',
 ];
 
 export const LUNA_STAGE_COMPONENTS: LynxUIComponentId[] = [

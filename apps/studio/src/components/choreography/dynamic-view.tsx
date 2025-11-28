@@ -1,6 +1,6 @@
 import { AnimatePresence } from 'motion/react';
 import type { SpringOptions, Transition } from 'motion/react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { LunaLynxStage } from '@/components/lynx-stage';
 import {
@@ -69,6 +69,29 @@ function DynamicView(
     DEFAULT_LUNA_THEME_MODE,
   );
 
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      // ----- Variant Control -----
+      if (e.key === 'a' || e.key === 'A') {
+        setThemeVariant('luna');
+      }
+      if (e.key === 's' || e.key === 'S') {
+        setThemeVariant('lunaris');
+      }
+
+      // ----- Mode Control -----
+      if (e.key === 'j' || e.key === 'J') {
+        setThemeMode('light');
+      }
+      if (e.key === 'k' || e.key === 'K') {
+        setThemeMode('dark');
+      }
+    }
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
+
   const handleMoonriseChange = useCallback((event: MoonriseEvent) => {
     if (event.field === 'luna-variant') {
       setThemeVariant(event.value);
@@ -99,7 +122,7 @@ function DynamicView(
 
       const direction = (compOrder - mid) > 0 ? 1 : -1;
 
-      const theta = ((compOrder - mid) * 22 + direction * focusedIndex * 2)
+      const theta = ((compOrder - mid) * 20 + direction * focusedIndex * 2)
         / 180 * Math.PI;
 
       const world: WorldPos = mode === 'focus'
