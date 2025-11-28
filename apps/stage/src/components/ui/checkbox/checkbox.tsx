@@ -32,6 +32,7 @@ function Checkbox({ defaultChecked, size = 'sm', disabled }: CheckboxProps) {
       )}
       bindtap={() => setChecked(prev => !prev)}
       event-through={false}
+      hit-slop={{ top: '8px', left: '8px', right: '8px', bottom: '8px' }}
     >
       {/* Indicator */}
       <view
