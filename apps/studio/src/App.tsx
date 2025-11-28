@@ -1,19 +1,33 @@
 import './App.css';
 import { Studio } from '@/components/studio';
+import { RECORD_MODE } from '@/constants/presentation.ts';
+import { cn } from '@/utils';
 
 function App() {
   return (
     <div className='relative text-black flex h-screen w-screen overflow-hidden leading-normal text-center flex-col'>
-      <div className='w-full flex-none flex flex-row items-end h-32 gap-x-8 justify-center'>
-        <h1 className='text-5xl font-normal'>L.U.N.A</h1>
-        <p className='text-start font-light -translate-y-[2px]'>
-          <i>
-            Lynx UI New Aesthetics
-          </i>
-        </p>
-      </div>
-      <div className='relative w-full flex flex-1 justify-center items-center min-h-0'>
-        <div className='relative w-full h-3/4 flex justify-center items-center translate-y-6'>
+      {!RECORD_MODE && (
+        <div className='w-full flex-none flex flex-row items-end h-32 gap-x-8 justify-center'>
+          <h1 className='text-5xl font-normal'>L.U.N.A</h1>
+          <p className='text-start font-light -translate-y-[2px]'>
+            <i>
+              Lynx UI New Aesthetics
+            </i>
+          </p>
+        </div>
+      )}
+      <div
+        className={cn(
+          'relative flex justify-center items-center min-h-0',
+          RECORD_MODE ? 'w-[1640px] h-[805px]' : 'w-full flex-1',
+        )}
+      >
+        <div
+          className={cn(
+            'relative w-full flex justify-center items-center translate-y-6',
+            RECORD_MODE ? 'h-full' : ' h-3/4',
+          )}
+        >
           <Studio />
         </div>
       </div>

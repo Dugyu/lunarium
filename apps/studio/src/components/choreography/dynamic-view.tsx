@@ -8,6 +8,7 @@ import {
   MotionMockup,
   MotionPresentation,
 } from '@/components/mockup-motion';
+import { STARTING_MODE, STARTING_VARIANT } from '@/constants/presentation.ts';
 import type {
   LunaThemeMode,
   LunaThemeVariant,
@@ -47,8 +48,8 @@ const presentationTransition: Transition = {
 const fitTransition: SpringOptions = { visualDuration: 0.8, bounce: 0.1 };
 
 const DEFAULT_FOCUSED: LynxUIComponentId = 'button';
-const DEFAULT_LUNA_THEME_VARIANT: LunaThemeVariant = 'lunaris';
-export const DEFAULT_LUNA_THEME_MODE: LunaThemeMode = 'light';
+const DEFAULT_LUNA_THEME_VARIANT: LunaThemeVariant = STARTING_VARIANT;
+const DEFAULT_LUNA_THEME_MODE: LunaThemeMode = STARTING_MODE;
 
 const WORLD_ORIGIN: WorldPos = { x: 0, y: 0, z: 0 };
 
@@ -82,15 +83,17 @@ function DynamicView(
       // ----- Mode Control -----
       if (e.key === 'j' || e.key === 'J') {
         setThemeMode('light');
+        onThemeModeChange?.('light');
       }
       if (e.key === 'k' || e.key === 'K') {
         setThemeMode('dark');
+        onThemeModeChange?.('dark');
       }
     }
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, []);
+  }, [onThemeModeChange]);
 
   const handleMoonriseChange = useCallback((event: MoonriseEvent) => {
     if (event.field === 'luna-variant') {
