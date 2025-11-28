@@ -9,6 +9,7 @@ import '../App.css';
 export function App() {
   return (
     <ActBloom
+      lunaTheme={lynx.__globalProps.lunaTheme ?? 'lunaris-light'}
       studioViewMode={lynx.__globalProps.studioViewMode ?? 'focus'}
       focusedComponent={lynx.__globalProps.focusedComponent ?? 'button'}
     />

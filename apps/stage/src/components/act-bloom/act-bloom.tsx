@@ -47,11 +47,20 @@ type ComponentDisplay = {
 type ActBloomProps = {
   studioViewMode: StudioViewMode;
   focusedComponent: LynxUIComponentId;
+  lunaTheme: LunaThemeKey;
 };
 
-function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
+function ActBloom(
+  { studioViewMode, focusedComponent, lunaTheme }: ActBloomProps,
+) {
   const [focused, setFocused] = useState<LynxUIComponentId>(getSavedComponent);
-  const [theme, setTheme] = useState<LunaThemeKey>(getSavedTheme);
+  const [innerTheme, setInnerTheme] = useState<LunaThemeKey>(getSavedTheme);
+
+  let theme = innerTheme;
+
+  if (__WEB__) {
+    theme = lunaTheme;
+  }
 
   const handleComponentClick = (id: LynxUIComponentId) => {
     setFocused(id);
@@ -83,7 +92,6 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
   };
 
   const handleThemeChange = (themeKey: LunaThemeKey) => {
-    setTheme(themeKey);
     if (__WEB__) {
       const { variant, mode } = parseLunaThemeKey(themeKey);
       NativeModules?.bridge?.call(
@@ -101,6 +109,7 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
         },
       );
     } else {
+      setInnerTheme(themeKey);
       saveTheme(themeKey);
     }
   };
@@ -109,7 +118,7 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
     <page
       className={cn(
         'relative size-full bg-canvas transition-colors duration-300 ease-in-out',
-        studioViewMode === 'compare' ? 'luna-light' : theme,
+        theme,
       )}
     >
       <view className='absolute h-full w-full luna-gradient flex flex-col justify-center px-[48px]'>

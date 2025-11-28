@@ -6,8 +6,8 @@ import { LynxUIComponentsRegistry } from '../../constants/component-data.ts';
 const getMeta = LynxUIComponentsRegistry.getMeta;
 
 const STAGES: Record<string, StageMeta> = {
-  Bloom: { entry: 'ActBloom', theme: 'luna-light' },
-  BloomDark: { entry: 'ActOneDark', theme: 'luna-dark' },
+  Bloom: { entry: 'ActBloom', theme: 'lunaris-light' },
+  // Sheet: { entry: 'ActOneDark', theme: 'luna-dark' },
   MoonRise: {
     entry: 'ActMoonrise',
     theme: 'luna-light',
@@ -58,8 +58,8 @@ const STAGES: Record<string, StageMeta> = {
     componentId: 'popover',
   },
   Sheet: {
-    entry: 'OffstageActSheet',
-    theme: 'luna-light',
+    entry: 'ActOneDark',
+    theme: 'lunaris-dark',
     meta: getMeta('sheet'),
     componentId: 'sheet',
   },
@@ -86,7 +86,7 @@ const STAGES: Record<string, StageMeta> = {
 const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
   compare: [
     { id: 'MoonRiseDark', 'className': 'flex-1 order-4' },
-    { id: 'BloomDark', 'className': 'flex-1 order-2' },
+    { id: 'Sheet', 'className': 'flex-1 order-2' },
     { id: 'MoonRise', 'className': 'flex-1 order-3' },
     { id: 'Bloom', 'className': 'flex-1 order-1' },
   ],
@@ -113,7 +113,7 @@ const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
     },
     {
       id: 'Sheet',
-      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-7',
+      'className': 'col-start-2 col-end-4 row-start-1 row-end-2 order-2',
     },
     {
       id: 'Swiper',
@@ -160,7 +160,7 @@ const BASE_STATUS: Record<StudioViewMode, ViewSpec[]> = {
     },
     {
       id: 'Sheet',
-      'className': 'col-start-4 col-end-5 row-start-1 row-end-2 order-7',
+      'className': 'col-start-4 col-end-5 row-start-1 row-end-2 order-2',
     },
     {
       id: 'Swiper',

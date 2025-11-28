@@ -7,8 +7,8 @@ import { ActOne } from '@/components/act-one';
 
 export function App() {
   return (
-    <AppTheme preset='luna-dark'>
-      <ActOne defaultOpen />
+    <AppTheme preset={lynx.__globalProps.lunaTheme ?? 'luna-dark'}>
+      <ActOne />
     </AppTheme>
   );
 }

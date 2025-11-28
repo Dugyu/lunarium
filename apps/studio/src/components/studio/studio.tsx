@@ -10,7 +10,7 @@ const viewModes: StudioViewMode[] = ['compare', 'focus', 'lineup'];
 
 function Studio() {
   const [viewMode, setViewMode] = useState<StudioViewMode>('compare');
-  const [themeMode, setThemeMode] = useState<'light' | 'dark'>('dark');
+  const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
 
   return (
     <StudioFrame

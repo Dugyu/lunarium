@@ -47,8 +47,8 @@ const presentationTransition: Transition = {
 const fitTransition: SpringOptions = { visualDuration: 0.8, bounce: 0.1 };
 
 const DEFAULT_FOCUSED: LynxUIComponentId = 'button';
-const DEFAULT_LUNA_THEME_VARIANT: LunaThemeVariant = 'luna';
-const DEFAULT_LUNA_THEME_MODE: LunaThemeMode = 'dark';
+const DEFAULT_LUNA_THEME_VARIANT: LunaThemeVariant = 'lunaris';
+export const DEFAULT_LUNA_THEME_MODE: LunaThemeMode = 'light';
 
 const WORLD_ORIGIN: WorldPos = { x: 0, y: 0, z: 0 };
 
@@ -122,7 +122,13 @@ function DynamicView(
         ? (escape ? 0 : 1 - Math.abs(theta * 2 / Math.PI) * 0.6)
         : 0;
 
-      const data = { ...d, ...stageMeta, world, zIndex: zIndex, maskOpacity };
+      const data = {
+        ...d,
+        ...stageMeta,
+        world,
+        zIndex: zIndex,
+        maskOpacity: maskOpacity * 0.5,
+      };
       return data;
     });
     return items;
@@ -166,17 +172,13 @@ function DynamicView(
                   fitTransition={fitTransition}
                   world={stage.world}
                   focalLength={mode === 'focus' ? 500 : 0}
-                  className={mode === 'compare'
-                    ? (stage.theme.endsWith('light')
-                      ? 'bg-white opacity-50'
-                      : 'bg-black opacity-10')
-                    : (themeMode === 'light'
-                      ? 'bg-white opacity-50'
-                      : 'bg-black opacity-10')}
+                  className={themeMode === 'light'
+                    ? 'bg-white opacity-50'
+                    : 'bg-white opacity-5'}
                   maskColor={themeMode === 'light' ? '#f5f5f5' : '#0000000'}
                   maskOpacity={themeMode === 'light'
                     ? stage.maskOpacity
-                    : stage.maskOpacity * 0.5}
+                    : stage.maskOpacity * 0.2}
                 >
                   <LunaLynxStage
                     entry={stage.entry}
