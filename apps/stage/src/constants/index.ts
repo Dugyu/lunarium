@@ -28,7 +28,6 @@ export const LUNA_OFFSTAGE_COMPONENTS: LynxUIComponentId[] = [
   'swiper',
   'dialog',
   'scroll-view',
-  'feed-list',
   'swipe-action',
   'sortable',
   'motion-basic',
