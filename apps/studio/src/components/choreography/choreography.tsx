@@ -7,15 +7,19 @@ import { DynamicView } from './dynamic-view.tsx';
 type ChoreographyProps = {
   viewMode: StudioViewMode;
   className?: string;
+  onThemeModeChange?: (mode: 'light' | 'dark') => void;
 };
 
-function Choreography({ viewMode = 'compare', className }: ChoreographyProps) {
+function Choreography(
+  { viewMode = 'compare', className, onThemeModeChange }: ChoreographyProps,
+) {
   return (
     <LayoutGroup id='luna-studio'>
       <DynamicView
         mode={viewMode}
         key='luna-studio-dynamic-view'
         className={className}
+        onThemeModeChange={onThemeModeChange}
       />
     </LayoutGroup>
   );

@@ -55,9 +55,12 @@ const WORLD_ORIGIN: WorldPos = { x: 0, y: 0, z: 0 };
 type DynamicViewProps = {
   mode?: StudioViewMode;
   className?: string;
+  onThemeModeChange?: (mode: 'light' | 'dark') => void;
 };
 
-function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
+function DynamicView(
+  { mode = 'compare', className, onThemeModeChange }: DynamicViewProps,
+) {
   const [focused, setFocused] = useState<LynxUIComponentId>(DEFAULT_FOCUSED);
   const [themeVariant, setThemeVariant] = useState<LunaThemeVariant>(
     DEFAULT_LUNA_THEME_VARIANT,
@@ -70,9 +73,11 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
     if (event.field === 'luna-variant') {
       setThemeVariant(event.value);
     } else if (event.field === 'light-mode') {
-      setThemeMode(event.value === true ? 'light' : 'dark');
+      const next: 'light' | 'dark' = event.value === true ? 'light' : 'dark';
+      setThemeMode(next);
+      onThemeModeChange?.(next);
     }
-  }, []);
+  }, [onThemeModeChange]);
 
   const rendered: RenderData[] = useMemo(() => {
     const components = BASE_STATUS[mode].map(d => STAGES[d.id])
@@ -168,8 +173,10 @@ function DynamicView({ mode = 'compare', className }: DynamicViewProps) {
                     : (themeMode === 'light'
                       ? 'bg-white opacity-50'
                       : 'bg-black opacity-10')}
-                  maskColor='#f5f5f5'
-                  maskOpacity={stage.maskOpacity}
+                  maskColor={themeMode === 'light' ? '#f5f5f5' : '#0000000'}
+                  maskOpacity={themeMode === 'light'
+                    ? stage.maskOpacity
+                    : stage.maskOpacity * 0.5}
                 >
                   <LunaLynxStage
                     entry={stage.entry}

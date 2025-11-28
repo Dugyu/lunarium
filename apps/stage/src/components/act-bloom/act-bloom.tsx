@@ -108,7 +108,7 @@ function ActBloom({ studioViewMode, focusedComponent }: ActBloomProps) {
   return (
     <page
       className={cn(
-        'relative size-full bg-canvas',
+        'relative size-full bg-canvas transition-colors duration-300 ease-in-out',
         studioViewMode === 'compare' ? 'luna-light' : theme,
       )}
     >
