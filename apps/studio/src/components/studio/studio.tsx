@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Choreography } from '@/components/choreography';
 import { MenuBar } from '@/components/menu-bar';
 import { StudioFrame } from '@/components/studio-frame';
+import { STARTING_MODE } from '@/constants';
 import type { StudioViewMode } from '@/types';
 import { cn } from '@/utils';
 
@@ -10,7 +11,7 @@ const viewModes: StudioViewMode[] = ['compare', 'focus', 'lineup'];
 
 function Studio() {
   const [viewMode, setViewMode] = useState<StudioViewMode>('compare');
-  const [themeMode, setThemeMode] = useState<'light' | 'dark'>('dark');
+  const [themeMode, setThemeMode] = useState<'light' | 'dark'>(STARTING_MODE);
 
   return (
     <StudioFrame
