@@ -54,7 +54,7 @@ function ThemeControl({ defaultTheme, onThemeChange }: ThemeControlProps) {
       >
         <text className='text-sm text-content-faint'>variant</text>
         <text className='font-semibold text-lg text-content'>
-          {variant}
+          {variant === 'luna' ? 'LUNA' : 'Lunaris'}
         </text>
       </view>
       <view
@@ -63,7 +63,7 @@ function ThemeControl({ defaultTheme, onThemeChange }: ThemeControlProps) {
       >
         <text className='text-sm text-content-faint'>mode</text>
         <text className='font-semibold text-lg text-content'>
-          {mode}
+          {mode === 'dark' ? 'Dark' : 'Light'}
         </text>
       </view>
     </view>
