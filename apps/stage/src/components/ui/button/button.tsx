@@ -17,7 +17,7 @@ function Button(props: ButtonProps) {
   return (
     <view
       className={cn(
-        'flex flex-row justify-center items-center rounded-full h-[48px] w-full',
+        'flex flex-row justify-center items-center rounded-full h-[48px] w-full active:opacity-50 transition-all',
         variant === 'neutral'
           ? 'bg-neutral'
           : (variant === 'secondary' ? 'bg-neutral-ambient' : 'bg-primary'),

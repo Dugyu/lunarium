@@ -177,18 +177,27 @@ function ActMoonrise(
         className={cn(
           'w-full py-[16px] transition-all duration-500 ease-in-out overflow-hidden',
           studioViewMode !== 'compare' && 'transform-[translateY(-33vh)]',
-          studioViewMode === 'compare' ? 'px-[16px]' : 'px-[64px]',
+          studioViewMode === 'compare' ? 'px-[16px]' : 'px-[32px]',
         )}
       >
         {/* Button Demo */}
-        <view className='flex flex-col justify-end items-center w-full gap-[8px]'>
-          <Button size='lg'>Let it bloom</Button>
+        <view
+          className={cn(
+            'flex flex-col justify-end items-center w-full transition-all',
+            studioViewMode === 'compare' ? 'gap-[8px]' : 'gap-[12px]',
+          )}
+        >
+          <Button
+            size='lg'
+            variant={studioViewMode === 'compare' ? 'neutral' : 'primary'}
+          >
+            Let it bloom
+          </Button>
           <Button
             size='lg'
             variant='secondary'
             className={cn(
               'transition-all',
-              studioViewMode === 'lineup' && 'transform-[translateY(60px)]',
             )}
           >
             Stay asleep
