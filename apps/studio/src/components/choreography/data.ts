@@ -52,7 +52,7 @@ const STAGES: Record<string, StageMeta> = {
     componentId: 'swiper',
   },
   Popover: {
-    entry: 'ActOneLight',
+    entry: 'OffstageActPopover',
     theme: 'luna-light',
     meta: getMeta('popover'),
     componentId: 'popover',
