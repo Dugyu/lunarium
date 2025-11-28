@@ -10,13 +10,13 @@ const viewModes: StudioViewMode[] = ['compare', 'focus', 'lineup'];
 
 function Studio() {
   const [viewMode, setViewMode] = useState<StudioViewMode>('compare');
-  const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
+  const [themeMode, setThemeMode] = useState<'light' | 'dark'>('dark');
 
   return (
     <StudioFrame
       className={cn(
         'pointer-events-auto relative luna-studio transition-all duration-300 ease-in-out',
-        themeMode === 'light' ? 'bg-[#f5f5f5]' : 'bg-[#2a2a2a]',
+        themeMode === 'light' ? 'bg-[#f5f5f5]' : 'bg-[#0d0d0d]',
       )}
     >
       <Choreography viewMode={viewMode} onThemeModeChange={setThemeMode} />

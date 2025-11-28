@@ -48,7 +48,7 @@ const fitTransition: SpringOptions = { visualDuration: 0.8, bounce: 0.1 };
 
 const DEFAULT_FOCUSED: LynxUIComponentId = 'button';
 const DEFAULT_LUNA_THEME_VARIANT: LunaThemeVariant = 'lunaris';
-export const DEFAULT_LUNA_THEME_MODE: LunaThemeMode = 'light';
+export const DEFAULT_LUNA_THEME_MODE: LunaThemeMode = 'dark';
 
 const WORLD_ORIGIN: WorldPos = { x: 0, y: 0, z: 0 };
 
@@ -82,9 +82,11 @@ function DynamicView(
       // ----- Mode Control -----
       if (e.key === 'j' || e.key === 'J') {
         setThemeMode('light');
+        onThemeModeChange?.('light');
       }
       if (e.key === 'k' || e.key === 'K') {
         setThemeMode('dark');
+        onThemeModeChange?.('dark');
       }
     }
 
