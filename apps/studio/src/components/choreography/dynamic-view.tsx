@@ -173,7 +173,7 @@ function DynamicView(
                   world={stage.world}
                   focalLength={mode === 'focus' ? 500 : 0}
                   className={themeMode === 'light'
-                    ? 'bg-white opacity-50'
+                    ? 'bg-black opacity-[0.04]'
                     : 'bg-white opacity-5'}
                   maskColor={themeMode === 'light' ? '#f5f5f5' : '#0000000'}
                   maskOpacity={themeMode === 'light'
