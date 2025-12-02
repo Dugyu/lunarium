@@ -35,13 +35,15 @@ function Checkbox({ defaultChecked, size = 'sm', disabled }: CheckboxProps) {
       hit-slop={{ top: '8px', left: '8px', right: '8px', bottom: '8px' }}
     >
       {/* Indicator */}
-      checked &&
-      <view
-        className={cn(
-          'size-full bg-primary-content',
+      {checked
+        && (
+          <view
+            className={cn(
+              'size-full bg-primary-content',
+            )}
+            style={{ clipPath: CheckMarkPath[size] }}
+          />
         )}
-        style={{ clipPath: CheckMarkPath[size] }}
-      />
     </view>
   );
 }
