@@ -10,6 +10,7 @@ import {
   LUNA_STAGE_DEFAULT_THEME,
   LUNA_STAGE_ONLY_COMPONENTS,
   LUNA_STUDIO_DEFAULT_THEME,
+  LUNA_STUDIO_ONLY_COMPONENTS,
   LynxUIComponentsRegistry,
 } from '@/constants';
 import { explorerRead, explorerSave } from '@/native';
@@ -169,12 +170,16 @@ function ActBloom(
                 );
               }
               return (
-                <ComponentItem
-                  key={d.id}
-                  data={d}
-                  onClick={handleComponentClick}
-                  checked={focused === d.id}
-                />
+                LUNA_STUDIO_ONLY_COMPONENTS.includes(d.id)
+                  ? null
+                  : (
+                    <ComponentItem
+                      key={d.id}
+                      data={d}
+                      onClick={handleComponentClick}
+                      checked={focused === d.id}
+                    />
+                  )
               );
             })}
           </view>

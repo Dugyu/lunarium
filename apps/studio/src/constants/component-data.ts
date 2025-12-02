@@ -12,8 +12,8 @@ const components = [
   { id: 'switch', demoReady: true },
   { id: 'swiper', demoReady: true },
   { id: 'toast', demoReady: false },
-  { id: 'scroll-view', demoReady: true },
-  { id: 'feed-list', demoReady: true },
+  { id: 'scroll-view', demoReady: true, name: 'ScrollView' },
+  { id: 'feed-list', demoReady: true, name: 'FeedList' },
 ] as const;
 
 export const LynxUIComponentsRegistry = defineComponents(
