@@ -57,11 +57,7 @@ function ActBloom(
   const [focused, setFocused] = useState<LynxUIComponentId>(getSavedComponent);
   const [innerTheme, setInnerTheme] = useState<LunaThemeKey>(getSavedTheme);
 
-  let theme = innerTheme;
-
-  if (__WEB__) {
-    theme = lunaTheme;
-  }
+  const theme = __WEB__ ? lunaTheme : innerTheme;
 
   const handleComponentClick = (id: LynxUIComponentId) => {
     setFocused(id);
@@ -145,15 +141,25 @@ function ActBloom(
           studioViewMode !== 'focus' && 'transform-[translateY(100%)]',
         )}
       >
-        <view className='w-full flex flex-col items-start justify-start gap-[54px]'>
+        <view
+          className={cn(
+            'w-full flex flex-col items-start justify-start',
+            __WEB__ ? 'gap-[72px]' : 'gap-[54px]',
+          )}
+        >
           {/* Headline */}
-          <view className='w-full flex flex-col items-start justify-start gap-[10px]'>
+          <view className='w-full flex flex-col items-start justify-start'>
             <text className='text-start text-xl text-content font-semibold'>
               L.U.N.A Performance
             </text>
           </view>
           {/* Componenets */}
-          <view className='w-full flex flex-col items-start justify-start gap-[6px]'>
+          <view
+            className={cn(
+              'w-full flex flex-col items-start justify-start',
+              __WEB__ ? 'gap-[10px]' : 'gap-[6px]',
+            )}
+          >
             {LynxUIComponents.map(d => {
               if (__WEB__) {
                 return (
