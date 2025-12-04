@@ -23,11 +23,19 @@ export const LUNA_STAGE_ONLY_COMPONENTS: LynxUIComponentId[] = [
   'motion-stagger',
   'motion-slider',
 ];
+
+export const LUNA_STUDIO_ONLY_COMPONENTS: LynxUIComponentId[] = [
+  'popover',
+  'feed-list',
+];
+
 export const LUNA_OFFSTAGE_COMPONENTS: LynxUIComponentId[] = [
   'sheet',
   'swiper',
   'dialog',
+  'popover',
   'scroll-view',
+  'feed-list',
   'swipe-action',
   'sortable',
   'motion-basic',
