@@ -1,4 +1,4 @@
-import type { LunaThemeTokens } from '@dugyu/luna-core/theme';
+import type { LunaThemeTokens } from '@dugyu/luna-core';
 
 export const lunaLightTokens: LunaThemeTokens = {
   key: 'luna-light',

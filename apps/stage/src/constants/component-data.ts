@@ -1,4 +1,4 @@
-import { defineComponents } from '@dugyu/luna-core';
+import { defineComponents } from '@dugyu/luna-catalog';
 
 const components = [
   { id: 'button', demoReady: true },

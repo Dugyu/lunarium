@@ -1,7 +1,7 @@
 {
-  "name": "@dugyu/luna-core",
+  "name": "@dugyu/luna-catalog",
   "version": "0.1.0",
-  "description": "Core constants, types, and utilities for the L.U.N.A project (no CSS).",
+  "description": "Component metadata and catalog foundations for the L.U.N.A project.",
   "type": "module",
   "module": "./dist/index.js",
   "main": "./dist/index.cjs",
@@ -15,7 +15,7 @@
   },
   "sideEffects": false,
   "files": ["dist", "README.md"],
-  "keywords": ["luna", "core", "constants", "types", "utils"],
+  "keywords": ["luna", "catalog", "components", "metadata", "registry"],
   "author": "The Lynx Authors",
   "license": "MIT",
   "scripts": {
