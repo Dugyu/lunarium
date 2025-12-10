@@ -3,8 +3,8 @@ import { join } from 'node:path';
 
 import type { RsbuildPlugin } from '@rslib/core';
 
-import { LUNA_COLOR_IDS } from '@dugyu/luna-core/theme';
-import type { LunaThemeTokens } from '@dugyu/luna-core/theme';
+import { LUNA_COLOR_IDS } from '@dugyu/luna-core';
+import type { LunaThemeTokens } from '@dugyu/luna-core';
 
 export function generateLunaCssPlugin(
   themes: LunaThemeTokens[],

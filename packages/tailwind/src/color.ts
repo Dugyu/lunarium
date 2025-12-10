@@ -1,4 +1,4 @@
-import type { LunaColorId } from '@dugyu/luna-core/theme';
+import type { LunaColorId } from '@dugyu/luna-core';
 
 /**
  * Build a CSS variable reference for the given Luna color id.

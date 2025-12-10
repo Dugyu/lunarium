@@ -5,5 +5,6 @@ export type {
   LunaThemeVariant,
   LunaThemeMode,
   LunaThemeKey,
-  StudioViewMode,
 } from '@dugyu/luna-core';
+
+export type { StudioViewMode } from '@dugyu/luna-catalog';

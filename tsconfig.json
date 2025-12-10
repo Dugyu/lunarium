@@ -29,10 +29,10 @@
       "path": "./apps/stage/tsconfig.json",
     },
     {
-      "path": "./packages/core/tsconfig.json",
+      "path": "./packages/catalog/tsconfig.json",
     },
     {
-      "path": "./packages/tokens/tsconfig.json",
+      "path": "./packages/core/tsconfig.json",
     },
     {
       "path": "./packages/reactlynx/tsconfig.json",
@@ -42,6 +42,9 @@
     },
     {
       "path": "./packages/tailwind/tsconfig.json",
+    },
+    {
+      "path": "./packages/tokens/tsconfig.json",
     },
     /** packages-end */
   ],

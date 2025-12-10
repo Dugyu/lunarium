@@ -9,16 +9,15 @@
     "preview": "rspeedy preview"
   },
   "dependencies": {
+    "@dugyu/luna-catalog": "workspace:*",
+    "@dugyu/luna-core": "workspace:*",
+    "@dugyu/luna-styles": "workspace:*",
     "@lynx-js/react": "catalog:lynx",
     "clsx": "catalog:",
     "tailwind-merge": "catalog:"
   },
   "devDependencies": {
-    "@dugyu/luna-core": "workspace:*",
-    "@dugyu/luna-reactlynx": "workspace:*",
-    "@dugyu/luna-styles": "workspace:*",
     "@dugyu/luna-tailwind": "workspace:*",
-    "@dugyu/luna-tokens": "workspace:*",
     "@lynx-js/preact-devtools": "^5.0.1-cf9aef5",
     "@lynx-js/qrcode-rsbuild-plugin": "catalog:lynx",
     "@lynx-js/react-rsbuild-plugin": "catalog:lynx",

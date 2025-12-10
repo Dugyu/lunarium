@@ -14,7 +14,7 @@ import type {
   LunaThemeMode,
   LunaThemeTokens,
   LunaThemeVariant,
-} from '@dugyu/luna-core/theme';
+} from '@dugyu/luna-core';
 
 export type {
   LunaColorId,

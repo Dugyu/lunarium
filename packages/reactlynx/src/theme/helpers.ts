@@ -4,7 +4,7 @@ import {
   colorIdToColorKey,
   colorKeyToColorId,
   createEmptyLunaColors,
-} from '@dugyu/luna-core/theme';
+} from '@dugyu/luna-core';
 
 export {
   LUNA_COLOR_IDS,

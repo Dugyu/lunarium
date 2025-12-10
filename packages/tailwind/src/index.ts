@@ -1,6 +1,6 @@
 import type { Config } from 'tailwindcss';
 
-import { LUNA_COLOR_IDS } from '@dugyu/luna-core/theme';
+import { LUNA_COLOR_IDS } from '@dugyu/luna-core';
 
 import { buildLunaTailwindColors } from './color.js';
 import { lunaGradientPlugin } from './gradient.js';

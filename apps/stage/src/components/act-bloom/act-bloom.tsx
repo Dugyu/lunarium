@@ -21,7 +21,7 @@ import type {
   StudioViewMode,
 } from '@/types';
 import { cn } from '@/utils';
-import { demoTitleFromSlug } from '@dugyu/luna-core/component';
+import { demoTitleFromSlug } from '@dugyu/luna-catalog';
 
 import { LyricBlock } from './lyric-block.js';
 import { parseLunaThemeKey } from './parse-theme.js';
@@ -73,6 +73,7 @@ function ActBloom(
       );
     } else {
       saveComponent(id);
+      const background = theme.endsWith('dark') ? '0d0d0d' : 'ffffff';
       NativeModules?.ExplorerModule?.openSchema(
         `${process.env
           .ASSET_PREFIX as string}/${
@@ -81,9 +82,7 @@ function ActBloom(
             : (LUNA_STAGE_COMPONENTS.includes(id)
               ? `Act${demoTitleFromSlug(id)}`
               : 'ActSwitch')
-        }.lynx.bundle?fullscreen=true&luna_theme=${theme}&bar_color=${
-          theme.endsWith('dark') ? '0d0d0d' : 'ffffff'
-        }`,
+        }.lynx.bundle?fullscreen=true&luna_theme=${theme}&bar_color=${background}`,
       );
     }
   };

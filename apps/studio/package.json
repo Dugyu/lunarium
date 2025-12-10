@@ -10,6 +10,8 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
+    "@dugyu/luna-catalog": "workspace:*",
+    "@dugyu/luna-core": "workspace:*",
     "@headlessui/react": "^2.2.7",
     "@headlessui/tailwindcss": "^0.2.2",
     "@lynx-js/web-core": "^0.18.1",
@@ -22,7 +24,6 @@
     "tailwind-merge": "catalog:"
   },
   "devDependencies": {
-    "@dugyu/luna-core": "workspace:*",
     "@rsbuild/core": "catalog:rsbuild",
     "@rsbuild/plugin-react": "catalog:rsbuild",
     "@types/react": "catalog:react18",
