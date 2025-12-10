@@ -82,7 +82,7 @@ function ActBloom(
             : (LUNA_STAGE_COMPONENTS.includes(id)
               ? `Act${demoTitleFromSlug(id)}`
               : 'ActSwitch')
-        }.lynx.bundle?fullscreen=true&luna_theme=${theme}&bar_color=${background}`,
+        }.lynx.bundle?fullscreen=true&luna_theme=${theme}&bar_color=${background}&bg_color=${background}`,
       );
     }
   };
