@@ -1,7 +1,6 @@
 {
-  "name": "@dugyu/luna-stage",
+  "name": "basic",
   "version": "0.0.0",
-  "private": true,
   "type": "module",
   "scripts": {
     "build": "rspeedy build",
@@ -9,25 +8,18 @@
     "preview": "rspeedy preview"
   },
   "dependencies": {
-    "@dugyu/luna-catalog": "workspace:*",
-    "@dugyu/luna-core": "workspace:*",
-    "@dugyu/luna-styles": "workspace:*",
-    "@lynx-js/react": "catalog:lynx",
-    "clsx": "catalog:",
-    "tailwind-merge": "catalog:"
+    "@dugyu/luna-reactlynx": "workspace:*",
+    "@dugyu/luna-tokens": "workspace:*",
+    "@lynx-js/react": "catalog:lynx"
   },
   "devDependencies": {
-    "@dugyu/luna-tailwind": "workspace:*",
     "@lynx-js/preact-devtools": "catalog:lynx",
     "@lynx-js/qrcode-rsbuild-plugin": "catalog:lynx",
     "@lynx-js/react-rsbuild-plugin": "catalog:lynx",
     "@lynx-js/rspeedy": "catalog:lynx",
-    "@lynx-js/tailwind-preset": "catalog:lynx",
     "@lynx-js/types": "catalog:lynx",
     "@rsbuild/plugin-type-check": "catalog:rsbuild",
     "@types/react": "catalog:react18",
-    "rsbuild-plugin-tailwindcss": "catalog:",
-    "tailwindcss": "catalog:",
     "typescript": "catalog:"
   },
   "engines": {

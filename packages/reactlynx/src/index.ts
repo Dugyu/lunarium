@@ -17,9 +17,7 @@ export type {
   LunaCustomThemeVariant,
   // Official
   LunaThemeKey,
-  LunaThemeMode,
   LunaThemeTokens,
-  LunaThemeVariant,
   // Runtime
   LunaRuntimeTheme,
   LunaThemeContextValue,
@@ -27,5 +25,4 @@ export type {
   LunaThemeFallbackStrategy,
   LunaThemeProviderProps,
   UseLunaColorOptions,
-  NonEmptyArray,
 } from './theme/index.js';

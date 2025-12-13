@@ -25,7 +25,6 @@
   "devDependencies": {
     "@dugyu/luna-core": "workspace:*",
     "@lynx-js/react": "catalog:lynx",
-    "@lynx-js/rspeedy": "catalog:lynx",
     "@lynx-js/types": "catalog:lynx",
     "@rslib/core": "catalog:rslib",
     "@rsbuild/plugin-react": "catalog:rsbuild",

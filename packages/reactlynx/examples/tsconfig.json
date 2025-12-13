@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "composite": true,
+  },
+  "references": [
+    /** packages-start */
+    { "path": "./basic/tsconfig.json" },
+    /** packages-end */
+  ],
+  "include": [],
+}

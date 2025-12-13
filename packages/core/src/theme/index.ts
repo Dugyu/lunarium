@@ -23,3 +23,18 @@ export {
   colorKeyToColorId,
   createEmptyLunaColors,
 } from './color.js';
+
+export {
+  resolveTheme,
+  resolveThemeFromList,
+  resolveThemeObjectFromList,
+  inferThemeMode,
+  inferThemeVariant,
+} from './resolver.js';
+
+export type {
+  LunaResolvableTheme,
+  LunaThemeFallbackStrategy,
+  LunaThemeOnMissing,
+  LunaThemeResolverOptions,
+} from './resolver.js';

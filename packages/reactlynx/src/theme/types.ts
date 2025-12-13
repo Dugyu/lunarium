@@ -9,11 +9,11 @@ import type {
   LunaCustomThemeMode,
   LunaCustomThemeTokens,
   LunaCustomThemeVariant,
+  // Resolve
+  LunaThemeFallbackStrategy,
   // Official
   LunaThemeKey,
-  LunaThemeMode,
   LunaThemeTokens,
-  LunaThemeVariant,
 } from '@dugyu/luna-core';
 
 export type {
@@ -25,11 +25,10 @@ export type {
   LunaCustomThemeMode,
   LunaCustomThemeTokens,
   LunaCustomThemeVariant,
+  LunaThemeFallbackStrategy,
   // Official
   LunaThemeKey,
-  LunaThemeMode,
   LunaThemeTokens,
-  LunaThemeVariant,
 };
 
 /**
@@ -56,18 +55,12 @@ export type LunaThemeDefinition =
   | LunaCustomThemeMeta;
 
 export type LunaThemeProviderProps = {
-  themeKey: LunaCustomThemeKey | undefined;
   themes: LunaRuntimeTheme[];
+  themeKey?: LunaCustomThemeKey;
+  defaultTheme?: LunaCustomThemeKey;
   fallbackStrategy?: LunaThemeFallbackStrategy;
   children?: ReactNode;
 };
-
-/**
- * Strategy for fallback when requested themeKey is missing.
- * - "variant-first": prefer same variant, then same mode
- * - "mode-first": prefer same mode, then same variant
- */
-export type LunaThemeFallbackStrategy = 'variant-first' | 'mode-first';
 
 export type UseLunaColorOptions = {
   /**
@@ -84,5 +77,3 @@ export type UseLunaColorOptions = {
    */
   cssVarPrefix?: string;
 };
-
-export type NonEmptyArray<T> = [T, ...T[]];
