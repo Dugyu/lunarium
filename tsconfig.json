@@ -23,28 +23,28 @@
   "references": [
     /** packages-start */
     {
-      "path": "./apps/studio/tsconfig.json",
+      "path": "./apps/studio",
     },
     {
-      "path": "./apps/stage/tsconfig.json",
+      "path": "./apps/stage",
     },
     {
-      "path": "./packages/catalog/tsconfig.json",
+      "path": "./packages/catalog",
     },
     {
-      "path": "./packages/core/tsconfig.json",
+      "path": "./packages/core",
     },
     {
-      "path": "./packages/reactlynx/tsconfig.json",
+      "path": "./packages/reactlynx",
     },
     {
-      "path": "./packages/styles/tsconfig.json",
+      "path": "./packages/styles",
     },
     {
-      "path": "./packages/tailwind/tsconfig.json",
+      "path": "./packages/tailwind",
     },
     {
-      "path": "./packages/tokens/tsconfig.json",
+      "path": "./packages/tokens",
     },
     /** packages-end */
   ],

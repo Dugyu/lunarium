@@ -11,6 +11,10 @@ export type {
   LunaCustomThemeMode,
   LunaCustomThemeTokens,
   LunaCustomThemeVariant,
+  LunaResolvableTheme,
+  LunaThemeFallbackStrategy,
+  LunaThemeOnMissing,
+  LunaThemeResolverOptions,
 } from './theme/index.js';
 
 export {
@@ -19,4 +23,9 @@ export {
   colorIdToColorKey,
   colorKeyToColorId,
   createEmptyLunaColors,
+  resolveTheme,
+  resolveThemeFromList,
+  resolveThemeObjectFromList,
+  inferThemeMode,
+  inferThemeVariant,
 } from './theme/index.js';

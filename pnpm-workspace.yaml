@@ -1,6 +1,7 @@
 packages:
   - apps/*
   - packages/*
+  - packages/*/examples/**
 
 catalog:
   clsx: 2.1.1
@@ -14,6 +15,7 @@ catalog:
 catalogs:
   lynx:
     "@lynx-js/qrcode-rsbuild-plugin": 0.3.3
+    "@lynx-js/preact-devtools": 5.0.1-cf9aef5
     "@lynx-js/react": 0.114.4
     "@lynx-js/react-rsbuild-plugin": 0.11.4
     "@lynx-js/rspeedy": 0.11.8
@@ -27,6 +29,7 @@ catalogs:
   rsbuild:
     "@rsbuild/core": 1.6.1
     "@rsbuild/plugin-react": 1.4.2
+    "@rsbuild/plugin-type-check": 1.2.4
   rslib:
     "@rslib/core": 0.17.1
 

@@ -7,8 +7,9 @@
     "paths": { "*": ["./*"] },
     "outDir": "dist",
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "examples/**/*.ts", "examples/**/*.tsx"],
   "references": [
+    { "path": "./examples" },
     { "path": "../core/tsconfig.build.json" },
   ],
 }

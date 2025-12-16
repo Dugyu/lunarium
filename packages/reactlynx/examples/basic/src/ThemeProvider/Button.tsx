@@ -1,0 +1,49 @@
+import type { ReactNode } from '@lynx-js/react';
+
+import { useLunaColor } from '@dugyu/luna-reactlynx';
+
+type ButtonProps = {
+  variant?: 'primary' | 'secondary';
+  disabled?: boolean;
+  children?: ReactNode;
+  className?: string;
+};
+
+function Button(props: ButtonProps) {
+  const color = useLunaColor();
+  const { variant = 'primary', disabled = false, children, className = '' } =
+    props;
+
+  return (
+    <view
+      style={{
+        justifyContent: 'center',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: '9999px',
+        opacity: disabled ? 0.5 : 1,
+        height: '48px',
+        width: '100%',
+        backgroundColor: variant === 'primary'
+          ? color('primary')
+          : color('neutralAmbient'),
+      }}
+      className={className}
+    >
+      <text
+        style={{
+          fontSize: '14px',
+          lineHeight: '18px',
+          fontWeight: '600',
+          color: variant === 'primary'
+            ? color('primaryContent')
+            : color('content'),
+        }}
+      >
+        {children}
+      </text>
+    </view>
+  );
+}
+export { Button };
