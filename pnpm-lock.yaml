@@ -289,13 +289,14 @@ importers:
         version: 5.9.2
 
   packages/reactlynx:
-    devDependencies:
+    dependencies:
       '@dugyu/luna-core':
         specifier: workspace:*
         version: link:../core
       '@lynx-js/react':
         specifier: catalog:lynx
         version: 0.114.4(@lynx-js/types@3.4.11)(@types/react@18.3.24)
+    devDependencies:
       '@lynx-js/types':
         specifier: catalog:lynx
         version: 3.4.11
@@ -320,12 +321,18 @@ importers:
       '@dugyu/luna-reactlynx':
         specifier: workspace:*
         version: link:../..
+      '@dugyu/luna-styles':
+        specifier: workspace:*
+        version: link:../../../styles
       '@dugyu/luna-tokens':
         specifier: workspace:*
         version: link:../../../tokens
       '@lynx-js/react':
         specifier: catalog:lynx
         version: 0.114.4(@lynx-js/types@3.4.11)(@types/react@18.3.24)
+      clsx:
+        specifier: 'catalog:'
+        version: 2.1.1
     devDependencies:
       '@lynx-js/preact-devtools':
         specifier: catalog:lynx

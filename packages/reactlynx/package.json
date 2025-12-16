@@ -1,16 +1,24 @@
 {
   "name": "@dugyu/luna-reactlynx",
   "version": "0.1.0",
-  "description": "Reactlynx runtime theming hooks and utilities for the L.U.N.A project.",
+  "description": "Reactlynx theming primitives (provider/hooks) and optional runtime wrappers for the L.U.N.A project.",
   "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.jsx"
     },
-    "./theme": {
+    "./theming": {
       "types": "./dist/theme/index.d.ts",
       "import": "./dist/theme/index.jsx"
+    },
+    "./runtime": {
+      "types": "./dist/runtime/index.d.ts",
+      "import": "./dist/runtime/index.jsx"
+    },
+    "./runtime/global-props": {
+      "types": "./dist/runtime/global-props.d.ts",
+      "import": "./dist/runtime/global-props.jsx"
     }
   },
   "sideEffects": false,
@@ -21,10 +29,11 @@
   "scripts": {
     "build": "rslib build"
   },
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "@dugyu/luna-core": "workspace:*",
-    "@lynx-js/react": "catalog:lynx",
+    "@lynx-js/react": "catalog:lynx"
+  },
+  "devDependencies": {
     "@lynx-js/types": "catalog:lynx",
     "@rslib/core": "catalog:rslib",
     "@rsbuild/plugin-react": "catalog:rsbuild",

@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "@dugyu/luna-reactlynx": "workspace:*",
+    "@dugyu/luna-styles": "workspace:*",
     "@dugyu/luna-tokens": "workspace:*",
-    "@lynx-js/react": "catalog:lynx"
+    "@lynx-js/react": "catalog:lynx",
+    "clsx": "catalog:"
   },
   "devDependencies": {
     "@lynx-js/preact-devtools": "catalog:lynx",

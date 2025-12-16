@@ -1,5 +1,5 @@
-export { LunaThemeContext } from './theme-context.js';
-export { LunaThemeProvider } from './theme-provider.js';
+export { LunaThemeContext } from './theme-context.jsx';
+export { LunaThemeProvider } from './theme-provider.jsx';
 export { createLunaTheme } from './create-theme.js';
 export { useLunaTheme } from './use-theme.js';
 export { useLunaColor } from './use-color.js';

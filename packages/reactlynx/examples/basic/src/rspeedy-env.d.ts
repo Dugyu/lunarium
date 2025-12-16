@@ -1,5 +1,7 @@
 /// <reference types="@lynx-js/rspeedy/client" />
 
+import '@dugyu/luna-reactlynx/runtime/global-props';
+
 declare module '@lynx-js/types' {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface GlobalProps {
@@ -9,6 +11,3 @@ declare module '@lynx-js/types' {
      */
   }
 }
-
-// This export makes the file a module
-export {};

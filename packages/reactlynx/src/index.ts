@@ -4,7 +4,7 @@ export {
   createLunaTheme,
   useLunaTheme,
   useLunaColor,
-} from './theme/index.js';
+} from './theming/index.js';
 
 export type {
   LunaColorId,
@@ -25,4 +25,4 @@ export type {
   LunaThemeFallbackStrategy,
   LunaThemeProviderProps,
   UseLunaColorOptions,
-} from './theme/index.js';
+} from './theming/index.js';
