@@ -11,6 +11,7 @@
   "dependencies": {
     "@dugyu/luna-catalog": "workspace:*",
     "@dugyu/luna-core": "workspace:*",
+    "@dugyu/luna-reactlynx": "workspace:*",
     "@dugyu/luna-styles": "workspace:*",
     "@lynx-js/react": "catalog:lynx",
     "clsx": "catalog:",
