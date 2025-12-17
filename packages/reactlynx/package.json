@@ -34,12 +34,12 @@
     "@lynx-js/react": "catalog:lynx"
   },
   "devDependencies": {
-    "@lynx-js/types": "catalog:lynx",
+    "@lynx-js/types": "catalog:lynx-dev",
     "@rslib/core": "catalog:rslib",
     "@rsbuild/plugin-react": "catalog:rsbuild",
-    "@typescript/native-preview": "catalog:",
+    "@typescript/native-preview": "catalog:ts",
     "@types/react": "catalog:react18",
-    "typescript": "catalog:"
+    "typescript": "catalog:ts"
   },
   "peerDependencies": {
     "@lynx-js/react": ">=0.100.0",

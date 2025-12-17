@@ -14,22 +14,22 @@
     "@dugyu/luna-reactlynx": "workspace:*",
     "@dugyu/luna-styles": "workspace:*",
     "@lynx-js/react": "catalog:lynx",
-    "clsx": "catalog:",
-    "tailwind-merge": "catalog:"
+    "clsx": "catalog:utils",
+    "tailwind-merge": "catalog:tailwind"
   },
   "devDependencies": {
     "@dugyu/luna-tailwind": "workspace:*",
-    "@lynx-js/preact-devtools": "catalog:lynx",
-    "@lynx-js/qrcode-rsbuild-plugin": "catalog:lynx",
-    "@lynx-js/react-rsbuild-plugin": "catalog:lynx",
-    "@lynx-js/rspeedy": "catalog:lynx",
-    "@lynx-js/tailwind-preset": "catalog:lynx",
-    "@lynx-js/types": "catalog:lynx",
+    "@lynx-js/preact-devtools": "catalog:lynx-dev",
+    "@lynx-js/qrcode-rsbuild-plugin": "catalog:lynx-build",
+    "@lynx-js/react-rsbuild-plugin": "catalog:lynx-build",
+    "@lynx-js/rspeedy": "catalog:lynx-build",
+    "@lynx-js/tailwind-preset": "catalog:tailwind",
+    "@lynx-js/types": "catalog:lynx-dev",
     "@rsbuild/plugin-type-check": "catalog:rsbuild",
     "@types/react": "catalog:react18",
-    "rsbuild-plugin-tailwindcss": "catalog:",
-    "tailwindcss": "catalog:",
-    "typescript": "catalog:"
+    "rsbuild-plugin-tailwindcss": "catalog:tailwind",
+    "tailwindcss": "catalog:tailwind",
+    "typescript": "catalog:ts"
   },
   "engines": {
     "node": ">=18"
