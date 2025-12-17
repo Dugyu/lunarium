@@ -12,17 +12,17 @@
     "@dugyu/luna-styles": "workspace:*",
     "@dugyu/luna-tokens": "workspace:*",
     "@lynx-js/react": "catalog:lynx",
-    "clsx": "catalog:"
+    "clsx": "catalog:utils"
   },
   "devDependencies": {
-    "@lynx-js/preact-devtools": "catalog:lynx",
-    "@lynx-js/qrcode-rsbuild-plugin": "catalog:lynx",
-    "@lynx-js/react-rsbuild-plugin": "catalog:lynx",
-    "@lynx-js/rspeedy": "catalog:lynx",
-    "@lynx-js/types": "catalog:lynx",
+    "@lynx-js/preact-devtools": "catalog:lynx-dev",
+    "@lynx-js/qrcode-rsbuild-plugin": "catalog:lynx-build",
+    "@lynx-js/react-rsbuild-plugin": "catalog:lynx-build",
+    "@lynx-js/rspeedy": "catalog:lynx-build",
+    "@lynx-js/types": "catalog:lynx-dev",
     "@rsbuild/plugin-type-check": "catalog:rsbuild",
     "@types/react": "catalog:react18",
-    "typescript": "catalog:"
+    "typescript": "catalog:ts"
   },
   "engines": {
     "node": ">=18"

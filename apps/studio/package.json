@@ -14,14 +14,14 @@
     "@dugyu/luna-core": "workspace:*",
     "@headlessui/react": "^2.2.7",
     "@headlessui/tailwindcss": "^0.2.2",
-    "@lynx-js/web-core": "^0.18.1",
-    "@lynx-js/web-elements": "^0.8.9",
-    "clsx": "catalog:",
+    "@lynx-js/web-core": "catalog:lynx",
+    "@lynx-js/web-elements": "catalog:lynx",
+    "clsx": "catalog:utils",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.21",
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
-    "tailwind-merge": "catalog:"
+    "tailwind-merge": "catalog:tailwind"
   },
   "devDependencies": {
     "@rsbuild/core": "catalog:rsbuild",
@@ -29,8 +29,8 @@
     "@types/react": "catalog:react18",
     "@types/react-dom": "catalog:react18",
     "cross-env": "^10.0.0",
-    "rsbuild-plugin-tailwindcss": "catalog:",
-    "tailwindcss": "catalog:",
-    "typescript": "catalog:"
+    "rsbuild-plugin-tailwindcss": "catalog:tailwind",
+    "tailwindcss": "catalog:tailwind",
+    "typescript": "catalog:ts"
   }
 }

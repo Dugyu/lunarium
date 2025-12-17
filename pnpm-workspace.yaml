@@ -3,24 +3,20 @@ packages:
   - packages/*
   - packages/*/examples/**
 
-catalog:
-  clsx: 2.1.1
-  rsbuild-plugin-tailwindcss: 0.2.3
-  tailwindcss: 3.4.17
-  tailwind-merge: 2.6.0
-  typescript: 5.9.2
-  "@types/node": 24.6.1
-  "@typescript/native-preview": 7.0.0-dev.20251103.1
-
 catalogs:
+  utils:
+    clsx: 2.1.1
   lynx:
-    "@lynx-js/qrcode-rsbuild-plugin": 0.3.3
-    "@lynx-js/preact-devtools": 5.0.1-cf9aef5
     "@lynx-js/react": 0.114.4
+    "@lynx-js/web-core": 0.18.1
+    "@lynx-js/web-elements": 0.8.9
+  lynx-dev:
+    "@lynx-js/preact-devtools": 5.0.1-cf9aef5
+    "@lynx-js/types": 3.4.11
+  lynx-build:
+    "@lynx-js/qrcode-rsbuild-plugin": 0.3.3
     "@lynx-js/react-rsbuild-plugin": 0.11.4
     "@lynx-js/rspeedy": 0.11.8
-    "@lynx-js/types": 3.4.11
-    "@lynx-js/tailwind-preset": 0.4.0
   react18:
     "@types/react": 18.3.24
     "@types/react-dom": 18.3.7
@@ -32,6 +28,15 @@ catalogs:
     "@rsbuild/plugin-type-check": 1.2.4
   rslib:
     "@rslib/core": 0.17.1
+  tailwind:
+    "@lynx-js/tailwind-preset": 0.4.0
+    rsbuild-plugin-tailwindcss: 0.2.3
+    tailwind-merge: 2.6.0
+    tailwindcss: 3.4.17
+  ts:
+    typescript: 5.9.2
+    "@types/node": 24.6.1
+    "@typescript/native-preview": 7.0.0-dev.20251103.1
 
 enablePrePostScripts: false
 

@@ -25,9 +25,9 @@
   "devDependencies": {
     "@dugyu/luna-core": "workspace:*",
     "@rslib/core": "catalog:rslib",
-    "@typescript/native-preview": "catalog:",
-    "tailwindcss": "catalog:",
-    "typescript": "catalog:"
+    "@typescript/native-preview": "catalog:ts",
+    "tailwindcss": "catalog:tailwind",
+    "typescript": "catalog:ts"
   },
   "peerDependencies": {
     "tailwindcss": "^3.4.0"

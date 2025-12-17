@@ -34,7 +34,7 @@
     "@dugyu/luna-core": "workspace:",
     "@dugyu/luna-tokens": "workspace:",
     "@rslib/core": "catalog:rslib",
-    "@types/node": "catalog:",
-    "typescript": "catalog:"
+    "@types/node": "catalog:ts",
+    "typescript": "catalog:ts"
   }
 }

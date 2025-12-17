@@ -5,47 +5,30 @@ settings:
   excludeLinksFromLockfile: false
 
 catalogs:
-  default:
-    '@types/node':
-      specifier: 24.6.1
-      version: 24.6.1
-    '@typescript/native-preview':
-      specifier: 7.0.0-dev.20251103.1
-      version: 7.0.0-dev.20251103.1
-    clsx:
-      specifier: 2.1.1
-      version: 2.1.1
-    rsbuild-plugin-tailwindcss:
-      specifier: 0.2.3
-      version: 0.2.3
-    tailwind-merge:
-      specifier: 2.6.0
-      version: 2.6.0
-    tailwindcss:
-      specifier: 3.4.17
-      version: 3.4.17
-    typescript:
-      specifier: 5.9.2
-      version: 5.9.2
   lynx:
-    '@lynx-js/preact-devtools':
-      specifier: 5.0.1-cf9aef5
-      version: 5.0.1-cf9aef5
-    '@lynx-js/qrcode-rsbuild-plugin':
-      specifier: 0.3.3
-      version: 0.3.3
     '@lynx-js/react':
       specifier: 0.114.4
       version: 0.114.4
+    '@lynx-js/web-core':
+      specifier: 0.18.1
+      version: 0.18.1
+    '@lynx-js/web-elements':
+      specifier: 0.8.9
+      version: 0.8.9
+  lynx-build:
+    '@lynx-js/qrcode-rsbuild-plugin':
+      specifier: 0.3.3
+      version: 0.3.3
     '@lynx-js/react-rsbuild-plugin':
       specifier: 0.11.4
       version: 0.11.4
     '@lynx-js/rspeedy':
       specifier: 0.11.8
       version: 0.11.8
-    '@lynx-js/tailwind-preset':
-      specifier: 0.4.0
-      version: 0.4.0
+  lynx-dev:
+    '@lynx-js/preact-devtools':
+      specifier: 5.0.1-cf9aef5
+      version: 5.0.1-cf9aef5
     '@lynx-js/types':
       specifier: 3.4.11
       version: 3.4.11
@@ -76,6 +59,33 @@ catalogs:
     '@rslib/core':
       specifier: 0.17.1
       version: 0.17.1
+  tailwind:
+    '@lynx-js/tailwind-preset':
+      specifier: 0.4.0
+      version: 0.4.0
+    rsbuild-plugin-tailwindcss:
+      specifier: 0.2.3
+      version: 0.2.3
+    tailwind-merge:
+      specifier: 2.6.0
+      version: 2.6.0
+    tailwindcss:
+      specifier: 3.4.17
+      version: 3.4.17
+  ts:
+    '@types/node':
+      specifier: 24.6.1
+      version: 24.6.1
+    '@typescript/native-preview':
+      specifier: 7.0.0-dev.20251103.1
+      version: 7.0.0-dev.20251103.1
+    typescript:
+      specifier: 5.9.2
+      version: 5.9.2
+  utils:
+    clsx:
+      specifier: 2.1.1
+      version: 2.1.1
 
 importers:
 
@@ -91,7 +101,7 @@ importers:
         specifier: ^7.2.0
         version: 7.2.0
       '@typescript/native-preview':
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 7.0.0-dev.20251103.1
       '@vitest/eslint-plugin':
         specifier: ^1.3.9
@@ -136,7 +146,7 @@ importers:
         specifier: ^2.5.6
         version: 2.5.6
       typescript:
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 5.9.2
       typescript-eslint:
         specifier: ^8.43.0
@@ -160,32 +170,32 @@ importers:
         specifier: catalog:lynx
         version: 0.114.4(@lynx-js/types@3.4.11)(@types/react@18.3.24)
       clsx:
-        specifier: 'catalog:'
+        specifier: catalog:utils
         version: 2.1.1
       tailwind-merge:
-        specifier: 'catalog:'
+        specifier: catalog:tailwind
         version: 2.6.0
     devDependencies:
       '@dugyu/luna-tailwind':
         specifier: workspace:*
         version: link:../../packages/tailwind
       '@lynx-js/preact-devtools':
-        specifier: catalog:lynx
+        specifier: catalog:lynx-dev
         version: 5.0.1-cf9aef5
       '@lynx-js/qrcode-rsbuild-plugin':
-        specifier: catalog:lynx
+        specifier: catalog:lynx-build
         version: 0.3.3
       '@lynx-js/react-rsbuild-plugin':
-        specifier: catalog:lynx
+        specifier: catalog:lynx-build
         version: 0.11.4(@lynx-js/react@0.114.4(@lynx-js/types@3.4.11)(@types/react@18.3.24))(webpack@5.101.3)
       '@lynx-js/rspeedy':
-        specifier: catalog:lynx
+        specifier: catalog:lynx-build
         version: 0.11.8(@rspack/core@1.6.5(@swc/helpers@0.5.17))(typescript@5.9.2)(webpack@5.101.3)
       '@lynx-js/tailwind-preset':
-        specifier: catalog:lynx
+        specifier: catalog:tailwind
         version: 0.4.0(tailwindcss@3.4.17)
       '@lynx-js/types':
-        specifier: catalog:lynx
+        specifier: catalog:lynx-dev
         version: 3.4.11
       '@rsbuild/plugin-type-check':
         specifier: catalog:rsbuild
@@ -194,13 +204,13 @@ importers:
         specifier: catalog:react18
         version: 18.3.24
       rsbuild-plugin-tailwindcss:
-        specifier: 'catalog:'
+        specifier: catalog:tailwind
         version: 0.2.3(@rsbuild/core@1.5.17)(tailwindcss@3.4.17)
       tailwindcss:
-        specifier: 'catalog:'
+        specifier: catalog:tailwind
         version: 3.4.17
       typescript:
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 5.9.2
 
   apps/studio:
@@ -218,13 +228,13 @@ importers:
         specifier: ^0.2.2
         version: 0.2.2(tailwindcss@3.4.17)
       '@lynx-js/web-core':
-        specifier: ^0.18.1
+        specifier: catalog:lynx
         version: 0.18.1(@lynx-js/lynx-core@0.1.3)(@lynx-js/web-elements@0.8.9(tslib@2.8.1))
       '@lynx-js/web-elements':
-        specifier: ^0.8.9
+        specifier: catalog:lynx
         version: 0.8.9(tslib@2.8.1)
       clsx:
-        specifier: 'catalog:'
+        specifier: catalog:utils
         version: 2.1.1
       lucide-react:
         specifier: ^0.546.0
@@ -239,7 +249,7 @@ importers:
         specifier: catalog:react18
         version: 18.3.1(react@18.3.1)
       tailwind-merge:
-        specifier: 'catalog:'
+        specifier: catalog:tailwind
         version: 2.6.0
     devDependencies:
       '@rsbuild/core':
@@ -258,13 +268,13 @@ importers:
         specifier: ^10.0.0
         version: 10.0.0
       rsbuild-plugin-tailwindcss:
-        specifier: 'catalog:'
+        specifier: catalog:tailwind
         version: 0.2.3(@rsbuild/core@1.6.1)(tailwindcss@3.4.17)
       tailwindcss:
-        specifier: 'catalog:'
+        specifier: catalog:tailwind
         version: 3.4.17
       typescript:
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 5.9.2
 
   packages/catalog:
@@ -273,10 +283,10 @@ importers:
         specifier: catalog:rslib
         version: 0.17.1(@typescript/native-preview@7.0.0-dev.20251103.1)(typescript@5.9.2)
       '@typescript/native-preview':
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 7.0.0-dev.20251103.1
       typescript:
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 5.9.2
 
   packages/core:
@@ -285,10 +295,10 @@ importers:
         specifier: catalog:rslib
         version: 0.17.1(@typescript/native-preview@7.0.0-dev.20251103.1)(typescript@5.9.2)
       '@typescript/native-preview':
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 7.0.0-dev.20251103.1
       typescript:
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 5.9.2
 
   packages/reactlynx:
@@ -301,7 +311,7 @@ importers:
         version: 0.114.4(@lynx-js/types@3.4.11)(@types/react@18.3.24)
     devDependencies:
       '@lynx-js/types':
-        specifier: catalog:lynx
+        specifier: catalog:lynx-dev
         version: 3.4.11
       '@rsbuild/plugin-react':
         specifier: catalog:rsbuild
@@ -313,10 +323,10 @@ importers:
         specifier: catalog:react18
         version: 18.3.24
       '@typescript/native-preview':
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 7.0.0-dev.20251103.1
       typescript:
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 5.9.2
 
   packages/reactlynx/examples/basic:
@@ -334,23 +344,23 @@ importers:
         specifier: catalog:lynx
         version: 0.114.4(@lynx-js/types@3.4.11)(@types/react@18.3.24)
       clsx:
-        specifier: 'catalog:'
+        specifier: catalog:utils
         version: 2.1.1
     devDependencies:
       '@lynx-js/preact-devtools':
-        specifier: catalog:lynx
+        specifier: catalog:lynx-dev
         version: 5.0.1-cf9aef5
       '@lynx-js/qrcode-rsbuild-plugin':
-        specifier: catalog:lynx
+        specifier: catalog:lynx-build
         version: 0.3.3
       '@lynx-js/react-rsbuild-plugin':
-        specifier: catalog:lynx
+        specifier: catalog:lynx-build
         version: 0.11.4(@lynx-js/react@0.114.4(@lynx-js/types@3.4.11)(@types/react@18.3.24))(webpack@5.101.3)
       '@lynx-js/rspeedy':
-        specifier: catalog:lynx
+        specifier: catalog:lynx-build
         version: 0.11.8(@rspack/core@1.6.5(@swc/helpers@0.5.17))(typescript@5.9.2)(webpack@5.101.3)
       '@lynx-js/types':
-        specifier: catalog:lynx
+        specifier: catalog:lynx-dev
         version: 3.4.11
       '@rsbuild/plugin-type-check':
         specifier: catalog:rsbuild
@@ -359,7 +369,7 @@ importers:
         specifier: catalog:react18
         version: 18.3.24
       typescript:
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 5.9.2
 
   packages/styles:
@@ -374,10 +384,10 @@ importers:
         specifier: catalog:rslib
         version: 0.17.1(@typescript/native-preview@7.0.0-dev.20251103.1)(typescript@5.9.2)
       '@types/node':
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 24.6.1
       typescript:
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 5.9.2
 
   packages/tailwind:
@@ -389,13 +399,13 @@ importers:
         specifier: catalog:rslib
         version: 0.17.1(@typescript/native-preview@7.0.0-dev.20251103.1)(typescript@5.9.2)
       '@typescript/native-preview':
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 7.0.0-dev.20251103.1
       tailwindcss:
-        specifier: 'catalog:'
+        specifier: catalog:tailwind
         version: 3.4.17
       typescript:
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 5.9.2
 
   packages/tokens:
@@ -407,10 +417,10 @@ importers:
         specifier: catalog:rslib
         version: 0.17.1(@typescript/native-preview@7.0.0-dev.20251103.1)(typescript@5.9.2)
       '@typescript/native-preview':
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 7.0.0-dev.20251103.1
       typescript:
-        specifier: 'catalog:'
+        specifier: catalog:ts
         version: 5.9.2
 
 packages:
