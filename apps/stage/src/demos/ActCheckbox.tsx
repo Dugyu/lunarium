@@ -7,7 +7,7 @@ import { LunaTheme } from '@/LunaTheme.js';
 
 export function App() {
   return (
-    <LunaTheme variant='all'>
+    <LunaTheme>
       <ActCheckbox />
     </LunaTheme>
   );
