@@ -13,7 +13,7 @@ function InlineCSSVar() {
             Local Reference (Nested)
           </text>
           <view
-            className='w-[48px] h-[360px] gradient-test'
+            className='w-[48px] h-[360px] gradient-test flex flex-row justify-center items-center'
             style={{
               // @ts-expect-error custom properties
               '--my-gradient': 'var(--gradient-a)',
@@ -21,6 +21,12 @@ function InlineCSSVar() {
                 'linear-gradient(0deg, var(--gradient-c), var(--my-gradient))',
             }}
           >
+            <view
+              className='bg-[var(--my-gradient)] size-[20px]'
+              // @ts-expect-error custom properties
+              style={{ '--my-gradient': '#ff0000' }}
+            >
+            </view>
           </view>
         </view>
         <view className='parent bg-neutral-ambient w-[30%] h-[540px] flex flex-col justify-center items-center py-[48px] gap-[8px]'>

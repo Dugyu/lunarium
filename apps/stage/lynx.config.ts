@@ -49,7 +49,7 @@ export default defineConfig({
     }),
     pluginReactLynx({
       enableCSSInheritance: true,
-      engineVersion: '2.8',
+      engineVersion: '2.14',
     }),
     pluginTypeCheck(),
     pluginTailwindCSS({ config: 'tailwind.config.ts' }),
