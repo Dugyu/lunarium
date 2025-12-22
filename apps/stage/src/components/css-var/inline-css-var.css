@@ -1,0 +1,7 @@
+.gradient-test {
+  background: linear-gradient(
+    0deg,
+    var(--gradient-b),
+    var(--gradient-c)
+  );
+}

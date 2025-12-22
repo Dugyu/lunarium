@@ -4,7 +4,7 @@ function NestedCSSVar() {
   return (
     <view className='size-full bg-canvas flex flex-col justify-center items-center gap-[16px] px-[24px] py-[72px]'>
       <text className='absolute top-[72px] text-content text-xl'>
-        Inline and Nested CSS Vars
+        Nested CSS Vars
       </text>
 
       <view className='size-full flex flex-row justify-center items-center'>

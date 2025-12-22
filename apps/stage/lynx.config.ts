@@ -20,6 +20,7 @@ export default defineConfig({
   },
   source: {
     entry: {
+      InlineCSSVar: './src/demos/InlineCSSVar.tsx',
       NestedCSSVar: './src/demos/NestedCSSVar.tsx',
       ActBloom: './src/demos/ActBloom.tsx',
       ActBlueskies: './src/demos/ActBlueskies.tsx',
@@ -48,6 +49,7 @@ export default defineConfig({
     }),
     pluginReactLynx({
       enableCSSInheritance: true,
+      engineVersion: '2.8',
     }),
     pluginTypeCheck(),
     pluginTailwindCSS({ config: 'tailwind.config.ts' }),
