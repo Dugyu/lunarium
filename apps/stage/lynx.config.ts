@@ -7,6 +7,8 @@ import { defineConfig } from '@lynx-js/rspeedy';
 import { pluginTypeCheck } from '@rsbuild/plugin-type-check';
 import { pluginTailwindCSS } from 'rsbuild-plugin-tailwindcss';
 
+import { LynxConfigPlugin } from './lynx.config.plugin.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -18,6 +20,7 @@ export default defineConfig({
   },
   source: {
     entry: {
+      NestedCSSVar: './src/demos/NestedCSSVar.tsx',
       ActBloom: './src/demos/ActBloom.tsx',
       ActBlueskies: './src/demos/ActBlueskies.tsx',
       ActMoonrise: './src/demos/ActMoonrise.tsx',
@@ -29,6 +32,11 @@ export default defineConfig({
       ActSwitch: './src/demos/ActSwitch.tsx',
       ActCheckbox: './src/demos/ActCheckbox.tsx',
       ActRadioGroup: './src/demos/ActRadioGroup.tsx',
+    },
+  },
+  tools: {
+    rspack: {
+      plugins: [LynxConfigPlugin],
     },
   },
   plugins: [

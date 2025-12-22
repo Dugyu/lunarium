@@ -1,0 +1,39 @@
+.parent {
+  --gradient: var(--gradient-b);
+  --fallback: var(--gradient-d);
+  --gradient-1: var(--gradient);
+  --gradient-2: var(--gradient-none, var(--fallback));
+  --gradient-3: var(--gradient-none, var(--gradient-1, var(--fallback)));
+  --gradient-4: var(--gradient-none, var(--gradient-none, var(--fallback)));
+  --gradient-5: var(--gradient-2);
+}
+
+.parent-reference {
+  --gradient: var(--gradient-b);
+  --fallback: var(--gradient-d);
+  --gradient-1: var(--gradient);
+  --gradient-2: var(--fallback);
+  --gradient-3: var(--gradient);
+  --gradient-4: var(--fallback);
+  --gradient-5: var(--fallback);
+}
+
+.child-1 {
+  background-color: var(--gradient-1);
+}
+
+.child-2 {
+  background-color: var(--gradient-2);
+}
+
+.child-3 {
+  background-color: var(--gradient-3);
+}
+
+.child-4 {
+  background-color: var(--gradient-4);
+}
+
+.child-5 {
+  background-color: var(--gradient-5);
+}
