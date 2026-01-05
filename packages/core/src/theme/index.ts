@@ -1,4 +1,6 @@
-export type { LunaColorId, LunaColorKey } from './color.js';
+/* ============================================================================
+ * Theme keys & modes
+ * ========================================================================== */
 
 export type {
   LunaNeutralThemeKey,
@@ -10,11 +12,21 @@ export type {
   LunaCustomThemeVariant,
 } from './keys.js';
 
+/* ============================================================================
+ * Theme tokens
+ * ========================================================================== */
+
 export type {
   LunaThemeTokens,
   LunaCustomThemeTokens,
   LunaCustomThemeMeta,
 } from './tokens.js';
+
+/* ============================================================================
+ * Color
+ * ========================================================================== */
+
+export type { LunaColorId, LunaColorKey } from './color.js';
 
 export {
   LUNA_COLOR_IDS,
@@ -24,17 +36,24 @@ export {
   createEmptyLunaColors,
 } from './color.js';
 
+/* ============================================================================
+ * Theme resolver (public surface)
+ * ========================================================================== */
+
+/** Core resolver APIs */
 export {
-  resolveTheme,
-  resolveThemeFromList,
+  resolveThemeKey,
+  resolveThemeKeyFromList,
   resolveThemeObjectFromList,
   inferThemeMode,
-  inferThemeVariant,
 } from './resolver.js';
 
+/** Resolver configuration & contracts */
 export type {
   LunaResolvableTheme,
-  LunaThemeFallbackStrategy,
-  LunaThemeOnMissing,
+  LunaThemeResolveRuleId,
+  LunaThemeResolveRuleSpec,
+  LunaThemeResolverFallback,
+  LunaThemeResolverOnEmpty,
   LunaThemeResolverOptions,
 } from './resolver.js';

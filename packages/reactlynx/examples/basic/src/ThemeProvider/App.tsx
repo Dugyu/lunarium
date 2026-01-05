@@ -1,22 +1,22 @@
 import {
   LunaThemeProvider,
   createLunaTheme,
-  useLunaColor,
+  useLunaColors,
 } from '@dugyu/luna-reactlynx';
 import { lunarisDarkTokens, lunarisLightTokens } from '@dugyu/luna-tokens';
 
 import { Button } from './Button.js';
 
-const lunaLightTheme = createLunaTheme(lunarisLightTokens);
-const lunaDarkTheme = createLunaTheme(lunarisDarkTokens);
+const lunarisLightTheme = createLunaTheme(lunarisLightTokens);
+const lunarisDarkTheme = createLunaTheme(lunarisDarkTokens);
 
-const themes = [lunaLightTheme, lunaDarkTheme];
+const themes = [lunarisLightTheme, lunarisDarkTheme];
 
 export function App() {
   return (
     <LunaThemeProvider
       themes={themes}
-      themeKey={lynx.__globalProps.lunaTheme ?? 'luna-light'}
+      themeKey={lynx.__globalProps.lunaTheme ?? 'lunaris-light'}
     >
       <Demo />
     </LunaThemeProvider>
@@ -24,7 +24,7 @@ export function App() {
 }
 
 function Demo() {
-  const color = useLunaColor();
+  const colors = useLunaColors();
 
   return (
     <view
@@ -37,7 +37,7 @@ function Demo() {
         rowGap: '8px',
         paddingLeft: '64px',
         paddingRight: '64px',
-        backgroundColor: color('canvas'),
+        backgroundColor: colors.canvas,
       }}
     >
       {/* Button Demo */}

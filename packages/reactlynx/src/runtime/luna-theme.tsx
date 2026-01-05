@@ -3,7 +3,7 @@ import type { ReactNode } from '@lynx-js/react';
 import type { CSSProperties } from '@lynx-js/types';
 
 import type { LunaCustomThemeKey, LunaThemeKey } from '@dugyu/luna-core';
-import { resolveThemeFromList } from '@dugyu/luna-core';
+import { resolveThemeKeyFromList } from '@dugyu/luna-core';
 
 type LunaThemeProps = {
   children?: ReactNode;
@@ -36,7 +36,7 @@ export function LunaTheme(
   }: LunaThemeProps,
 ) {
   const requested = themeKey ?? lynx?.__globalProps?.lunaTheme;
-  const resolved = resolveThemeFromList(themes, requested);
+  const resolved = resolveThemeKeyFromList(themes, requested);
 
   const viewStyle = useMemo(
     () =>

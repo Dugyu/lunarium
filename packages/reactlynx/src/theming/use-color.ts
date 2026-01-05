@@ -1,40 +1,69 @@
-import { useCallback } from '@lynx-js/react';
+import { useCallback, useMemo } from '@lynx-js/react';
 
-import { colorKeyToColorId } from './helpers.js';
+import {
+  formatMetaOnlyValueError,
+  resolveConsumptionFormat,
+  toVarName,
+} from './consumption.js';
+import { colorKeyToColorId } from './identity.js';
 import type { LunaColorKey, UseLunaColorOptions } from './types.js';
-import { useLunaTheme } from './use-theme.js';
+import { useLunaThemeContext } from './use-theme-context.js';
 
 export function useLunaColor(
   options: UseLunaColorOptions = {},
 ): (key: LunaColorKey) => string {
-  const { theme } = useLunaTheme();
-  const {
-    as = 'value',
-    cssVarPrefix = 'luna',
-  } = options;
+  const ctx = useLunaThemeContext();
+  if (!ctx) {
+    throw new Error('[useLunaColor] must be used within <LunaThemeProvider>.');
+  }
+
+  const { theme } = ctx;
+
+  const { as = 'result', format, cssVarPrefix } = options;
+
+  const resolved = useMemo(() =>
+    resolveConsumptionFormat({
+      as,
+      format,
+      themeFormat: theme.consumptionFormat,
+    }), [as, format, theme.consumptionFormat]);
+
+  const prefix = useMemo(
+    () => cssVarPrefix ?? theme.cssVarPrefix,
+    [cssVarPrefix, theme.cssVarPrefix],
+  );
 
   const getColor = useCallback(
     (key: LunaColorKey): string => {
       const id = colorKeyToColorId(key);
-      const varName = `--${cssVarPrefix}-${id}`;
 
-      switch (as) {
+      const varName = toVarName({ id, cssVarPrefix: prefix });
+
+      switch (resolved.kind) {
         case 'var-name':
-          // return CSS variable name
           return varName;
 
         case 'var-ref':
-          // return CSS variable reference "var(--...)"
           return `var(${varName})`;
 
-        case 'value':
+        case 'value': {
+          if (theme.sourceType !== 'values') {
+            throw new Error(
+              formatMetaOnlyValueError({ hook: 'useLunaColor' }),
+            );
+          }
+          return theme.colors[key];
+        }
         default:
-          // return raw value
-          return theme.colors[key] || '';
+          return assertNever(resolved);
       }
     },
-    [as, cssVarPrefix, theme],
+    [resolved, prefix, theme.sourceType, theme.colors],
   );
 
   return getColor;
+}
+
+function assertNever(x: never): never {
+  throw new Error(`[useLunaColor] Unexpected resolved.kind: ${String(x)}`);
 }
