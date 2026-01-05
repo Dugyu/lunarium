@@ -2,39 +2,158 @@ import {
   LUNA_COLOR_IDS,
   colorIdToColorKey,
   createEmptyLunaColors,
-} from './helpers.js';
-import type { LunaRuntimeTheme, LunaThemeDefinition } from './types.js';
+} from './identity.js';
+import type {
+  CreateLunaThemeOptions,
+  LunaRuntimeTheme,
+  LunaThemeInput,
+} from './types.js';
 
 /**
- * Turn a unified theme definition (official tokens, custom tokens) into a runtime theme object consumable
- * by LunaThemeProvider and hooks.
+ * Turn a theme input into a runtime theme object consumable by LunaThemeProvider and hooks.
+ *
+ * Contract:
+ * - Values-backed inputs (tokens):
+ *   - Require complete token values; missing values throw.
+ *   - `colors` always stores raw values (canonical truth).
+ *   - `consumptionFormat` only affects how consumers interpret the theme.
+ *
+ * - Meta-only inputs:
+ *   - Values are not available.
+ *   - Only `consumptionFormat: 'var-ref'` is valid.
  */
-export function createLunaTheme(def: LunaThemeDefinition): LunaRuntimeTheme {
+export function createLunaTheme(
+  input: LunaThemeInput,
+  options: CreateLunaThemeOptions = {},
+): LunaRuntimeTheme {
+  const { consumptionFormat = 'value', cssVarPrefix } = options;
+
   const colors = createEmptyLunaColors();
 
-  if ('colors' in def) {
-    // Path A: tokens (official or custom) — fill actual values
-    for (const id of LUNA_COLOR_IDS) {
-      const camel = colorIdToColorKey(id);
-      const realValue = def.colors[id];
-      // Future: apply color-space transformation here when needed.
-      colors[camel] = realValue ?? '';
+  // Meta-only input
+  if (!hasColors(input)) {
+    if (consumptionFormat !== 'var-ref') {
+      throw new Error(
+        formatInvalidInputError({
+          sourceType: 'meta-only',
+          consumptionFormat: `'${consumptionFormat}'`,
+        }),
+      );
     }
+
     return {
-      key: def.key,
-      variant: def.variant,
-      mode: def.mode,
+      key: input.key,
+      variant: input.variant,
+      mode: input.mode,
       colors,
+      sourceType: 'meta-only',
+      consumptionFormat: 'var-ref',
+      ...(consumptionFormat === 'var-ref' && cssVarPrefix !== undefined
+        ? { cssVarPrefix }
+        : {}),
     };
   }
 
-  // Path B: meta-only config, typically for CSS-var-only pipeline.
-  // keep all keys, values stay as '' from template
+  // Values-backed input (tokens)
+  const missingIds = collectMissingColorIds(
+    input.colors,
+  );
+
+  if (missingIds.length > 0) {
+    throw new Error(
+      formatMissingColorValuesError({
+        consumptionFormat,
+        sourceType: 'values',
+        missingIds,
+        ...(cssVarPrefix !== undefined ? { cssVarPrefix } : {}),
+      }),
+    );
+  }
+
+  // Fill canonical raw values.
+  for (const id of LUNA_COLOR_IDS) {
+    const key = colorIdToColorKey(id);
+    colors[key] = input.colors[id];
+  }
 
   return {
-    key: def.key,
-    variant: def.variant,
-    mode: def.mode,
+    key: input.key,
+    variant: input.variant,
+    mode: input.mode,
     colors,
+    sourceType: 'values',
+    consumptionFormat,
+    ...(cssVarPrefix !== undefined ? { cssVarPrefix } : {}),
   };
+}
+
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value.length > 0;
+}
+
+function hasColors(
+  input: LunaThemeInput,
+): input is Extract<LunaThemeInput, { colors: Record<string, string> }> {
+  return (
+    'colors' in input
+    && typeof input.colors === 'object'
+    && input.colors !== null
+  );
+}
+
+function formatInvalidInputError(args: {
+  sourceType: 'meta-only';
+  consumptionFormat: string;
+}): string {
+  const { sourceType, consumptionFormat } = args;
+
+  return [
+    '[createLunaTheme] Invalid theme input for the requested consumption format.',
+    `- sourceType:           '${sourceType}'`,
+    `- consumptionFormat:    ${consumptionFormat}`,
+    '',
+    'A meta-only theme input cannot produce raw values.',
+    'If you want to use CSS variables, pass `consumptionFormat: \'var-ref\'`.',
+  ].join('\n');
+}
+
+function formatMissingColorValuesError(args: {
+  consumptionFormat: string;
+  sourceType: string;
+  missingIds: string[];
+  cssVarPrefix?: string;
+}): string {
+  const { consumptionFormat, sourceType, missingIds, cssVarPrefix } = args;
+
+  const preview = missingIds.slice(0, 12).join(', ');
+  const more = missingIds.length > 12
+    ? ` (+${missingIds.length - 12} more)`
+    : '';
+  const prefixHint = cssVarPrefix !== undefined
+    ? `- cssVarPrefix:          ${cssVarPrefix}\n`
+    : '';
+
+  return [
+    '[createLunaTheme] Missing required color values.',
+    `- sourceType:            \`${sourceType}\``,
+    `- consumptionFormat:     \`${consumptionFormat}\``,
+    prefixHint.trimEnd(),
+    `- missing color ids:     ${missingIds.length}`,
+    `- missing (preview):     ${preview}${more}`,
+    '',
+    'Note: token values must be complete, even if `consumptionFormat` is `\'var-ref\'`.',
+  ]
+    .filter(Boolean)
+    .join('\n');
+}
+
+function collectMissingColorIds(colors: Record<string, unknown>): string[] {
+  const missing: string[] = [];
+
+  for (const id of LUNA_COLOR_IDS) {
+    const value = colors[id];
+    if (!isNonEmptyString(value)) missing.push(id);
+  }
+
+  return missing;
 }

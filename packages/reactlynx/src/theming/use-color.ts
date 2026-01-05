@@ -1,39 +1,59 @@
+// use-color.ts
 import { useCallback } from '@lynx-js/react';
 
-import { colorKeyToColorId } from './helpers.js';
+import {
+  formatMetaOnlyValueError,
+  resolveConsumptionFormat,
+  toVarName,
+} from './consumption.js';
+import { colorKeyToColorId } from './identity.js';
 import type { LunaColorKey, UseLunaColorOptions } from './types.js';
-import { useLunaTheme } from './use-theme.js';
+import { useLunaThemeContext } from './use-theme-context.js';
 
 export function useLunaColor(
   options: UseLunaColorOptions = {},
 ): (key: LunaColorKey) => string {
-  const { theme } = useLunaTheme();
-  const {
-    as = 'value',
-    cssVarPrefix = 'luna',
-  } = options;
+  const ctx = useLunaThemeContext();
+  if (!ctx) {
+    throw new Error('[useLunaColor] must be used within <LunaThemeProvider>.');
+  }
+
+  const { theme } = ctx;
+
+  const { as = 'result', format, cssVarPrefix } = options;
 
   const getColor = useCallback(
     (key: LunaColorKey): string => {
       const id = colorKeyToColorId(key);
-      const varName = `--${cssVarPrefix}-${id}`;
 
-      switch (as) {
+      const resolved = resolveConsumptionFormat({
+        as,
+        format,
+        themeFormat: theme.consumptionFormat,
+      });
+
+      const prefix = cssVarPrefix ?? theme.cssVarPrefix;
+      const varName = toVarName({ id, cssVarPrefix: prefix });
+
+      switch (resolved.kind) {
         case 'var-name':
-          // return CSS variable name
           return varName;
 
         case 'var-ref':
-          // return CSS variable reference "var(--...)"
           return `var(${varName})`;
 
         case 'value':
-        default:
-          // return raw value
-          return theme.colors[key] || '';
+        default: {
+          if (theme.sourceType !== 'values') {
+            throw new Error(
+              formatMetaOnlyValueError({ hook: 'useLunaColor' }),
+            );
+          }
+          return theme.colors[key];
+        }
       }
     },
-    [as, cssVarPrefix, theme],
+    [as, cssVarPrefix, format, theme],
   );
 
   return getColor;
