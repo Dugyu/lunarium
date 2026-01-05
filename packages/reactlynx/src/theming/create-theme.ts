@@ -1,3 +1,4 @@
+import { isNonEmptyString } from './consumption.js';
 import {
   LUNA_COLOR_IDS,
   colorIdToColorKey,
@@ -5,8 +6,10 @@ import {
 } from './identity.js';
 import type {
   CreateLunaThemeOptions,
+  LunaColorId,
   LunaRuntimeTheme,
   LunaThemeInput,
+  LunaThemeValueInput,
 } from './types.js';
 
 /**
@@ -48,16 +51,12 @@ export function createLunaTheme(
       colors,
       sourceType: 'meta-only',
       consumptionFormat: 'var-ref',
-      ...(consumptionFormat === 'var-ref' && cssVarPrefix !== undefined
-        ? { cssVarPrefix }
-        : {}),
+      ...(cssVarPrefix !== undefined ? { cssVarPrefix } : {}),
     };
   }
 
   // Values-backed input (tokens)
-  const missingIds = collectMissingColorIds(
-    input.colors,
-  );
+  const missingIds = collectMissingColorIds(input.colors);
 
   if (missingIds.length > 0) {
     throw new Error(
@@ -76,6 +75,8 @@ export function createLunaTheme(
     colors[key] = input.colors[id];
   }
 
+  Object.freeze(colors);
+
   return {
     key: input.key,
     variant: input.variant,
@@ -87,13 +88,14 @@ export function createLunaTheme(
   };
 }
 
-function isNonEmptyString(value: unknown): value is string {
-  return typeof value === 'string' && value.length > 0;
-}
-
-function hasColors(
-  input: LunaThemeInput,
-): input is Extract<LunaThemeInput, { colors: Record<string, string> }> {
+/**
+ * Narrow input to values-backed theme input.
+ *
+ * Note:
+ * - This only checks for the presence of `colors`.
+ * - Completeness of values is validated separately.
+ */
+function hasColors(input: LunaThemeInput): input is LunaThemeValueInput {
   return (
     'colors' in input
     && typeof input.colors === 'object'
@@ -147,8 +149,10 @@ function formatMissingColorValuesError(args: {
     .join('\n');
 }
 
-function collectMissingColorIds(colors: Record<string, unknown>): string[] {
-  const missing: string[] = [];
+function collectMissingColorIds(
+  colors: Record<LunaColorId, string>,
+): LunaColorId[] {
+  const missing: LunaColorId[] = [];
 
   for (const id of LUNA_COLOR_IDS) {
     const value = colors[id];

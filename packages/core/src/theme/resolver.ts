@@ -217,6 +217,10 @@ const DEFAULT_KEY = 'lunaris-dark' as LunaCustomThemeKey;
 const DEFAULT_FALLBACK: LunaThemeResolverFallback = 'use-default';
 const DEFAULT_ON_EMPTY: LunaThemeResolverOnEmpty = 'error';
 
+function assertNever(x: never): never {
+  throw new Error(`[resolveThemeKey] Unexpected fallback value: ${String(x)}`);
+}
+
 /**
  * Resolve a theme key from a non-empty list of allowed keys.
  *
@@ -258,12 +262,14 @@ export function resolveThemeKey(
     case 'use-default':
       return allowedSet.has(defaultKey) ? defaultKey : allowed[0];
     case 'error':
-    default:
       throw new Error(
         `Theme "${
           requested ?? '(undefined)'
         }" cannot be resolved from allowed list.`,
       );
+    default: {
+      assertNever(fallback);
+    }
   }
 }
 

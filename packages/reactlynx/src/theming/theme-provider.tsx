@@ -44,17 +44,21 @@ export function LunaThemeProvider(
    *
    * This allows callers to pass inline objects safely.
    */
-  const resolveStable = useMemo<LunaThemeResolverOptions>(() => {
+  const resolveStable = useMemo<Partial<LunaThemeResolverOptions>>(() => {
     return omitUndefined({
       defaultKey: props.resolve?.defaultKey,
       fallback: props.resolve?.fallback,
       onEmpty: props.resolve?.onEmpty,
-    }) as LunaThemeResolverOptions;
+    });
   }, [
     props.resolve?.defaultKey,
     props.resolve?.fallback,
     props.resolve?.onEmpty,
   ]);
+
+  const singleTheme = 'theme' in props ? props.theme : undefined;
+  const themeList = 'themes' in props ? props.themes : undefined;
+  const resolvedThemeKey = 'themes' in props ? props.themeKey : undefined;
 
   const value = useMemo<LunaThemeContextValue>(() => {
     // Mode A: single theme (MUI-style)
@@ -100,12 +104,9 @@ export function LunaThemeProvider(
     // NOTE:
     // deps are intentionally enumerated to preserve discriminated-union semantics
     // and avoid depending on the `props` object identity.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    'theme' in props ? props.theme : undefined,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    'themes' in props ? props.themes : undefined,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    'themes' in props ? props.themeKey : undefined,
+    singleTheme,
+    themeList,
+    resolvedThemeKey,
     // Resolver semantics
     resolveStable,
     rulesKey,
@@ -118,10 +119,16 @@ export function LunaThemeProvider(
   );
 }
 
-function omitUndefined<T extends Record<string, unknown>>(obj: T): Partial<T> {
+type OmitUndefinedValues<T extends Record<string, unknown>> = {
+  [K in keyof T]?: Exclude<T[K], undefined>;
+};
+
+function omitUndefined<T extends Record<string, unknown>>(
+  obj: T,
+): OmitUndefinedValues<T> {
   const out: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(obj)) {
     if (v !== undefined) out[k] = v;
   }
-  return out as Partial<T>;
+  return out as OmitUndefinedValues<T>;
 }

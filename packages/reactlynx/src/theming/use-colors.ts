@@ -1,4 +1,3 @@
-// use-colors.ts
 import { useMemo } from '@lynx-js/react';
 
 import {
@@ -12,10 +11,15 @@ import { useLunaThemeContext } from './use-theme-context.js';
 
 /**
  * Batch version of `useLunaColor`.
+ *
+ * Contract:
+ * - Returns an immutable snapshot.
+ * - In "value" mode, returns the theme's canonical colors surface.
+ * - In var modes, returns a derived surface (also immutable).
  */
 export function useLunaColors(
   options: UseLunaColorsOptions = {},
-): Record<LunaColorKey, string> {
+): Readonly<Record<LunaColorKey, string>> {
   const ctx = useLunaThemeContext();
   if (!ctx) {
     throw new Error('[useLunaColors] must be used within <LunaThemeProvider>.');
@@ -40,7 +44,10 @@ export function useLunaColors(
 
     const prefix = cssVarPrefix ?? theme.cssVarPrefix;
 
-    const out = {} as Record<LunaColorKey, string>;
+    const out: Record<LunaColorKey, string> = {} as Record<
+      LunaColorKey,
+      string
+    >;
 
     for (const key of LUNA_COLOR_KEYS) {
       const id = colorKeyToColorId(key);
@@ -51,6 +58,14 @@ export function useLunaColors(
         : `var(${varName})`;
     }
 
-    return out;
-  }, [as, cssVarPrefix, format, theme]);
+    return Object.freeze(out);
+  }, [
+    as,
+    cssVarPrefix,
+    format,
+    theme.consumptionFormat,
+    theme.sourceType,
+    theme.colors,
+    theme.cssVarPrefix,
+  ]);
 }

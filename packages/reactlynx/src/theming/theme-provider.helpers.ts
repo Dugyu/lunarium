@@ -57,7 +57,7 @@ function stableAtom(v: unknown): string {
   if (v === undefined) return 'undefined';
   switch (typeof v) {
     case 'string':
-      return v;
+      return JSON.stringify(v); // quoted + escaped, avoids delimiter ambiguity
     case 'number':
     case 'boolean':
     case 'bigint':

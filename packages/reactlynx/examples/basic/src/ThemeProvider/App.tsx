@@ -7,10 +7,10 @@ import { lunarisDarkTokens, lunarisLightTokens } from '@dugyu/luna-tokens';
 
 import { Button } from './Button.js';
 
-const lunaLightTheme = createLunaTheme(lunarisLightTokens);
-const lunaDarkTheme = createLunaTheme(lunarisDarkTokens);
+const lunarisLightTheme = createLunaTheme(lunarisLightTokens);
+const lunarisDarkTheme = createLunaTheme(lunarisDarkTokens);
 
-const themes = [lunaLightTheme, lunaDarkTheme];
+const themes = [lunarisLightTheme, lunarisDarkTheme];
 
 export function App() {
   return (

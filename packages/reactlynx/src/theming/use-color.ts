@@ -1,5 +1,4 @@
-// use-color.ts
-import { useCallback } from '@lynx-js/react';
+import { useCallback, useMemo } from '@lynx-js/react';
 
 import {
   formatMetaOnlyValueError,
@@ -22,17 +21,22 @@ export function useLunaColor(
 
   const { as = 'result', format, cssVarPrefix } = options;
 
+  const resolved = useMemo(() =>
+    resolveConsumptionFormat({
+      as,
+      format,
+      themeFormat: theme.consumptionFormat,
+    }), [as, format, theme.consumptionFormat]);
+
+  const prefix = useMemo(
+    () => cssVarPrefix ?? theme.cssVarPrefix,
+    [cssVarPrefix, theme.cssVarPrefix],
+  );
+
   const getColor = useCallback(
     (key: LunaColorKey): string => {
       const id = colorKeyToColorId(key);
 
-      const resolved = resolveConsumptionFormat({
-        as,
-        format,
-        themeFormat: theme.consumptionFormat,
-      });
-
-      const prefix = cssVarPrefix ?? theme.cssVarPrefix;
       const varName = toVarName({ id, cssVarPrefix: prefix });
 
       switch (resolved.kind) {
@@ -42,8 +46,7 @@ export function useLunaColor(
         case 'var-ref':
           return `var(${varName})`;
 
-        case 'value':
-        default: {
+        case 'value': {
           if (theme.sourceType !== 'values') {
             throw new Error(
               formatMetaOnlyValueError({ hook: 'useLunaColor' }),
@@ -51,10 +54,16 @@ export function useLunaColor(
           }
           return theme.colors[key];
         }
+        default:
+          return assertNever(resolved);
       }
     },
-    [as, cssVarPrefix, format, theme],
+    [resolved, prefix, theme.sourceType, theme.colors],
   );
 
   return getColor;
+}
+
+function assertNever(x: never): never {
+  throw new Error(`[useLunaColor] Unexpected resolved.kind: ${String(x)}`);
 }

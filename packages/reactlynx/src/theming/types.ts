@@ -1,6 +1,7 @@
 import type { ReactNode } from '@lynx-js/react';
 
 import type {
+  LunaColorId,
   LunaColorKey,
   LunaCustomThemeKey,
   LunaCustomThemeMeta,
@@ -11,22 +12,58 @@ import type {
   LunaThemeTokens,
 } from '@dugyu/luna-core';
 
-export type { LunaColorKey };
+export type { LunaColorId, LunaColorKey };
 
 /* ============================================================================
  * Theme input (createLunaTheme input)
  * ========================================================================== */
 
 /**
+ * Values-backed theme input that provides concrete token values.
+ *
+ * Contract:
+ * - Provide concrete raw values (canonical truth).
+ * - Token values must be complete (all required ids must be present).
+ *
+ * Notes:
+ * - This type describes the semantic contract ("values-backed"),
+ *   not the source mechanism (tokens).
+ */
+export type LunaThemeValueInput =
+  | LunaThemeTokens
+  | LunaCustomThemeTokens;
+
+/**
+ * Public-friendly alias: token-driven input.
+ *
+ * @remarks
+ * Today values-backed inputs are provided via tokens,
+ * hence the name. Internally we keep "ValueInput"
+ * to avoid coupling the contract to a specific mechanism.
+ */
+export type LunaThemeTokenInput = LunaThemeValueInput;
+
+/**
+ * Public-friendly alias for meta-only theme input.
+ *
+ * @remarks
+ * Meta-only inputs do not provide concrete token values.
+ * They are intended for CSS-variable–only or metadata-driven
+ * theme definitions.
+ *
+ * Internally this maps to `LunaCustomThemeMeta`.
+ */
+export type LunaThemeMetaInput = LunaCustomThemeMeta;
+
+/**
  * Theme inputs accepted by createLunaTheme.
  *
- * - `LunaThemeTokens` / `LunaCustomThemeTokens`: values-backed inputs (provide concrete token values)
- * - `LunaCustomThemeMeta`: meta-only input (no token values)
+ * - `LunaThemeTokenInput` (values-backed): provides concrete token values
+ * - `LunaCustomThemeMeta` (meta-only): no token values
  */
 export type LunaThemeInput =
-  | LunaThemeTokens
-  | LunaCustomThemeTokens
-  | LunaCustomThemeMeta;
+  | LunaThemeValueInput
+  | LunaThemeMetaInput;
 
 /* ============================================================================
  * Runtime theme
@@ -65,7 +102,7 @@ export type LunaRuntimeTheme = {
    * - When `sourceType: 'meta-only'`, values are not available; this stays as
    *   the empty template for shape stability.
    */
-  colors: Record<LunaColorKey, string>;
+  colors: Readonly<Record<LunaColorKey, string>>;
 
   /**
    * Where this runtime theme comes from.
@@ -120,10 +157,6 @@ export type CreateLunaThemeOptions = {
 
   /**
    * CSS var prefix used when consuming `'var-ref'` / generating `'var-name'`.
-   *
-   * If omitted, variables are generated without a prefix:
-   * - `'var-name'`: `--neutral`
-   * - `'var-ref'`:  `var(--neutral)`
    */
   cssVarPrefix?: string;
 };
@@ -175,7 +208,7 @@ export type LunaThemeProviderProps =
 
 export type LunaConsumptionOptions = {
   /**
-   * - `'result'`: return the resolved consumption result (default)
+   * - `'result'`: return the resolved consumption result based on `format` (`'value'` or `'var-ref'`)
    * - `'var-name'`: return a CSS custom property name (e.g. `--neutral`)
    *
    * Notes:
