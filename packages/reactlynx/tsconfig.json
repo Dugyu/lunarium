@@ -7,7 +7,7 @@
     "paths": { "*": ["./*"] },
     "outDir": "dist",
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "examples/**/*.ts", "examples/**/*.tsx"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "examples/**/*.ts", "examples/**/*.tsx", "rslib.config.ts"],
   "references": [
     { "path": "./examples" },
     { "path": "../core/tsconfig.build.json" },
