@@ -11,7 +11,7 @@
     "isolatedModules": true,
     "resolveJsonModule": true,
   },
-  "include": ["scripts", "src"],
+  "include": ["scripts", "src", "rslib.config.ts"],
   "references": [
     { "path": "../core/tsconfig.build.json" },
   ],

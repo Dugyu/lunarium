@@ -8,5 +8,5 @@
     "paths": {},
     "outDir": "dist",
   },
-  "include": ["src/**/*.ts", "examples/**/*.ts"],
+  "include": ["src/**/*.ts", "examples/**/*.ts", "rslib.config.ts"],
 }
