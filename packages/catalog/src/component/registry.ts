@@ -36,7 +36,7 @@ export function createComponentRegistry<
   const isReady = (d: Def): d is Ready => d.demoReady === true;
 
   // --- Derived data ---
-  const ready: readonly Ready[] = list.filter(isReady);
+  const ready: readonly Ready[] = list.filter(d => isReady(d));
   const readyIds: readonly Ready['id'][] = ready.map(d => d.id);
 
   const names = list.map(d => d.name) as { [K in keyof T]: T[K]['name'] };
