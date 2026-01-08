@@ -4,13 +4,13 @@ import { Switch } from '@/components/ui/switch';
 import type { LynxUIComponentId, StudioViewMode } from '@/types';
 import { cn } from '@/utils';
 
-type ActBlueskiesProps = {
+type ActBlueSkiesProps = {
   studioViewMode: StudioViewMode;
   componentEntry: LynxUIComponentId;
 };
 
-function ActBlueskies(
-  { studioViewMode, componentEntry }: ActBlueskiesProps,
+function ActBlueSkies(
+  { studioViewMode, componentEntry }: ActBlueSkiesProps,
 ) {
   return (
     <view className='absolute size-full flex flex-col justify-center items-center'>
@@ -141,5 +141,5 @@ function ActBlueskies(
   );
 }
 
-export { ActBlueskies };
-export type { ActBlueskiesProps };
+export { ActBlueSkies };
+export type { ActBlueSkiesProps };

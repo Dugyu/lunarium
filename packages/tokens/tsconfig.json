@@ -4,9 +4,6 @@
     "composite": true,
     "rootDir": ".",
     "noEmit": true,
-    "baseUrl": ".",
-    "paths": {},
-    "outDir": "dist",
   },
   "include": ["src/**/*.ts", "rslib.config.ts"],
   "references": [

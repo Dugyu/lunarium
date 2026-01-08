@@ -3,7 +3,7 @@ import { LynxStage } from '@/components/lynx-stage';
 import { Mockup, MockupContainer } from '@/components/mockup';
 import { StudioFrame } from '@/components/studio-frame';
 
-function StudioStaic() {
+function StudioStatic() {
   return (
     <StudioFrame>
       <Container
@@ -34,4 +34,4 @@ function StudioStaic() {
   );
 }
 
-export { StudioStaic };
+export { StudioStatic };
