@@ -152,7 +152,7 @@ function ActBloom(
               L.U.N.A Performance
             </text>
           </view>
-          {/* Componenets */}
+          {/* Components */}
           <view
             className={cn(
               'w-full flex flex-col items-start justify-start',

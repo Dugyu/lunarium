@@ -2,11 +2,9 @@
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "composite": true,
-    "rootDir": ".",
+
+    "rootDir": "./",
     "noEmit": true,
-    "baseUrl": ".",
-    "paths": {},
-    "outDir": "dist",
   },
   "include": ["src/**/*.ts", "examples/**/*.ts", "rslib.config.ts"],
 }

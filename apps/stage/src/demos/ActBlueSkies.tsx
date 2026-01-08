@@ -3,12 +3,12 @@ import '@lynx-js/react/debug';
 import { root } from '@lynx-js/react';
 
 import { AppTheme } from '@/App.js';
-import { ActBlueskies } from '@/components/act-blueskies';
+import { ActBlueSkies } from '@/components/act-blueskies';
 
 export function App() {
   return (
     <AppTheme preset='luna-light'>
-      <ActBlueskies
+      <ActBlueSkies
         studioViewMode={lynx.__globalProps.studioViewMode ?? 'focus'}
         componentEntry={lynx.__globalProps.componentEntry ?? 'switch'}
       />
