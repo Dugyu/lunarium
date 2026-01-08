@@ -10,6 +10,7 @@ import * as regexpPlugin from 'eslint-plugin-regexp';
 import unicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import * as tseslint from 'typescript-eslint';
+import path from 'node:path';
 
 export default defineConfig([
   // Global Ignores
@@ -181,9 +182,8 @@ export default defineConfig([
         sourceType: 'module',
         projectService: {
           allowDefaultProject: ['./*.js', '*.config.ts'],
-          defaultProject: './tsconfig.json',
+          defaultProject: path.resolve(import.meta.dirname, 'tsconfig.json'),
         },
-        tsconfigRootDir: import.meta.dirname,
       },
     },
     rules: {

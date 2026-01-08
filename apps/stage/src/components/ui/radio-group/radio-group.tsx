@@ -76,14 +76,14 @@ function RadioGroup(
   const isControlled = valueProp !== undefined;
   const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue);
 
-  const lastValue = useRef<string>();
+  const lastValueRef = useRef<string>();
 
   const value = isControlled ? valueProp : uncontrolledValue;
 
   const handleValueChange = (value: string) => {
     if (disabled) return;
-    if (lastValue.current !== value) {
-      lastValue.current = value;
+    if (lastValueRef.current !== value) {
+      lastValueRef.current = value;
       if (!isControlled) {
         setUncontrolledValue(value);
       }
