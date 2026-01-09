@@ -22,8 +22,19 @@
     }
   },
   "sideEffects": false,
-  "files": ["dist", "README.md"],
-  "keywords": ["luna", "theme", "theming", "reactlynx", "lynx-ui", "react", "lynx"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "luna",
+    "theme",
+    "theming",
+    "reactlynx",
+    "lynx-ui",
+    "react",
+    "lynx"
+  ],
   "author": "The Lynx Authors",
   "license": "MIT",
   "scripts": {
@@ -35,10 +46,10 @@
   },
   "devDependencies": {
     "@lynx-js/types": "catalog:lynx-dev",
-    "@rslib/core": "catalog:rslib",
     "@rsbuild/plugin-react": "catalog:rsbuild",
-    "@typescript/native-preview": "catalog:ts",
+    "@rslib/core": "catalog:rslib",
     "@types/react": "catalog:react18",
+    "@typescript/native-preview": "catalog:ts",
     "typescript": "catalog:ts"
   },
   "peerDependencies": {

@@ -31,14 +31,22 @@
     }
   },
   "sideEffects": false,
-  "files": ["dist", "README.md"],
-  "keywords": ["luna", "tokens", "design tokens", "theme", "colors"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "luna",
+    "tokens",
+    "design tokens",
+    "theme",
+    "colors"
+  ],
   "author": "The Lynx Authors",
   "license": "MIT",
   "scripts": {
     "build": "rslib build"
   },
-  "dependencies": {},
   "devDependencies": {
     "@dugyu/luna-core": "workspace:*",
     "@rslib/core": "catalog:rslib",
