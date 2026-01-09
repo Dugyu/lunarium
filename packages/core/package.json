@@ -14,14 +14,22 @@
     }
   },
   "sideEffects": false,
-  "files": ["dist", "README.md"],
-  "keywords": ["luna", "core", "constants", "types", "utils"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "luna",
+    "core",
+    "constants",
+    "types",
+    "utils"
+  ],
   "author": "The Lynx Authors",
   "license": "MIT",
   "scripts": {
     "build": "rslib build"
   },
-  "dependencies": {},
   "devDependencies": {
     "@rslib/core": "catalog:rslib",
     "@typescript/native-preview": "catalog:ts",

@@ -14,22 +14,30 @@
     }
   },
   "sideEffects": false,
-  "files": ["dist", "README.md"],
-  "keywords": ["luna", "tailwind", "preset", "colors", "tokens"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "luna",
+    "tailwind",
+    "preset",
+    "colors",
+    "tokens"
+  ],
   "author": "The Lynx Authors",
   "license": "MIT",
   "scripts": {
     "build": "rslib build"
   },
-  "dependencies": {},
+  "peerDependencies": {
+    "tailwindcss": "^3.4.0"
+  },
   "devDependencies": {
     "@dugyu/luna-core": "workspace:*",
     "@rslib/core": "catalog:rslib",
     "@typescript/native-preview": "catalog:ts",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:ts"
-  },
-  "peerDependencies": {
-    "tailwindcss": "^3.4.0"
   }
 }

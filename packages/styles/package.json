@@ -27,7 +27,10 @@
   "sideEffects": [
     "./dist/*.css"
   ],
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "rslib build"
   },
