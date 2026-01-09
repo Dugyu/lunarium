@@ -306,10 +306,10 @@ importers:
       '@dugyu/luna-core':
         specifier: workspace:*
         version: link:../core
+    devDependencies:
       '@lynx-js/react':
         specifier: catalog:lynx
         version: 0.114.4(@lynx-js/types@3.4.11)(@types/react@18.3.24)
-    devDependencies:
       '@lynx-js/types':
         specifier: catalog:lynx-dev
         version: 3.4.11
