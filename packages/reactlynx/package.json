@@ -41,10 +41,10 @@
     "build": "rslib build"
   },
   "dependencies": {
-    "@dugyu/luna-core": "workspace:*",
-    "@lynx-js/react": "catalog:lynx"
+    "@dugyu/luna-core": "workspace:*"
   },
   "devDependencies": {
+    "@lynx-js/react": "catalog:lynx",
     "@lynx-js/types": "catalog:lynx-dev",
     "@rsbuild/plugin-react": "catalog:rsbuild",
     "@rslib/core": "catalog:rslib",
