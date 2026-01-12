@@ -1,4 +1,8 @@
 {
+  "*": [
+    "cspell lint --config cspell.jsonc --gitignore --no-must-find-files"
+  ],
+  "*package.json": ["sort-package-json"],
   "*.{ts,tsx,js,jsx,json,md,mdx,yaml}": [
     "dprint fmt --allow-no-files --",
     "biome check --write --no-errors-on-unmatched --files-ignore-unknown=true",

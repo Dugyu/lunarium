@@ -1,3 +1,4 @@
+import cspell from '@cspell/eslint-plugin';
 import js from '@eslint/js';
 import markdown from '@eslint/markdown';
 import vitest from '@vitest/eslint-plugin';
@@ -54,6 +55,21 @@ export default defineConfig([
 
   // Javascript
   js.configs.recommended,
+
+  // Cspell
+  {
+    files: [
+      '**/*.{js,jsx,ts,tsx}',
+    ],
+    plugins: {
+      '@cspell': cspell,
+    },
+    rules: {
+      '@cspell/spellchecker': ['warn', {
+        configFile: path.resolve(import.meta.dirname, 'cspell.jsonc'),
+      }],
+    },
+  },
 
   // RegExp
   regexpPlugin.configs['flat/recommended'],
