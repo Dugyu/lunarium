@@ -27,7 +27,7 @@ type useContainerResizeOptions<T> = {
   onResize?: (size: Size) => void;
 };
 /**
- * A lightweight version of the `useResizeObserver` hook from [`usehooks-ts`](https://usehooks-ts.com/react-hook/use-resize-observer).
+ * A lightweight version of the `useResizeObserver` hook (https://usehooks-ts.com/react-hook/use-resize-observer).
  *
  * Differences from the original:
  * - Only supports the default `'content-box'` model
@@ -99,7 +99,7 @@ function useContainerResize<T extends HTMLElement = HTMLElement>({
 
     observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [ref, ResizeObserverImpl, onResize, hasOnResize]);
+  }, [ref, ResizeObserverImpl, hasOnResize]);
 
   return size;
 }

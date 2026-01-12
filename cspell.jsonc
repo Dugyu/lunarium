@@ -1,0 +1,41 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "language": "en",
+  "dictionaries": [
+    "luna",
+    "lynx",
+    "misc",
+  ],
+  "dictionaryDefinitions": [
+    {
+      "name": "luna",
+      "path": "./.cspell/luna.txt",
+      "addWords": true,
+    },
+    {
+      "name": "lynx",
+      "path": "./.cspell/lynx.txt",
+      "addWords": true,
+    },
+    {
+      "name": "misc",
+      "path": "./.cspell/misc.txt",
+      "addWords": true,
+    },
+  ],
+  "words": [],
+  "ignorePaths": [
+    ".gitignore",
+    "dist",
+    "lib",
+    "node_modules",
+    ".pnpm-store",
+    "/pnpm-lock.yaml",
+    "/pnpm-workspace.yaml",
+  ],
+  "enableFiletypes": [
+    "md",
+    "mdx",
+  ],
+}

@@ -8,7 +8,7 @@ declare global {
         url?: string;
         ref?: Ref<LynxView>;
         style?: CSSProperties;
-        ['lynx-group-id']?: numberg;
+        ['lynx-group-id']?: number;
       };
     }
   }
