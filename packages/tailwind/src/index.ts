@@ -18,13 +18,23 @@ type LunaTailwindOptions = {
    *  `--${prefix}-${id}` / `--${id}`.
    */
   cssVarPrefix?: string;
+
+  /**
+   * Mark this preset as a Tailwind "leaf preset".
+   *
+   * - `true`  (default): emit `presets: []` to avoid inheriting Tailwind's default preset chain
+   * - `false`          : do not emit `presets`, allowing default preset inheritance
+   *
+   * @defaultValue `true`
+   */
+  leafPreset?: boolean;
 };
 
 // Internal helper to build the theme extension
 function createLunaPreset(
   options?: LunaTailwindOptions,
 ) {
-  const { cssVarPrefix } = options ?? {};
+  const { cssVarPrefix, leafPreset = true } = options ?? {};
 
   const colorExtensions = buildLunaTailwindColors(
     LUNA_COLOR_IDS,
@@ -33,6 +43,7 @@ function createLunaPreset(
 
   return {
     plugins: [lunaGradientPlugin],
+    ...(leafPreset ? { presets: [] as const } : null),
     theme: {
       extend: {
         fontSize: {
