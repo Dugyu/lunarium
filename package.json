@@ -4,7 +4,7 @@
   "private": true,
   "description": "The experimental realm of Lynx UI theming.",
   "keywords": [],
-  "license": "MIT",
+  "license": "Apache-2.0",
   "author": "The Lynx Authors",
   "type": "module",
   "scripts": {

@@ -2,10 +2,12 @@
   "name": "@dugyu/luna-studio",
   "version": "0.0.0",
   "private": true,
+  "license": "Apache-2.0",
+  "author": "The Lynx Authors",
   "type": "module",
   "scripts": {
-    "demo": "turbo run build && rsbuild preview",
     "build": "rsbuild --config ./rsbuild.config.ts build",
+    "demo": "turbo run build && rsbuild preview",
     "dev": "rsbuild dev --open",
     "preview": "rsbuild preview"
   },

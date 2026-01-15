@@ -2,8 +2,12 @@
   "name": "@dugyu/luna-styles",
   "version": "0.1.0",
   "description": "CSS theme variables for the L.U.N.A project",
+  "license": "Apache-2.0",
+  "author": "The Lynx Authors",
+  "sideEffects": [
+    "./dist/*.css"
+  ],
   "type": "module",
-  "main": "dist/index.css",
   "exports": {
     ".": {
       "default": "./dist/index.css"
@@ -24,9 +28,7 @@
       "default": "./dist/lunaris-dark.css"
     }
   },
-  "sideEffects": [
-    "./dist/*.css"
-  ],
+  "main": "./dist/index.css",
   "files": [
     "dist",
     "README.md"

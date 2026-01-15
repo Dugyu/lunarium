@@ -2,6 +2,16 @@
   "name": "@dugyu/luna-tokens",
   "version": "0.1.0",
   "description": "Design tokens for the L.U.N.A project.",
+  "keywords": [
+    "luna",
+    "tokens",
+    "design tokens",
+    "theme",
+    "colors"
+  ],
+  "license": "Apache-2.0",
+  "author": "The Lynx Authors",
+  "sideEffects": false,
   "type": "module",
   "exports": {
     ".": {
@@ -30,20 +40,10 @@
       "require": "./dist/lunaris-dark.cjs"
     }
   },
-  "sideEffects": false,
   "files": [
     "dist",
     "README.md"
   ],
-  "keywords": [
-    "luna",
-    "tokens",
-    "design tokens",
-    "theme",
-    "colors"
-  ],
-  "author": "The Lynx Authors",
-  "license": "MIT",
   "scripts": {
     "build": "rslib build"
   },

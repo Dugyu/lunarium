@@ -2,6 +2,18 @@
   "name": "@dugyu/luna-reactlynx",
   "version": "0.1.0",
   "description": "Reactlynx theming primitives (provider/hooks) and optional runtime wrappers for the L.U.N.A project.",
+  "keywords": [
+    "luna",
+    "theme",
+    "theming",
+    "reactlynx",
+    "lynx-ui",
+    "react",
+    "lynx"
+  ],
+  "license": "Apache-2.0",
+  "author": "The Lynx Authors",
+  "sideEffects": false,
   "type": "module",
   "exports": {
     ".": {
@@ -21,22 +33,10 @@
       "import": "./dist/runtime/global-props.jsx"
     }
   },
-  "sideEffects": false,
   "files": [
     "dist",
     "README.md"
   ],
-  "keywords": [
-    "luna",
-    "theme",
-    "theming",
-    "reactlynx",
-    "lynx-ui",
-    "react",
-    "lynx"
-  ],
-  "author": "The Lynx Authors",
-  "license": "MIT",
   "scripts": {
     "build": "rslib build"
   },
