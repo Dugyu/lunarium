@@ -1,2 +1,5 @@
 manypkg
 qrcode
+svitejs
+pipefail
+npmjs

@@ -1,7 +1,7 @@
 {
   "name": "@dugyu/luna-reactlynx",
   "version": "0.1.0",
-  "description": "Reactlynx theming primitives (provider/hooks) and optional runtime wrappers for the L.U.N.A project.",
+  "description": "Reactlynx theming primitives (provider/hooks) and optional runtime wrappers for the L.U.N.A project",
   "keywords": [
     "luna",
     "theme",

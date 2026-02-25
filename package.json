@@ -1,6 +1,6 @@
 {
   "name": "@dugyu/lunarium",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "private": true,
   "description": "The experimental realm of Lynx UI theming.",
   "keywords": [],
@@ -8,6 +8,7 @@
   "author": "The Lynx Authors",
   "type": "module",
   "scripts": {
+    "bootstrap:package": "node tools/bootstrap-package/index.mjs",
     "check:manypkg": "pnpm dlx @manypkg/cli check",
     "check:sherif": "pnpm dlx sherif@latest",
     "demo": "pnpm --filter ./apps/studio demo",
@@ -20,7 +21,7 @@
     "lint:eslint": "eslint .",
     "lint:eslint:fix": "eslint . --fix",
     "prepare": "husky",
-    "preview": "pnpm --filter ./apps/studio preview",
+    "release": "turbo run build && changeset publish",
     "stage:build": "turbo run build --filter ./apps/stage",
     "stage:dev": "pnpm --filter ./apps/stage dev",
     "studio:build": "pnpm --filter ./apps/studio build",
@@ -31,9 +32,12 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.3",
+    "@changesets/cli": "^2.29.8",
     "@cspell/eslint-plugin": "^9.4.0",
     "@eslint/js": "^9.35.0",
     "@eslint/markdown": "^7.2.0",
+    "@pnpm/meta-updater": "^2.0.6",
+    "@svitejs/changesets-changelog-github-compact": "^1.2.0",
     "@typescript/native-preview": "catalog:ts",
     "@vitest/eslint-plugin": "^1.3.9",
     "cspell": "^9.4.0",
