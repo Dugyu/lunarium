@@ -145,7 +145,7 @@ function buildManifest(name, description) {
 
   const readmeText = ensureTrailingNewline(
     `# ${name}${quote}
-    
+
 > ${finalDesc}
 
 This is a placeholder package published only to enable npm Trusted Publishing (OIDC) setup.
@@ -223,13 +223,6 @@ function printSummary(
   );
   console.log();
 
-  if (!String(name).startsWith('@')) {
-    console.log(
-      'Warning: package name is unscoped — ensure this is intentional.',
-    );
-    console.log();
-  }
-
   console.log('Files:');
   for (const { relativePath } of manifest) {
     console.log(`  ${outDirRel}/${relativePath}`);
@@ -288,6 +281,16 @@ function main() {
   // Validate package name according to npm rules
   if (!/^(?:@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(name)) {
     throw new Error(`Invalid package name: ${name}`);
+  }
+
+  if (!name.startsWith('@')) {
+    console.error();
+    console.error(
+      '❌  \u001B[31mError: Package name must be scoped (e.g. @scope/pkg).\u001B[0m',
+    );
+    console.error(`    Found: ${name}`);
+    console.error();
+    process.exit(1);
   }
 
   const description = (srcPkg?.description ?? '').trim();

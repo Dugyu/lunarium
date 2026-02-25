@@ -18,6 +18,8 @@ jobs:
   preview:
     name: Preview
     runs-on: ubuntu-latest
+    env:
+      INPUT_PACKAGE: ${{ inputs.package }}
     permissions:
       contents: read
 
@@ -35,13 +37,20 @@ jobs:
         run: |
           set -euo pipefail
 
-          pkg='${{ inputs.package }}'
+          pkg="$INPUT_PACKAGE"
 
           # Require a workspace-relative path under packages/.
           # Allow only safe characters to avoid shell/path injection surprises.
           # Examples allowed: packages/design-guide, packages/foo/bar
-          if [[ ! "$pkg" =~ ^packages/[A-Za-z0-9._-]+(/[A-Za-z0-9._-]+)*$ ]]; then
+          if [[ ! "$pkg" =~ ^packages/[A-Za-z0-9][A-Za-z0-9._-]*(/[A-Za-z0-9][A-Za-z0-9._-]*)*$ ]]; then
             echo "Error: invalid package path. Expected something like 'packages/name' (safe characters only)."
+            exit 1
+          fi
+
+          pkg_real=$(realpath -m "$pkg")
+          packages_real=$(realpath -m "packages")
+          if [[ "$pkg_real" != "$packages_real"/* ]]; then
+            echo "Error: package path escapes packages/: $pkg"
             exit 1
           fi
 
@@ -60,7 +69,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          pkg_dir='${{ inputs.package }}'
+          pkg_dir="$INPUT_PACKAGE"
           pkg_name=$(node -p "require('./${pkg_dir}/package.json').name")
 
           # Strict package name sanity check (scoped or unscoped) using npm rules
@@ -71,12 +80,21 @@ jobs:
 
           echo "Checking npm registry for: $pkg_name"
 
-          if npm view "$pkg_name" dist-tags --json >/dev/null 2>&1; then
+          set +e
+          view_output=$(npm view "$pkg_name" dist-tags --json 2>&1)
+          view_status=$?
+          set -e
+
+          if [[ $view_status -eq 0 ]]; then
             echo "Error: package already exists on npm: $pkg_name"
             echo "Bootstrap is not needed."
             exit 1
-          else
+          elif grep -qE 'E404|404 Not Found' <<<"$view_output"; then
             echo "Package not found on npm. Safe to bootstrap."
+          else
+            echo "Error: npm registry check failed unexpectedly."
+            echo "$view_output"
+            exit 1
           fi
 
       - name: Generate Placeholder
@@ -84,7 +102,7 @@ jobs:
         run: |
           set -euo pipefail
           rm -rf tools/bootstrap-package/output
-          node tools/bootstrap-package/index.mjs '${{ inputs.package }}' --force
+          node tools/bootstrap-package/index.mjs "$INPUT_PACKAGE" --force
 
       - name: Upload Artifact
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
@@ -98,7 +116,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          pkg_dir='${{ inputs.package }}'
+          pkg_dir="$INPUT_PACKAGE"
           pkg_name=$(node -p "require('./${pkg_dir}/package.json').name")
           folder_name=$(node -p "process.argv[1].replace(/^@/, '').replaceAll('/', '__')" "$pkg_name")
           out_dir="tools/bootstrap-package/output/$folder_name"
@@ -115,6 +133,8 @@ jobs:
     needs: preview
     runs-on: ubuntu-latest
     environment: npm-bootstrap
+    env:
+      INPUT_PACKAGE: ${{ inputs.package }}
     permissions:
       contents: read
 
@@ -147,7 +167,7 @@ jobs:
           # Alternatively, we could pass pkg_name as an output from the preview job,
           # but reading package.json is cheap and robust.
 
-          pkg_dir='${{ inputs.package }}'
+          pkg_dir="$INPUT_PACKAGE"
           pkg_name=$(node -p "require('./${pkg_dir}/package.json').name")
           folder_name=$(node -p "process.argv[1].replace(/^@/, '').replaceAll('/', '__')" "$pkg_name")
           out_dir="tools/bootstrap-package/output/$folder_name"
@@ -167,7 +187,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          pkg_dir='${{ inputs.package }}'
+          pkg_dir="$INPUT_PACKAGE"
           pkg_name=$(node -p "require('./${pkg_dir}/package.json').name")
 
           echo "## Bootstrap Publish Complete" >> "$GITHUB_STEP_SUMMARY"
