@@ -141,10 +141,8 @@ function buildManifest(name, description) {
     files: ['README.md', 'LICENSE'],
   };
 
-  const quote = baseDesc ? `\n> ${baseDesc}\n` : '';
-
   const readmeText = ensureTrailingNewline(
-    `# ${name}${quote}
+    `# ${name}
 
 > ${finalDesc}
 
@@ -240,11 +238,11 @@ function printSummary(
 
 function printNextSteps(repoRoot, outDir) {
   const outDirRel = path.relative(repoRoot, outDir);
-  console.log('Next steps:');
+  console.log('🔹 \u001B[1m\u001B[36mNext steps:\u001B[0m');
   console.log(`  cd ${outDirRel}`);
   console.log('  npm publish --access public --tag oidc-bootstrap');
   console.log();
-  console.log('After publish:');
+  console.log('🔹 \u001B[1m\u001B[36mAfter publish:\u001B[0m');
   console.log(
     '  1. Configure Trusted Publisher on npmjs.com (bind repo + workflow filename).',
   );
@@ -286,7 +284,7 @@ function main() {
   if (!name.startsWith('@')) {
     console.error();
     console.error(
-      '❌  \u001B[31mError: Package name must be scoped (e.g. @scope/pkg).\u001B[0m',
+      '❌ \u001B[31mError: Package name must be scoped (e.g. @scope/pkg).\u001B[0m',
     );
     console.error(`    Found: ${name}`);
     console.error();
@@ -311,10 +309,12 @@ function main() {
     ensureWritable(out);
 
     writeManifest(outDir, manifest, { force });
-    console.log('Done.\n');
-  }
 
-  printNextSteps(repoRoot, outDir);
+    console.log('✅ \u001B[32mSuccess: Bootstrap package generated.\u001B[0m');
+    console.log();
+
+    printNextSteps(repoRoot, outDir);
+  }
 }
 
 try {
