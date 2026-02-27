@@ -1,0 +1,43 @@
+name: CI Setup
+description: Setup pnpm, Node.js, and install dependencies
+inputs:
+  node-version:
+    description: Node.js version
+    required: false
+    default: "24"
+  registry-url:
+    description: npm registry url
+    required: false
+    default: "https://registry.npmjs.org"
+  package-manager-cache:
+    description: "Cache mode: auto | true | false"
+    required: false
+    default: "auto"
+  install-args:
+    description: Arguments passed to pnpm install
+    required: false
+    default: "--frozen-lockfile"
+runs:
+  using: composite
+  steps:
+    - name: Setup PNPM
+      uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
+
+    - name: Setup Node.js
+      if: ${{ inputs.package-manager-cache == 'auto' }}
+      uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6
+      with:
+        node-version: ${{ inputs.node-version }}
+        registry-url: ${{ inputs.registry-url }}
+
+    - name: Setup Node.js (cache)
+      if: ${{ inputs.package-manager-cache != 'auto' }}
+      uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6
+      with:
+        node-version: ${{ inputs.node-version }}
+        registry-url: ${{ inputs.registry-url }}
+        package-manager-cache: ${{ inputs.package-manager-cache }}
+
+    - name: Install Dependencies
+      shell: bash
+      run: pnpm install ${{ inputs.install-args }}
