@@ -1,7 +1,7 @@
 {
   "name": "@dugyu/luna-core",
   "version": "0.1.0",
-  "description": "Core constants, types, and utilities for the L.U.N.A project (no CSS).",
+  "description": "Core constants, types, and utilities for the L.U.N.A project",
   "keywords": [
     "luna",
     "core",

@@ -1,0 +1,200 @@
+name: Bootstrap Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: Workspace directory under packages/ (e.g. packages/tokens)
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    name: Preview
+    runs-on: ubuntu-latest
+    env:
+      INPUT_PACKAGE: ${{ inputs.package }}
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6
+        with:
+          node-version: 24
+
+      - name: Validate Input
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          pkg="$INPUT_PACKAGE"
+
+          # Require a workspace-relative path under packages/.
+          # Allow only safe characters to avoid shell/path injection surprises.
+          # Examples allowed: packages/design-guide, packages/foo/bar
+          if [[ ! "$pkg" =~ ^packages/[A-Za-z0-9][A-Za-z0-9._-]*(/[A-Za-z0-9][A-Za-z0-9._-]*)*$ ]]; then
+            echo "Error: invalid package path. Expected something like 'packages/name' (safe characters only)."
+            exit 1
+          fi
+
+          pkg_real=$(realpath -m "$pkg")
+          packages_real=$(realpath -m "packages")
+          if [[ "$pkg_real" != "$packages_real"/* ]]; then
+            echo "Error: package path escapes packages/: $pkg"
+            exit 1
+          fi
+
+          if [[ ! -d "$pkg" ]]; then
+            echo "Error: directory not found: $pkg"
+            exit 1
+          fi
+
+          if [[ ! -f "$pkg/package.json" ]]; then
+            echo "Error: package.json not found in: $pkg"
+            exit 1
+          fi
+
+      - name: Check Npm Registry (Package Must Not Exist Yet)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          pkg_dir="$INPUT_PACKAGE"
+          pkg_name=$(node -p "require('./${pkg_dir}/package.json').name")
+
+          # Strict package name sanity check (scoped or unscoped) using npm rules
+          if ! node -e 'const name = process.argv[1]; if (!/^(?:@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(name)) process.exit(1)' "$pkg_name"; then
+            echo "Error: invalid package name in package.json: $pkg_name"
+            exit 1
+          fi
+
+          echo "Checking npm registry for: $pkg_name"
+
+          set +e
+          view_output=$(npm view "$pkg_name" dist-tags --json 2>&1)
+          view_status=$?
+          set -e
+
+          if [[ $view_status -eq 0 ]]; then
+            echo "Error: package already exists on npm: $pkg_name"
+            echo "Bootstrap is not needed."
+            exit 1
+          elif grep -qE 'E404|404 Not Found' <<<"$view_output"; then
+            echo "Package not found on npm. Safe to bootstrap."
+          else
+            echo "Error: npm registry check failed unexpectedly."
+            echo "$view_output"
+            exit 1
+          fi
+
+      - name: Generate Placeholder
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf tools/bootstrap-package/output
+          node tools/bootstrap-package/index.mjs "$INPUT_PACKAGE" --force
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: bootstrap-package
+          path: tools/bootstrap-package/output
+          retention-days: 1
+
+      - name: Summary
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          pkg_dir="$INPUT_PACKAGE"
+          pkg_name=$(node -p "require('./${pkg_dir}/package.json').name")
+          folder_name=$(node -p "process.argv[1].replace(/^@/, '').replaceAll('/', '__')" "$pkg_name")
+          out_dir="tools/bootstrap-package/output/$folder_name"
+
+          echo "## Bootstrap Preview" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Package: \`$pkg_name\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Directory: \`$out_dir\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Publishing requires environment approval (npm-bootstrap)." >> "$GITHUB_STEP_SUMMARY"
+
+  publish:
+    name: Publish
+    needs: preview
+    runs-on: ubuntu-latest
+    environment: npm-bootstrap
+    env:
+      INPUT_PACKAGE: ${{ inputs.package }}
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      - name: Download Artifact
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        with:
+          name: bootstrap-package
+          path: tools/bootstrap-package/output
+
+      - name: Publish
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          # Calculate output directory deterministically
+          # We need to read package.json again to get the name, but since we are in a fresh job
+          # and we have checkout, we can read from source.
+          # Alternatively, we could pass pkg_name as an output from the preview job,
+          # but reading package.json is cheap and robust.
+
+          pkg_dir="$INPUT_PACKAGE"
+          pkg_name=$(node -p "require('./${pkg_dir}/package.json').name")
+          folder_name=$(node -p "process.argv[1].replace(/^@/, '').replaceAll('/', '__')" "$pkg_name")
+          out_dir="tools/bootstrap-package/output/$folder_name"
+
+          if [[ ! -d "$out_dir" ]]; then
+             echo "Error: Expected output directory not found: $out_dir"
+             echo "Listing tools/bootstrap-package/output for debugging:"
+             ls -R tools/bootstrap-package/output
+             exit 1
+          fi
+
+          cd "$out_dir"
+          npm publish --access public --tag oidc-bootstrap
+
+      - name: Post Steps
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          pkg_dir="$INPUT_PACKAGE"
+          pkg_name=$(node -p "require('./${pkg_dir}/package.json').name")
+
+          echo "## Bootstrap Publish Complete" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Published: \`$pkg_name\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Next:" >> "$GITHUB_STEP_SUMMARY"
+          echo "1. npmjs.com → Package → Settings → Trusted Publishing" >> "$GITHUB_STEP_SUMMARY"
+          echo "2. Bind this repo + your release workflow filename" >> "$GITHUB_STEP_SUMMARY"
+          echo "3. Remove NPM_TOKEN from npm-bootstrap environment" >> "$GITHUB_STEP_SUMMARY"

@@ -1,2 +1,7 @@
 manypkg
 qrcode
+svitejs
+pipefail
+npmjs
+realpath
+elif

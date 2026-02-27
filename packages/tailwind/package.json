@@ -1,7 +1,7 @@
 {
   "name": "@dugyu/luna-tailwind",
   "version": "0.1.0",
-  "description": "TailwindCSS preset for the L.U.N.A project.",
+  "description": "TailwindCSS preset for the L.U.N.A project",
   "keywords": [
     "luna",
     "tailwind",

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.1.2/schema.json",
+  "changelog": [
+    "@svitejs/changesets-changelog-github-compact",
+    {
+      "repo": "Dugyu/lunarium"
+    }
+  ],
+  "commit": false,
+  "fixed": [
+    [
+      "@dugyu/luna-core",
+      "@dugyu/luna-tokens",
+      "@dugyu/luna-styles",
+      "@dugyu/luna-tailwind",
+      "@dugyu/luna-reactlynx"
+    ]
+  ],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "privatePackages": {
+    "tag": false,
+    "version": false
+  },
+  "ignore": [],
+  "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
+    "onlyUpdatePeerDependentsWhenOutOfRange": true
+  }
+}
