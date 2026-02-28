@@ -4,12 +4,6 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
-    inputs:
-      confirm:
-        description: "Type 'publish' to confirm"
-        required: true
-        type: string
 
 permissions: {}
 
@@ -23,9 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: npm
     if: >-
-      ${{ (github.event_name == 'workflow_dispatch' && inputs.confirm == 'publish') || (github.event_name == 'push' && vars.ENABLE_PUBLISH == 'true' && (contains(github.event.head_commit.message, 'changeset-release/') || startsWith(github.event.head_commit.message, 'Version Packages'))) }}
+      ${{ github.event_name == 'push' && vars.ENABLE_PUBLISH == 'true' && (contains(github.event.head_commit.message, 'changeset-release/') || startsWith(github.event.head_commit.message, 'Version Packages')) }}
     permissions:
-      contents: read
+      contents: write
       id-token: write
 
     steps:
@@ -41,7 +35,21 @@ jobs:
           registry-url: "https://registry.npmjs.org"
           package-manager-cache: "false"
 
-      - name: Publish
-        run: pnpm run release
+      - name: Publish (Changesets)
+        id: changesets
+        continue-on-error: true
+        uses: changesets/action@6a0a831ff30acef54f2c6aa1cbbc1096b066edaf # v1
+        with:
+          publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Repair GitHub Releases (partial publish safe)
+        if: ${{ steps.changesets.outcome == 'failure' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node .github/scripts/repair-github-releases.mjs
+
+      - name: Fail job if publish failed
+        if: ${{ steps.changesets.outcome == 'failure' }}
+        run: exit 1
