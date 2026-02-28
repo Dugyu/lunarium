@@ -32,14 +32,18 @@ jobs:
           node-version: "24"
       - name: Build
         run: pnpm turbo run build
-      - name: Lint
-        run: |
-          pnpm meta-updater --test
-          pnpm run format:check
-          pnpm run lint
-          pnpm run lint:eslint
-          pnpm run check:manypkg
-          pnpm run check:sherif
+      - name: Meta Updater Check
+        run: pnpm meta-updater --test
+      - name: Format Check
+        run: pnpm run format:check
+      - name: Biome Lint
+        run: pnpm run lint
+      - name: ESLint
+        run: pnpm run lint:eslint
+      - name: Manypkg Check
+        run: pnpm run check:manypkg
+      - name: Sherif Check
+        run: pnpm run check:sherif
       # - name: Check Changeset
       #   env:
       #     CHANGESET_BASE_SHA: ${{ github.event.pull_request.base.sha }}
