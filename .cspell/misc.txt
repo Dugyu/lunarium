@@ -5,3 +5,4 @@ pipefail
 npmjs
 realpath
 elif
+startswith
