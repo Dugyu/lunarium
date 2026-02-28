@@ -113,10 +113,12 @@ function main() {
     const tag = `${p.name}@${p.version}`;
 
     if (!ok('git', ['rev-parse', '-q', '--verify', `refs/tags/${tag}`])) {
-      run('git', ['tag', tag]);
+      run('git', ['tag', tag, sha]);
     }
     if (!ok('git', ['push', 'origin', tag])) {
-      process.stdout.write(`Warning: could not push tag ${tag}; it may already exist on remote.\n`);
+      process.stdout.write(
+        `Warning: could not push tag ${tag}; it may already exist on remote.\n`,
+      );
     }
 
     if (ok('gh', ['release', 'view', tag])) {
@@ -143,7 +145,9 @@ function main() {
           tmp,
         ]);
       } finally {
-        try { fs.unlinkSync(tmp); } catch {}
+        try {
+          fs.unlinkSync(tmp);
+        } catch { /* ignore cleanup errors */ }
       }
     } else {
       run('gh', [
