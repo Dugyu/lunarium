@@ -26,10 +26,20 @@ function readJson(filePath) {
 function listPackageDirs(repoRoot) {
   const packagesDir = path.join(repoRoot, 'packages');
   if (!fs.existsSync(packagesDir)) return [];
-  return fs
-    .readdirSync(packagesDir, { withFileTypes: true })
-    .filter((d) => d.isDirectory())
-    .map((d) => path.join(packagesDir, d.name));
+  const result = [];
+  function walk(dir) {
+    for (const d of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (!d.isDirectory()) continue;
+      const full = path.join(dir, d.name);
+      if (fs.existsSync(path.join(full, 'package.json'))) {
+        result.push(full);
+      } else {
+        walk(full);
+      }
+    }
+  }
+  walk(packagesDir);
+  return result;
 }
 
 function extractChangelogSection(changelogPath, version) {
@@ -105,7 +115,9 @@ function main() {
     if (!ok('git', ['rev-parse', '-q', '--verify', `refs/tags/${tag}`])) {
       run('git', ['tag', tag]);
     }
-    run('git', ['push', 'origin', tag]);
+    if (!ok('git', ['push', 'origin', tag])) {
+      process.stdout.write(`Warning: could not push tag ${tag}; it may already exist on remote.\n`);
+    }
 
     if (ok('gh', ['release', 'view', tag])) {
       continue;
@@ -119,16 +131,20 @@ function main() {
         repoRoot,
         `.release-notes-${sanitizeFilenamePart(tag)}.md`,
       );
-      fs.writeFileSync(tmp, section + '\n');
-      run('gh', [
-        'release',
-        'create',
-        tag,
-        '--target',
-        sha,
-        '--notes-file',
-        tmp,
-      ]);
+      try {
+        fs.writeFileSync(tmp, section + '\n');
+        run('gh', [
+          'release',
+          'create',
+          tag,
+          '--target',
+          sha,
+          '--notes-file',
+          tmp,
+        ]);
+      } finally {
+        try { fs.unlinkSync(tmp); } catch {}
+      }
     } else {
       run('gh', [
         'release',

@@ -33,6 +33,7 @@ jobs:
         with:
           node-version: "24"
           registry-url: "https://registry.npmjs.org"
+          # Disable caching to ensure a clean install before publishing
           package-manager-cache: "false"
 
       - name: Publish (Changesets)
