@@ -7,3 +7,4 @@ realpath
 elif
 esac
 startswith
+tostring
