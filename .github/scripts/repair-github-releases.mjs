@@ -83,8 +83,28 @@ function main() {
     ['diff-tree', '--root', '--no-commit-id', '-r', '--name-only', `${sha}^!`],
     { encoding: 'utf8', stdio: 'pipe' },
   );
+  if (diffRes.status !== 0) {
+    const err = diffRes.error
+      ? `${diffRes.error.name}: ${diffRes.error.message}`
+      : '';
+    const stderr = String(diffRes.stderr ?? '').trim();
+    const stdout = String(diffRes.stdout ?? '').trim();
+    const detail = [
+      err,
+      stderr && `stderr: ${stderr}`,
+      stdout && `stdout: ${stdout.split('\n')[0]}`,
+    ]
+      .filter(Boolean)
+      .join(' | ');
+
+    die(
+      `Failed to compute changed files for ${sha}: ${
+        detail || `exit ${diffRes.status ?? 1}`
+      }`,
+    );
+  }
   const changedFiles = new Set(
-    (diffRes.status === 0 ? diffRes.stdout : '')
+    diffRes.stdout
       .split('\n')
       .map((l) => l.trim())
       .filter(Boolean),
