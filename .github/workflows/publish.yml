@@ -12,8 +12,17 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  test-publish:
+    uses: ./.github/workflows/workflow-test.yml
+    # Changeset check is intentionally excluded here: after a Version Packages PR is merged,
+    # changeset files are already consumed (converted to CHANGELOG + version bumps),
+    # so the check would always fail for release commits.
+    permissions:
+      contents: read
+
   publish:
     name: Publish
+    needs: test-publish
     runs-on: ubuntu-latest
     environment: npm
     permissions:
