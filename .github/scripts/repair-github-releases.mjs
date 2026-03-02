@@ -127,8 +127,19 @@ function main() {
     candidates.push({ name: json.name, version: json.version, dir });
   }
 
+  const touchedCandidates = candidates.filter((c) =>
+    changedFiles.has(c.relPath)
+  );
+
+  if (touchedCandidates.length === 0) {
+    process.stdout.write(
+      'No publishable package.json changes detected; skipping repair.\n',
+    );
+    return;
+  }
+
   const published = [];
-  for (const c of candidates) {
+  for (const c of touchedCandidates) {
     const spec = `${c.name}@${c.version}`;
     if (ok('npm', ['view', spec, 'version', '--silent'])) {
       published.push(c);
