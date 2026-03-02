@@ -77,6 +77,18 @@ function main() {
   const sha = process.env.GITHUB_SHA;
   if (!sha) die('Missing GITHUB_SHA');
 
+  const diffRes = spawnSync(
+    'git',
+    ['diff-tree', '--no-commit-id', '-r', '--name-only', sha],
+    { encoding: 'utf8', stdio: 'pipe' },
+  );
+  const changedFiles = new Set(
+    (diffRes.status === 0 ? diffRes.stdout : '')
+      .split('\n')
+      .map((l) => l.trim())
+      .filter(Boolean),
+  );
+
   const pkgDirs = listPackageDirs(repoRoot);
   const candidates = [];
 
@@ -111,6 +123,14 @@ function main() {
 
   for (const p of published) {
     const tag = `${p.name}@${p.version}`;
+    const relPath = path.relative(repoRoot, path.join(p.dir, 'package.json'));
+
+    if (!changedFiles.has(relPath)) {
+      process.stdout.write(
+        `Skipping ${tag}: version not introduced by current commit (${sha}).\n`,
+      );
+      continue;
+    }
 
     if (!ok('git', ['rev-parse', '-q', '--verify', `refs/tags/${tag}`])) {
       run('git', ['tag', tag, sha]);
