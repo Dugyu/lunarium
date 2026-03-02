@@ -15,6 +15,7 @@ concurrency:
 
 jobs:
   validate:
+    name: Validate
     uses: ./.github/workflows/workflow-test.yml
     permissions:
       contents: read
