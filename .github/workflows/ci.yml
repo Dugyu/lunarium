@@ -1,15 +1,10 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
       - dev
-env:
-  CI: 1
 
 permissions:
   contents: read
@@ -20,31 +15,25 @@ concurrency:
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        name: Checkout Repo
-        with:
-          fetch-depth: 0
-      - name: Setup
-        uses: ./.github/actions/ci-setup
-        with:
-          node-version: "24"
-      - name: Build
-        run: pnpm turbo run build
-      - name: Meta Updater Check
-        run: pnpm meta-updater --test
-      - name: Format Check
-        run: pnpm run format:check
-      - name: Biome Lint
-        run: pnpm run lint
-      - name: ESLint
-        run: pnpm run lint:eslint
-      - name: Manypkg Check
-        run: pnpm run check:manypkg
-      - name: Sherif Check
-        run: pnpm run check:sherif
-      # - name: Check Changeset
-      #   env:
-      #     CHANGESET_BASE_SHA: ${{ github.event.pull_request.base.sha }}
-      #   run: pnpm changeset status --verbose --since $CHANGESET_BASE_SHA
+    uses: ./.github/workflows/workflow-test.yml
+    permissions:
+      contents: read
+
+  # check-changeset:           # uncomment once ready to enforce changeset requirement on PRs
+  #   name: Check Changeset
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #   steps:
+  #     - name: Checkout Repo
+  #       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Setup
+  #       uses: ./.github/actions/ci-setup
+  #       with:
+  #         node-version: "24"
+  #     - name: Check Changeset
+  #       env:
+  #         CHANGESET_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+  #       run: pnpm changeset status --verbose --since $CHANGESET_BASE_SHA
