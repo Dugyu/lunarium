@@ -12,8 +12,14 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  test-publish:
+    uses: ./.github/workflows/workflow-test.yml
+    permissions:
+      contents: read
+
   publish:
     name: Publish
+    needs: test-publish
     runs-on: ubuntu-latest
     environment: npm
     permissions:
