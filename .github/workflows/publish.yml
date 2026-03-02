@@ -16,8 +16,6 @@ jobs:
     name: Publish
     runs-on: ubuntu-latest
     environment: npm
-    if: >-
-      ${{ github.event_name == 'push' && vars.ENABLE_PUBLISH_NPM == 'true' }}
     permissions:
       contents: write
       id-token: write
