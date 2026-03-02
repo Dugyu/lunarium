@@ -5,42 +5,35 @@ on:
     branches:
       - main
 
-permissions: {}
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  test-publish:
+  validate:
+    name: Validate
     uses: ./.github/workflows/workflow-test.yml
     permissions:
       contents: read
 
-  publish:
-    name: Publish
-    needs: test-publish
+  detect-version-packages:
+    name: Detect Version Packages
+    needs: validate
     runs-on: ubuntu-latest
-    environment: npm
+    timeout-minutes: 5
     permissions:
-      contents: write
-      id-token: write
+      contents: read
       pull-requests: read
+    outputs:
+      version_packages: ${{ steps.vp.outputs.version_packages }}
+      reason: ${{ steps.vp.outputs.reason }}
+      pr_number: ${{ steps.vp.outputs.pr_number }}
+      head_ref: ${{ steps.vp.outputs.head_ref }}
 
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-        with:
-          fetch-depth: 0
-
-      - name: Setup
-        uses: ./.github/actions/ci-setup
-        with:
-          node-version: "24"
-          registry-url: "https://registry.npmjs.org"
-          # Disable caching to ensure a clean install before publishing
-          package-manager-cache: "false"
-
       - name: Detect Version Packages PR (squash merge)
         id: vp
         env:
@@ -80,13 +73,33 @@ jobs:
           echo "pr_number=$pr_number" >> "$GITHUB_OUTPUT"
           echo "head_ref=$head_ref" >> "$GITHUB_OUTPUT"
 
-      - name: Skip Publish (not a Version Packages PR merge)
-        if: ${{ steps.vp.outputs.version_packages != 'true' }}
-        run: |
-          echo "Skip publish: ${{ steps.vp.outputs.reason }} (sha=${{ github.sha }}, pr=${{ steps.vp.outputs.pr_number }}, head_ref=${{ steps.vp.outputs.head_ref }})"
+  publish-packages:
+    name: Publish Packages
+    needs: detect-version-packages
+    if: ${{ needs.detect-version-packages.outputs.version_packages == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: npm
+    permissions:
+      contents: write
+      id-token: write
+      pull-requests: read
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup
+        uses: ./.github/actions/ci-setup
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+          # Disable caching to ensure a clean install before publishing
+          package-manager-cache: "false"
 
       - name: Publish (Changesets)
-        if: ${{ steps.vp.outputs.version_packages == 'true' }}
         id: changesets
         continue-on-error: true
         uses: changesets/action@6a0a831ff30acef54f2c6aa1cbbc1096b066edaf # v1
@@ -96,11 +109,11 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Repair GitHub Releases (partial publish safe)
-        if: ${{ steps.vp.outputs.version_packages == 'true' && steps.changesets.outcome == 'failure' }}
+        if: ${{ steps.changesets.outcome == 'failure' }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: node .github/scripts/repair-github-releases.mjs
 
       - name: Fail Job If Publish Failed
-        if: ${{ steps.vp.outputs.version_packages == 'true' && steps.changesets.outcome == 'failure' }}
+        if: ${{ steps.changesets.outcome == 'failure' }}
         run: exit 1

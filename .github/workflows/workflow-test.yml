@@ -8,8 +8,38 @@ env:
   TURBO_TELEMETRY_DISABLED: 1
 
 jobs:
-  run:
-    name: Run
+  checks:
+    name: Checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup
+        uses: ./.github/actions/ci-setup
+        with:
+          node-version: "24"
+
+      - name: Meta Updater Check
+        run: pnpm meta-updater --test
+
+      - name: Format Check
+        run: pnpm run format:check
+
+      - name: Manypkg Check
+        run: pnpm run check:manypkg
+
+      - name: Sherif Check
+        run: pnpm run check:sherif
+
+  build:
+    name: Build
+    needs: checks
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -28,11 +58,26 @@ jobs:
       - name: Build
         run: pnpm turbo run build
 
-      - name: Meta Updater Check
-        run: pnpm meta-updater --test
+  lint:
+    name: Lint
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 0
 
-      - name: Format Check
-        run: pnpm run format:check
+      - name: Setup
+        uses: ./.github/actions/ci-setup
+        with:
+          node-version: "24"
+
+      - name: Build
+        run: pnpm turbo run build
 
       - name: Biome Lint
         run: pnpm run lint
@@ -40,8 +85,26 @@ jobs:
       - name: ESLint
         run: pnpm run lint:eslint
 
-      - name: Manypkg Check
-        run: pnpm run check:manypkg
+  test:
+    name: Test
+    needs: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 0
 
-      - name: Sherif Check
-        run: pnpm run check:sherif
+      - name: Setup
+        uses: ./.github/actions/ci-setup
+        with:
+          node-version: "24"
+
+      - name: Build
+        run: pnpm turbo run build
+
+      - name: Test
+        run: pnpm run test

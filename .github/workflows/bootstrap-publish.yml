@@ -18,6 +18,7 @@ jobs:
   preview:
     name: Preview
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     env:
       INPUT_PACKAGE: ${{ inputs.package }}
     permissions:
@@ -132,6 +133,7 @@ jobs:
     name: Publish
     needs: preview
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     environment: npm-bootstrap
     env:
       INPUT_PACKAGE: ${{ inputs.package }}
