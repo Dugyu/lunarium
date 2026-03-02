@@ -133,8 +133,8 @@ function main() {
     // Condition 1: package.json must have been touched by this commit.
     if (!changedFiles.has(relPath)) {
       process.stdout.write(
-        `Skipping ${tag}: not changed by current commit (${sha})` +
-          ` (note: local tag, if any, is not pushed by design).\n`,
+        `Skipping ${tag}: not changed by current commit (${sha})`
+          + ` (note: local tag, if any, is not pushed by design).\n`,
       );
       continue;
     }
@@ -152,8 +152,8 @@ function main() {
       } catch { /* ignore parse errors — treat as version-introducing */ }
       if (parentVersion === p.version) {
         process.stdout.write(
-          `Skipping ${tag}: version field unchanged in current commit` +
-            ` (formatting-only change; note: local tag, if any, is not pushed by design).\n`,
+          `Skipping ${tag}: version field unchanged in current commit`
+            + ` (formatting-only change; note: local tag, if any, is not pushed by design).\n`,
         );
         continue;
       }
