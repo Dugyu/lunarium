@@ -77,9 +77,10 @@ function main() {
   const sha = process.env.GITHUB_SHA;
   if (!sha) die('Missing GITHUB_SHA');
 
+  // sha^! is shorthand for sha^..sha (this commit only); --root handles root commits.
   const diffRes = spawnSync(
     'git',
-    ['diff-tree', '--no-commit-id', '-r', '--name-only', sha],
+    ['diff-tree', '--root', '--no-commit-id', '-r', '--name-only', `${sha}^!`],
     { encoding: 'utf8', stdio: 'pipe' },
   );
   const changedFiles = new Set(
@@ -123,13 +124,47 @@ function main() {
 
   for (const p of published) {
     const tag = `${p.name}@${p.version}`;
-    const relPath = path.relative(repoRoot, path.join(p.dir, 'package.json'));
+    // Normalize to forward slashes so the path matches git diff-tree output on all platforms.
+    const relPath = path
+      .relative(repoRoot, path.join(p.dir, 'package.json'))
+      .split(path.sep)
+      .join('/');
 
+    // Condition 1: package.json must have been touched by this commit.
     if (!changedFiles.has(relPath)) {
       process.stdout.write(
-        `Skipping ${tag}: version not introduced by current commit (${sha}).\n`,
+        `Skipping ${tag}: not changed by current commit (${sha})` +
+          ` (note: local tag, if any, is not pushed by design).\n`,
       );
       continue;
+    }
+
+    // Condition 2: the version field itself must have changed (not just formatting/sorting).
+    // Uses sha^1 (explicit first parent) — safe because this workflow uses squash merges.
+    const parentRes = spawnSync('git', ['show', `${sha}^1:${relPath}`], {
+      encoding: 'utf8',
+      stdio: 'pipe',
+    });
+    if (parentRes.status === 0) {
+      let parentVersion;
+      try {
+        parentVersion = JSON.parse(parentRes.stdout)?.version;
+      } catch { /* ignore parse errors — treat as version-introducing */ }
+      if (parentVersion === p.version) {
+        process.stdout.write(
+          `Skipping ${tag}: version field unchanged in current commit` +
+            ` (formatting-only change; note: local tag, if any, is not pushed by design).\n`,
+        );
+        continue;
+      }
+    } else {
+      // Unexpected failure (not "file missing in parent") — warn and proceed.
+      const stderrSnip = (parentRes.stderr ?? '').trim().split('\n')[0] ?? '';
+      if (stderrSnip) {
+        process.stdout.write(
+          `Warning: could not read ${relPath} at ${sha}^1 (${stderrSnip}); proceeding with tag creation.\n`,
+        );
+      }
     }
 
     if (!ok('git', ['rev-parse', '-q', '--verify', `refs/tags/${tag}`])) {
