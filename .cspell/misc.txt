@@ -5,3 +5,6 @@ pipefail
 npmjs
 realpath
 elif
+esac
+startswith
+tostring
