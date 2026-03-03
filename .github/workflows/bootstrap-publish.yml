@@ -206,7 +206,29 @@ jobs:
           fi
 
           cd "$out_dir"
+
           npm publish --access public --tag oidc-bootstrap
+
+          # Remove 'latest' so `npm i $pkg_name` won't accidentally install it.
+          # npm may auto-create/keep latest when the package appears for the first time.
+          removed_latest=false
+          if dist_rm_output=$(npm dist-tag rm "$pkg_name" latest 2>&1); then
+            removed_latest=true
+            echo "Removed dist-tag: latest"
+          else
+            echo "dist-tag rm latest failed; output:"
+            echo "$dist_rm_output"
+            echo "Verifying whether latest still exists..."
+            dist_tags_json=$(npm view "$pkg_name" dist-tags --json)
+            if node -e 'const o=JSON.parse(process.argv[1]); process.exit(Object.prototype.hasOwnProperty.call(o,"latest")?0:1)' "$dist_tags_json"; then
+              echo "Error: dist-tag 'latest' still exists for $pkg_name. Refusing to continue."
+              echo "$dist_tags_json"
+              exit 1
+            fi
+            echo "latest tag not present; continuing."
+          fi
+
+          echo "REMOVED_LATEST=$removed_latest" >> "$GITHUB_ENV"
 
       - name: Post Steps
         shell: bash
@@ -219,6 +241,11 @@ jobs:
           echo "## Bootstrap Publish Complete" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "- Published: \`$pkg_name\`" >> "$GITHUB_STEP_SUMMARY"
+          if [[ "${REMOVED_LATEST:-}" == "true" ]]; then
+            echo "- Removed dist-tag: \`latest\`" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "- Ensured no \`latest\` dist-tag" >> "$GITHUB_STEP_SUMMARY"
+          fi
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "Next:" >> "$GITHUB_STEP_SUMMARY"
           echo "1. npmjs.com → Package → Settings → Trusted Publishing" >> "$GITHUB_STEP_SUMMARY"
