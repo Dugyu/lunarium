@@ -37,10 +37,12 @@ Usage:
   pnpm bootstrap:package <packages/<pkg>> [options]
 
 Options:
-  --out <dir>   Output root directory (default: ${formatDefaultOutHelp()})
-  --dry-run     Preview actions without writing anything
-  --force       Overwrite existing output directory
-  -h, --help    Show this help
+  --out <dir>    Output root directory (default: ${formatDefaultOutHelp()})
+  --dry-run      Preview actions without writing anything
+  --force        Overwrite existing output directory
+  --private      Allow bootstrapping a package with "private": true
+  --no-private   Disallow bootstrapping a package with "private": true (default)
+  -h, --help     Show this help
 
 Examples:
   pnpm bootstrap:package packages/tokens
@@ -58,12 +60,14 @@ function parseArguments() {
     'dry-run': { type: 'boolean' },
     force: { type: 'boolean' },
     out: { type: 'string', default: DEFAULT_OUT },
+    private: { type: 'boolean', default: false },
   };
 
   try {
     const { values, positionals } = parseArgs({
       options,
       allowPositionals: true,
+      allowNegative: true,
     });
 
     return {
@@ -71,6 +75,7 @@ function parseArguments() {
       dryRun: values['dry-run'],
       force: values.force,
       out: path.resolve(values.out),
+      allowPrivate: values.private,
       input: positionals[0] ?? null,
     };
   } catch (err) {
@@ -257,7 +262,7 @@ function printNextSteps(repoRoot, outDir) {
 // ---------------------------------------------------------------------------
 
 function main() {
-  const { help, dryRun, force, out, input } = parseArguments();
+  const { help, dryRun, force, out, input, allowPrivate } = parseArguments();
 
   if (help || !input) {
     process.stdout.write(HELP);
@@ -271,6 +276,23 @@ function main() {
   validate(inputDir, srcPkgJsonPath);
 
   const srcPkg = readJson(srcPkgJsonPath);
+
+  if (srcPkg?.private === true && !allowPrivate) {
+    console.error();
+    console.error(
+      '❌ \u001B[31mError: Refusing to bootstrap a private package.\u001B[0m',
+    );
+    console.error(
+      `    package.json: ${path.relative(repoRoot, srcPkgJsonPath)}`,
+    );
+    console.error(
+      '    Set "private": false (or remove it) before bootstrapping.',
+    );
+    console.error('    Or pass --private to override.');
+    console.error();
+    process.exit(1);
+  }
+
   const name = srcPkg?.name;
   if (!name || typeof name !== 'string') {
     throw new Error(`Missing or invalid "name" in ${srcPkgJsonPath}`);
