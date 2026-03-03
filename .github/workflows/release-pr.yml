@@ -38,7 +38,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          echo "date=$(date -u +'%Y-%m-%d %H:%M:%S')" >> "$GITHUB_OUTPUT"
+          echo "date=$(date -u +'%Y-%m-%d %H:%M')" >> "$GITHUB_OUTPUT"
 
       - name: Create Release Pull Request
         id: changesets
