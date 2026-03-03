@@ -33,8 +33,19 @@ jobs:
           # Disable caching to ensure a clean install before creating the release PR
           package-manager-cache: "false"
 
+      - name: Get Current Date
+        id: date
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "date=$(date -u +'%Y-%m-%d %H:%M')" >> "$GITHUB_OUTPUT"
+
       - name: Create Release Pull Request
         id: changesets
         uses: changesets/action@6a0a831ff30acef54f2c6aa1cbbc1096b066edaf # v1
+        with:
+          version: pnpm changeset version
+          title: "chore: Release ${{ steps.date.outputs.date }}"
+          commit: "chore: Release ${{ steps.date.outputs.date }}"
         env:
           GITHUB_TOKEN: ${{ github.token }}

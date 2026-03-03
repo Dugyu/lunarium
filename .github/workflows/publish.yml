@@ -107,6 +107,7 @@ jobs:
           publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          NPM_CONFIG_PROVENANCE: "true"
 
       - name: Repair GitHub Releases (partial publish safe)
         if: ${{ steps.changesets.outcome == 'failure' }}

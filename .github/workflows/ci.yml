@@ -20,6 +20,19 @@ jobs:
     permissions:
       contents: read
 
+  done:
+    name: Done
+    needs:
+      - validate
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    permissions: {}
+
+    steps:
+      - name: Fail If Any Job Failed
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'skipped') || contains(needs.*.result, 'cancelled') }}
+        run: exit 1
+
   # check-changeset:           # uncomment once ready to enforce changeset requirement on PRs
   #   name: Check Changeset
   #   runs-on: ubuntu-latest
