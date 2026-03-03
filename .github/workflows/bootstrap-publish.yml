@@ -113,7 +113,7 @@ jobs:
         run: |
           set -euo pipefail
           rm -rf tools/bootstrap-package/output
-          node tools/bootstrap-package/index.mjs "$INPUT_PACKAGE" --force
+          node tools/bootstrap-package/index.mjs "$INPUT_PACKAGE" --force --no-private
 
       - name: Upload Artifact
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
