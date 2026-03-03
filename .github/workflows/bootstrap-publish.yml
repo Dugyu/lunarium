@@ -137,6 +137,18 @@ jobs:
           echo "- Package: \`$pkg_name\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- Directory: \`$out_dir\`" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
+
+          if [[ -f "$out_dir/package.json" ]]; then
+            echo "### package.json" >> "$GITHUB_STEP_SUMMARY"
+            echo "\`\`\`json" >> "$GITHUB_STEP_SUMMARY"
+            cat "$out_dir/package.json" >> "$GITHUB_STEP_SUMMARY"
+            echo "\`\`\`" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "⚠️ package.json not found at: \`$out_dir/package.json\`" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
           echo "To publish, re-run this workflow with: publish=true and confirm=PUBLISH." >> "$GITHUB_STEP_SUMMARY"
           echo "Publishing also requires environment approval (npm-bootstrap)." >> "$GITHUB_STEP_SUMMARY"
 
