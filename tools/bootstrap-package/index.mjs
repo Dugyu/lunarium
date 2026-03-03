@@ -67,6 +67,7 @@ function parseArguments() {
     const { values, positionals } = parseArgs({
       options,
       allowPositionals: true,
+      allowNegative: true,
     });
 
     return {
