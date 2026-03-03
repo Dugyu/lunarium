@@ -7,11 +7,21 @@ on:
         description: Workspace directory under packages/ (e.g. packages/tokens)
         required: true
         type: string
+      publish:
+        description: Publish to npm (requires environment approval + explicit confirmation)
+        required: false
+        type: boolean
+        default: false
+      confirm:
+        description: Type PUBLISH to allow the publish job to run
+        required: false
+        type: string
+        default: ""
 
 permissions: {}
 
 concurrency:
-  group: ${{ github.workflow }}
+  group: ${{ github.workflow }}-${{ inputs.package || 'unknown' }}
   cancel-in-progress: false
 
 jobs:
@@ -127,11 +137,13 @@ jobs:
           echo "- Package: \`$pkg_name\`" >> "$GITHUB_STEP_SUMMARY"
           echo "- Directory: \`$out_dir\`" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "Publishing requires environment approval (npm-bootstrap)." >> "$GITHUB_STEP_SUMMARY"
+          echo "To publish, re-run this workflow with: publish=true and confirm=PUBLISH." >> "$GITHUB_STEP_SUMMARY"
+          echo "Publishing also requires environment approval (npm-bootstrap)." >> "$GITHUB_STEP_SUMMARY"
 
   publish:
     name: Publish
     needs: preview
+    if: ${{ inputs.publish && inputs.confirm == 'PUBLISH' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     environment: npm-bootstrap
