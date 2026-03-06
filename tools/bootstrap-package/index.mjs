@@ -1,11 +1,18 @@
 #!/usr/bin/env node
 
-// bootstrap-package
-// Generate a minimal placeholder package (v0.0.0-oidc-bootstrap.0) for initial npm publish
-// prior to OIDC Trusted Publisher setup.
-//
-// Reads name/description from the source package.json
-// and emits a publishable skeleton into the output directory.
+// Copyright 2026 The Lynx Authors. All rights reserved.
+// Licensed under the Apache License Version 2.0 that can be found in the
+// LICENSE file in the root directory of this source tree.
+
+/**
+ * @fileoverview bootstrap-package
+ *
+ * Generate a minimal placeholder package (v0.0.0-oidc-bootstrap.0) for initial npm publish
+ * prior to OIDC Trusted Publisher setup.
+ *
+ * Reads name/description from the source package.json
+ * and emits a publishable skeleton into the output directory.
+ */
 
 import fs from 'node:fs';
 import path from 'node:path';

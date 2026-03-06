@@ -1,4 +1,7 @@
-// Number pattern: supports +/- signs, decimals, leading dot (.5), and scientific notation (e/E)
+// Copyright 2026 The Lynx Authors. All rights reserved.
+// Licensed under the Apache License Version 2.0 that can be found in the
+// LICENSE file in the root directory of this source tree.
+
 const NUM_SRC = String.raw`[+-]?(?:\d+(?:\.\d+)?|\.\d+)(?:e[+-]?\d+)?`;
 const SCALE_SINGLE_RE = new RegExp(
   String.raw`^scale\(\s*(${NUM_SRC})(?:\s*,\s*(${NUM_SRC}))?\s*\)`,
