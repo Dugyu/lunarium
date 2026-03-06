@@ -3,6 +3,7 @@ import js from '@eslint/js';
 import markdown from '@eslint/markdown';
 import vitest from '@vitest/eslint-plugin';
 import { defineConfig } from 'eslint/config';
+import headers from 'eslint-plugin-headers';
 import importPlugin from 'eslint-plugin-import';
 import nodePlugin from 'eslint-plugin-n';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -34,6 +35,7 @@ export default defineConfig([
       '**/etc/*.md',
       'output/**',
       'target/**',
+      'tools/bootstrap-package/output/**',
 
       // Test snapshots
       '**/expected/**',
@@ -44,6 +46,7 @@ export default defineConfig([
       'vitest.config.ts',
       '**/rslib.config.ts',
       'eslint.config.mjs',
+      '.meta-updater/main.mjs',
 
       // Ignored packages
       'packages/**/vitest.config.ts',
@@ -55,6 +58,42 @@ export default defineConfig([
 
   // Javascript
   js.configs.recommended,
+
+  {
+    files: ['**/*.{js,jsx,ts,tsx,cjs,mjs}'],
+    ignores: ['**/*.md/**', '**/*.d.ts'],
+    plugins: {
+      headers,
+    },
+    rules: {
+      'headers/header-format': [
+        'error',
+        {
+          source: 'string',
+          style: 'line',
+          content: [
+            'Copyright (year) {authors}. All rights reserved.',
+            'Licensed under the (license) that can be found in the',
+            'LICENSE file in the root directory of this source tree.',
+          ].join('\n'),
+          trailingNewlines: 2,
+          variables: {
+            authors: 'The Lynx Authors',
+          },
+          patterns: {
+            year: {
+              pattern: '\\d{4}',
+              defaultValue: new Date().getFullYear().toString(),
+            },
+            license: {
+              pattern: 'Apache License Version 2.0',
+              defaultValue: 'Apache License Version 2.0',
+            },
+          },
+        },
+      ],
+    },
+  },
 
   // Cspell
   {
