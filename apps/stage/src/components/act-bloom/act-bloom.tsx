@@ -4,6 +4,8 @@
 
 import { useState } from '@lynx-js/react';
 
+import { demoTitleFromSlug } from '@dugyu/luna-catalog';
+
 import {
   ALL_LUNA_THEME_KEYS,
   LUNA_DEFAULT_COMPONENT,
@@ -25,7 +27,6 @@ import type {
   StudioViewMode,
 } from '@/types';
 import { cn } from '@/utils';
-import { demoTitleFromSlug } from '@dugyu/luna-catalog';
 
 import { LyricBlock } from './lyric-block.js';
 import { parseLunaThemeKey } from './parse-theme.js';
