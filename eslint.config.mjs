@@ -165,7 +165,7 @@ export default defineConfig([
           project: './tsconfig.json',
         },
       },
-      'import/internal-regex': '^(@/|@dugyu/)',
+      'import/internal-regex': '^(@/|@dugyu/|@lynx-js/luna-)',
     },
     rules: {
       'import/no-commonjs': 'error',
@@ -183,6 +183,23 @@ export default defineConfig([
             'index',
             'unknown',
           ],
+          'pathGroups': [
+            {
+              pattern: '@lynx-js/luna-*',
+              group: 'internal',
+              position: 'after',
+            },
+            {
+              pattern: '@dugyu/**',
+              group: 'internal',
+              position: 'after',
+            },
+            {
+              pattern: '@/**',
+              group: 'internal',
+              position: 'after',
+            },
+          ],
           'newlines-between': 'always',
           'alphabetize': {
             order: 'asc',
@@ -195,7 +212,7 @@ export default defineConfig([
         'error',
         {
           ignoreCase: false,
-          ignoreDeclarationSort: true, // use eslint-plugin-import instead
+          ignoreDeclarationSort: true, // do not use ESLint core built-in sort, use 'import/order' instead
           ignoreMemberSort: false,
           memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
           allowSeparatedGroups: true,
