@@ -1,0 +1,85 @@
+// Copyright 2026 The Lynx Authors. All rights reserved.
+// Licensed under the Apache License Version 2.0 that can be found in the
+// LICENSE file in the root directory of this source tree.
+
+import { useMainThreadRef } from '@lynx-js/react';
+
+import type { HSL, Vec2 } from '@/types/color';
+
+import { HueSlider, LightnessSlider, SaturationSlider } from './MTSSlider';
+import type { Writer } from './MTSSlider';
+
+type ColorPickerProps = {
+  initialValue?: HSL;
+  'main-thread:onChange'?: (next: HSL) => void;
+};
+
+function ColorPicker({
+  initialValue: hsl = [199, 99, 72],
+  ['main-thread:onChange']: onChange,
+}: ColorPickerProps) {
+  const hueRef = useMainThreadRef(hsl[0]);
+  const writeSL = useMainThreadRef<Writer<Vec2>>();
+
+  const satRef = useMainThreadRef(hsl[1]);
+  const writeHL = useMainThreadRef<Writer<Vec2>>();
+
+  const lightRef = useMainThreadRef(hsl[2]);
+  const writeHS = useMainThreadRef<Writer<Vec2>>();
+
+  const writeSliderGradients = () => {
+    'main thread';
+    writeSL?.current?.([satRef.current, lightRef.current]);
+    writeHL?.current?.([hueRef.current, lightRef.current]);
+    writeHS?.current?.([hueRef.current, satRef.current]);
+  };
+
+  const forwardOnHSLChange = () => {
+    'main thread';
+    writeSliderGradients();
+    onChange?.([hueRef.current, satRef.current, lightRef.current]);
+  };
+
+  const handleHueChange = (h: number) => {
+    'main thread';
+    hueRef.current = h;
+    forwardOnHSLChange();
+  };
+
+  const handleSaturationChange = (s: number) => {
+    'main thread';
+    satRef.current = s;
+    forwardOnHSLChange();
+  };
+
+  const handleLightnessChange = (l: number) => {
+    'main thread';
+    lightRef.current = l;
+    forwardOnHSLChange();
+  };
+
+  return (
+    <view className='w-full h-full flex flex-col gap-y-4'>
+      <HueSlider
+        initialValue={hsl[0]}
+        main-thread:onChange={handleHueChange}
+        initialSL={[hsl[1], hsl[2]]}
+        main-thread:writeSL={writeSL}
+      />
+      <SaturationSlider
+        initialValue={hsl[1]}
+        main-thread:onChange={handleSaturationChange}
+        initialHL={[hsl[0], hsl[2]]}
+        main-thread:writeHL={writeHL}
+      />
+      <LightnessSlider
+        initialValue={hsl[2]}
+        main-thread:onChange={handleLightnessChange}
+        initialHS={[hsl[0], hsl[1]]}
+        main-thread:writeHS={writeHS}
+      />
+    </view>
+  );
+}
+
+export { ColorPicker };

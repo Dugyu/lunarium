@@ -46,6 +46,9 @@
     {
       "path": "./packages/tokens",
     },
+    {
+      "path": "./projects/mtc-color-picker",
+    },
     /** packages-end */
   ],
   "include": [],

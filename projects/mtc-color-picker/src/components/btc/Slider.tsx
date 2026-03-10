@@ -1,0 +1,94 @@
+// Copyright 2026 The Lynx Authors. All rights reserved.
+// Licensed under the Apache License Version 2.0 that can be found in the
+// LICENSE file in the root directory of this source tree.
+
+import { useMemo } from '@lynx-js/react';
+import type { CSSProperties } from '@lynx-js/types';
+
+import type { Expand } from '@/types/utils';
+import { HSLGradients } from '@/utils/hsl-gradients';
+
+import { useSlider } from './use-slider';
+import type { UseSliderProps } from './use-slider';
+
+type SliderProps = Expand<
+  UseSliderProps & {
+    rootStyle?: CSSProperties;
+    trackStyle?: CSSProperties;
+  }
+>;
+
+/** ================= Base Slider ================= */
+function Slider({ rootStyle, trackStyle, ...sliderProps }: SliderProps) {
+  const {
+    handlePointerDown,
+    handlePointerMove,
+    handlePointerUp,
+    handleElementLayoutChange,
+    ratio,
+  } = useSlider(sliderProps);
+
+  return (
+    // Root
+    <view
+      bindtouchstart={handlePointerDown}
+      bindtouchmove={handlePointerMove}
+      bindtouchend={handlePointerUp}
+      bindtouchcancel={handlePointerUp}
+      className='relative px-5 bg-primary w-full h-10 flex flex-row items-center rounded-full'
+      style={rootStyle}
+    >
+      {/* Track Positioner */}
+      <view
+        bindlayoutchange={handleElementLayoutChange}
+        className='relative w-full h-full flex flex-row items-center'
+      >
+        {/* Track Visualizer */}
+        <view className='w-full h-full bg-secondary' style={trackStyle}></view>
+        {/* Thumb */}
+        <view
+          className='absolute bg-white size-8 rounded-full -translate-x-1/2 shadow-md'
+          style={{ left: `${ratio * 100}%` }}
+        >
+        </view>
+      </view>
+    </view>
+  );
+}
+
+/** ================= Hue Slider ================= */
+
+function HueSlider({
+  initialValue,
+  s = 100,
+  l = 50,
+  onChange,
+  disabled,
+}: {
+  value?: number;
+  initialValue?: number;
+  s?: number;
+  l?: number;
+  onChange?: (h: number) => void;
+  disabled?: boolean;
+}) {
+  const { track: trackBg, edge: edgeBg } = useMemo(
+    () => HSLGradients.hueGradientPair(s, l),
+    [s, l],
+  );
+
+  return (
+    <Slider
+      initialValue={initialValue}
+      min={0}
+      max={360}
+      step={1}
+      disabled={disabled}
+      onChange={onChange}
+      rootStyle={{ backgroundImage: edgeBg }}
+      trackStyle={{ backgroundImage: trackBg }}
+    />
+  );
+}
+
+export { Slider, HueSlider };
