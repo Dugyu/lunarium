@@ -10,6 +10,7 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
   },
   "include": ["scripts", "src", "rslib.config.ts"],
   "references": [
