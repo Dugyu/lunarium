@@ -37,10 +37,6 @@ export default defineConfig([
       'target/**',
       'tools/bootstrap-package/output/**',
 
-      // Test snapshots
-      '**/expected/**',
-      '**/rspack-expected/**',
-
       // Configs
       'eslint.config.js',
       'vitest.config.ts',

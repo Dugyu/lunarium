@@ -6,8 +6,8 @@
     "target": "ES2022",
     "lib": ["ES2022"],
 
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
 
     "noEmit": false,
     "declaration": true,
