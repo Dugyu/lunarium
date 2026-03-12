@@ -1,47 +1,113 @@
-# L.U.N.A.rium (LUNA)
+# L.U.N.A
 
-L.U.N.A.rium is the theming laboratory of Lynx UI — a place where tokens, variants, and anatomy shells take form before primitives land publicly.
+**L.U.N.A** (Lynx UI New Aesthetics) is the design language and theming system developed for the Lynx ecosystem.
 
-This document is the project entry for **LUNA** under `lynx-design/projects/luna`.
+This document serves as the **project entry for L.U.N.A** within the [**lynx-design**] monorepo.
 
-## Where the code lives (current)
+## Studio & Stage
 
-Short-term, Luna’s code is still located at the repository root:
+Inside the **L.U.N.A** project, [**Studio**] and [**Stage**] form a dual orbit, authoring and rendering.
 
-- Apps: `apps/studio`, `apps/stage`
-- Libraries: `packages/*` (e.g. `packages/core`, `packages/tokens`, `packages/styles`, `packages/reactlynx`)
+> Naming Notes: The dots in **L.U.N.A** are purely visual. The name ends without the last dot to suggest openness.
 
-This README exists to provide a stable “project home” under `projects/` while the code layout evolves.
+[**Studio**] is the creative workspace — a **Web** app for composing, editing, and orchestrating Lynx components.
 
-## Apps
+[**Stage**] is the live runtime — a [**Lynx**] app that renders components in their authentic execution environment.
 
-- [Studio (Web)](../../apps/studio/README.md) (`apps/studio`)
-- [Stage (Lynx)](../../apps/stage/README.md) (`apps/stage`)
+The [**Studio**] carries an embedded [**Stage**] via [**Lynx for Web**], so every adjustment is instantly reflected in true runtime light — bridging design intent with lived experience.
 
-## Libraries (selected)
+## How to Explore
 
-- [Theme tokens](../../packages/tokens) (`packages/tokens`)
-- [Core theme utilities](../../packages/core) (`packages/core`)
-- [ReactLynx theming runtime](../../packages/reactlynx) (`packages/reactlynx`)
-- [Styles (CSS generation)](../../packages/styles) (`packages/styles`)
-- [Tailwind helpers](../../packages/tailwind) (`packages/tailwind`)
+### Prerequisites
 
-## Run
+- Node.js **v24+** (or v22+)
+- pnpm **v10+**
 
-From repo root:
+To get started, install dependencies and build all workspace packages:
 
 ```bash
 pnpm install
 pnpm turbo build
+```
 
-# Studio (recommended)
+Once completed, you can explore the apps:
+
+### Explore Studio (Web app)
+
+> **Recommended entry point** — Studio includes an embedded Stage instance via **Lynx for Web**, so you can design and preview components in one seamless environment.
+
+End-to-end demo — build Stage, build Studio, and preview all in one command.
+
+```bash
 pnpm demo
+```
 
-# Stage (standalone)
+If you prefer running it directly within the Studio app:
+
+```bash
+cd apps/studio
+pnpm demo
+```
+
+→ [**See Studio Details ↗**](../../apps/studio/README.md)
+
+### Explore Stage (Lynx app)
+
+> You can also run **Stage** standalone, though it's usually launched from **Studio**.
+
+Renders Lynx components in their authentic execution environment.
+
+```bash
 pnpm stage:dev
 ```
 
-## Roadmap (structure)
+If you prefer running it directly within the Stage app:
 
-- `apps/luna/*` may gradually move under `projects/luna`.
-- `packages/*` will remain top-level and be consumed by `projects/*` (one-way: projects -> packages).
+```bash
+cd apps/stage
+pnpm dev
+```
+
+Scan the QR code in the terminal with **LynxExplorer App**:
+
+- [Android (GitHub Releases)](https://github.com/lynx-family/lynx/releases/latest)
+- [iOS (App Store)](https://apps.apple.com/ca/app/lynx-go-dev-explorer/id6743227790)
+
+Ensure your **desktop and mobile are on the same network**.
+
+→ [**See Stage Details ↗**](../../apps/stage/README.md)
+
+## Libraries
+
+L.U.N.A is built on a collection of reusable libraries within the monorepo.
+
+Key modules include:
+
+- **Theme tokens**
+  `packages/tokens`
+
+- **Core theme utilities**
+  `packages/core`
+
+- **ReactLynx theming runtime**
+  `packages/reactlynx`
+
+- **Style in CSS**
+  `packages/styles`
+
+- **Tailwind preset**
+  `packages/tailwind`
+
+These libraries provide the infrastructure for building and experimenting with Lynx UI themes.
+
+## Role in Lynx Design
+
+Within the [**lynx-design**] monorepo, L.U.N.A represents the **design language layer** of the ecosystem.
+
+It works together with other projects (such as UI experiments and interaction prototypes) to explore how Lynx can support richer UI expression and design-engineering workflows.
+
+[**lynx-design**]: ../../README.md
+[**Studio**]: ../../apps/studio/README.md
+[**Stage**]: ../../apps/stage/README.md
+[**Lynx**]: https://lynxjs.org/
+[**Lynx for Web**]: https://lynxjs.org/guide/start/integrate-with-existing-apps.html#platform=web

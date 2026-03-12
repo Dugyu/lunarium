@@ -1,78 +1,66 @@
-# L.U.N.A.rium
+# Lynx Design
 
-The experimental realm of **Lynx UI New Aesthetics**, where tokens, variants, and anatomy shells take form before primitives land publicly.
+**Lynx Design** is a collection of design engineering examples, shared libraries, and exploratory projects built around the [**Lynx**] ecosystem.
 
-**L.U.N.A.rium** is the theming laboratory of Lynx UI.
+It hosts:
 
-## Studio & Stage
+- design language and principle explorations
+- design engineering libraries
+- interactive UI and graphics demonstrations
+- experimental interface prototypes
 
-Inside the **L.U.N.A** project, **Studio** and **Stage** form a dual orbit, authoring and rendering.
+The goal is to establish opinionated references for expressive, production-grade cross-platform interfaces with Lynx.
 
-> Naming Notes: The dots in **L.U.N.A** are purely visual. The name ends without the last dot to suggest openness.
+## Repository Structure
 
-[**Studio**](./apps/studio/README.md) is the creative workspace — a **Web** app for composing, editing, and orchestrating Lynx components.
+This repository is organized as a **monorepo**.
 
-[**Stage**](./apps/stage/README.md) is the live runtime — a [**Lynx**](https://lynxjs.org/) app that renders components in their authentic execution environment.
-
-The **Studio** carries an embedded **Stage** via [**Lynx for Web**](https://lynxjs.org/guide/start/integrate-with-existing-apps.html#platform=web), so every adjustment is instantly reflected in true runtime light — bridging design intent with lived experience.
-
-## How to Explore
-
-### Prerequisites
-
-- Node.js **v22+** (or v24+)
-- pnpm **v10+**
-
-To get started, install dependencies and build all workspace packages:
-
-```bash
-pnpm install
-pnpm turbo build
+```
+lynx-design
+├─ projects/        # Conceptual projects and explorations
+├─ apps/            # Runtime environments and interactive workspaces
+├─ packages/        # Shared libraries
+├─ tools/           # Repository tooling
 ```
 
-Once completed, you can explore the apps:
+To explore what's available, see the individual projects and apps below.
 
-### Explore Studio (Web app)
+### projects/
 
-> **Recommended entry point** — Studio includes an embedded Stage instance via **Lynx for Web**, so you can design and preview components in one seamless environment.
+`projects/` contains **conceptual projects and exploratory implementations** within the repository.
+Projects may use libraries from `packages/` and applications from `apps/`.
 
-End-to-end demo — build Stage, build Studio, and preview all in one command.
+Current projects include:
 
-```bash
-pnpm demo
-```
+- [**L.U.N.A**](./projects/luna/README.md) – Lynx UI New Aesthetics (design language & theming system)
+- [**MTC Color Picker**](./projects/mtc-color-picker/README.md) – Design research on ReactLynx Main Thread Components (MTC)
 
-If you prefer running it directly within the Studio app:
+### apps/
 
-```bash
-cd apps/studio
-pnpm demo
-```
+`apps/` contains **runtime environments and interactive workspaces** for exploring or demonstrating UI capabilities.
 
-→ [**See Studio Details ↗**](./apps/studio/README.md)
+Current apps include:
 
-### Explore Stage (Lynx app)
+- **Studio** – a web workspace for composing themes for Lynx components, powered by Lynx for Web
+- **Stage** – a Lynx runtime environment for rendering UI components on the device
 
-> You can also run **Stage** standalone, though it's usually launched from **Studio**.
+### packages/
 
-Renders Lynx components in their authentic execution environment.
+`packages/` contains **shared design engineering libraries** used across projects within this repository.
+Some of these libraries are intended to be shared across the Lynx ecosystem (e.g. `lynx-ui`, `lynx-examples`, and `lynx-website`) to enhance the visual quality and interactivity of Lynx component libraries, examples, and documentation.
 
-```bash
-pnpm stage:dev
-```
+Typical examples include:
 
-If you prefer running it directly within the Stage app:
+- theming primitives
+- computational utilities for UI and graphics (e.g. geometry, animation, color, and shader effects)
+- components for interaction and representation
 
-```bash
-cd apps/stage
-pnpm dev
-```
+## Development
 
-Scan the QR code in the terminal with **LynxExplorer App**:
+If you are interested in contributing to Lynx Design, please refer to the [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-- [Android (GitHub Releases)](https://github.com/lynx-family/lynx/releases/latest)
-- [iOS (App Store)](https://apps.apple.com/ca/app/lynx-go-dev-explorer/id6743227790)
+## License
 
-Ensure your **desktop and mobile are on the same network**.
+Lynx is licensed under the **Apache License 2.0**. You can find the full license details in the [LICENSE](./LICENSE) file.
 
-→ [**See Stage Details ↗**](./apps/stage/README.md)
+[**Lynx**]: https://lynxjs.org

@@ -2,7 +2,9 @@
 
 ![MTC Color Picker Demo Banner](./docs/mtc-color-picker-banner.png)
 
-This repository demonstrates why **Main Thread Components (MTC)** are needed in [Lynx](https://lynxjs.org).
+This project demonstrates why **Main Thread Components (MTC)** are needed in [Lynx](https://lynxjs.org).
+
+This document serves as the **project entry for MTC Color Picker** within the [**lynx-design**] monorepo.
 
 It provides a set of demos that compare the **BTC**, **BTC-MTS**, and **MTC** component patterns, highlighting how **MTC restores declarative programming on the main thread within Lynx's dual-threaded architecture**.
 
@@ -42,7 +44,7 @@ In practice, developers can write code that looks **almost identical to BTC**, b
 
 ## Compositional Patterns
 
-This repo includes multiple demos that illustrate the evolution of component patterns across Lynx's dual-threaded architecture (**BTC → BTC-MTS → MTC**).
+This project includes multiple demos that illustrate the evolution of component patterns across Lynx's dual-threaded architecture (**BTC → BTC-MTS → MTC**).
 
 ### BTC
 
@@ -124,7 +126,7 @@ To view the demos on your mobile device, install the **LynxExplorer App**:
 
 Make sure your **computer and mobile device are on the same network**, then scan the QR code printed in the terminal to open the demo directly in the app.
 
-You have finished the basic setup required to run any example in this repo. For more details, see the [Starting Guide](https://lynxjs.org/guide/start/quick-start.html).
+You have finished the basic setup required to run any example in this project. For more details, see the [Starting Guide](https://lynxjs.org/guide/start/quick-start.html).
 
 ### Testing Background Blocking
 
@@ -169,7 +171,7 @@ For reference, here is the mapping between the conceptual demo names and the act
 
 ## Banner Design Concept
 
-The hero banner visually encodes the ideas behind this repo:
+The hero banner visually encodes the ideas behind this project:
 
 - **Circles** – solid circles represent **BTC** and **MTC**.
 - **Lynx silhouette** – rendered in outer **BTC** component (top-level App):
@@ -186,3 +188,5 @@ The hero banner visually encodes the ideas behind this repo:
 ## Acknowledgements
 
 This work is the result of a collective effort. The demos and design insights grew out of our shared discussions, experiments, and implementation work around MTC, ReactLynx, LynxUI, and the dual-threaded model. Thanks to everyone on the team who contributed ideas and feedback throughout the process.
+
+[**lynx-design**]: ../../README.md
