@@ -39,6 +39,19 @@ catalogs:
     typescript: 5.9.2
     "@types/node": 24.6.1
     "@typescript/native-preview": 7.0.0-dev.20251103.1
+
+overrides:
+  "@lynx-js/react-rsbuild-plugin@0.10.11>@lynx-js/react-webpack-plugin": "file:projects/mtc-color-picker/lynx-js-react-webpack-plugin-0.6.19.tgz"
+  "@lynx-js/rspeedy@0.10.8>@rsbuild/core": "1.4.15"
+
+packageExtensions:
+  "@lynx-js/react-rsbuild-plugin@0.10.11":
+    peerDependencies:
+      "@rsbuild/core": "1.4.15"
+  "@lynx-js/qrcode-rsbuild-plugin@0.4.1":
+    peerDependencies:
+      "@rsbuild/core": "1.4.15"
+
 enablePrePostScripts: false
 ignorePatchFailures: false
 ignoredBuiltDependencies:

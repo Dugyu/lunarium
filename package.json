@@ -62,24 +62,5 @@
   "packageManager": "pnpm@10.30.2+sha512.36cdc707e7b7940a988c9c1ecf88d084f8514b5c3f085f53a2e244c2921d3b2545bc20dd4ebe1fc245feec463bb298aecea7a63ed1f7680b877dc6379d8d0cb4",
   "engines": {
     "node": "^22 || ^24"
-  },
-  "pnpm": {
-    "overrides": {
-      "mtc-color-picker>@lynx-js/react-rsbuild-plugin@0.10.11>@lynx-js/react-webpack-plugin": "file:projects/mtc-color-picker/lynx-js-react-webpack-plugin-0.6.19.tgz",
-      "mtc-color-picker>@lynx-js/react-rsbuild-plugin@0.10.11>@rsbuild/core": "1.4.15",
-      "mtc-color-picker>@lynx-js/react-rsbuild-plugin@0.10.11>@rspack/core": "1.4.11",
-      "mtc-color-picker>@lynx-js/rspeedy@0.10.8>@rsbuild/core": "1.4.15",
-      "mtc-color-picker>@lynx-js/rspeedy@0.10.8>@rspack/core": "1.4.11",
-      "mtc-color-picker>@rsbuild/core@1.4.15>@rspack/core": "1.4.11",
-      "mtc-color-picker>@rsbuild/plugin-type-check@1.2.4>@rsbuild/core": "1.4.15",
-      "mtc-color-picker>@rsbuild/plugin-type-check@1.2.4>@rspack/core": "1.4.11"
-    },
-    "packageExtensions": {
-      "@lynx-js/react-rsbuild-plugin@0.10.11": {
-        "peerDependencies": {
-          "@rsbuild/core": "1.4.15"
-        }
-      }
-    }
   }
 }

@@ -88,16 +88,10 @@ catalogs:
       version: 2.1.1
 
 overrides:
-  mtc-color-picker>@lynx-js/react-rsbuild-plugin@0.10.11>@lynx-js/react-webpack-plugin: file:projects/mtc-color-picker/lynx-js-react-webpack-plugin-0.6.19.tgz
-  mtc-color-picker>@rsbuild/core@1.4.15>@rspack/core: 1.4.11
-  mtc-color-picker>@lynx-js/rspeedy@0.10.8>@rsbuild/core: 1.4.15
-  mtc-color-picker>@lynx-js/rspeedy@0.10.8>@rspack/core: 1.4.11
-  mtc-color-picker>@rsbuild/plugin-type-check@1.2.4>@rspack/core: 1.4.11
-  mtc-color-picker>@rsbuild/plugin-type-check@1.2.4>@rsbuild/core: 1.4.15
-  mtc-color-picker>@lynx-js/react-rsbuild-plugin@0.10.11>@rspack/core: 1.4.11
-  mtc-color-picker>@lynx-js/react-rsbuild-plugin@0.10.11>@rsbuild/core: 1.4.15
+  '@lynx-js/react-rsbuild-plugin@0.10.11>@lynx-js/react-webpack-plugin': file:projects/mtc-color-picker/lynx-js-react-webpack-plugin-0.6.19.tgz
+  '@lynx-js/rspeedy@0.10.8>@rsbuild/core': 1.4.15
 
-packageExtensionsChecksum: sha256-rYRIVOQkaYa7jJVf+BtEF46/OSVygNJgK93IDDpZV/I=
+packageExtensionsChecksum: sha256-sWsXEpskr/n1j9K6W/ppr/Y5av2SguzstnAhiGmuFZo=
 
 importers:
 
@@ -464,28 +458,22 @@ importers:
     devDependencies:
       '@lynx-js/qrcode-rsbuild-plugin':
         specifier: 0.4.1
-        version: 0.4.1
+        version: 0.4.1(@rsbuild/core@1.4.15)
       '@lynx-js/react-rsbuild-plugin':
         specifier: file:./lynx-js-react-rsbuild-plugin-0.10.11.tgz
         version: file:projects/mtc-color-picker/lynx-js-react-rsbuild-plugin-0.10.11.tgz(@lynx-js/react@file:projects/mtc-color-picker/lynx-js-react-0.112.2.tgz(@lynx-js/types@3.4.11)(@types/react@18.3.24))(@rsbuild/core@1.4.15)(webpack@5.105.4)
       '@lynx-js/rspeedy':
         specifier: 0.10.8
-        version: 0.10.8(@rspack/core@1.4.11(@swc/helpers@0.5.19))(typescript@5.9.2)(webpack@5.105.4)
+        version: 0.10.8(@rspack/core@1.6.8(@swc/helpers@0.5.19))(typescript@5.9.2)(webpack@5.105.4)
       '@lynx-js/tailwind-preset':
         specifier: catalog:tailwind
         version: 0.4.0(tailwindcss@3.4.17)
       '@lynx-js/types':
         specifier: catalog:lynx-dev
         version: 3.4.11
-      '@rsbuild/core':
-        specifier: 1.4.15
-        version: 1.4.15
       '@rsbuild/plugin-type-check':
-        specifier: 1.2.4
-        version: 1.2.4(@rsbuild/core@1.4.15)(@rspack/core@1.4.11(@swc/helpers@0.5.19))(tslib@2.8.1)(typescript@5.9.2)
-      '@rspack/core':
-        specifier: 1.4.11
-        version: 1.4.11(@swc/helpers@0.5.19)
+        specifier: catalog:rsbuild
+        version: 1.2.4(@rsbuild/core@1.4.15)(@rspack/core@1.6.8(@swc/helpers@0.5.19))(tslib@2.8.1)(typescript@5.9.2)
       '@types/react':
         specifier: catalog:react18
         version: 18.3.24
@@ -493,7 +481,7 @@ importers:
         specifier: ^10.0.0
         version: 10.0.0
       rsbuild-plugin-tailwindcss:
-        specifier: ^0.2.3
+        specifier: catalog:tailwind
         version: 0.2.3(@rsbuild/core@1.4.15)(tailwindcss@3.4.17)
       tailwindcss:
         specifier: catalog:tailwind
@@ -1352,6 +1340,8 @@ packages:
   '@lynx-js/qrcode-rsbuild-plugin@0.4.1':
     resolution: {integrity: sha512-/vgepVuALv68daarsVRqqfhlMO+R6ywfgKxokUnrVKu4rKTS+p9O8q9r8gMIXdCheQRsX8hVY/ora2l3Z/iHTQ==}
     engines: {node: '>=18'}
+    peerDependencies:
+      '@rsbuild/core': 1.4.15
 
   '@lynx-js/qrcode-rsbuild-plugin@0.4.3':
     resolution: {integrity: sha512-3WAW4kwNk33UujJjO691TnQyGLL8WrtUVK+p2zzWZOSAUlfhoKZkV6+Seh80II8WJfMlZBAIuT62edQteuew8A==}
@@ -1367,7 +1357,6 @@ packages:
 
   '@lynx-js/react-refresh-webpack-plugin@0.3.4':
     resolution: {integrity: sha512-R5hpuih6TAzxtKngrrg7i6MQUBeMMQWZWR31UMF9ld98wH1WnRrMeq0ZjkmYZhDhQQA2ViQDaHkOvOrtU4yjhg==}
-    version: 0.3.4
     engines: {node: '>=18'}
     peerDependencies:
       '@lynx-js/react-webpack-plugin': ^0.3.0 || ^0.4.0 || ^0.5.0 || ^0.6.0 || ^0.7.0
@@ -1392,23 +1381,23 @@ packages:
       '@lynx-js/react':
         optional: true
 
-  '@lynx-js/react-webpack-plugin@0.6.19':
-    resolution: {integrity: sha512-Yd4ruSdL+yL035orCag85QE7juIjuuPUNI5ZaaM40X58SqV9ECZoxwV/zK7I5Zi4jJCSG9ObN0jsCCS00Im4Mw==}
-    version: 0.6.19
-    engines: {node: '>=18'}
-    peerDependencies:
-      '@lynx-js/react': ^0.103.0 || ^0.104.0 || ^0.105.0 || ^0.106.0 || ^0.107.0 || ^0.108.0 || ^0.109.0 || ^0.110.0 || ^0.111.0 || ^0.112.0
-      '@lynx-js/template-webpack-plugin': ^0.4.0 || ^0.5.0 || ^0.6.0 || ^0.7.0 || ^0.8.0
-    peerDependenciesMeta:
-      '@lynx-js/react':
-        optional: true
-
   '@lynx-js/react-webpack-plugin@0.7.2':
     resolution: {integrity: sha512-NfAYBu8hfnvNOVK7CczMg7WIgpsAjz7b5BEFvH7xlmoqIsBL3aOhX5MDmvQ4UiNOlWpMdFHr5/CFOmxVN6Bm4Q==}
     engines: {node: '>=18'}
     peerDependencies:
       '@lynx-js/react': '*'
       '@lynx-js/template-webpack-plugin': ^0.4.0 || ^0.5.0 || ^0.6.0 || ^0.7.0 || ^0.8.0 || ^0.9.0
+    peerDependenciesMeta:
+      '@lynx-js/react':
+        optional: true
+
+  '@lynx-js/react-webpack-plugin@file:projects/mtc-color-picker/lynx-js-react-webpack-plugin-0.6.19.tgz':
+    resolution: {integrity: sha512-qCuI316Ia5En3z1L3OaJxMXfh7lTQkwPbj6cwnYpj1nvWVWc2NxMpTm8wQfaQegflwRJdGrGLkIwjRofh0olMA==, tarball: file:projects/mtc-color-picker/lynx-js-react-webpack-plugin-0.6.19.tgz}
+    version: 0.6.19
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@lynx-js/react': ^0.103.0 || ^0.104.0 || ^0.105.0 || ^0.106.0 || ^0.107.0 || ^0.108.0 || ^0.109.0 || ^0.110.0 || ^0.111.0 || ^0.112.0
+      '@lynx-js/template-webpack-plugin': ^0.4.0 || ^0.5.0 || ^0.6.0 || ^0.7.0 || ^0.8.0
     peerDependenciesMeta:
       '@lynx-js/react':
         optional: true
@@ -1484,7 +1473,6 @@ packages:
 
   '@lynx-js/use-sync-external-store@1.5.0':
     resolution: {integrity: sha512-iXwLiGUBgfWLozCIh3ICe07x534p9CVlFS3/iGEiFOce58MLX6/PbAvWcE8qEhYaOKiQNe9hqUnS2RbyCqoqGg==}
-    version: 1.5.0
     peerDependencies:
       '@lynx-js/react': '*'
 
@@ -8092,7 +8080,9 @@ snapshots:
       errorstacks: 2.4.1
       htm: 3.1.1
 
-  '@lynx-js/qrcode-rsbuild-plugin@0.4.1': {}
+  '@lynx-js/qrcode-rsbuild-plugin@0.4.1(@rsbuild/core@1.4.15)':
+    dependencies:
+      '@rsbuild/core': 1.4.15
 
   '@lynx-js/qrcode-rsbuild-plugin@0.4.3': {}
 
@@ -8104,13 +8094,13 @@ snapshots:
     dependencies:
       unrs-resolver: 1.11.1
 
-  '@lynx-js/react-refresh-webpack-plugin@0.3.4(@lynx-js/react-webpack-plugin@0.6.19(@lynx-js/react@file:projects/mtc-color-picker/lynx-js-react-0.112.2.tgz(@lynx-js/types@3.4.11)(@types/react@18.3.24))(@lynx-js/template-webpack-plugin@0.8.3))':
-    dependencies:
-      '@lynx-js/react-webpack-plugin': 0.6.19(@lynx-js/react@file:projects/mtc-color-picker/lynx-js-react-0.112.2.tgz(@lynx-js/types@3.4.11)(@types/react@18.3.24))(@lynx-js/template-webpack-plugin@0.8.3)
-
   '@lynx-js/react-refresh-webpack-plugin@0.3.4(@lynx-js/react-webpack-plugin@0.7.2(@lynx-js/react@0.114.4(@lynx-js/types@3.4.11)(@types/react@18.3.24))(@lynx-js/template-webpack-plugin@0.9.1))':
     dependencies:
       '@lynx-js/react-webpack-plugin': 0.7.2(@lynx-js/react@0.114.4(@lynx-js/types@3.4.11)(@types/react@18.3.24))(@lynx-js/template-webpack-plugin@0.9.1)
+
+  '@lynx-js/react-refresh-webpack-plugin@0.3.4(@lynx-js/react-webpack-plugin@file:projects/mtc-color-picker/lynx-js-react-webpack-plugin-0.6.19.tgz(@lynx-js/react@file:projects/mtc-color-picker/lynx-js-react-0.112.2.tgz(@lynx-js/types@3.4.11)(@types/react@18.3.24))(@lynx-js/template-webpack-plugin@0.8.3))':
+    dependencies:
+      '@lynx-js/react-webpack-plugin': file:projects/mtc-color-picker/lynx-js-react-webpack-plugin-0.6.19.tgz(@lynx-js/react@file:projects/mtc-color-picker/lynx-js-react-0.112.2.tgz(@lynx-js/types@3.4.11)(@types/react@18.3.24))(@lynx-js/template-webpack-plugin@0.8.3)
 
   '@lynx-js/react-rsbuild-plugin@0.11.4(@lynx-js/react@0.114.4(@lynx-js/types@3.4.11)(@types/react@18.3.24))(webpack@5.105.4)':
     dependencies:
@@ -8131,8 +8121,8 @@ snapshots:
     dependencies:
       '@lynx-js/css-extract-webpack-plugin': 0.6.1(@lynx-js/template-webpack-plugin@0.8.3)(webpack@5.105.4)
       '@lynx-js/react-alias-rsbuild-plugin': 0.10.11
-      '@lynx-js/react-refresh-webpack-plugin': 0.3.4(@lynx-js/react-webpack-plugin@0.6.19(@lynx-js/react@file:projects/mtc-color-picker/lynx-js-react-0.112.2.tgz(@lynx-js/types@3.4.11)(@types/react@18.3.24))(@lynx-js/template-webpack-plugin@0.8.3))
-      '@lynx-js/react-webpack-plugin': 0.6.19(@lynx-js/react@file:projects/mtc-color-picker/lynx-js-react-0.112.2.tgz(@lynx-js/types@3.4.11)(@types/react@18.3.24))(@lynx-js/template-webpack-plugin@0.8.3)
+      '@lynx-js/react-refresh-webpack-plugin': 0.3.4(@lynx-js/react-webpack-plugin@file:projects/mtc-color-picker/lynx-js-react-webpack-plugin-0.6.19.tgz(@lynx-js/react@file:projects/mtc-color-picker/lynx-js-react-0.112.2.tgz(@lynx-js/types@3.4.11)(@types/react@18.3.24))(@lynx-js/template-webpack-plugin@0.8.3))
+      '@lynx-js/react-webpack-plugin': file:projects/mtc-color-picker/lynx-js-react-webpack-plugin-0.6.19.tgz(@lynx-js/react@file:projects/mtc-color-picker/lynx-js-react-0.112.2.tgz(@lynx-js/types@3.4.11)(@types/react@18.3.24))(@lynx-js/template-webpack-plugin@0.8.3)
       '@lynx-js/runtime-wrapper-webpack-plugin': 0.1.2
       '@lynx-js/template-webpack-plugin': 0.8.3
       '@lynx-js/use-sync-external-store': 1.5.0(@lynx-js/react@file:projects/mtc-color-picker/lynx-js-react-0.112.2.tgz(@lynx-js/types@3.4.11)(@types/react@18.3.24))
@@ -8143,14 +8133,6 @@ snapshots:
     transitivePeerDependencies:
       - webpack
 
-  '@lynx-js/react-webpack-plugin@0.6.19(@lynx-js/react@file:projects/mtc-color-picker/lynx-js-react-0.112.2.tgz(@lynx-js/types@3.4.11)(@types/react@18.3.24))(@lynx-js/template-webpack-plugin@0.8.3)':
-    dependencies:
-      '@lynx-js/template-webpack-plugin': 0.8.3
-      '@lynx-js/webpack-runtime-globals': 0.0.5
-      tiny-invariant: 1.3.3
-    optionalDependencies:
-      '@lynx-js/react': file:projects/mtc-color-picker/lynx-js-react-0.112.2.tgz(@lynx-js/types@3.4.11)(@types/react@18.3.24)
-
   '@lynx-js/react-webpack-plugin@0.7.2(@lynx-js/react@0.114.4(@lynx-js/types@3.4.11)(@types/react@18.3.24))(@lynx-js/template-webpack-plugin@0.9.1)':
     dependencies:
       '@lynx-js/template-webpack-plugin': 0.9.1
@@ -8158,6 +8140,14 @@ snapshots:
       tiny-invariant: 1.3.3
     optionalDependencies:
       '@lynx-js/react': 0.114.4(@lynx-js/types@3.4.11)(@types/react@18.3.24)
+
+  '@lynx-js/react-webpack-plugin@file:projects/mtc-color-picker/lynx-js-react-webpack-plugin-0.6.19.tgz(@lynx-js/react@file:projects/mtc-color-picker/lynx-js-react-0.112.2.tgz(@lynx-js/types@3.4.11)(@types/react@18.3.24))(@lynx-js/template-webpack-plugin@0.8.3)':
+    dependencies:
+      '@lynx-js/template-webpack-plugin': 0.8.3
+      '@lynx-js/webpack-runtime-globals': 0.0.5
+      tiny-invariant: 1.3.3
+    optionalDependencies:
+      '@lynx-js/react': file:projects/mtc-color-picker/lynx-js-react-0.112.2.tgz(@lynx-js/types@3.4.11)(@types/react@18.3.24)
 
   '@lynx-js/react@0.114.4(@lynx-js/types@3.4.11)(@types/react@18.3.24)':
     dependencies:
@@ -8174,7 +8164,7 @@ snapshots:
     optionalDependencies:
       '@lynx-js/types': 3.4.11
 
-  '@lynx-js/rspeedy@0.10.8(@rspack/core@1.4.11(@swc/helpers@0.5.19))(typescript@5.9.2)(webpack@5.105.4)':
+  '@lynx-js/rspeedy@0.10.8(@rspack/core@1.6.8(@swc/helpers@0.5.19))(typescript@5.9.2)(webpack@5.105.4)':
     dependencies:
       '@lynx-js/cache-events-webpack-plugin': 0.0.1
       '@lynx-js/chunk-loading-webpack-plugin': 0.3.3
@@ -8182,7 +8172,7 @@ snapshots:
       '@lynx-js/websocket': 0.0.4
       '@rsbuild/core': 1.4.15
       '@rsbuild/plugin-css-minimizer': 1.0.3(@rsbuild/core@1.4.15)(webpack@5.105.4)
-      '@rsdoctor/rspack-plugin': 1.2.3(@rsbuild/core@1.4.15)(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)
+      '@rsdoctor/rspack-plugin': 1.2.3(@rsbuild/core@1.4.15)(@rspack/core@1.6.8(@swc/helpers@0.5.19))(webpack@5.105.4)
     optionalDependencies:
       typescript: 5.9.2
     transitivePeerDependencies:
@@ -9672,12 +9662,12 @@ snapshots:
     transitivePeerDependencies:
       - webpack-hot-middleware
 
-  '@rsbuild/plugin-type-check@1.2.4(@rsbuild/core@1.4.15)(@rspack/core@1.4.11(@swc/helpers@0.5.19))(tslib@2.8.1)(typescript@5.9.2)':
+  '@rsbuild/plugin-type-check@1.2.4(@rsbuild/core@1.4.15)(@rspack/core@1.6.8(@swc/helpers@0.5.19))(tslib@2.8.1)(typescript@5.9.2)':
     dependencies:
       deepmerge: 4.3.1
       json5: 2.2.3
       reduce-configs: 1.1.1
-      ts-checker-rspack-plugin: 1.3.0(@rspack/core@1.4.11(@swc/helpers@0.5.19))(tslib@2.8.1)(typescript@5.9.2)
+      ts-checker-rspack-plugin: 1.3.0(@rspack/core@1.6.8(@swc/helpers@0.5.19))(tslib@2.8.1)(typescript@5.9.2)
     optionalDependencies:
       '@rsbuild/core': 1.4.15
     transitivePeerDependencies:
@@ -9713,13 +9703,13 @@ snapshots:
 
   '@rsdoctor/client@1.2.3': {}
 
-  '@rsdoctor/core@1.2.3(@rsbuild/core@1.4.15)(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)':
+  '@rsdoctor/core@1.2.3(@rsbuild/core@1.4.15)(@rspack/core@1.6.8(@swc/helpers@0.5.19))(webpack@5.105.4)':
     dependencies:
       '@rsbuild/plugin-check-syntax': 1.3.0(@rsbuild/core@1.4.15)
-      '@rsdoctor/graph': 1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)
-      '@rsdoctor/sdk': 1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)
-      '@rsdoctor/types': 1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)
-      '@rsdoctor/utils': 1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)
+      '@rsdoctor/graph': 1.2.3(@rspack/core@1.6.8(@swc/helpers@0.5.19))(webpack@5.105.4)
+      '@rsdoctor/sdk': 1.2.3(@rspack/core@1.6.8(@swc/helpers@0.5.19))(webpack@5.105.4)
+      '@rsdoctor/types': 1.2.3(@rspack/core@1.6.8(@swc/helpers@0.5.19))(webpack@5.105.4)
+      '@rsdoctor/utils': 1.2.3(@rspack/core@1.6.8(@swc/helpers@0.5.19))(webpack@5.105.4)
       axios: 1.13.6
       browserslist-load-config: 1.0.1
       enhanced-resolve: 5.12.0
@@ -9763,17 +9753,6 @@ snapshots:
       - utf-8-validate
       - webpack
 
-  '@rsdoctor/graph@1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)':
-    dependencies:
-      '@rsdoctor/types': 1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)
-      '@rsdoctor/utils': 1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)
-      lodash.unionby: 4.8.0
-      source-map: 0.7.6
-    transitivePeerDependencies:
-      - '@rspack/core'
-      - supports-color
-      - webpack
-
   '@rsdoctor/graph@1.2.3(@rspack/core@1.6.8(@swc/helpers@0.5.19))(webpack@5.105.4)':
     dependencies:
       '@rsdoctor/types': 1.2.3(@rspack/core@1.6.8(@swc/helpers@0.5.19))(webpack@5.105.4)
@@ -9785,16 +9764,16 @@ snapshots:
       - supports-color
       - webpack
 
-  '@rsdoctor/rspack-plugin@1.2.3(@rsbuild/core@1.4.15)(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)':
+  '@rsdoctor/rspack-plugin@1.2.3(@rsbuild/core@1.4.15)(@rspack/core@1.6.8(@swc/helpers@0.5.19))(webpack@5.105.4)':
     dependencies:
-      '@rsdoctor/core': 1.2.3(@rsbuild/core@1.4.15)(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)
-      '@rsdoctor/graph': 1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)
-      '@rsdoctor/sdk': 1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)
-      '@rsdoctor/types': 1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)
-      '@rsdoctor/utils': 1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)
+      '@rsdoctor/core': 1.2.3(@rsbuild/core@1.4.15)(@rspack/core@1.6.8(@swc/helpers@0.5.19))(webpack@5.105.4)
+      '@rsdoctor/graph': 1.2.3(@rspack/core@1.6.8(@swc/helpers@0.5.19))(webpack@5.105.4)
+      '@rsdoctor/sdk': 1.2.3(@rspack/core@1.6.8(@swc/helpers@0.5.19))(webpack@5.105.4)
+      '@rsdoctor/types': 1.2.3(@rspack/core@1.6.8(@swc/helpers@0.5.19))(webpack@5.105.4)
+      '@rsdoctor/utils': 1.2.3(@rspack/core@1.6.8(@swc/helpers@0.5.19))(webpack@5.105.4)
       lodash: 4.17.23
     optionalDependencies:
-      '@rspack/core': 1.4.11(@swc/helpers@0.5.19)
+      '@rspack/core': 1.6.8(@swc/helpers@0.5.19)
     transitivePeerDependencies:
       - '@rsbuild/core'
       - bufferutil
@@ -9817,30 +9796,6 @@ snapshots:
       - '@rsbuild/core'
       - bufferutil
       - debug
-      - supports-color
-      - utf-8-validate
-      - webpack
-
-  '@rsdoctor/sdk@1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)':
-    dependencies:
-      '@rsdoctor/client': 1.2.3
-      '@rsdoctor/graph': 1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)
-      '@rsdoctor/types': 1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)
-      '@rsdoctor/utils': 1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)
-      '@types/fs-extra': 11.0.4
-      body-parser: 1.20.3
-      cors: 2.8.5
-      dayjs: 1.11.13
-      fs-extra: 11.3.4
-      json-cycle: 1.5.0
-      open: 8.4.2
-      sirv: 2.0.4
-      socket.io: 4.8.1
-      source-map: 0.7.6
-      tapable: 2.2.2
-    transitivePeerDependencies:
-      - '@rspack/core'
-      - bufferutil
       - supports-color
       - utf-8-validate
       - webpack
@@ -9869,16 +9824,6 @@ snapshots:
       - utf-8-validate
       - webpack
 
-  '@rsdoctor/types@1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)':
-    dependencies:
-      '@types/connect': 3.4.38
-      '@types/estree': 1.0.5
-      '@types/tapable': 2.2.7
-      source-map: 0.7.6
-    optionalDependencies:
-      '@rspack/core': 1.4.11(@swc/helpers@0.5.19)
-      webpack: 5.105.4
-
   '@rsdoctor/types@1.2.3(@rspack/core@1.6.8(@swc/helpers@0.5.19))(webpack@5.105.4)':
     dependencies:
       '@types/connect': 3.4.38
@@ -9888,30 +9833,6 @@ snapshots:
     optionalDependencies:
       '@rspack/core': 1.6.8(@swc/helpers@0.5.19)
       webpack: 5.105.4
-
-  '@rsdoctor/utils@1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)':
-    dependencies:
-      '@babel/code-frame': 7.26.2
-      '@rsdoctor/types': 1.2.3(@rspack/core@1.4.11(@swc/helpers@0.5.19))(webpack@5.105.4)
-      '@types/estree': 1.0.5
-      acorn: 8.16.0
-      acorn-import-attributes: 1.9.5(acorn@8.16.0)
-      acorn-walk: 8.3.4
-      connect: 3.7.0
-      deep-eql: 4.1.4
-      envinfo: 7.14.0
-      filesize: 10.1.6
-      fs-extra: 11.3.4
-      get-port: 5.1.1
-      json-stream-stringify: 3.0.1
-      lines-and-columns: 2.0.4
-      picocolors: 1.1.1
-      rslog: 1.3.2
-      strip-ansi: 6.0.1
-    transitivePeerDependencies:
-      - '@rspack/core'
-      - supports-color
-      - webpack
 
   '@rsdoctor/utils@1.2.3(@rspack/core@1.6.8(@swc/helpers@0.5.19))(webpack@5.105.4)':
     dependencies:
@@ -14601,18 +14522,6 @@ snapshots:
   ts-api-utils@2.4.0(typescript@5.9.2):
     dependencies:
       typescript: 5.9.2
-
-  ts-checker-rspack-plugin@1.3.0(@rspack/core@1.4.11(@swc/helpers@0.5.19))(tslib@2.8.1)(typescript@5.9.2):
-    dependencies:
-      '@rspack/lite-tapable': 1.1.0
-      chokidar: 3.6.0
-      memfs: 4.56.11(tslib@2.8.1)
-      picocolors: 1.1.1
-      typescript: 5.9.2
-    optionalDependencies:
-      '@rspack/core': 1.4.11(@swc/helpers@0.5.19)
-    transitivePeerDependencies:
-      - tslib
 
   ts-checker-rspack-plugin@1.3.0(@rspack/core@1.6.8(@swc/helpers@0.5.19))(tslib@2.8.1)(typescript@5.9.2):
     dependencies:
