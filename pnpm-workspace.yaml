@@ -1,7 +1,10 @@
 packages:
   - apps/*
   - packages/**
-  - projects/*
+  - projects/mtc-color-picker
+  - "!**/node_modules/**"
+  - "!**/dist/**"
+  - "!**/output/**"
 catalogs:
   utils:
     clsx: 2.1.1
