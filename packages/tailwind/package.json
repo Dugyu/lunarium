@@ -1,6 +1,6 @@
 {
   "name": "@dugyu/luna-tailwind",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
   "description": "TailwindCSS preset for the L.U.N.A project",
   "keywords": [
@@ -26,6 +26,7 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
+    "LICENSE",
     "README.md"
   ],
   "scripts": {
