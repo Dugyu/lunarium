@@ -9,6 +9,11 @@
     "colors",
     "tokens"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dugyu/lunarium",
+    "directory": "packages/tailwind"
+  },
   "license": "Apache-2.0",
   "author": "The Lynx Authors",
   "sideEffects": false,
