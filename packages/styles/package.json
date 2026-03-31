@@ -1,6 +1,6 @@
 {
   "name": "@dugyu/luna-styles",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "CSS theme variables for the L.U.N.A project",
   "repository": {
     "type": "git",
