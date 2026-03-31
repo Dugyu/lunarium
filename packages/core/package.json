@@ -1,7 +1,6 @@
 {
   "name": "@dugyu/luna-core",
   "version": "0.0.0",
-  "private": true,
   "description": "Core constants, types, and utilities for the L.U.N.A project",
   "keywords": [
     "luna",
@@ -36,5 +35,8 @@
     "@rslib/core": "catalog:rslib",
     "@typescript/native-preview": "catalog:ts",
     "typescript": "catalog:ts"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
