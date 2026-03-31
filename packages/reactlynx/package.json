@@ -12,6 +12,11 @@
     "react",
     "lynx"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dugyu/lunarium",
+    "directory": "packages/reactlynx"
+  },
   "license": "Apache-2.0",
   "author": "The Lynx Authors",
   "sideEffects": false,
