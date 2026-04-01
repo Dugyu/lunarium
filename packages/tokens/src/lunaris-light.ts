@@ -4,7 +4,7 @@
 
 import type { LunaThemeTokens } from '@dugyu/luna-core';
 
-export const lunarisLightTokens: LunaThemeTokens = {
+export const lunarisLightTokens = {
   key: 'lunaris-light',
   variant: 'lunaris',
   mode: 'light',
@@ -52,4 +52,4 @@ export const lunarisLightTokens: LunaThemeTokens = {
     'gradient-content-faded': 'rgba(255, 255, 255, 0.68)',
     'gradient-content-trace': 'rgba(255, 255, 255, 0.12)',
   },
-} as const;
+} as const satisfies LunaThemeTokens;

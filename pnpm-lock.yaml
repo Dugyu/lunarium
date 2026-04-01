@@ -412,10 +412,11 @@ importers:
         version: 5.9.2
 
   packages/tailwind:
-    devDependencies:
+    dependencies:
       '@dugyu/luna-core':
         specifier: workspace:*
         version: link:../core
+    devDependencies:
       '@rslib/core':
         specifier: catalog:rslib
         version: 0.17.1(@typescript/native-preview@7.0.0-dev.20251103.1)(typescript@5.9.2)

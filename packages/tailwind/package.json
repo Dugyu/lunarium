@@ -31,14 +31,17 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
+    "CHANGELOG.md",
     "LICENSE",
     "README.md"
   ],
   "scripts": {
     "build": "rslib build"
   },
+  "dependencies": {
+    "@dugyu/luna-core": "workspace:*"
+  },
   "devDependencies": {
-    "@dugyu/luna-core": "workspace:*",
     "@rslib/core": "catalog:rslib",
     "@typescript/native-preview": "catalog:ts",
     "tailwindcss": "catalog:tailwind",
