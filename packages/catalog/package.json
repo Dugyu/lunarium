@@ -10,6 +10,7 @@
     "metadata",
     "registry"
   ],
+  "homepage": "https://github.com/Dugyu/lunarium/tree/main/packages/catalog",
   "repository": {
     "type": "git",
     "url": "https://github.com/Dugyu/lunarium",
