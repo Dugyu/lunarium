@@ -4,6 +4,12 @@ The foundational types package for the LUNA theming system. It provides theme ty
 
 This package does not ship any concrete color values. Color values live in `@dugyu/luna-tokens` as the single source of truth.
 
+## Installation
+
+```bash
+pnpm add @dugyu/luna-core
+```
+
 ## What’s Inside
 
 - Theme keys: `LunaThemeKey` / `LunaThemeVariant` / `LunaThemeMode`, plus extensible custom space via `LunaCustomThemeKey`
@@ -60,6 +66,7 @@ const resolved2 = resolveThemeKeyFromList(allowed, 'luna-dark');
 ## LUNA Packages
 
 - `@dugyu/luna-tokens` — source of truth for token values
-- `@dugyu/luna-core` — token and theme type definitions
-- `@dugyu/luna-styles` — CSS variables output (required at runtime)
+- `@dugyu/luna-core` — token and theme type definitions (this package)
+- `@dugyu/luna-styles` — CSS variables output
 - `@dugyu/luna-tailwind` — Tailwind utilities output
+- `@dugyu/luna-reactlynx` — ReactLynx runtime integration

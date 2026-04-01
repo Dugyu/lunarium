@@ -1,7 +1,6 @@
 {
   "name": "@dugyu/luna-reactlynx",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.1",
   "description": "Reactlynx theming primitives (provider/hooks) and optional runtime wrappers for the L.U.N.A project",
   "keywords": [
     "luna",
@@ -12,7 +11,7 @@
     "react",
     "lynx"
   ],
-  "homepage": "https://github.com/Dugyu/lunarium/tree/main/packages/reactlynx",
+  "homepage": "https://github.com/Dugyu/lunarium/tree/main/packages/reactlynx#readme",
   "repository": {
     "type": "git",
     "url": "https://github.com/Dugyu/lunarium",
@@ -64,5 +63,8 @@
     "@lynx-js/react": ">=0.100.0",
     "@lynx-js/types": "*",
     "@types/react": "^18"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

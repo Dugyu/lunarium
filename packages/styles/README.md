@@ -4,6 +4,12 @@ CSS Custom Properties for the LUNA theming system.
 
 `@dugyu/luna-styles` converts the theme token values from `@dugyu/luna-tokens` into CSS variables, scoped under theme class names (e.g. `.lunaris-dark`, `.luna-light`).
 
+## Installation
+
+```bash
+pnpm add @dugyu/luna-styles
+```
+
 ## How It Works
 
 - Each theme is emitted as a CSS file that defines variables inside a theme selector:
@@ -64,5 +70,6 @@ function App() {
 
 - `@dugyu/luna-tokens` — source of truth for token values
 - `@dugyu/luna-core` — token and theme type definitions
-- `@dugyu/luna-styles` — CSS variables output (required at runtime)
+- `@dugyu/luna-styles` — CSS variables output (this package)
 - `@dugyu/luna-tailwind` — Tailwind utilities output
+- `@dugyu/luna-reactlynx` — ReactLynx runtime integration
