@@ -1,5 +1,11 @@
 # @dugyu/luna-tailwind
 
+## 0.2.0
+
+### Patch Changes
+
+- Update README. ([#86](https://github.com/Dugyu/lunarium/pull/86))
+
 ## 0.1.1
 
 ### Patch Changes
