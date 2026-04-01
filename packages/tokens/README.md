@@ -204,6 +204,12 @@ paper/canvas share a coherent hue family and sit at opposite ends of
 the foreground–background axis. Their veil/film layers inherit both
 the hue affinity and the positional contrast.
 
+## Installation
+
+```bash
+pnpm add @dugyu/luna-tokens
+```
+
 ## Usage
 
 ```typescript
@@ -226,10 +232,10 @@ This package exports token objects directly. You will not typically need to impo
 
 For CSS Variable or Tailwind usage, see `@dugyu/luna-styles` and `@dugyu/luna-tailwind`.
 
-## Related Packages
+## LUNA Packages
 
-| Package                | Role                          |
-| ---------------------- | ----------------------------- |
-| `@dugyu/luna-styles`   | CSS Custom Properties output  |
-| `@dugyu/luna-tailwind` | Tailwind utility class output |
-| `@dugyu/luna-core`     | Type Definitions              |
+- `@dugyu/luna-tokens` — source of truth for token values (this package)
+- `@dugyu/luna-core` — token and theme type definitions
+- `@dugyu/luna-styles` — CSS variables output
+- `@dugyu/luna-tailwind` — Tailwind utilities output
+- `@dugyu/luna-reactlynx` — ReactLynx runtime integration

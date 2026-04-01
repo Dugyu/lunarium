@@ -4,6 +4,13 @@ TailwindCSS preset for the LUNA theming system.
 
 `@dugyu/luna-tailwind` maps LUNA color tokens to Tailwind color utilities using CSS variables. It is designed to be used together with `@dugyu/luna-styles`, which provides the actual `--*` variables under theme class names (e.g. `.lunaris-dark`, `.luna-light`).
 
+## Installation
+
+```bash
+pnpm add -D @dugyu/luna-tailwind @lynx-js/tailwind-preset tailwindcss@v3
+pnpm add @dugyu/luna-styles
+```
+
 ## How It Works
 
 - `theme.colors` is extended so utilities like `bg-primary` resolve to `var(--primary)`
@@ -67,5 +74,6 @@ This preset also ships gradient classes that use the LUNA gradient tokens:
 
 - `@dugyu/luna-tokens` — source of truth for token values
 - `@dugyu/luna-core` — token and theme type definitions
-- `@dugyu/luna-styles` — CSS variables output (required at runtime)
-- `@dugyu/luna-tailwind` — Tailwind utilities output
+- `@dugyu/luna-styles` — CSS variables output
+- `@dugyu/luna-tailwind` — Tailwind utilities output (this package)
+- `@dugyu/luna-reactlynx` — ReactLynx runtime integration

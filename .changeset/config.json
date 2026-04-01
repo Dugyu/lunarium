@@ -12,7 +12,8 @@
       "@dugyu/luna-core",
       "@dugyu/luna-tokens",
       "@dugyu/luna-styles",
-      "@dugyu/luna-tailwind"
+      "@dugyu/luna-tailwind",
+      "@dugyu/luna-reactlynx"
     ]
   ],
   "linked": [],
