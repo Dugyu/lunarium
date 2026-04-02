@@ -1,5 +1,11 @@
 # @dugyu/luna-styles
 
+## 0.3.1
+
+### Patch Changes
+
+- Normalize `repository.url` to the strict `git+https://...git` form. ([#90](https://github.com/Dugyu/lunarium/pull/90))
+
 ## 0.3.0
 
 ### Patch Changes

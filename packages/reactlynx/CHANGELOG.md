@@ -1,5 +1,14 @@
 # @dugyu/luna-reactlynx
 
+## 0.3.1
+
+### Patch Changes
+
+- Normalize `repository.url` to the strict `git+https://...git` form. ([#90](https://github.com/Dugyu/lunarium/pull/90))
+
+- Updated dependencies [[`711efdf`](https://github.com/Dugyu/lunarium/commit/711efdfdffe8754d46fe67b8470d16a49377f2fd)]:
+  - @dugyu/luna-core@0.3.1
+
 ## 0.3.0
 
 ### Minor Changes
