@@ -13,7 +13,7 @@
   "homepage": "https://github.com/Dugyu/lunarium/tree/main/packages/styles#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Dugyu/lunarium",
+    "url": "git+https://github.com/Dugyu/lunarium.git",
     "directory": "packages/styles"
   },
   "license": "Apache-2.0",

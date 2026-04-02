@@ -12,7 +12,7 @@
   "homepage": "https://github.com/Dugyu/lunarium/tree/main/packages/tokens#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Dugyu/lunarium",
+    "url": "git+https://github.com/Dugyu/lunarium.git",
     "directory": "packages/tokens"
   },
   "license": "Apache-2.0",
