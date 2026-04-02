@@ -27,8 +27,8 @@
       "import": "./dist/index.jsx"
     },
     "./theming": {
-      "types": "./dist/theme/index.d.ts",
-      "import": "./dist/theme/index.jsx"
+      "types": "./dist/theming/index.d.ts",
+      "import": "./dist/theming/index.jsx"
     },
     "./runtime": {
       "types": "./dist/runtime/index.d.ts",
@@ -39,8 +39,12 @@
       "import": "./dist/runtime/global-props.jsx"
     }
   },
+  "main": "./dist/index.jsx",
+  "module": "./dist/index.jsx",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist",
+    "CHANGELOG.md",
     "LICENSE",
     "README.md"
   ],
