@@ -1,5 +1,13 @@
 # @dugyu/luna-tokens
 
+## 0.3.0
+
+### Patch Changes
+
+- Use `satisfies` instead of explicit type annotations so dist declarations no longer import from `@dugyu/luna-core`. ([#88](https://github.com/Dugyu/lunarium/pull/88))
+
+- Include CHANGELOG.md. ([#88](https://github.com/Dugyu/lunarium/pull/88))
+
 ## 0.2.0
 
 ### Patch Changes
