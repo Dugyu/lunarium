@@ -2,10 +2,17 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
+// Lynx web element registration (side effects — must be imported by the app)
+import '@lynx-js/web-core/index.css';
+import '@lynx-js/web-elements/index.css';
+import '@lynx-js/web-core';
+import '@lynx-js/web-elements/all';
+
 import './App.css';
-import { Studio } from '@/components/studio';
-import { RECORD_MODE } from '@/constants/presentation.ts';
-import { cn } from '@/utils';
+
+import { Studio, cn } from '@dugyu/luna-stage-preview';
+
+import { RECORD_MODE } from './constants/presentation.ts';
 
 function App() {
   return (
@@ -32,7 +39,7 @@ function App() {
             RECORD_MODE ? 'h-full' : ' h-3/4',
           )}
         >
-          <Studio />
+          <Studio recordMode={RECORD_MODE} />
         </div>
       </div>
     </div>

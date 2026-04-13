@@ -1,0 +1,65 @@
+{
+  "name": "@dugyu/luna-stage-preview",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Phone mockup showcase components for previewing Lynx UI components via Luna Stage",
+  "keywords": [
+    "luna",
+    "stage",
+    "preview",
+    "mockup",
+    "lynx-ui",
+    "react"
+  ],
+  "homepage": "https://github.com/Dugyu/lunarium/tree/main/packages/luna-stage-preview",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dugyu/lunarium.git",
+    "directory": "packages/luna-stage-preview"
+  },
+  "license": "Apache-2.0",
+  "author": "The Lynx Authors",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rslib build"
+  },
+  "dependencies": {
+    "@dugyu/luna-catalog": "workspace:*",
+    "@dugyu/luna-core": "workspace:*",
+    "@headlessui/react": "^2.2.7",
+    "@headlessui/tailwindcss": "^0.2.2",
+    "clsx": "catalog:utils",
+    "lucide-react": "^0.546.0",
+    "motion": "^12.23.21",
+    "tailwind-merge": "catalog:tailwind"
+  },
+  "devDependencies": {
+    "@lynx-js/web-core": "catalog:lynx",
+    "@lynx-js/web-elements": "catalog:lynx",
+    "@rsbuild/plugin-react": "catalog:rsbuild",
+    "@rslib/core": "catalog:rslib",
+    "@types/react": "catalog:react18",
+    "@typescript/native-preview": "catalog:ts",
+    "react": "catalog:react18",
+    "react-dom": "catalog:react18",
+    "typescript": "catalog:ts"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0"
+  }
+}

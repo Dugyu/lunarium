@@ -7,7 +7,11 @@ import type { Config } from 'tailwindcss';
 import type { PluginCreator } from 'tailwindcss/types/config';
 
 const config: Config = {
-  content: ['./src/**/*.{html,js,ts,jsx,tsx,mdx}'],
+  content: [
+    './src/**/*.{html,js,ts,jsx,tsx,mdx}',
+    // Scan compiled output of luna-stage-preview for Tailwind class names
+    '../../packages/luna-stage-preview/dist/**/*.js',
+  ],
   plugins: [headlessUIPlugin as PluginCreator],
 };
 export default config;

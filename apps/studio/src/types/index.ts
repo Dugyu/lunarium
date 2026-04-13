@@ -9,4 +9,5 @@ export type {
   LunaThemeVariant,
 } from '@dugyu/luna-core';
 export type { StudioViewMode } from '@dugyu/luna-catalog';
-export type { MoonriseEvent } from './stage.js';
+// MoonriseEvent is now part of @dugyu/luna-stage-preview
+export type { MoonriseEvent } from '@dugyu/luna-stage-preview';
