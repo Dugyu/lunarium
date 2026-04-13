@@ -3,7 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "dependsOn": ["@dugyu/luna-stage#build", "@dugyu/luna-core#build"],
+      "dependsOn": ["@dugyu/luna-stage-demo#build", "@dugyu/luna-core#build"],
       "inputs": [
         "src/**",
         "public/**",
