@@ -6,6 +6,7 @@
     "luna",
     "lynx",
     "misc",
+    "mtc",
   ],
   "dictionaryDefinitions": [
     {
@@ -21,6 +22,11 @@
     {
       "name": "misc",
       "path": "./.cspell/misc.txt",
+      "addWords": true,
+    },
+    {
+      "name": "mtc",
+      "path": "./.cspell/mtc.txt",
       "addWords": true,
     },
   ],

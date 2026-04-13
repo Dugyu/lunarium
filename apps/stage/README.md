@@ -1,6 +1,6 @@
 # L.U.N.A Stage
 
-**Stage** is the runtime rendering environment in [**L.U.N.A.rium**](../../README.md).
+**Stage** is the runtime rendering environment in the [**L.U.N.A**](../../projects/luna/README.md) project.
 
 It renders Lynx components in their actual execution context.
 When embedded back into [**Studio**](../studio/README.md) via [**Lynx for Web**](https://lynxjs.org/guide/start/integrate-with-existing-apps.html#platform=web), Stage becomes the integrated performance space where authored components are previewed exactly as they will appear in reality.
@@ -45,9 +45,3 @@ You have finished the basic setup required to run any example in this repo. For 
 ### Switch Demo Entries
 
 Press `r` in your terminal to open the entry switcher. Use the up and down `↑`/`↓` arrow keys to navigate between entries, and press `Enter` to load the selected demo.
-
-## Demo Entries
-
-For reference, here is the mapping between the conceptual demo names and the actual entry keys:
-
-TODO
