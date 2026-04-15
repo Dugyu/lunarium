@@ -8,8 +8,7 @@ catalogs:
     motion: 12.38.0
   lynx:
     "@lynx-js/react": 0.114.4
-    "@lynx-js/web-core": 0.18.1
-    "@lynx-js/web-elements": 0.8.9
+    "@lynx-js/web-core": 0.20.1
   lynx-dev:
     "@lynx-js/preact-devtools": 5.0.1-cf9aef5
     "@lynx-js/types": 3.4.11
