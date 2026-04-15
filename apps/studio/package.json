@@ -14,13 +14,14 @@
   "dependencies": {
     "@dugyu/luna-catalog": "workspace:*",
     "@dugyu/luna-core": "workspace:*",
+    "@dugyu/luna-stage": "workspace:*",
     "@headlessui/react": "^2.2.7",
     "@headlessui/tailwindcss": "^0.2.2",
     "@lynx-js/web-core": "catalog:lynx",
     "@lynx-js/web-elements": "catalog:lynx",
     "clsx": "catalog:utils",
     "lucide-react": "^0.546.0",
-    "motion": "^12.23.21",
+    "motion": "catalog:motion",
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
     "tailwind-merge": "catalog:tailwind"

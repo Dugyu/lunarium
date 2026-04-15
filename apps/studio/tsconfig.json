@@ -1,31 +1,23 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "composite": true,
     "paths": {
       "@/*": ["./src/*"],
     },
-    "lib": ["DOM", "ES2020"],
-    "jsx": "react-jsx",
-    "target": "ES2020",
     "emitDeclarationOnly": true,
-    "skipLibCheck": true,
-    "useDefineForClassFields": true,
 
     /* modules */
-    "module": "ESNext",
     "moduleDetection": "force",
-    "moduleResolution": "bundler",
-    "verbatimModuleSyntax": true,
-    "resolveJsonModule": true,
     "allowImportingTsExtensions": true,
     "noUncheckedSideEffectImports": true,
 
     /* type checking */
-    "strict": true,
+    "exactOptionalPropertyTypes": false,
+    "noUncheckedIndexedAccess": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
   },
-  "include": ["src", "src/types", "rsbuild.config.ts", "tailwind.config.ts"],
+  "include": ["src", "rsbuild.config.ts", "tailwind.config.ts"],
   "references": [
     { "path": "../../packages/core/tsconfig.build.json" },
   ],

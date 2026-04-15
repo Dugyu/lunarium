@@ -8,8 +8,8 @@
     "emitDeclarationOnly": false,
     "outDir": "dist",
     "rootDir": "./src",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "sourceMap": true,
     "target": "ES2022",
     "lib": ["ES2022"]

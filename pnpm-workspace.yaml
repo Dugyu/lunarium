@@ -4,6 +4,8 @@ packages:
 catalogs:
   utils:
     clsx: 2.1.1
+  motion:
+    motion: 12.38.0
   lynx:
     "@lynx-js/react": 0.114.4
     "@lynx-js/web-core": 0.18.1

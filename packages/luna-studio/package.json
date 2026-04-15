@@ -1,0 +1,54 @@
+{
+  "name": "@dugyu/luna-studio",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Stage system and showcase components for the L.U.N.A project",
+  "keywords": [
+    "luna",
+    "studio",
+    "preview",
+    "choreography",
+    "react",
+    "lynx"
+  ],
+  "homepage": "https://github.com/Dugyu/lunarium/tree/main/packages/luna-studio#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dugyu/lunarium.git",
+    "directory": "packages/luna-studio"
+  },
+  "license": "Apache-2.0",
+  "author": "The Lynx Authors",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rslib build"
+  },
+  "devDependencies": {
+    "@rsbuild/plugin-react": "catalog:rsbuild",
+    "@rslib/core": "catalog:rslib",
+    "@types/react": "catalog:react18",
+    "react": "catalog:react18",
+    "react-dom": "catalog:react18",
+    "typescript": "catalog:ts"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  }
+}
