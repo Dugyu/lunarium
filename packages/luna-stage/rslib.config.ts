@@ -9,7 +9,7 @@ export default defineConfig({
     {
       bundle: false,
       format: 'esm',
-      syntax: 'es2020',
+      syntax: 'esnext',
       dts: { tsgo: true },
       output: {
         target: 'web',
