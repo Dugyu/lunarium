@@ -13,14 +13,18 @@ import * as motion from 'motion/react-client';
 import { useLayoutEffect } from 'react';
 import type { JSX } from 'react';
 
-import { computeDepthScale, computeScreenTranslation } from './transform-utils';
 import type { MockupMotionProps } from './types';
 import {
   OUTLINE_WEIGHT,
   SMOOTHING_OUTLINE_PATH,
   SMOOTHING_PATH,
 } from '../../constants/mockup';
-import { cn, toAlignFactor } from '../../utils';
+import {
+  cn,
+  computeDepthScale,
+  computeScreenTranslation,
+  toAlignFactor,
+} from '../../utils';
 import { useVisualSize } from '../context/use-visual-size';
 
 const DEVICE_CLIP_PATH = `path("${SMOOTHING_PATH}")`;

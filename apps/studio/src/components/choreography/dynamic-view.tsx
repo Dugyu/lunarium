@@ -140,7 +140,7 @@ function DynamicView(
           y: 0,
           z: escape
             ? 0
-            : Math.cos(theta) * 600, // (1.5 - Math.abs((mid - compOrder) / mid)) * 500,
+            : -Math.cos(theta) * 600, // -(1.5 - Math.abs((mid - compOrder) / mid)) * 500,
         }
         : WORLD_ORIGIN;
 

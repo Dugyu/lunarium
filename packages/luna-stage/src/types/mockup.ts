@@ -4,7 +4,7 @@
 
 import type { CSSProperties, ComponentPropsWithoutRef, ReactNode } from 'react';
 
-import type { AlignX, AlignY } from './align';
+import type { AlignX, AlignY } from './align.js';
 
 export type MockupBaseProps = {
   /**

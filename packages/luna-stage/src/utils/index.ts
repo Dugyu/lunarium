@@ -7,3 +7,4 @@ export { toAlignFactor } from './align';
 export { computeScaleRange } from './transform';
 export { lerpFitScale } from './transform';
 export { computeFrameOffset } from './transform';
+export { computeDepthScale, computeScreenTranslation } from './transform';

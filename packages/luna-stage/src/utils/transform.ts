@@ -92,3 +92,81 @@ export function computeFrameOffset(input: FrameOffsetInput): FrameOffset {
     offsetY: -(baseHeight * scale) * ay,
   };
 }
+
+export type DepthScaleOptions = {
+  /**
+   * Optional upper bound for the returned scale.
+   * When omitted, no clamping is applied and the raw value (or `Infinity`
+   * at the singularity) is returned. Pass a finite value to guard against
+   * extreme scales in rendering contexts that cannot handle `Infinity`.
+   */
+  maxScale?: number;
+};
+
+/**
+ * Compute the perspective depth scale for a given world-space Z position.
+ *
+ * Follows the CSS / OpenGL convention: +Z points toward the viewer.
+ * Equivalent to the perspective divide in a pinhole camera model:
+ * `w = f / (f - z)`, where `f` is the focal length.
+ *
+ * - `z > 0`: object is closer to the viewer, scale > 1 (appears larger)
+ * - `z < 0`: object is further from the viewer, scale < 1 (appears smaller)
+ * - `z = 0`: no perspective effect, scale = 1
+ * - `z >= f`: object is at or behind the camera optical center —
+ *   physically undefined (singularity). Returns `options.maxScale` if
+ *   provided, otherwise `Infinity`.
+ * - Returns `1` (orthographic) when `focalLength` is absent or `<= 0`.
+ */
+export function computeDepthScale(
+  focalLength: number | undefined,
+  worldZ: number,
+  options?: DepthScaleOptions,
+): number {
+  if (!focalLength || focalLength <= 0) return 1;
+  const denom = focalLength - worldZ;
+  if (denom <= 0) return options?.maxScale ?? Infinity;
+  const scale = focalLength / denom;
+  return options?.maxScale !== undefined
+    ? Math.min(scale, options.maxScale)
+    : scale;
+}
+
+export type ScreenTranslation = {
+  /** Final screen-space translation along X, in pixels */
+  x: number;
+  /** Final screen-space translation along Y, in pixels */
+  y: number;
+};
+
+export type ScreenTranslationInput = {
+  /** World-space X position of the frame */
+  worldX: number;
+  /** World-space Y position of the frame */
+  worldY: number;
+  /** Perspective depth scale — output of `computeDepthScale` */
+  depthScale: number;
+  /** Direct screen-space pan offset along X, in pixels */
+  screenPanX: number;
+  /** Direct screen-space pan offset along Y, in pixels */
+  screenPanY: number;
+};
+
+/**
+ * Compute the final screen-space translation by projecting world-space
+ * XY coordinates into screen space via the perspective depth scale,
+ * then adding direct screen-space pan offsets.
+ *
+ * This compensates for the principal-point shift that occurs when an
+ * object moves in Z — without this, a depth change would also cause
+ * an unwanted lateral drift on screen.
+ */
+export function computeScreenTranslation(
+  input: ScreenTranslationInput,
+): ScreenTranslation {
+  const { worldX, worldY, depthScale, screenPanX, screenPanY } = input;
+  return {
+    x: worldX * depthScale + screenPanX,
+    y: worldY * depthScale + screenPanY,
+  };
+}
