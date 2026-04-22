@@ -12,7 +12,7 @@ const SCALE_SINGLE_RE = new RegExp(
  * Parse the last occurrence of `scale(...)` from a CSS transform string.
  * Returns { x: ScaleX, y: ScaleY }; if not found, returns null.
  */
-function getLastScaleFromTransform(
+export function getLastScaleFromTransform(
   transform: string,
 ): { x: number; y: number } | null {
   if (!transform) return null;
@@ -32,5 +32,3 @@ function getLastScaleFromTransform(
   const sy = m[2] !== undefined ? Number.parseFloat(m[2]) : sx; // if only one argument, sy = sx
   return { x: sx, y: sy };
 }
-
-export { getLastScaleFromTransform };

@@ -4,7 +4,6 @@
 
 import { useMotionValue, useTransform } from 'motion/react';
 import type {
-  Box,
   MotionNodeOptions,
   MotionStyle,
   TransformTemplate,
@@ -21,17 +20,17 @@ import type {
 } from 'react';
 
 import { getLastScaleFromTransform } from './transform-utils';
-import { useContainerResizeMV } from './use-container-resize';
+import { useContainerResizeMV } from './use-container-resize-mv';
 import { useMergedRefs } from '../../hooks/use-merged-refs';
 import { cn } from '../../utils';
 import { VisualSizeProvider } from '../context/visual-size-provider';
 
-type MotionContainerProps =
+type MotionMockupContainerProps =
   & Omit<MotionNodeOptions, 'transformTemplate'>
   & ComponentPropsWithoutRef<'div'>
   & { layoutId: string };
 
-const MotionContainer: ForwardRefExoticComponent<
+const MotionMockupContainer: ForwardRefExoticComponent<
   & Omit<MotionNodeOptions, 'transformTemplate'>
   & Omit<
     DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
@@ -41,15 +40,24 @@ const MotionContainer: ForwardRefExoticComponent<
     layoutId: string;
   }
   & RefAttributes<HTMLDivElement>
-> = forwardRef<HTMLDivElement, MotionContainerProps>(
-  MotionContainerImpl,
+> = forwardRef<HTMLDivElement, MotionMockupContainerProps>(
+  MotionMockupContainerImpl,
 );
 
-function MotionContainerImpl(
-  props: MotionContainerProps,
+function MotionMockupContainerImpl(
+  props: MotionMockupContainerProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
-  const { children, className, layoutId, style, ...restProps } = props;
+  const {
+    children,
+    className,
+    layoutId,
+    style,
+    onLayoutMeasure,
+    onLayoutAnimationStart,
+    onLayoutAnimationComplete,
+    ...restProps
+  } = props;
 
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -96,24 +104,57 @@ function MotionContainerImpl(
     return generated;
   };
 
-  const handleLayoutMeasure = (box: Box) => {
-    animLayoutW.set(box.x.max - box.x.min);
-    animLayoutH.set(box.y.max - box.y.min);
+  const handleLayoutMeasure = (
+    ...args: Parameters<
+      NonNullable<MotionMockupContainerProps['onLayoutMeasure']>
+    >
+  ) => {
+    const [box] = args;
+    // Forward consumer callbacks while guaranteeing internal MotionValue updates
+    // always run even if the consumer callback throws.
+    try {
+      onLayoutMeasure?.(...args);
+    } finally {
+      animLayoutW.set(box.x.max - box.x.min);
+      animLayoutH.set(box.y.max - box.y.min);
+    }
   };
 
-  const handleLayoutAnimationStart = () => {
-    isAnimating.set(1);
+  const handleLayoutAnimationStart = (
+    ...args: Parameters<
+      NonNullable<MotionMockupContainerProps['onLayoutAnimationStart']>
+    >
+  ) => {
+    // Forward consumer callbacks while guaranteeing internal MotionValue updates
+    // always run even if the consumer callback throws.
+    try {
+      onLayoutAnimationStart?.(...args);
+    } finally {
+      isAnimating.set(1);
+    }
   };
 
-  const handleLayoutAnimationComplete = () => {
-    isAnimating.set(0);
-    animLayoutW.set(layoutW.get());
-    animLayoutH.set(layoutH.get());
+  const handleLayoutAnimationComplete = (
+    ...args: Parameters<
+      NonNullable<MotionMockupContainerProps['onLayoutAnimationComplete']>
+    >
+  ) => {
+    // Forward consumer callbacks while guaranteeing internal MotionValue updates
+    // always run even if the consumer callback throws.
+    try {
+      onLayoutAnimationComplete?.(...args);
+    } finally {
+      isAnimating.set(0);
+      animLayoutW.set(layoutW.get());
+      animLayoutH.set(layoutH.get());
+    }
   };
 
   return (
     // Outer Layout Animation Parent
+    // Spread user props first so internal handlers below cannot be overridden.
     <motion.div
+      {...restProps}
       layout
       layoutId={`_${layoutId}_parent`}
       layoutCrossfade={false}
@@ -127,7 +168,6 @@ function MotionContainerImpl(
         className,
       )}
       {...(style !== undefined && { style: style as MotionStyle })}
-      {...restProps}
     >
       <motion.div
         layout
@@ -143,4 +183,4 @@ function MotionContainerImpl(
   );
 }
 
-export { MotionContainer };
+export { MotionMockupContainer };

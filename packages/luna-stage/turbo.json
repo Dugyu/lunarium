@@ -3,7 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "dependsOn": ["@dugyu/luna-core#build", "@dugyu/luna-catalog#build"],
+      "dependsOn": ["@dugyu/luna-core#build"],
       "inputs": [
         "src/**",
         "rslib.config.ts"
