@@ -60,6 +60,14 @@ export type FrameOffset = {
  */
 export function computeScaleRange(input: FitInput): ScaleRange {
   const { containerWidth, containerHeight, baseWidth, baseHeight } = input;
+  if (
+    !Number.isFinite(baseWidth) || baseWidth <= 0
+    || !Number.isFinite(baseHeight) || baseHeight <= 0
+  ) {
+    throw new RangeError(
+      `computeScaleRange: baseWidth and baseHeight must be finite and > 0, got ${baseWidth}x${baseHeight}`,
+    );
+  }
   const ratioW = containerWidth / baseWidth;
   const ratioH = containerHeight / baseHeight;
   return {
