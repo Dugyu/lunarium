@@ -3,5 +3,5 @@
 // LICENSE file in the root directory of this source tree.
 
 export { MotionMockup } from './mockup-motion';
-export { MotionContainer } from './container-motion';
+export { MotionMockupContainer } from './container-motion';
 export { MotionPresentation } from './presentation-motion';

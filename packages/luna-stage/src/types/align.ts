@@ -2,8 +2,5 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-export {
-  MotionMockup,
-  MotionMockupContainer,
-  MotionPresentation,
-} from '@dugyu/luna-stage/motion';
+export type AlignX = 'left' | 'center' | 'right';
+export type AlignY = 'top' | 'center' | 'bottom';

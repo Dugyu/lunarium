@@ -12,4 +12,4 @@ export {
 
 // ─── Static phone mockup ──────────────────────────────────────────────────────
 export { Mockup, MockupContainer } from './components/mockup';
-export type { MockupProps } from './components/mockup';
+export type { MockupProps } from './types';

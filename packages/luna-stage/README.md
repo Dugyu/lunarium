@@ -1,5 +1,6 @@
 # luna-stage
 
+> Stage system and showcase components for the L.U.N.A project.
 > Atomic components for rendering Lynx bundles into a device shell / stage in the browser.
 
 Use `luna-stage` when you need a single-frame preview (`Mockup` + `LunaLynxStage`) or motion-enhanced presentation (`MotionMockup`, etc.). For multi-stage orchestration and Studio-level layout, see [`@dugyu/luna-studio`](../luna-studio).
@@ -7,13 +8,19 @@ Use `luna-stage` when you need a single-frame preview (`Mockup` + `LunaLynxStage
 ## Installation
 
 ```sh
-npm i @dugyu/luna-stage
+pnpm i @dugyu/luna-stage
 ```
 
 **Peer dependencies** — install in your application:
 
 ```sh
-npm i react @lynx-js/web-core @lynx-js/web-elements
+pnpm i react @lynx-js/web-core
+```
+
+For motion capabilities, motion is an optional peer dependency:
+
+```sh
+pnpm i motion
 ```
 
 ## Required Lynx Side-effects
@@ -21,10 +28,7 @@ npm i react @lynx-js/web-core @lynx-js/web-elements
 Add the following imports at your application entry point. These register the Lynx web components and inject required CSS — they must run before any `LynxStage` or `LunaLynxStage` is mounted.
 
 ```ts
-import '@lynx-js/web-core/index.css';
-import '@lynx-js/web-elements/index.css';
-import '@lynx-js/web-core';
-import '@lynx-js/web-elements/all';
+import '@lynx-js/web-core/client';
 ```
 
 ## Quick Start

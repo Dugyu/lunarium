@@ -1,6 +1,7 @@
 elif
 esac
 instantiator
+lerp
 manypkg
 npmjs
 pipefail

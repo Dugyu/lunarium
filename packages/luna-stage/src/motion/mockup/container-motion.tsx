@@ -21,17 +21,17 @@ import type {
 } from 'react';
 
 import { getLastScaleFromTransform } from './transform-utils';
-import { useContainerResizeMV } from './use-container-resize';
+import { useContainerResizeMV } from './use-container-resize-mv';
 import { useMergedRefs } from '../../hooks/use-merged-refs';
 import { cn } from '../../utils';
 import { VisualSizeProvider } from '../context/visual-size-provider';
 
-type MotionContainerProps =
+type MotionMockupContainerProps =
   & Omit<MotionNodeOptions, 'transformTemplate'>
   & ComponentPropsWithoutRef<'div'>
   & { layoutId: string };
 
-const MotionContainer: ForwardRefExoticComponent<
+const MotionMockupContainer: ForwardRefExoticComponent<
   & Omit<MotionNodeOptions, 'transformTemplate'>
   & Omit<
     DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
@@ -41,12 +41,12 @@ const MotionContainer: ForwardRefExoticComponent<
     layoutId: string;
   }
   & RefAttributes<HTMLDivElement>
-> = forwardRef<HTMLDivElement, MotionContainerProps>(
-  MotionContainerImpl,
+> = forwardRef<HTMLDivElement, MotionMockupContainerProps>(
+  MotionMockupContainerImpl,
 );
 
-function MotionContainerImpl(
-  props: MotionContainerProps,
+function MotionMockupContainerImpl(
+  props: MotionMockupContainerProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const { children, className, layoutId, style, ...restProps } = props;
@@ -143,4 +143,4 @@ function MotionContainerImpl(
   );
 }
 
-export { MotionContainer };
+export { MotionMockupContainer };

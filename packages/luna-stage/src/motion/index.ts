@@ -5,4 +5,9 @@
 export { VisualSizeProvider } from './context/visual-size-provider.js';
 export { useVisualSize } from './context/use-visual-size.js';
 export type { VisualSizeValue } from './context/visual-size-context.js';
-export { MotionMockup, MotionContainer, MotionPresentation } from './mockup';
+export {
+  MotionMockup,
+  MotionMockupContainer,
+  MotionPresentation,
+} from './mockup';
+export type { MockupMotionProps } from './mockup/types';

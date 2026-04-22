@@ -8,8 +8,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { LunaLynxStage } from '@/components/lynx-stage';
 import {
-  MotionContainer,
   MotionMockup,
+  MotionMockupContainer,
   MotionPresentation,
 } from '@/components/mockup-motion';
 import { STARTING_MODE, STARTING_VARIANT } from '@/constants/presentation.ts';
@@ -177,7 +177,7 @@ function DynamicView(
       <AnimatePresence mode='popLayout'>
         {rendered.map((stage) => {
           return (
-            <MotionContainer
+            <MotionMockupContainer
               layoutId={stage.id}
               key={stage.id}
               className={cn(
@@ -224,7 +224,7 @@ function DynamicView(
                   />
                 </MotionMockup>
               </MotionPresentation>
-            </MotionContainer>
+            </MotionMockupContainer>
           );
         })}
       </AnimatePresence>
