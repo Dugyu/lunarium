@@ -47,6 +47,7 @@
     "tailwind-merge": "catalog:tailwind"
   },
   "devDependencies": {
+    "@lynx-js/web-core": "catalog:lynx",
     "@rsbuild/plugin-react": "catalog:rsbuild",
     "@rslib/core": "catalog:rslib",
     "@types/react": "catalog:react18",
