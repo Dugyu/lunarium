@@ -43,10 +43,12 @@
     "build": "rslib build"
   },
   "dependencies": {
+    "@dugyu/luna-core": "workspace:*",
     "clsx": "catalog:utils",
     "tailwind-merge": "catalog:tailwind"
   },
   "devDependencies": {
+    "@lynx-js/web-core": "catalog:lynx",
     "@rsbuild/plugin-react": "catalog:rsbuild",
     "@rslib/core": "catalog:rslib",
     "@types/react": "catalog:react18",
@@ -56,6 +58,7 @@
     "typescript": "catalog:ts"
   },
   "peerDependencies": {
+    "@lynx-js/web-core": ">=0.20.0",
     "motion": ">=12.23.16",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
