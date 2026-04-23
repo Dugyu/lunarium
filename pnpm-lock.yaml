@@ -325,6 +325,9 @@ importers:
 
   packages/luna-stage:
     dependencies:
+      '@dugyu/luna-core':
+        specifier: workspace:*
+        version: link:../core
       clsx:
         specifier: catalog:utils
         version: 2.1.1
