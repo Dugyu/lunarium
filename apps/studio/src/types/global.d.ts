@@ -1,4 +1,4 @@
-import type { LynxView } from '@lynx-js/web-core';
+import type { LynxViewElement as LynxView } from '@lynx-js/web-core/client';
 import type { CSSProperties, Ref } from 'react';
 
 declare global {

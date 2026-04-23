@@ -6,7 +6,7 @@ import { AnimatePresence } from 'motion/react';
 import type { SpringOptions, Transition } from 'motion/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { LunaLynxStage } from '@/components/lynx-stage';
+import { StudioLunaLynxStage as LunaLynxStage } from '@/components/lynx-stage';
 import {
   MotionMockup,
   MotionMockupContainer,
