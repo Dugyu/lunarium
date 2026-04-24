@@ -32,8 +32,5 @@
     "rsbuild-plugin-tailwindcss": "catalog:tailwind",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:ts"
-  },
-  "engines": {
-    "node": ">=18"
   }
 }

@@ -19,7 +19,7 @@ describe('LynxStage SSR Behavior', () => {
   it('should render null on the server side (SSR) without throwing', () => {
     // We simulate SSR using react-dom/server's renderToString in a Node environment
     // where window and document are undefined.
-    // In SSR, effects don't run, so `mounted` stays false.
+    // In SSR, the client-only guard should evaluate to false, so the component renders null.
     let html = '';
     expect(() => {
       html = renderToString(
