@@ -2,14 +2,26 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-import { useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
-import { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect.js';
+function subscribe(): () => void {
+  return () => {
+    // No-op for static snapshot
+  };
+}
+
+function getClientSnapshot(): boolean {
+  return true;
+}
+
+function getServerSnapshot(): boolean {
+  return false;
+}
 
 export function useMounted(): boolean {
-  const [mounted, setMounted] = useState(false);
-  useIsomorphicLayoutEffect(() => {
-    setMounted(true);
-  }, []);
-  return mounted;
+  return useSyncExternalStore(
+    subscribe,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
 }
