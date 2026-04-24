@@ -63,10 +63,6 @@ export type UseLynxStageResult = {
   containerRef: RefObject<HTMLDivElement>;
 };
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
-const WEBPACK_PUBLIC_PATH_RE = /\.p=\\"[^"]*\\"/g;
-
 // ─── Runtime singleton ────────────────────────────────────────────────────────
 
 let runtimeReady: Promise<void> | null = null;
@@ -80,12 +76,6 @@ function ensureRuntime(): Promise<void> {
       runtimeReady = null;
       throw error;
     }));
-}
-
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-
-function isPlainRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 export function useLynxStage({
@@ -192,47 +182,6 @@ export function useLynxStage({
     if (!initialized) return;
 
     if (!urlAlreadySet) {
-      const tag = `[LynxStage ${entry}]`;
-
-      lynxView.customTemplateLoader = async (url: string) => {
-        try {
-          const res = await fetch(url);
-          if (!res.ok) throw new Error(`HTTP ${res.status} loading ${url}`);
-          const text = await res.text();
-
-          const baseUrl = url.substring(0, url.lastIndexOf('/') + 1);
-          const rewritten = text.replace(
-            WEBPACK_PUBLIC_PATH_RE,
-            `.p=\\"${baseUrl}\\"`,
-          );
-          const parsed: unknown = JSON.parse(rewritten);
-          if (!isPlainRecord(parsed)) {
-            throw new TypeError('Invalid template JSON');
-          }
-
-          const lepusCode = parsed.lepusCode;
-          if (isPlainRecord(lepusCode)) {
-            const root = lepusCode.root;
-            if (
-              typeof root === 'string'
-              && root.includes('__webpack_require__')
-              && !root.includes('function __webpack_require__')
-            ) {
-              lepusCode.root =
-                `var __webpack_require__={p:"${baseUrl}"};${root}`;
-            }
-          }
-          return parsed;
-        } catch (err) {
-          const msg = `Failed to load template: ${
-            err instanceof Error ? err.message : String(err)
-          }`;
-          console.error(tag, msg);
-          reportError(msg);
-          throw err;
-        }
-      };
-
       lynxView.url = src;
       lastUrlRef.current = src;
     }
