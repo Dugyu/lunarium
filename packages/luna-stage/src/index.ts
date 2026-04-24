@@ -11,9 +11,9 @@ export {
   useIsClient,
 } from './hooks';
 
-// ─── Static phone mockup ──────────────────────────────────────────────────────
-export { Mockup, MockupContainer } from './components/mockup';
-export type { MockupProps } from './types';
+// ─── Static phone stage ──────────────────────────────────────────────────────
+export { Stage, StageContainer } from './components/stage';
+export type { StageProps, StageBaseProps } from './types/stage-props';
 
 // ─── Lynx stage ────────────────────────────────────────────────────────────────
 export { LynxStage } from './components/lynx-stage';

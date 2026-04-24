@@ -4,10 +4,10 @@
 
 import type { MotionValue, SpringOptions } from 'motion/react';
 
-import type { MockupBaseProps } from '../../types/mockup';
+import type { StageBaseProps } from './stage-props';
 
-export type MockupMotionProps =
-  & MockupBaseProps
+export type StageMotionProps =
+  & StageBaseProps
   & {
     /**
      * Motion value for the target viewport width in pixels.

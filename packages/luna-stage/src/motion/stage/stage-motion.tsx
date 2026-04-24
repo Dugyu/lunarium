@@ -13,12 +13,12 @@ import * as motion from 'motion/react-client';
 import { useLayoutEffect } from 'react';
 import type { JSX } from 'react';
 
-import type { MockupMotionProps } from './types';
 import {
   OUTLINE_WEIGHT,
   SMOOTHING_OUTLINE_PATH,
   SMOOTHING_PATH,
-} from '../../constants/mockup';
+} from '../../constants/stage';
+import type { StageMotionProps } from '../../types/stage-motion';
 import {
   cn,
   computeDepthScale,
@@ -35,7 +35,7 @@ const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const DEFAULT_TRANSITION: SpringOptions = { stiffness: 170, damping: 26 };
 const DEFAULT_WORLD: { x: number; y: number; z: number } = { x: 0, y: 0, z: 0 };
 
-function MotionMockup({
+function MotionStage({
   width: widthProp,
   height: heightProp,
   baseWidth = 375,
@@ -57,7 +57,7 @@ function MotionMockup({
   focalLength,
   maskColor = 'transparent',
   maskOpacity = 0,
-}: MockupMotionProps): JSX.Element {
+}: StageMotionProps): JSX.Element {
   // Graceful fallback: null when no VisualSizeProvider wraps this component
   const visualSizeCtx = useVisualSize();
 
@@ -205,4 +205,4 @@ function MotionMockup({
   );
 }
 
-export { MotionMockup };
+export { MotionStage };

@@ -3,4 +3,4 @@
 // LICENSE file in the root directory of this source tree.
 
 export type { AlignX, AlignY } from './align';
-export type { MockupBaseProps, MockupProps } from './mockup';
+export type { StageBaseProps, StageProps } from './stage-props';
