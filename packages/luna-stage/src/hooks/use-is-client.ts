@@ -18,7 +18,7 @@ function getServerSnapshot(): boolean {
   return false;
 }
 
-export function useMounted(): boolean {
+export function useIsClient(): boolean {
   return useSyncExternalStore(
     subscribe,
     getClientSnapshot,

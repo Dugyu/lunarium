@@ -11,7 +11,7 @@ import {
 } from './lynx-stage-constants';
 import { useLynxStage } from './use-lynx-stage';
 import type { UseLynxStageOptions } from './use-lynx-stage';
-import { useMounted } from '../../hooks/use-mounted';
+import { useIsClient } from '../../hooks/use-is-client';
 import '../../types/lynx-view';
 
 export type LynxStageProps = Omit<UseLynxStageOptions, 'bundleBaseUrl'> & {
@@ -53,9 +53,9 @@ function LynxStageImpl({
 }
 
 export function LynxStage(props: LynxStageProps): ReactNode {
-  const mounted = useMounted();
+  const isClient = useIsClient();
 
-  if (!mounted) {
+  if (!isClient) {
     return null;
   }
 

@@ -14,7 +14,7 @@ import {
 } from './lynx-stage-constants';
 import { useLynxStage } from './use-lynx-stage';
 import type { UseLynxStageOptions } from './use-lynx-stage';
-import { useMounted } from '../../hooks/use-mounted';
+import { useIsClient } from '../../hooks/use-is-client';
 import type { LynxGlobalProps } from '../../types/lynx-view';
 
 export type LunaLynxStageProps =
@@ -76,9 +76,9 @@ function LunaLynxStageImpl({
 }
 
 export function LunaLynxStage(props: LunaLynxStageProps): ReactNode {
-  const mounted = useMounted();
+  const isClient = useIsClient();
 
-  if (!mounted) {
+  if (!isClient) {
     return null;
   }
 

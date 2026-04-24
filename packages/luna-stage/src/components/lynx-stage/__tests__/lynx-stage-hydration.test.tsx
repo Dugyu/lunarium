@@ -8,6 +8,7 @@ import '@testing-library/jest-dom/vitest';
 import { act } from '@testing-library/react';
 import { hydrateRoot } from 'react-dom/client';
 import type { Root } from 'react-dom/client';
+import { renderToString } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 
 import { LunaLynxStage } from '../luna-lynx-stage';
@@ -18,20 +19,35 @@ vi.mock('@lynx-js/web-core/client', () => ({
   default: {},
 }));
 
-describe('LynxStage Hydration Behavior', () => {
-  it('should mount correctly on the client side after hydration', () => {
+describe('LynxStage Client Mounting Behavior', () => {
+  it('should mount correctly on the client side after useIsClient resolves', async () => {
     const container = document.createElement('div');
     document.body.appendChild(container);
 
-    // Hydrate the server-rendered markup
+    // Seed the container with initial markup.
+    // This test primarily verifies client-side mounting after `useIsClient` resolves.
+    const serverMarkup = renderToString(
+      <LynxStage entry='test-entry' bundleBaseUrl='/' />,
+    );
+    container.innerHTML = serverMarkup;
+
+    // Hydrate the markup
     let root: Root | undefined;
 
     // We need to wait for the effects to run after hydration
-    act(() => {
+    await act(async () => {
       root = hydrateRoot(
         container,
         <LynxStage entry='test-entry' bundleBaseUrl='/' />,
       );
+      // await Promise.resolve() satisfies the async requirement and yields a microtask
+      await Promise.resolve();
+    });
+
+    // useIsClient flips to true after hydration — lynx-view should now be present
+    // Flush the remaining React state updates (useSyncExternalStore / useEffect)
+    await act(async () => {
+      await Promise.resolve();
     });
 
     // After hydration and effects run, the component should mount the lynx-view
@@ -53,14 +69,25 @@ describe('LynxStage Hydration Behavior', () => {
   });
 });
 
-describe('LunaLynxStage Hydration Behavior', () => {
-  it('should mount correctly on the client side after hydration', () => {
+describe('LunaLynxStage Client Mounting Behavior', () => {
+  it('should mount correctly on the client side after useIsClient resolves', async () => {
     const container = document.createElement('div');
     document.body.appendChild(container);
 
-    // Hydrate the server-rendered markup
+    // Seed the container with initial markup.
+    // This test primarily verifies client-side mounting after `useIsClient` resolves.
+    const serverMarkup = renderToString(
+      <LunaLynxStage
+        entry='test-entry'
+        bundleBaseUrl='/'
+        lunaTheme='lunaris-dark'
+      />,
+    );
+    container.innerHTML = serverMarkup;
+
+    // Hydrate the markup
     let root: Root | undefined;
-    act(() => {
+    await act(async () => {
       root = hydrateRoot(
         container,
         <LunaLynxStage
@@ -69,6 +96,13 @@ describe('LunaLynxStage Hydration Behavior', () => {
           lunaTheme='lunaris-dark'
         />,
       );
+      await Promise.resolve();
+    });
+
+    // useIsClient flips to true after hydration — lynx-view should now be present
+    // Flush the remaining React state updates (useSyncExternalStore / useEffect)
+    await act(async () => {
+      await Promise.resolve();
     });
 
     // After hydration and effects run, the component should mount the lynx-view
