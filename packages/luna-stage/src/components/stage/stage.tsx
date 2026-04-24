@@ -17,10 +17,10 @@ import {
   OUTLINE_WEIGHT,
   SMOOTHING_OUTLINE_PATH,
   SMOOTHING_PATH,
-} from '../../constants/mockup';
+} from '../../constants/stage';
 import { useContainerResize } from '../../hooks/use-container-resize';
 import { useMergedRefs } from '../../hooks/use-merged-refs';
-import type { MockupProps } from '../../types';
+import type { StageProps } from '../../types';
 import {
   cn,
   computeFrameOffset,
@@ -30,14 +30,14 @@ import {
 } from '../../utils';
 import { createContextWithProvider } from '../context';
 
-const [MockupSizeProvider, useOptionalMockupSize] = createContextWithProvider<
+const [StageSizeProvider, useOptionalStageSize] = createContextWithProvider<
   { width: number; height: number }
->('Mockup', undefined, { throwIfMissing: false });
+>('Stage', undefined, { throwIfMissing: false });
 
 const DEVICE_CLIP_PATH = `path("${SMOOTHING_PATH}")`;
 const DEVICE_OUTLINE_CLIP_PATH = `path("${SMOOTHING_OUTLINE_PATH}")`;
 
-function Mockup({
+function Stage({
   className,
   style,
   width: widthProp,
@@ -51,8 +51,8 @@ function Mockup({
   zoom = 1,
   panX = 0,
   panY = 0,
-}: MockupProps): JSX.Element {
-  const ctx = useOptionalMockupSize();
+}: StageProps): JSX.Element {
+  const ctx = useOptionalStageSize();
 
   const width = widthProp
     ?? ctx?.width ?? baseWidth;
@@ -133,13 +133,13 @@ function Mockup({
   );
 }
 
-type MockupContainerProps = ComponentPropsWithoutRef<'div'> & {
+type StageContainerProps = ComponentPropsWithoutRef<'div'> & {
   fallbackWidth?: number;
   fallbackHeight?: number;
 };
 
-function MockupContainerImpl(
-  props: MockupContainerProps,
+function StageContainerImpl(
+  props: StageContainerProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const { fallbackWidth = 0, fallbackHeight = 0, children, ...restProps } =
@@ -155,18 +155,18 @@ function MockupContainerImpl(
   const mergedRef = useMergedRefs(containerRef, ref);
 
   return (
-    <MockupSizeProvider
+    <StageSizeProvider
       width={width}
       height={height}
     >
       <div ref={mergedRef} {...restProps}>
         {children}
       </div>
-    </MockupSizeProvider>
+    </StageSizeProvider>
   );
 }
 
-const MockupContainer: ForwardRefExoticComponent<
+const StageContainer: ForwardRefExoticComponent<
   & Omit<
     DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
     'ref'
@@ -176,7 +176,7 @@ const MockupContainer: ForwardRefExoticComponent<
     fallbackHeight?: number;
   }
   & RefAttributes<HTMLDivElement>
-> = forwardRef(MockupContainerImpl);
+> = forwardRef(StageContainerImpl);
 
-export { Mockup, MockupContainer };
-export type { MockupProps };
+export { Stage, StageContainer };
+export type { StageProps };

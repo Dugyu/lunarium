@@ -6,7 +6,7 @@ import type { CSSProperties, ReactNode } from 'react';
 
 import type { AlignX, AlignY } from './align.js';
 
-export type MockupBaseProps = {
+export type StageBaseProps = {
   /**
    * Base (design) width of the device frame in pixels.
    */
@@ -70,20 +70,20 @@ export type MockupBaseProps = {
   panY?: number;
 };
 
-export type MockupProps =
-  & MockupBaseProps
+export type StageProps =
+  & StageBaseProps
   & {
     /**
      * Target viewport width in pixels.
      *
-     * When omitted, it uses the measured size from `MockupContainer` if present,
+     * When omitted, it uses the measured size from `StageContainer` if present,
      * otherwise falls back to `baseWidth`.
      */
     width?: number;
     /**
      * Target viewport height in pixels.
      *
-     * When omitted, it uses the measured size from `MockupContainer` if present,
+     * When omitted, it uses the measured size from `StageContainer` if present,
      * otherwise falls back to `baseHeight`.
      */
     height?: number;

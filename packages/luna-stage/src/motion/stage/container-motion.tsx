@@ -25,12 +25,12 @@ import { useMergedRefs } from '../../hooks/use-merged-refs';
 import { cn } from '../../utils';
 import { VisualSizeProvider } from '../context/visual-size-provider';
 
-type MotionMockupContainerProps =
+type MotionStageContainerProps =
   & Omit<MotionNodeOptions, 'transformTemplate'>
   & ComponentPropsWithoutRef<'div'>
   & { layoutId: string };
 
-const MotionMockupContainer: ForwardRefExoticComponent<
+const MotionStageContainer: ForwardRefExoticComponent<
   & Omit<MotionNodeOptions, 'transformTemplate'>
   & Omit<
     DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
@@ -40,12 +40,12 @@ const MotionMockupContainer: ForwardRefExoticComponent<
     layoutId: string;
   }
   & RefAttributes<HTMLDivElement>
-> = forwardRef<HTMLDivElement, MotionMockupContainerProps>(
-  MotionMockupContainerImpl,
+> = forwardRef<HTMLDivElement, MotionStageContainerProps>(
+  MotionStageContainerImpl,
 );
 
-function MotionMockupContainerImpl(
-  props: MotionMockupContainerProps,
+function MotionStageContainerImpl(
+  props: MotionStageContainerProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const {
@@ -106,7 +106,7 @@ function MotionMockupContainerImpl(
 
   const handleLayoutMeasure = (
     ...args: Parameters<
-      NonNullable<MotionMockupContainerProps['onLayoutMeasure']>
+      NonNullable<MotionStageContainerProps['onLayoutMeasure']>
     >
   ) => {
     const [box] = args;
@@ -122,7 +122,7 @@ function MotionMockupContainerImpl(
 
   const handleLayoutAnimationStart = (
     ...args: Parameters<
-      NonNullable<MotionMockupContainerProps['onLayoutAnimationStart']>
+      NonNullable<MotionStageContainerProps['onLayoutAnimationStart']>
     >
   ) => {
     // Forward consumer callbacks while guaranteeing internal MotionValue updates
@@ -136,7 +136,7 @@ function MotionMockupContainerImpl(
 
   const handleLayoutAnimationComplete = (
     ...args: Parameters<
-      NonNullable<MotionMockupContainerProps['onLayoutAnimationComplete']>
+      NonNullable<MotionStageContainerProps['onLayoutAnimationComplete']>
     >
   ) => {
     // Forward consumer callbacks while guaranteeing internal MotionValue updates
@@ -183,4 +183,4 @@ function MotionMockupContainerImpl(
   );
 }
 
-export { MotionMockupContainer };
+export { MotionStageContainer };

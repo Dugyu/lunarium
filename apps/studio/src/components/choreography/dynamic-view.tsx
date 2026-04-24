@@ -8,9 +8,9 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { StudioLunaLynxStage as LunaLynxStage } from '@/components/lynx-stage';
 import {
-  MotionMockup,
-  MotionMockupContainer,
   MotionPresentation,
+  MotionStage,
+  MotionStageContainer,
 } from '@/components/mockup-motion';
 import { STARTING_MODE, STARTING_VARIANT } from '@/constants/presentation.ts';
 import type {
@@ -177,7 +177,7 @@ function DynamicView(
       <AnimatePresence mode='popLayout'>
         {rendered.map((stage) => {
           return (
-            <MotionMockupContainer
+            <MotionStageContainer
               layoutId={stage.id}
               key={stage.id}
               className={cn(
@@ -197,7 +197,7 @@ function DynamicView(
                 exit='exit'
                 transition={presentationTransition}
               >
-                <MotionMockup
+                <MotionStage
                   fitProgress={0}
                   fitTransition={fitTransition}
                   world={stage.world}
@@ -222,9 +222,9 @@ function DynamicView(
                     onMoonriseChange={handleMoonriseChange}
                     componentEntry={stage.componentId}
                   />
-                </MotionMockup>
+                </MotionStage>
               </MotionPresentation>
-            </MotionMockupContainer>
+            </MotionStageContainer>
           );
         })}
       </AnimatePresence>

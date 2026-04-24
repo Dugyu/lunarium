@@ -2,7 +2,7 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-import { Mockup, MockupContainer } from '@dugyu/luna-stage';
+import { Stage, StageContainer } from '@dugyu/luna-stage';
 
 import { Container } from '@/components/container';
 import { LynxStage } from '@/components/lynx-stage';
@@ -14,26 +14,26 @@ function StudioStatic() {
       <Container
         className={'gap-4 pointer-events-none'}
       >
-        <MockupContainer className='flex-1 flex justify-center items-center pointer-events-none'>
-          <Mockup className='bg-black opacity-10'>
+        <StageContainer className='flex-1 flex justify-center items-center pointer-events-none'>
+          <Stage className='bg-black opacity-10'>
             <LynxStage entry='ActOneDark' />
-          </Mockup>
-        </MockupContainer>
-        <MockupContainer className='flex-1 flex justify-center items-center'>
-          <Mockup className='bg-white opacity-50'>
+          </Stage>
+        </StageContainer>
+        <StageContainer className='flex-1 flex justify-center items-center'>
+          <Stage className='bg-white opacity-50'>
             <LynxStage entry='ActOneLight' />
-          </Mockup>
-        </MockupContainer>
-        <MockupContainer className='flex-1 flex justify-center items-center'>
-          <Mockup className='bg-black opacity-10'>
+          </Stage>
+        </StageContainer>
+        <StageContainer className='flex-1 flex justify-center items-center'>
+          <Stage className='bg-black opacity-10'>
             <LynxStage entry='ActTwoDark' />
-          </Mockup>
-        </MockupContainer>
-        <MockupContainer className='flex-1 flex justify-center items-center'>
-          <Mockup className='bg-white opacity-50 '>
+          </Stage>
+        </StageContainer>
+        <StageContainer className='flex-1 flex justify-center items-center'>
+          <Stage className='bg-white opacity-50 '>
             <LynxStage entry='ActTwoLight' />
-          </Mockup>
-        </MockupContainer>
+          </Stage>
+        </StageContainer>
       </Container>
     </StudioFrame>
   );

@@ -3,7 +3,7 @@
 // LICENSE file in the root directory of this source tree.
 
 export {
-  MotionMockup,
-  MotionMockupContainer,
+  MotionStage,
+  MotionStageContainer,
   MotionPresentation,
 } from '@dugyu/luna-stage/motion';

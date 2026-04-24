@@ -3,7 +3,7 @@
 > Stage system and showcase components for the L.U.N.A project.
 > Atomic components for rendering Lynx bundles into a device shell / stage in the browser.
 
-Use `luna-stage` when you need a single-frame preview (`Mockup` + `LunaLynxStage`) or motion-enhanced presentation (`MotionMockup`, etc.). For multi-stage orchestration and Studio-level layout, see [`@dugyu/luna-studio`](../luna-studio).
+Use `luna-stage` when you need a single-frame preview (`Stage` + `LunaLynxStage`) or motion-enhanced presentation (`MotionStage`, etc.). For multi-stage orchestration and Studio-level layout, see [`@dugyu/luna-studio`](../luna-studio).
 
 ## Installation
 
@@ -46,7 +46,7 @@ pnpm i motion
 - `alignX` / `alignY` — control which part of the frame is preserved when `cover` crops. Physical directions: `left | center | right` / `top | center | bottom`
 - `fitProgress` _(motion only)_ — continuous `0→1` interpolation between `contain` and `cover`, driven by a spring
 
-### Camera Model _(MotionMockup only)_
+### Camera Model _(MotionStage only)_
 
 The transform pipeline operates in two independent spaces:
 
@@ -71,18 +71,18 @@ Final translation = `world.xy × depthScale + panXY`
 ### Single-frame preview with `LunaLynxStage`
 
 ```tsx
-import { Mockup, LunaLynxStage } from '@dugyu/luna-stage';
+import { Stage, LunaLynxStage } from '@dugyu/luna-stage';
 
 export default function Preview() {
   return (
-    <Mockup>
+    <Stage>
       <LunaLynxStage
         entry='my-component'
         bundleBaseUrl='/bundles/'
         lunaTheme='lunaris'
         lunaThemeVariant='midnight'
       />
-    </Mockup>
+    </Stage>
   );
 }
 ```
@@ -96,16 +96,16 @@ Bundle URL convention: `${bundleBaseUrl}${entry}.web.bundle`
 Use `LynxStage` directly when you don't need LUNA global props forwarded:
 
 ```tsx
-import { Mockup, LynxStage } from '@dugyu/luna-stage';
+import { Stage, LynxStage } from '@dugyu/luna-stage';
 
-<Mockup>
+<Stage>
   <LynxStage entry='my-component' bundleBaseUrl='/bundles/' />
-</Mockup>;
+</Stage>;
 ```
 
 ### Standalone `LynxStage`
 
-`LynxStage` can be used independently of the `Mockup` system if you just want to render a Lynx view in a DOM container:
+`LynxStage` can be used independently of the `Stage` system if you just want to render a Lynx view in a DOM container:
 
 ```tsx
 import { LynxStage } from '@dugyu/luna-stage';
@@ -121,57 +121,57 @@ export default function StandaloneView() {
 
 ## API
 
-### `Mockup`
+### `Stage`
 
-Static device frame. Reads container size from `MockupContainer` context if present, otherwise falls back to `baseWidth/baseHeight`.
+Static device frame. Reads container size from `StageContainer` context if present, otherwise falls back to `baseWidth/baseHeight`.
 
-`Mockup` can be used in three ways:
+`Stage` can be used in three ways:
 
 **Standalone** — renders at design baseline size:
 
 ```tsx
-<Mockup>
+<Stage>
   <YourContent />
-</Mockup>;
+</Stage>;
 ```
 
 **Manual size** — explicit container dimensions:
 
 ```tsx
-<Mockup width={390} height={844}>
+<Stage width={390} height={844}>
   <YourContent />
-</Mockup>;
+</Stage>;
 ```
 
-**With `MockupContainer`** — auto-measures the container:
+**With `StageContainer`** — auto-measures the container:
 
 ```tsx
-<MockupContainer className='w-full h-full'>
-  <Mockup>
+<StageContainer className='w-full h-full'>
+  <Stage>
     <YourContent />
-  </Mockup>
-</MockupContainer>;
+  </Stage>
+</StageContainer>;
 ```
 
-| Prop         | Type                            | Default     | Description                                                      |
-| ------------ | ------------------------------- | ----------- | ---------------------------------------------------------------- |
-| `baseWidth`  | `number`                        | `375`       | Design baseline width in pixels                                  |
-| `baseHeight` | `number`                        | `812`       | Design baseline height in pixels                                 |
-| `width`      | `number`                        | —           | Container width. Falls back to `MockupContainer` → `baseWidth`   |
-| `height`     | `number`                        | —           | Container height. Falls back to `MockupContainer` → `baseHeight` |
-| `fit`        | `'contain' \| 'cover'`          | `'contain'` | Fit mode                                                         |
-| `alignX`     | `'left' \| 'center' \| 'right'` | `'center'`  | Horizontal crop anchor                                           |
-| `alignY`     | `'top' \| 'center' \| 'bottom'` | `'center'`  | Vertical crop anchor                                             |
-| `zoom`       | `number`                        | `1`         | Additional zoom factor on top of fit                             |
-| `panX`       | `number`                        | `0`         | Screen-space translation along X (px)                            |
-| `panY`       | `number`                        | `0`         | Screen-space translation along Y (px)                            |
-| `className`  | `string`                        | —           | Applied to the outline layer                                     |
-| `style`      | `CSSProperties`                 | —           | Applied to the outline layer                                     |
-| `onClick`    | `MouseEventHandler`             | —           | —                                                                |
+| Prop         | Type                            | Default     | Description                                                     |
+| ------------ | ------------------------------- | ----------- | --------------------------------------------------------------- |
+| `baseWidth`  | `number`                        | `375`       | Design baseline width in pixels                                 |
+| `baseHeight` | `number`                        | `812`       | Design baseline height in pixels                                |
+| `width`      | `number`                        | —           | Container width. Falls back to `StageContainer` → `baseWidth`   |
+| `height`     | `number`                        | —           | Container height. Falls back to `StageContainer` → `baseHeight` |
+| `fit`        | `'contain' \| 'cover'`          | `'contain'` | Fit mode                                                        |
+| `alignX`     | `'left' \| 'center' \| 'right'` | `'center'`  | Horizontal crop anchor                                          |
+| `alignY`     | `'top' \| 'center' \| 'bottom'` | `'center'`  | Vertical crop anchor                                            |
+| `zoom`       | `number`                        | `1`         | Additional zoom factor on top of fit                            |
+| `panX`       | `number`                        | `0`         | Screen-space translation along X (px)                           |
+| `panY`       | `number`                        | `0`         | Screen-space translation along Y (px)                           |
+| `className`  | `string`                        | —           | Applied to the outline layer                                    |
+| `style`      | `CSSProperties`                 | —           | Applied to the outline layer                                    |
+| `onClick`    | `MouseEventHandler`             | —           | —                                                               |
 
-### `MockupContainer`
+### `StageContainer`
 
-Measures its own DOM size via `ResizeObserver` and provides width/height to child `Mockup` components via context.
+Measures its own DOM size via `ResizeObserver` and provides width/height to child `Stage` components via context.
 
 | Prop             | Type     | Default | Description                   |
 | ---------------- | -------- | ------- | ----------------------------- |
@@ -203,9 +203,9 @@ Extends `LynxStage` with LUNA theme properties.
 | `extraGlobalProps` | `Record<string, unknown>` | —              | Additional global props.                      |
 | _(others)_         |                           |                | All `LynxStage` props (except `globalProps`). |
 
-### `MotionMockup`
+### `MotionStage`
 
-Animated device frame. Extends `Mockup`'s base props with spring-driven transitions and a perspective camera model.
+Animated device frame. Extends `Stage`'s base props with spring-driven transitions and a perspective camera model.
 
 | Prop             | Type                   | Default             | Description                                                                         |
 | ---------------- | ---------------------- | ------------------- | ----------------------------------------------------------------------------------- |
@@ -224,9 +224,9 @@ Animated device frame. Extends `Mockup`'s base props with spring-driven transiti
 | `maskColor`      | `string`               | `'transparent'`     | Overlay mask color                                                                  |
 | `maskOpacity`    | `number`               | `0`                 | Overlay mask opacity, animated                                                      |
 
-### `MotionMockupContainer`
+### `MotionStageContainer`
 
-Motion-aware equivalent of `MockupContainer`. Provides `MotionValue<number>` width/height to child `MotionMockup` components via context. Handles layout animations and extracts the parent scale from `transformTemplate` to keep the visual size accurate during transitions.
+Motion-aware equivalent of `StageContainer`. Provides `MotionValue<number>` width/height to child `MotionStage` components via context. Handles layout animations and extracts the parent scale from `transformTemplate` to keep the visual size accurate during transitions.
 
 ### `MotionPresentation`
 
@@ -241,21 +241,21 @@ A zero-size anchor element (`4px × 4px`, `overflow-visible`) that wraps `Animat
 ### Motion: no mount/unmount
 
 ```tsx
-import { MotionMockup, MotionMockupContainer } from '@dugyu/luna-stage/motion';
+import { MotionStage, MotionStageContainer } from '@dugyu/luna-stage/motion';
 
-<MotionMockupContainer className='w-full h-full'>
-  <MotionMockup fitProgress={0} zoom={1.2}>
+<MotionStageContainer className='w-full h-full'>
+  <MotionStage fitProgress={0} zoom={1.2}>
     <YourContent />
-  </MotionMockup>
-</MotionMockupContainer>;
+  </MotionStage>
+</MotionStageContainer>;
 ```
 
 ### Motion: with mount/unmount animations
 
 ```tsx
 import {
-  MotionMockup,
-  MotionMockupContainer,
+  MotionStage,
+  MotionStageContainer,
   MotionPresentation,
 } from '@dugyu/luna-stage/motion';
 
@@ -267,18 +267,18 @@ const variants = {
 
 <AnimatePresence>
   {items.map(item => (
-    <MotionMockupContainer key={item.id} layoutId={item.id}>
+    <MotionStageContainer key={item.id} layoutId={item.id}>
       <MotionPresentation
         variants={variants}
         initial='initial'
         animate='animate'
         exit='exit'
       >
-        <MotionMockup world={item.world} focalLength={500}>
+        <MotionStage world={item.world} focalLength={500}>
           <YourContent />
-        </MotionMockup>
+        </MotionStage>
       </MotionPresentation>
-    </MotionMockupContainer>
+    </MotionStageContainer>
   ))}
 </AnimatePresence>;
 ```
@@ -294,9 +294,9 @@ const world = {
   z: -Math.cos(theta) * radius, // negative = further from viewer
 };
 
-<MotionMockup world={world} focalLength={500}>
+<MotionStage world={world} focalLength={500}>
   <YourContent />
-</MotionMockup>;
+</MotionStage>;
 ```
 
 ### Orthographic compare layout
@@ -304,22 +304,22 @@ const world = {
 Omit `focalLength` (or set to `0`) — all frames render at equal scale regardless of `world.z`:
 
 ```tsx
-<MotionMockup world={{ x: offset, y: 0, z: 0 }}>
+<MotionStage world={{ x: offset, y: 0, z: 0 }}>
   <YourContent />
-</MotionMockup>;
+</MotionStage>;
 ```
 
 ## Component Table
 
-| Component               | Entry point       | Description                                           |
-| ----------------------- | ----------------- | ----------------------------------------------------- |
-| `Mockup`                | `.`               | Static device frame                                   |
-| `MockupContainer`       | `.`               | Auto-measures container, provides size via context    |
-| `LynxStage`             | `. (To be split)` | Core Lynx bundle renderer (no LUNA globals)           |
-| `LunaLynxStage`         | `. (To be split)` | `LynxStage` + LUNA theme prop injection               |
-| `MotionMockup`          | `./motion`        | Animated device frame with perspective camera         |
-| `MotionMockupContainer` | `./motion`        | Layout animation wrapper, provides `MotionValue` size |
-| `MotionPresentation`    | `./motion`        | Mount/unmount transition orchestrator                 |
+| Component              | Entry point       | Description                                           |
+| ---------------------- | ----------------- | ----------------------------------------------------- |
+| `Stage`                | `.`               | Static device frame                                   |
+| `StageContainer`       | `.`               | Auto-measures container, provides size via context    |
+| `LynxStage`            | `. (To be split)` | Core Lynx bundle renderer (no LUNA globals)           |
+| `LunaLynxStage`        | `. (To be split)` | `LynxStage` + LUNA theme prop injection               |
+| `MotionStage`          | `./motion`        | Animated device frame with perspective camera         |
+| `MotionStageContainer` | `./motion`        | Layout animation wrapper, provides `MotionValue` size |
+| `MotionPresentation`   | `./motion`        | Mount/unmount transition orchestrator                 |
 
 ## Hooks
 
