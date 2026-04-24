@@ -2,7 +2,7 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-import type React from 'react';
+import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 
 import type { LunaThemeKey, LunaThemeVariant } from '@dugyu/luna-core';
@@ -12,8 +12,9 @@ import {
   DEFAULT_GROUP_ID,
   LYNX_VIEW_STYLE,
 } from './lynx-stage-constants';
-import type { UseLynxStageOptions } from './use-lynx-stage';
 import { useLynxStage } from './use-lynx-stage';
+import type { UseLynxStageOptions } from './use-lynx-stage';
+import { useMounted } from '../../hooks/use-mounted';
 import type { LynxGlobalProps } from '../../types/lynx-view';
 
 export type LunaLynxStageProps =
@@ -41,16 +42,14 @@ export type LunaLynxStageProps =
     groupId?: number;
   };
 
-// ─── Component ────────────────────────────────────────────────────────────────
-
-export function LunaLynxStage({
+function LunaLynxStageImpl({
   lunaTheme = 'luna-light',
   lunaThemeVariant = 'luna',
   extraGlobalProps,
   groupId = DEFAULT_GROUP_ID,
   bundleBaseUrl = '/',
   ...stageOptions
-}: LunaLynxStageProps): React.ReactNode {
+}: LunaLynxStageProps): ReactNode {
   const globalProps = useMemo<LynxGlobalProps>(() => ({
     ...(extraGlobalProps ?? {}),
     lunaTheme,
@@ -74,4 +73,14 @@ export function LunaLynxStage({
       />
     </div>
   );
+}
+
+export function LunaLynxStage(props: LunaLynxStageProps): ReactNode {
+  const mounted = useMounted();
+
+  if (!mounted) {
+    return null;
+  }
+
+  return <LunaLynxStageImpl {...props} />;
 }

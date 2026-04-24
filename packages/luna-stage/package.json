@@ -40,7 +40,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "rslib build"
+    "build": "rslib build",
+    "test": "vitest run"
   },
   "dependencies": {
     "@dugyu/luna-core": "workspace:*",
@@ -51,11 +52,16 @@
     "@lynx-js/web-core": "catalog:lynx",
     "@rsbuild/plugin-react": "catalog:rsbuild",
     "@rslib/core": "catalog:rslib",
+    "@testing-library/jest-dom": "catalog:test",
+    "@testing-library/react": "catalog:test",
     "@types/react": "catalog:react18",
+    "@types/react-dom": "catalog:react18",
+    "jsdom": "catalog:test",
     "motion": "catalog:motion",
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
-    "typescript": "catalog:ts"
+    "typescript": "catalog:ts",
+    "vitest": "catalog:test"
   },
   "peerDependencies": {
     "@lynx-js/web-core": ">=0.20.0",

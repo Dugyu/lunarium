@@ -6,6 +6,12 @@ import type { CSSProperties } from 'react';
 
 import type { CSSVarProperties } from '../../types/lynx-view';
 
+// Container-relative unit hooks for Lynx runtime:
+// - `containerType: 'size'` enables `cqw/cqh` units based on the host element box.
+// - `--vh-unit/--vw-unit` make `vh/vw` behave like "container viewport" inside `<lynx-view>`.
+// - `--rpx-unit` aligns `rpx` scaling with a 750-wide design baseline (mobile-like behavior).
+// Note: web-core already applies `contain: content` internally; combined with `containerType: 'size'`
+// this effectively behaves like `contain: strict` without us overriding containment explicitly.
 export const LYNX_VIEW_STYLE: CSSProperties & CSSVarProperties = {
   width: '100%',
   height: '100%',

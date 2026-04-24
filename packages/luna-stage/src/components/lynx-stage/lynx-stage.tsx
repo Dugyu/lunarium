@@ -11,6 +11,7 @@ import {
 } from './lynx-stage-constants';
 import { useLynxStage } from './use-lynx-stage';
 import type { UseLynxStageOptions } from './use-lynx-stage';
+import { useMounted } from '../../hooks/use-mounted';
 import '../../types/lynx-view';
 
 export type LynxStageProps = Omit<UseLynxStageOptions, 'bundleBaseUrl'> & {
@@ -28,15 +29,7 @@ export type LynxStageProps = Omit<UseLynxStageOptions, 'bundleBaseUrl'> & {
   groupId?: number;
 };
 
-// Container-relative unit hooks for Lynx runtime:
-// - `containerType: 'size'` enables `cqw/cqh` units based on the host element box.
-// - `--vh-unit/--vw-unit` make `vh/vw` behave like "container viewport" inside `<lynx-view>`.
-// - `--rpx-unit` aligns `rpx` scaling with a 750-wide design baseline (mobile-like behavior).
-// Note: web-core already applies `contain: content` internally; combined with `containerType: 'size'`
-// this effectively behaves like `contain: strict` without us overriding containment explicitly.
-// ─── Component ────────────────────────────────────────────────────────────────
-
-export function LynxStage({
+function LynxStageImpl({
   bundleBaseUrl,
   groupId = DEFAULT_GROUP_ID,
   ...stageOptions
@@ -57,4 +50,14 @@ export function LynxStage({
       />
     </div>
   );
+}
+
+export function LynxStage(props: LynxStageProps): ReactNode {
+  const mounted = useMounted();
+
+  if (!mounted) {
+    return null;
+  }
+
+  return <LynxStageImpl {...props} />;
 }
