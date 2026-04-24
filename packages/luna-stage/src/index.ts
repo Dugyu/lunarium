@@ -8,6 +8,7 @@ export {
   useEffectEvent,
   useIsomorphicLayoutEffect,
   useMergedRefs,
+  useIsClient,
 } from './hooks';
 
 // ─── Static phone mockup ──────────────────────────────────────────────────────

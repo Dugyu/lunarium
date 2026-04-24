@@ -14,7 +14,7 @@ import {
 } from './lynx-stage-constants';
 import { useLynxStage } from './use-lynx-stage';
 import type { UseLynxStageOptions } from './use-lynx-stage';
-import { useIsClient } from '../../hooks/use-is-client';
+import { useIsClient } from '../../hooks';
 import type { LynxGlobalProps } from '../../types/lynx-view';
 
 export type LunaLynxStageProps =

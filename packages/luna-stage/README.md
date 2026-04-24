@@ -30,16 +30,6 @@ pnpm i motion
 | `@dugyu/luna-stage`        | No                | Static display, no animation             |
 | `@dugyu/luna-stage/motion` | Yes               | Animated transitions, perspective camera |
 
----
-
-## Required Lynx Side-effects
-
-Add the following import at your application entry point. This registers the Lynx web components and injects required CSS — it must run before any `LynxStage` or `LunaLynxStage` is mounted.
-
-```ts
-import '@lynx-js/web-core/client';
-```
-
 ## Concepts
 
 ### Device Frame Model
@@ -113,6 +103,22 @@ import { Mockup, LynxStage } from '@dugyu/luna-stage';
 </Mockup>;
 ```
 
+### Standalone `LynxStage`
+
+`LynxStage` can be used independently of the `Mockup` system if you just want to render a Lynx view in a DOM container:
+
+```tsx
+import { LynxStage } from '@dugyu/luna-stage';
+
+export default function StandaloneView() {
+  return (
+    <div className='w-full h-screen'>
+      <LynxStage entry='my-component' bundleBaseUrl='/bundles/' />
+    </div>
+  );
+}
+```
+
 ## API
 
 ### `Mockup`
@@ -172,6 +178,31 @@ Measures its own DOM size via `ResizeObserver` and provides width/height to chil
 | `fallbackWidth`  | `number` | `0`     | Used before first measurement |
 | `fallbackHeight` | `number` | `0`     | Used before first measurement |
 
+### `LynxStage`
+
+Core component for rendering Lynx bundles into a DOM container.
+
+| Prop                  | Type                      | Default | Description                                                 |
+| --------------------- | ------------------------- | ------- | ----------------------------------------------------------- |
+| `entry`               | `string`                  | —       | Entry name for the Lynx bundle.                             |
+| `bundleBaseUrl`       | `string`                  | `'/'`   | Base URL for bundle assets. Must end with a trailing slash. |
+| `globalProps`         | `Record<string, unknown>` | —       | Global props to inject into the Lynx runtime.               |
+| `groupId`             | `number`                  | `7`     | Shared Lynx worker group ID.                                |
+| `onNativeModulesCall` | `function`                | —       | Callback for native module calls from Lynx runtime.         |
+| `onReady`             | `function`                | —       | Callback when the view has rendered successfully.           |
+| `onError`             | `function`                | —       | Callback when an error occurs during loading or rendering.  |
+
+### `LunaLynxStage`
+
+Extends `LynxStage` with LUNA theme properties.
+
+| Prop               | Type                      | Default        | Description                                   |
+| ------------------ | ------------------------- | -------------- | --------------------------------------------- |
+| `lunaTheme`        | `LunaThemeKey`            | `'luna-light'` | LUNA theme key (e.g. `'luna-light'`).         |
+| `lunaThemeVariant` | `LunaThemeVariant`        | `'luna'`       | LUNA theme variant (e.g. `'luna'`).           |
+| `extraGlobalProps` | `Record<string, unknown>` | —              | Additional global props.                      |
+| _(others)_         |                           |                | All `LynxStage` props (except `globalProps`). |
+
 ### `MotionMockup`
 
 Animated device frame. Extends `Mockup`'s base props with spring-driven transitions and a perspective camera model.
@@ -204,8 +235,6 @@ A zero-size anchor element (`4px × 4px`, `overflow-visible`) that wraps `Animat
 **Use when:** items are dynamically added/removed and need mount/unmount animations.
 
 **Skip when:** components are always mounted, or you only need state transition animations.
-
----
 
 ## Usage Examples
 
@@ -280,45 +309,31 @@ Omit `focalLength` (or set to `0`) — all frames render at equal scale regardle
 </MotionMockup>;
 ```
 
----
-
 ## Component Table
 
-| Component               | Entry point | Description                                           |
-| ----------------------- | ----------- | ----------------------------------------------------- |
-| `Mockup`                | `.`         | Static device frame                                   |
-| `MockupContainer`       | `.`         | Auto-measures container, provides size via context    |
-| `LynxStage`             | `.`         | Core Lynx bundle renderer (no LUNA globals)           |
-| `LunaLynxStage`         | `.`         | `LynxStage` + LUNA theme prop injection               |
-| `MotionMockup`          | `./motion`  | Animated device frame with perspective camera         |
-| `MotionMockupContainer` | `./motion`  | Layout animation wrapper, provides `MotionValue` size |
-| `MotionPresentation`    | `./motion`  | Mount/unmount transition orchestrator                 |
+| Component               | Entry point       | Description                                           |
+| ----------------------- | ----------------- | ----------------------------------------------------- |
+| `Mockup`                | `.`               | Static device frame                                   |
+| `MockupContainer`       | `.`               | Auto-measures container, provides size via context    |
+| `LynxStage`             | `. (To be split)` | Core Lynx bundle renderer (no LUNA globals)           |
+| `LunaLynxStage`         | `. (To be split)` | `LynxStage` + LUNA theme prop injection               |
+| `MotionMockup`          | `./motion`        | Animated device frame with perspective camera         |
+| `MotionMockupContainer` | `./motion`        | Layout animation wrapper, provides `MotionValue` size |
+| `MotionPresentation`    | `./motion`        | Mount/unmount transition orchestrator                 |
 
----
-
-## Hooks & Utilities
+## Hooks
 
 | Export                      | Description                                        |
 | --------------------------- | -------------------------------------------------- |
+| `useLynxStage`              | Core hook for managing Lynx runtime and lifecycle  |
+| `useIsClient`               | SSR-safe client-side mount detection               |
 | `useContainerResize`        | Observes container dimensions via `ResizeObserver` |
 | `useMergedRefs`             | Merges multiple refs onto a single element         |
 | `useIsomorphicLayoutEffect` | SSR-safe `useLayoutEffect`                         |
-| `cn`                        | Class name utility (`clsx` + `tailwind-merge`)     |
-
----
 
 ## SSR / SSG Notes
 
 `LynxStage` and `LunaLynxStage` are **client-only**. They render `null` on the server and mount only after hydration.
-
-```ts
-const LunaLynxStage = dynamic(
-  () => import('@dugyu/luna-stage').then(m => m.LunaLynxStage),
-  { ssr: false },
-);
-```
-
----
 
 ## Bundle & Asset Conventions
 
@@ -326,9 +341,7 @@ const LunaLynxStage = dynamic(
 - `bundleBaseUrl` should end with a trailing slash: `"/bundles/"`, `"https://cdn.example.com/lynx/"`
 - Resolved URL: `${bundleBaseUrl}${entry}.web.bundle`
 
----
-
-## Contributing to go-web
+## Transform Utilities
 
 The functions in `src/utils/transform.ts` are zero-dependency pure functions, safe to copy into other projects.
 

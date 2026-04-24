@@ -5,7 +5,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { MutableRefObject } from 'react';
 
-import { useEffectEvent } from './use-effect-event.js';
+import { useEffectEvent } from './use-effect-event';
 
 type Size = {
   width?: number;
