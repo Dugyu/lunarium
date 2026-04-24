@@ -1,0 +1,77 @@
+{
+  "name": "@dugyu/luna-stage",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Stage system and showcase components for the L.U.N.A project",
+  "keywords": [
+    "luna",
+    "stage",
+    "preview",
+    "react",
+    "lynx"
+  ],
+  "homepage": "https://github.com/Dugyu/lunarium/tree/main/packages/luna-stage#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dugyu/lunarium.git",
+    "directory": "packages/luna-stage"
+  },
+  "license": "Apache-2.0",
+  "author": "The Lynx Authors",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./motion": {
+      "types": "./dist/motion/index.d.ts",
+      "import": "./dist/motion/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rslib build",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@dugyu/luna-core": "workspace:*",
+    "clsx": "catalog:utils",
+    "tailwind-merge": "catalog:tailwind"
+  },
+  "devDependencies": {
+    "@lynx-js/web-core": "catalog:lynx",
+    "@rsbuild/plugin-react": "catalog:rsbuild",
+    "@rslib/core": "catalog:rslib",
+    "@testing-library/jest-dom": "catalog:test",
+    "@testing-library/react": "catalog:test",
+    "@types/react": "catalog:react18",
+    "@types/react-dom": "catalog:react18",
+    "jsdom": "catalog:test",
+    "motion": "catalog:motion",
+    "react": "catalog:react18",
+    "react-dom": "catalog:react18",
+    "typescript": "catalog:ts",
+    "vitest": "catalog:test"
+  },
+  "peerDependencies": {
+    "@lynx-js/web-core": ">=0.20.0",
+    "motion": ">=12.23.16",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "motion": {
+      "optional": true
+    }
+  }
+}

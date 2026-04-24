@@ -6,6 +6,7 @@ import {
   lunarisDarkTokens,
   lunarisLightTokens,
 } from '@dugyu/luna-tokens';
+
 import { generateLunaCssPlugin } from './scripts/generateCss.js';
 
 export default defineConfig({

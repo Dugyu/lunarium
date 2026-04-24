@@ -26,8 +26,5 @@
     "@rsbuild/plugin-type-check": "catalog:rsbuild",
     "@types/react": "catalog:react18",
     "typescript": "catalog:ts"
-  },
-  "engines": {
-    "node": ">=18"
   }
 }

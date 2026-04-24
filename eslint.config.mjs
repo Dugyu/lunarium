@@ -40,7 +40,6 @@ export default defineConfig([
       // Configs
       'eslint.config.js',
       'vitest.config.ts',
-      '**/rslib.config.ts',
       'eslint.config.mjs',
       '.meta-updater/main.mjs',
 
@@ -88,6 +87,13 @@ export default defineConfig([
           },
         },
       ],
+    },
+  },
+
+  {
+    files: ['**/rslib.config.ts'],
+    rules: {
+      'headers/header-format': 'off',
     },
   },
 

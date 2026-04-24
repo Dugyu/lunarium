@@ -54,9 +54,9 @@ function MenuBar(
 }
 
 type TabIconProps =
-  & ComponentPropsWithoutRef<typeof Tab>
-  & Omit<ComponentPropsWithoutRef<'div'>, 'children'>
-  & { icon: LucideIcon };
+  & Omit<ComponentPropsWithoutRef<typeof Tab>, 'className' | 'color'>
+  & Omit<ComponentPropsWithoutRef<'div'>, 'children' | 'className' | 'color'>
+  & { icon: LucideIcon; className?: string; color?: string };
 
 function TabIconImpl(props: TabIconProps, ref: ForwardedRef<HTMLDivElement>) {
   const { icon: Icon, className, color, ...restProps } = props;

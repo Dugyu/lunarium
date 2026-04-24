@@ -2,9 +2,10 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
+import { Mockup, MockupContainer } from '@dugyu/luna-stage';
+
 import { Container } from '@/components/container';
 import { LynxStage } from '@/components/lynx-stage';
-import { Mockup, MockupContainer } from '@/components/mockup';
 import { StudioFrame } from '@/components/studio-frame';
 
 function StudioStatic() {
