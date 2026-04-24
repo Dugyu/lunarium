@@ -275,6 +275,7 @@ export function useLynxStage({
       const pollShadow = () => {
         if (disposed) return;
         if (performance.now() - pollStart > 3000) {
+          if (timer) clearTimeout(timer);
           reportError('Preview timed out: shadow root was not created');
           return;
         }
