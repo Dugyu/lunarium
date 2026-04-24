@@ -49,7 +49,7 @@ export default function App() {
 ```text
 Choreography (state + orchestration)
   └── DynamicView (layout + animation)
-        └── MotionContainer → MotionPresentation → MotionMockup → LunaLynxStage
+        └── MotionMockupContainer → MotionPresentation → MotionMockup → LunaLynxStage
 ```
 
 ### View modes

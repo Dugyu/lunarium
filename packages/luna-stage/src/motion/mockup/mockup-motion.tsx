@@ -109,7 +109,7 @@ function MotionMockup({
   // ===== Camera (perspective) layer =====
   const { x: worldX = 0, y: worldY = 0, z: worldZ = 0 } = world;
 
-  // k = f/(f+z), or 1 when no perspective
+  // k = f/(f-z), or 1 when no perspective
   const k = computeDepthScale(focalLength, worldZ);
 
   // principal-point compensation so the center stays visually fixed

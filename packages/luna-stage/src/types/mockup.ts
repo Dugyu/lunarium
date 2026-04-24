@@ -2,7 +2,7 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-import type { CSSProperties, ComponentPropsWithoutRef, ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import type { AlignX, AlignY } from './align.js';
 
@@ -87,5 +87,4 @@ export type MockupProps =
      * otherwise falls back to `baseHeight`.
      */
     height?: number;
-  }
-  & Pick<ComponentPropsWithoutRef<'div'>, 'onClick'>;
+  };
