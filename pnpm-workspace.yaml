@@ -32,6 +32,11 @@ catalogs:
     rsbuild-plugin-tailwindcss: 0.2.3
     tailwind-merge: 2.6.0
     tailwindcss: 3.4.17
+  test:
+    "@testing-library/jest-dom": 6.9.1
+    "@testing-library/react": 16.3.2
+    jsdom: 29.0.2
+    vitest: 4.1.5
   ts:
     typescript: 5.9.2
     "@types/node": 24.6.1
