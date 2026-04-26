@@ -6,9 +6,9 @@ import type { LynxViewElement as LynxView } from '@lynx-js/web-core/client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { RefObject } from 'react';
 
-import { useContainerResize } from '../../hooks/use-container-resize';
-import { useEffectEvent } from '../../hooks/use-effect-event';
-import '../../types/lynx-view';
+import { useContainerResize } from '../hooks/use-container-resize';
+import { useEffectEvent } from '../hooks/use-effect-event';
+import '../types/lynx-view';
 
 type LynxViewWithExtensions = LynxView & {
   onNativeModulesCall?: (

@@ -11,8 +11,8 @@ import {
 } from './lynx-stage-constants';
 import { useLynxStage } from './use-lynx-stage';
 import type { UseLynxStageOptions } from './use-lynx-stage';
-import { useIsClient } from '../../hooks';
-import '../../types/lynx-view';
+import { useIsClient } from '../hooks';
+import '../types/lynx-view';
 
 export type LynxStageProps = Omit<UseLynxStageOptions, 'bundleBaseUrl'> & {
   /**

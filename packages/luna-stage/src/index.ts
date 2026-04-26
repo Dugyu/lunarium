@@ -14,16 +14,3 @@ export {
 // ─── Static phone stage ──────────────────────────────────────────────────────
 export { Stage, StageContainer } from './components/stage';
 export type { StageProps, StageBaseProps } from './types/stage-props';
-
-// ─── Lynx stage ────────────────────────────────────────────────────────────────
-export { LynxStage } from './components/lynx-stage';
-export type { LynxStageProps } from './components/lynx-stage';
-
-export { useLynxStage } from './components/lynx-stage';
-export type {
-  UseLynxStageOptions,
-  UseLynxStageResult,
-} from './components/lynx-stage';
-
-export { LunaLynxStage } from './components/lynx-stage';
-export type { LunaLynxStageProps } from './components/lynx-stage';
