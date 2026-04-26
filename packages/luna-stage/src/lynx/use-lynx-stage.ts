@@ -6,12 +6,11 @@ import type { LynxViewElement as LynxView } from '@lynx-js/web-core/client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { RefObject } from 'react';
 
-import { useContainerResize } from '../../hooks/use-container-resize';
-import { useEffectEvent } from '../../hooks/use-effect-event';
-import '../../types/lynx-view';
+import { useContainerResize } from '../hooks/use-container-resize';
+import { useEffectEvent } from '../hooks/use-effect-event';
+import '../types/lynx-view';
 
 type LynxViewWithExtensions = LynxView & {
-  customTemplateLoader?: (url: string) => Promise<unknown>;
   onNativeModulesCall?: (
     name: string,
     data: unknown,
@@ -93,6 +92,7 @@ export function useLynxStage({
   const [dimsReady, setDimsReady] = useState(false);
 
   const renderedRef = useRef(false);
+  const browserConfigInitializedRef = useRef(false);
   const lastUrlRef = useRef<string>('');
   const containerSizeRef = useRef({ width: 0, height: 0 });
   const dimsReadyRef = useRef(false);
@@ -105,6 +105,7 @@ export function useLynxStage({
   // Reset on entry / base URL change
   useEffect(() => {
     renderedRef.current = false;
+    browserConfigInitializedRef.current = false;
     lastUrlRef.current = '';
   }, [entry, bundleBaseUrl]);
 
@@ -140,6 +141,7 @@ export function useLynxStage({
   // Can only be set once — must have valid dimensions.
   const setDimensions = useCallback((): boolean => {
     if (!lynxViewRef.current) return false;
+    if (browserConfigInitializedRef.current) return true;
     const { width, height } = containerSizeRef.current;
     if (width === 0 || height === 0) return false;
     const pixelRatio = window.devicePixelRatio;
@@ -148,6 +150,7 @@ export function useLynxStage({
       pixelHeight: Math.round(height * pixelRatio),
       pixelRatio,
     };
+    browserConfigInitializedRef.current = true;
     return true;
   }, []);
 

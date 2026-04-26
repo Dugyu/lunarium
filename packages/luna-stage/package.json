@@ -28,6 +28,10 @@
     "./motion": {
       "types": "./dist/motion/index.d.ts",
       "import": "./dist/motion/index.js"
+    },
+    "./lynx": {
+      "types": "./dist/lynx/index.d.ts",
+      "import": "./dist/lynx/index.js"
     }
   },
   "main": "./dist/index.js",
@@ -70,6 +74,9 @@
     "react-dom": ">=18.0.0"
   },
   "peerDependenciesMeta": {
+    "@lynx-js/web-core": {
+      "optional": true
+    },
     "motion": {
       "optional": true
     }

@@ -4,7 +4,7 @@
 
 import { useMemo } from 'react';
 
-import { LunaLynxStage } from '@dugyu/luna-stage';
+import { LunaLynxStage } from '@dugyu/luna-stage/lynx';
 
 import type {
   LunaThemeKey,

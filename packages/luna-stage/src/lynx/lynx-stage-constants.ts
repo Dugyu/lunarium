@@ -4,7 +4,7 @@
 
 import type { CSSProperties } from 'react';
 
-import type { CSSVarProperties } from '../../types/lynx-view';
+import type { CSSVarProperties } from '../types/lynx-view';
 
 // Container-relative unit hooks for Lynx runtime:
 // - `containerType: 'size'` enables `cqw/cqh` units based on the host element box.
