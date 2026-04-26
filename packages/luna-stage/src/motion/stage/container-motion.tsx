@@ -22,13 +22,29 @@ import type {
 import { getLastScaleFromTransform } from './transform-utils';
 import { useContainerResizeMV } from './use-container-resize-mv';
 import { useMergedRefs } from '../../hooks/use-merged-refs';
-import { cn } from '../../utils';
 import { VisualSizeProvider } from '../context/visual-size-provider';
 
 type MotionStageContainerProps =
   & Omit<MotionNodeOptions, 'transformTemplate'>
   & ComponentPropsWithoutRef<'div'>
   & { layoutId: string };
+
+const CONTAINER_LOCKED_STYLE: MotionStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  overflow: 'hidden',
+};
+
+const ANCHOR_LOCKED_STYLE: MotionStyle = {
+  position: 'relative',
+  width: 4,
+  height: 4,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  overflow: 'visible',
+};
 
 const MotionStageContainer: ForwardRefExoticComponent<
   & Omit<MotionNodeOptions, 'transformTemplate'>
@@ -150,6 +166,10 @@ function MotionStageContainerImpl(
     }
   };
 
+  const mergedContainerStyle: MotionStyle = style === undefined
+    ? CONTAINER_LOCKED_STYLE
+    : { ...(style as MotionStyle), ...CONTAINER_LOCKED_STYLE };
+
   return (
     // Outer Layout Animation Parent
     // Spread user props first so internal handlers below cannot be overridden.
@@ -163,17 +183,14 @@ function MotionStageContainerImpl(
       onLayoutAnimationStart={handleLayoutAnimationStart}
       onLayoutAnimationComplete={handleLayoutAnimationComplete}
       transformTemplate={handleParentTransform}
-      className={cn(
-        'flex justify-center items-center overflow-hidden',
-        className,
-      )}
-      {...(style !== undefined && { style: style as MotionStyle })}
+      className={className}
+      style={mergedContainerStyle}
     >
       <motion.div
         layout
         layoutId={`_${layoutId}_child`}
         layoutCrossfade={false}
-        className='relative w-[4px] h-[4px] flex justify-center items-center overflow-visible'
+        style={ANCHOR_LOCKED_STYLE}
       >
         <VisualSizeProvider visualH={visualH} visualW={visualW}>
           {children}

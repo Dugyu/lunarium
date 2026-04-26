@@ -48,9 +48,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@dugyu/luna-core": "workspace:*",
-    "clsx": "catalog:utils",
-    "tailwind-merge": "catalog:tailwind"
+    "@dugyu/luna-core": "workspace:*"
   },
   "devDependencies": {
     "@lynx-js/web-core": "catalog:lynx",

@@ -4,6 +4,7 @@
 
 import { forwardRef, useMemo, useRef } from 'react';
 import type {
+  CSSProperties,
   ComponentPropsWithoutRef,
   DetailedHTMLProps,
   ForwardRefExoticComponent,
@@ -22,7 +23,6 @@ import { useContainerResize } from '../../hooks/use-container-resize';
 import { useMergedRefs } from '../../hooks/use-merged-refs';
 import type { StageProps } from '../../types';
 import {
-  cn,
   computeFrameOffset,
   computeScaleRange,
   lerpFitScale,
@@ -36,6 +36,34 @@ const [StageSizeProvider, useOptionalStageSize] = createContextWithProvider<
 
 const DEVICE_CLIP_PATH = `path("${SMOOTHING_PATH}")`;
 const DEVICE_OUTLINE_CLIP_PATH = `path("${SMOOTHING_OUTLINE_PATH}")`;
+
+const STAGE_ANCHOR_STYLE: CSSProperties = {
+  position: 'relative',
+  width: 0,
+  height: 0,
+  overflow: 'visible',
+  pointerEvents: 'none',
+};
+
+const DEVICE_OUTLINE_LOCKED_STYLE: CSSProperties = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  transformOrigin: 'top left',
+  pointerEvents: 'none',
+  clipPath: DEVICE_OUTLINE_CLIP_PATH,
+};
+
+const DEVICE_FRAME_LOCKED_STYLE: CSSProperties = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  transformOrigin: 'top left',
+  overflow: 'hidden',
+  cursor: 'pointer',
+  pointerEvents: 'none',
+  clipPath: DEVICE_CLIP_PATH,
+};
 
 function Stage({
   className,
@@ -93,37 +121,31 @@ function Stage({
 
   return (
     // Anchor & coordinate system element, no size
-    <div className='relative w-0 h-0 overflow-visible pointer-events-none'>
+    <div style={STAGE_ANCHOR_STYLE}>
       {/* Device outline */}
       <div
-        className={cn(
-          'absolute drop-shadow-lg pointer-events-none',
-          className,
-        )}
+        className={className}
         style={{
           ...style,
+          ...DEVICE_OUTLINE_LOCKED_STYLE,
           width: baseWidth + 2 * OUTLINE_WEIGHT,
           height: baseHeight + 2 * OUTLINE_WEIGHT,
-          transformOrigin: 'top left',
           transform: `translate(${
             scaleInfo.offsetX - OUTLINE_WEIGHT * scaleInfo.scale
           }px, ${
             scaleInfo.offsetY - OUTLINE_WEIGHT * scaleInfo.scale
           }px) scale(${scaleInfo.scale})`,
-          clipPath: DEVICE_OUTLINE_CLIP_PATH,
         }}
       />
 
       {/* Device frame */}
       <div
-        className='absolute overflow-hidden drop-shadow-2xl cursor-pointer pointer-events-none'
         style={{
+          ...DEVICE_FRAME_LOCKED_STYLE,
           width: baseWidth,
           height: baseHeight,
-          transformOrigin: 'top left',
           transform:
             `translate(${scaleInfo.offsetX}px, ${scaleInfo.offsetY}px) scale(${scaleInfo.scale})`,
-          clipPath: DEVICE_CLIP_PATH,
         }}
       >
         {/* Content area inside the device */}
@@ -179,4 +201,3 @@ const StageContainer: ForwardRefExoticComponent<
 > = forwardRef(StageContainerImpl);
 
 export { Stage, StageContainer };
-export type { StageProps };
