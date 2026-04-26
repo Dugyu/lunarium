@@ -20,7 +20,6 @@ import {
 } from '../../constants/stage';
 import type { StageMotionProps } from '../../types/stage-motion';
 import {
-  cn,
   computeDepthScale,
   computeScreenTranslation,
   toAlignFactor,
@@ -29,6 +28,27 @@ import { useVisualSize } from '../context/use-visual-size';
 
 const DEVICE_CLIP_PATH = `path("${SMOOTHING_PATH}")`;
 const DEVICE_OUTLINE_CLIP_PATH = `path("${SMOOTHING_OUTLINE_PATH}")`;
+
+const STAGE_ANCHOR_LOCKED_STYLE: MotionStyle = {
+  position: 'relative',
+  width: 0,
+  height: 0,
+  overflow: 'visible',
+  pointerEvents: 'none',
+};
+
+const LAYER_BASE_LOCKED_STYLE: MotionStyle = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  transformOrigin: 'top left',
+  pointerEvents: 'none',
+};
+
+const LAYER_CLIPPED_LOCKED_STYLE: MotionStyle = {
+  ...LAYER_BASE_LOCKED_STYLE,
+  overflow: 'hidden',
+};
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 
@@ -158,27 +178,24 @@ function MotionStage({
     useMotionTemplate`translate(${panXSpring}px, ${panYSpring}px) translate(${outlineX}px, ${outlineY}px) scale(${scale})`;
 
   return (
-    <motion.div className='relative w-0 h-0 overflow-visible pointer-events-none'>
+    <motion.div style={STAGE_ANCHOR_LOCKED_STYLE}>
       {/* Device outline */}
       <motion.div
-        className={cn(
-          'absolute origin-top-left pointer-events-none',
-          className,
-        )}
+        className={className}
         style={{
           ...(style as MotionStyle | undefined),
+          ...LAYER_BASE_LOCKED_STYLE,
           width: outlineW,
           height: outlineH,
           transform: outlineTransform,
           clipPath: DEVICE_OUTLINE_CLIP_PATH,
           willChange: 'transform',
         } as MotionStyle}
-      >
-      </motion.div>
+      />
       {/* Device frame */}
       <motion.div
-        className='absolute origin-top-left overflow-hidden pointer-events-none'
         style={{
+          ...LAYER_CLIPPED_LOCKED_STYLE,
           width: baseWidth,
           height: baseHeight,
           transform: frameTransform,
@@ -188,9 +205,10 @@ function MotionStage({
       >
         {children}
       </motion.div>
+      {/* Mask layer */}
       <motion.div
-        className='absolute origin-top-left overflow-hidden pointer-events-none'
         style={{
+          ...LAYER_CLIPPED_LOCKED_STYLE,
           width: baseWidth,
           height: baseHeight,
           transform: frameTransform,

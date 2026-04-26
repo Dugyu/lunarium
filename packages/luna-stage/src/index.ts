@@ -13,4 +13,4 @@ export {
 
 // ─── Static phone stage ──────────────────────────────────────────────────────
 export { Stage, StageContainer } from './components/stage';
-export type { StageProps, StageBaseProps } from './types/stage-props';
+export type { StageProps, StageBaseProps } from './types';
