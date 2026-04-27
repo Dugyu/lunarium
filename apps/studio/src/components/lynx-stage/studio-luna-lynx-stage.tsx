@@ -6,13 +6,9 @@ import { useMemo } from 'react';
 
 import { LunaLynxStage } from '@dugyu/luna-stage/lynx';
 
-import type {
-  LunaThemeKey,
-  LunaThemeVariant,
-  LynxUIComponentId,
-  MoonriseEvent,
-  StudioViewMode,
-} from '@/types';
+import type { LunaThemeKey, LunaThemeVariant, StudioViewMode } from '@/types';
+
+type BridgeCall = { entry: string; name: string; data: unknown };
 
 type StudioLunaLynxStageProps = {
   bundleBaseUrl?: string;
@@ -20,10 +16,11 @@ type StudioLunaLynxStageProps = {
   lunaTheme?: LunaThemeKey;
   lunaThemeVariant?: LunaThemeVariant;
   studioViewMode: StudioViewMode;
-  focusedComponent: LynxUIComponentId;
-  onFocusedChange?: (name: LynxUIComponentId) => void;
-  onMoonriseChange?: (event: MoonriseEvent) => void;
-  componentEntry?: LynxUIComponentId;
+  focusedComponent: string;
+  onBridgeCall?: (
+    call: BridgeCall,
+  ) => unknown;
+  componentEntry?: string;
 };
 
 function StudioLunaLynxStage({
@@ -33,8 +30,7 @@ function StudioLunaLynxStage({
   lunaThemeVariant,
   studioViewMode,
   focusedComponent,
-  onFocusedChange,
-  onMoonriseChange,
+  onBridgeCall,
   componentEntry,
 }: StudioLunaLynxStageProps) {
   const extraGlobalProps = useMemo(() => ({
@@ -46,17 +42,17 @@ function StudioLunaLynxStage({
   const handleNativeModulesCall = useMemo(() => (
     (name: string, data: unknown, moduleName: string) => {
       if (moduleName !== 'bridge') return;
+      const result = onBridgeCall?.({ entry, name, data });
+      if (result !== undefined) return result;
       if (name === 'setFocusedComponent') {
-        const component = (data as { id: LynxUIComponentId }).id;
-        onFocusedChange?.(component);
+        const component = (data as { id: string }).id;
         return { entry, focusedComponent: component };
       }
       if (name === 'setMoonriseState') {
-        onMoonriseChange?.(data as MoonriseEvent);
-        return { entry, moonriseEvent: data as MoonriseEvent };
+        return { entry, moonriseEvent: data };
       }
     }
-  ), [entry, onFocusedChange, onMoonriseChange]);
+  ), [entry, onBridgeCall]);
 
   return (
     <LunaLynxStage
@@ -71,4 +67,4 @@ function StudioLunaLynxStage({
 }
 
 export { StudioLunaLynxStage };
-export type { StudioLunaLynxStageProps };
+export type { BridgeCall, StudioLunaLynxStageProps };

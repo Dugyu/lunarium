@@ -5,7 +5,7 @@
 import type { ComponentPropsWithRef } from 'react';
 
 import { Container } from '@/components/container';
-import { RECORD_MODE } from '@/constants/presentation.ts';
+import { RECORD_MODE } from '@/constants/presentation';
 import { cn } from '@/utils';
 
 type StudioFrameProps = ComponentPropsWithRef<'div'>;

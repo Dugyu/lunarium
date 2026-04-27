@@ -4,26 +4,57 @@
 
 import { LayoutGroup } from 'motion/react';
 
-import type { StudioViewMode } from '@/types';
+import type { BridgeCall } from '@/components/lynx-stage';
+import type { LunaThemeMode, LunaThemeVariant, StudioViewMode } from '@/types';
 
 import { DynamicView } from './dynamic-view.tsx';
+import { useControllableState } from './use-controllable-state';
 
 type ChoreographyProps = {
   viewMode: StudioViewMode;
   className?: string;
-  onThemeModeChange?: (mode: 'light' | 'dark') => void;
+  onBridgeCall?: (call: BridgeCall) => unknown;
+  themeVariant?: LunaThemeVariant;
+  themeMode?: LunaThemeMode;
+  defaultThemeVariant?: LunaThemeVariant;
+  defaultThemeMode?: LunaThemeMode;
+  onThemeVariantChange?: (variant: LunaThemeVariant) => void;
+  onThemeModeChange?: (mode: LunaThemeMode) => void;
 };
 
 function Choreography(
-  { viewMode = 'compare', className, onThemeModeChange }: ChoreographyProps,
+  {
+    viewMode = 'compare',
+    className,
+    onBridgeCall,
+    themeVariant,
+    themeMode,
+    defaultThemeVariant = 'lunaris',
+    defaultThemeMode = 'dark',
+    onThemeVariantChange,
+    onThemeModeChange,
+  }: ChoreographyProps,
 ) {
+  const [resolvedVariant] = useControllableState(
+    themeVariant,
+    defaultThemeVariant,
+    onThemeVariantChange,
+  );
+  const [resolvedMode] = useControllableState(
+    themeMode,
+    defaultThemeMode,
+    onThemeModeChange,
+  );
+
   return (
     <LayoutGroup id='luna-studio'>
       <DynamicView
         mode={viewMode}
         key='luna-studio-dynamic-view'
         className={className}
-        onThemeModeChange={onThemeModeChange}
+        onBridgeCall={onBridgeCall}
+        themeVariant={resolvedVariant}
+        themeMode={resolvedMode}
       />
     </LayoutGroup>
   );
