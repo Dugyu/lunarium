@@ -4,14 +4,11 @@
 
 import type { LunaThemeKey, StudioViewMode } from '@/types';
 
-type ViewSpec = {
+type StageEntry = {
   /** Stable stage identifier used for layout and event correlation. */
   id: string;
   /** Additional layout className applied to the stage container. */
   className: string;
-};
-
-type StageMeta = {
   /** Lynx bundle entry rendered in this stage. */
   entry: string;
   /** Theme key applied to this stage when rendered in compare mode. */
@@ -19,6 +16,9 @@ type StageMeta = {
   /** Optional component identity used by focus logic and higher-level app glue. */
   componentId?: string;
 } & Record<string, unknown>;
+
+/** Layout data for the three built-in studio presentation modes. */
+type StudioLayout = Record<StudioViewMode, StageEntry[]>;
 
 type StageEventType =
   | 'click'
@@ -32,9 +32,9 @@ type StageEvent = {
   /** Current studio layout mode when the event is emitted. */
   viewMode: StudioViewMode;
   /** Stage data associated with the hit container. */
-  stage: ViewSpec & StageMeta;
+  stage: StageEntry;
   /** Original DOM event forwarded from the stage container binding. */
   nativeEvent: MouseEvent | PointerEvent;
 };
 
-export type { StageEvent, StageEventType, ViewSpec, StageMeta };
+export type { StageEntry, StageEvent, StageEventType, StudioLayout };
