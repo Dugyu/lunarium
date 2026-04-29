@@ -5,3 +5,8 @@
 export { MotionStage } from './stage-motion';
 export { MotionStageContainer } from './container-motion';
 export { MotionPresentation } from './presentation-motion';
+export type {
+  MotionPresentationProps,
+  MotionStageContainerProps,
+  MotionStageProps,
+} from './types';

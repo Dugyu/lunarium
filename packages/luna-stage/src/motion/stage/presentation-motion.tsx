@@ -3,13 +3,11 @@
 // LICENSE file in the root directory of this source tree.
 
 import { AnimatePresence } from 'motion/react';
-import type {
-  MotionNodeLayoutOptions,
-  MotionNodeOptions,
-  MotionStyle,
-} from 'motion/react';
+import type { MotionStyle } from 'motion/react';
 import * as motion from 'motion/react-client';
-import type { ComponentPropsWithoutRef, JSX } from 'react';
+import type { JSX } from 'react';
+
+import type { MotionPresentationProps } from './types';
 
 const PRESENTATION_LOCKED_STYLE: MotionStyle = {
   position: 'relative',
@@ -22,10 +20,18 @@ const PRESENTATION_LOCKED_STYLE: MotionStyle = {
   transformOrigin: 'center',
 };
 
-type MotionPresentationProps =
-  & Omit<MotionNodeOptions, keyof MotionNodeLayoutOptions>
-  & ComponentPropsWithoutRef<'div'>;
-
+/**
+ * Presentation-only motion wrapper.
+ *
+ * `AnimatePresence` with `propagate` ensures descendant `exit` animations still
+ * run when this subtree is removed by an outer presence boundary.
+ *
+ * This layer intentionally sets `layout={false}` because layout measurement and
+ * layout transitions are owned by `MotionStageContainer`. In other words,
+ * `MotionStageContainer` moves/resizes the stage in layout space, while
+ * `MotionPresentation` only handles presence-style visual animation for the
+ * content inside that stage.
+ */
 function MotionPresentation(props: MotionPresentationProps): JSX.Element {
   const { children, className, style, ...restProps } = props;
 

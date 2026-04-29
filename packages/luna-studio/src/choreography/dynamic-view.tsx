@@ -175,7 +175,9 @@ function DynamicView({
     <div
       className={cn(
         'size-full gap-4 pointer-events-none relative',
-        mode === 'compare' && 'flex flex-row items-center justify-between',
+        // Compare mode must stretch cross-axis height; centering would let each
+        // stage item shrink to the container-motion anchor's intrinsic 4px height.
+        mode === 'compare' && 'flex flex-row items-stretch justify-between',
         mode === 'focus' && 'grid grid-cols-3 grid-rows-1',
         mode === 'lineup' && 'grid grid-cols-5 grid-rows-2',
         className,
@@ -187,7 +189,7 @@ function DynamicView({
             <MotionStageContainer
               layoutId={stage.id}
               key={stage.id}
-              className={cn('h-full', stage.className)}
+              className={stage.className}
               {...getStageContainerEventHandlers(stage)}
               style={{
                 zIndex: stage.zIndex,
@@ -196,7 +198,6 @@ function DynamicView({
             >
               <MotionPresentation
                 key={stage.id}
-                style={{ opacity: 0.4 }}
                 variants={slidingVariants}
                 initial='initial'
                 animate='animate'
@@ -212,10 +213,8 @@ function DynamicView({
                     ? 'bg-black opacity-[0.04]'
                     : 'bg-white opacity-5'}
                   contentInteractive={interactionTarget === 'lynx'}
-                  maskColor={themeMode === 'light' ? '#f5f5f5' : '#000000'}
-                  maskOpacity={themeMode === 'light'
-                    ? stage.maskOpacity
-                    : stage.maskOpacity * 0.2}
+                  maskColor={themeMode === 'light' ? '#f5f5f5' : '#00000080'}
+                  maskOpacity={stage.maskOpacity}
                 >
                   <StudioLunaLynxStage
                     entry={stage.entry}

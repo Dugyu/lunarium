@@ -6,4 +6,8 @@ export { VisualSizeProvider } from './context/visual-size-provider';
 export { useVisualSize } from './context/use-visual-size';
 export type { VisualSizeValue } from './context/visual-size-context';
 export { MotionStage, MotionStageContainer, MotionPresentation } from './stage';
-export type { StageMotionProps } from '../types/stage-motion';
+export type {
+  MotionStageProps,
+  MotionPresentationProps,
+  MotionStageContainerProps,
+} from './stage';

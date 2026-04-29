@@ -10,9 +10,9 @@ import { StudioFrame } from '@/components/studio-frame';
 
 function StudioStatic() {
   return (
-    <StudioFrame>
+    <StudioFrame className={'py-10'}>
       <Container
-        className={'gap-4 pointer-events-none'}
+        className={'gap-4 pointer-events-none bg-[#f5f5f5]'}
       >
         <StageContainer className='flex-1 flex justify-center items-center pointer-events-none'>
           <Stage className='bg-black opacity-10'>

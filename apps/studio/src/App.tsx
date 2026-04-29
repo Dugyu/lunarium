@@ -4,8 +4,9 @@
 
 import './App.css';
 import { Studio } from '@/components/studio';
-import { RECORD_MODE } from '@/constants/presentation';
 import { cn } from '@/utils';
+
+const RECORD_MODE = false;
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
             RECORD_MODE ? 'h-full' : ' h-3/4',
           )}
         >
-          <Studio />
+          <Studio className={RECORD_MODE ? 'py-24' : 'py-10'} />
         </div>
       </div>
     </div>

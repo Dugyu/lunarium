@@ -11,7 +11,6 @@ import type {
 import * as motion from 'motion/react-client';
 import { forwardRef, useRef } from 'react';
 import type {
-  ComponentPropsWithoutRef,
   DetailedHTMLProps,
   ForwardRefExoticComponent,
   ForwardedRef,
@@ -20,14 +19,10 @@ import type {
 } from 'react';
 
 import { getLastScaleFromTransform } from './transform-utils';
+import type { MotionStageContainerProps } from './types';
 import { useContainerResizeMV } from './use-container-resize-mv';
 import { useMergedRefs } from '../../hooks/use-merged-refs';
 import { VisualSizeProvider } from '../context/visual-size-provider';
-
-type MotionStageContainerProps =
-  & Omit<MotionNodeOptions, 'transformTemplate'>
-  & ComponentPropsWithoutRef<'div'>
-  & { layoutId: string };
 
 const CONTAINER_LOCKED_STYLE: MotionStyle = {
   display: 'flex',
@@ -46,6 +41,26 @@ const ANCHOR_LOCKED_STYLE: MotionStyle = {
   overflow: 'visible',
 };
 
+/**
+ * Layout-animation container that neutralizes Motion's scale side effects.
+ *
+ * Framer Motion uses `transform: scale(...)` for layout animations to avoid
+ * reflow. This scales descendants as well, distorting their coordinate space.
+ *
+ * We use a two-layer structure:
+ * - outer: participates in layout animation (may be scaled)
+ * - inner: stable anchor for children
+ *
+ * Instead of applying inverse transforms, we extract the scale and reconstruct
+ * the "visual size" (layout × scale), exposing it via context so children render
+ * against stable dimensions.
+ *
+ * Note:
+ * This component is typically used inside `AnimatePresence mode="popLayout"`,
+ * so it must forward its ref to the underlying DOM node, as `popLayout` needs
+ * that DOM node to measure the element's position and then temporarily take
+ * the exiting node out of normal layout flow while siblings reflow.
+ */
 const MotionStageContainer: ForwardRefExoticComponent<
   & Omit<MotionNodeOptions, 'transformTemplate'>
   & Omit<
@@ -171,8 +186,11 @@ function MotionStageContainerImpl(
     : { ...(style as MotionStyle), ...CONTAINER_LOCKED_STYLE };
 
   return (
-    // Outer Layout Animation Parent
-    // Spread user props first so internal handlers below cannot be overridden.
+    // Two-layer layout shell:
+    // outer applies scale S; inner defines stable coords.
+    // We effectively apply an inverse transform (S⁻¹), but instead of
+    // nesting transforms, we reconstruct visual size: V = L × S,
+    // so children render in a scale-invariant space.
     <motion.div
       {...restProps}
       layout
@@ -192,6 +210,7 @@ function MotionStageContainerImpl(
         layoutCrossfade={false}
         style={ANCHOR_LOCKED_STYLE}
       >
+        {/* Descendants consume the post-compensation visual size, not the raw outer transform. */}
         <VisualSizeProvider visualH={visualH} visualW={visualW}>
           {children}
         </VisualSizeProvider>
