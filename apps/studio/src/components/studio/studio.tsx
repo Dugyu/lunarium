@@ -17,6 +17,17 @@ import { useThemeKeyboardControls } from '../choreography/use-theme-keyboard-con
 
 const viewModes: StudioViewMode[] = ['compare', 'focus', 'lineup'];
 
+function isMoonriseEvent(data: unknown): data is MoonriseEvent {
+  if (data === null || typeof data !== 'object') return false;
+
+  const event = data as { field?: unknown; value?: unknown };
+  return event.field === 'luna-variant'
+    || event.field === 'light-mode'
+    || event.field === 'autoplay'
+    || event.field === 'trust'
+    || event.field === 'subscribe';
+}
+
 function Studio() {
   const [viewMode, setViewMode] = useState<StudioViewMode>('compare');
   const [themeMode, setThemeMode] = useState<LunaThemeMode>(STARTING_MODE);
@@ -28,7 +39,8 @@ function Studio() {
     call: LynxRuntimeCall,
   ) {
     if (call.name !== 'setMoonriseState') return;
-    const event = call.data as MoonriseEvent;
+    if (!isMoonriseEvent(call.data)) return;
+    const event = call.data;
     if (event.field === 'luna-variant') {
       setThemeVariant(event.value);
     } else if (event.field === 'light-mode') {

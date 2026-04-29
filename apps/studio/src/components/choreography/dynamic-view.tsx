@@ -219,7 +219,7 @@ function DynamicView(
                     ? 'bg-black opacity-[0.04]'
                     : 'bg-white opacity-5'}
                   contentInteractive={interactionTarget === 'lynx'}
-                  maskColor={themeMode === 'light' ? '#f5f5f5' : '#0000000'}
+                  maskColor={themeMode === 'light' ? '#f5f5f5' : '#000000'}
                   maskOpacity={themeMode === 'light'
                     ? stage.maskOpacity
                     : stage.maskOpacity * 0.2}

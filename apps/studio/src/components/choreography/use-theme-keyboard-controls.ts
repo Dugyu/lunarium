@@ -41,6 +41,13 @@ export function useThemeKeyboardControls({
   useEffect(() => {
     if (!enabled) return;
     function onKeyDown(e: KeyboardEvent) {
+      const target = e.target;
+      const isEditableTarget = target instanceof HTMLInputElement
+        || target instanceof HTMLTextAreaElement
+        || target instanceof HTMLSelectElement
+        || (target instanceof HTMLElement && target.isContentEditable);
+      if (isEditableTarget || e.metaKey || e.ctrlKey || e.altKey) return;
+
       const action = mergedMapping[e.key.toLowerCase()];
       if (action?.variant !== undefined) onThemeVariantChange?.(action.variant);
       if (action?.mode !== undefined) onThemeModeChange?.(action.mode);
