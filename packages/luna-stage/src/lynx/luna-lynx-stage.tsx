@@ -40,6 +40,11 @@ export type LunaLynxStageProps =
      * Override to isolate workers between unrelated view groups.
      */
     groupId?: number;
+    /**
+     * Enables pointer interactions on the underlying `<lynx-view>` host element.
+     * @defaultValue true
+     */
+    interactive?: boolean;
   };
 
 function LunaLynxStageImpl({
@@ -48,6 +53,7 @@ function LunaLynxStageImpl({
   extraGlobalProps,
   groupId = DEFAULT_GROUP_ID,
   bundleBaseUrl = '/',
+  interactive = true,
   ...stageOptions
 }: LunaLynxStageProps): ReactNode {
   const globalProps = useMemo<LynxGlobalProps>(() => ({
@@ -66,7 +72,10 @@ function LunaLynxStageImpl({
     <div ref={containerRef} style={CONTAINER_STYLE}>
       <lynx-view
         ref={lynxViewRef}
-        style={LYNX_VIEW_STYLE}
+        style={{
+          ...LYNX_VIEW_STYLE,
+          pointerEvents: interactive ? 'auto' : 'none',
+        }}
         lynx-group-id={groupId}
         transform-vh={true}
         transform-vw={true}

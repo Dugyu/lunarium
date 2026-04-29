@@ -8,17 +8,31 @@ import { LunaLynxStage } from '@dugyu/luna-stage/lynx';
 
 import type { LunaThemeKey, LunaThemeVariant, StudioViewMode } from '@/types';
 
-type BridgeCall = { entry: string; name: string; data: unknown };
+/**
+ * Generic runtime callback payload emitted from Lynx back into the host Web app.
+ */
+type LynxRuntimeCall = {
+  /** Lynx bundle entry that emitted the runtime call. */
+  entry: string;
+  /** Runtime channel name, derived from the low-level native-module source. */
+  channel: string;
+  /** Runtime event name within the channel. */
+  name: string;
+  /** Opaque payload forwarded from the Lynx runtime. */
+  data: unknown;
+};
 
 type StudioLunaLynxStageProps = {
   bundleBaseUrl?: string;
   entry: string;
   lunaTheme?: LunaThemeKey;
   lunaThemeVariant?: LunaThemeVariant;
+  interactive?: boolean;
   studioViewMode: StudioViewMode;
   focusedComponent: string;
-  onBridgeCall?: (
-    call: BridgeCall,
+  /** Receives runtime calls emitted from the embedded Lynx content. */
+  onLynxRuntimeCall?: (
+    call: LynxRuntimeCall,
   ) => unknown;
   componentEntry?: string;
 };
@@ -28,9 +42,10 @@ function StudioLunaLynxStage({
   entry,
   lunaTheme,
   lunaThemeVariant,
+  interactive,
   studioViewMode,
   focusedComponent,
-  onBridgeCall,
+  onLynxRuntimeCall,
   componentEntry,
 }: StudioLunaLynxStageProps) {
   const extraGlobalProps = useMemo(() => ({
@@ -40,19 +55,15 @@ function StudioLunaLynxStage({
   }), [studioViewMode, focusedComponent, componentEntry]);
 
   const handleNativeModulesCall = useMemo(() => (
-    (name: string, data: unknown, moduleName: string) => {
-      if (moduleName !== 'bridge') return;
-      const result = onBridgeCall?.({ entry, name, data });
-      if (result !== undefined) return result;
-      if (name === 'setFocusedComponent') {
-        const component = (data as { id: string }).id;
-        return { entry, focusedComponent: component };
-      }
-      if (name === 'setMoonriseState') {
-        return { entry, moonriseEvent: data };
-      }
+    (name: string, data: unknown, channel: string) => {
+      return onLynxRuntimeCall?.({
+        entry,
+        channel,
+        name,
+        data,
+      });
     }
-  ), [entry, onBridgeCall]);
+  ), [entry, onLynxRuntimeCall]);
 
   return (
     <LunaLynxStage
@@ -60,6 +71,7 @@ function StudioLunaLynxStage({
       entry={entry}
       lunaTheme={lunaTheme}
       lunaThemeVariant={lunaThemeVariant}
+      interactive={interactive}
       extraGlobalProps={extraGlobalProps}
       onNativeModulesCall={handleNativeModulesCall}
     />
@@ -67,4 +79,4 @@ function StudioLunaLynxStage({
 }
 
 export { StudioLunaLynxStage };
-export type { BridgeCall, StudioLunaLynxStageProps };
+export type { LynxRuntimeCall, StudioLunaLynxStageProps };

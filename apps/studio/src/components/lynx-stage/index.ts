@@ -5,6 +5,6 @@
 export { LynxStage } from '@dugyu/luna-stage/lynx';
 export { StudioLunaLynxStage } from './studio-luna-lynx-stage';
 export type {
-  BridgeCall,
+  LynxRuntimeCall,
   StudioLunaLynxStageProps,
 } from './studio-luna-lynx-stage';

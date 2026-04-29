@@ -27,11 +27,17 @@ export type LynxStageProps = Omit<UseLynxStageOptions, 'bundleBaseUrl'> & {
    * @defaultValue 7
    */
   groupId?: number;
+  /**
+   * Enables pointer interactions on the underlying `<lynx-view>` host element.
+   * @defaultValue true
+   */
+  interactive?: boolean;
 };
 
 function LynxStageImpl({
   bundleBaseUrl,
   groupId = DEFAULT_GROUP_ID,
+  interactive = true,
   ...stageOptions
 }: LynxStageProps): ReactNode {
   const { lynxViewRef, containerRef } = useLynxStage({
@@ -43,7 +49,10 @@ function LynxStageImpl({
     <div ref={containerRef} style={CONTAINER_STYLE}>
       <lynx-view
         ref={lynxViewRef}
-        style={LYNX_VIEW_STYLE}
+        style={{
+          ...LYNX_VIEW_STYLE,
+          pointerEvents: interactive ? 'auto' : 'none',
+        }}
         lynx-group-id={groupId}
         transform-vh={true}
         transform-vw={true}

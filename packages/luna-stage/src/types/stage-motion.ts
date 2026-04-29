@@ -68,4 +68,16 @@ export type StageMotionProps =
      * Opacity of the overlay mask above the frame.
      */
     maskOpacity?: number;
+    /**
+     * Enables pointer interactions for the content rendered inside the device frame.
+     *
+     * @defaultValue false
+     *
+     * When `false`, the content host element uses `pointer-events: none` so pointer events can
+     * "pass through" to outer Web layout containers (useful for orchestration UIs).
+     *
+     * When `true`, the content host element uses `pointer-events: auto` so embedded runtimes
+     * (e.g. Lynx content) can receive pointer events.
+     */
+    contentInteractive?: boolean;
   };

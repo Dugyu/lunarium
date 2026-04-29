@@ -5,7 +5,7 @@
 import { useState } from 'react';
 
 import { Choreography } from '@/components/choreography';
-import type { BridgeCall } from '@/components/lynx-stage';
+import type { LynxRuntimeCall } from '@/components/lynx-stage/studio-luna-lynx-stage';
 import { MenuBar } from '@/components/menu-bar';
 import { StudioFrame } from '@/components/studio-frame';
 import { STARTING_MODE, STARTING_VARIANT } from '@/constants';
@@ -24,8 +24,8 @@ function Studio() {
     STARTING_VARIANT,
   );
 
-  function handleBridgeCall(
-    call: BridgeCall,
+  function handleLynxRuntimeCall(
+    call: LynxRuntimeCall,
   ) {
     if (call.name !== 'setMoonriseState') return;
     const event = call.data as MoonriseEvent;
@@ -51,7 +51,8 @@ function Studio() {
     >
       <Choreography
         viewMode={viewMode}
-        onBridgeCall={handleBridgeCall}
+        interactionTarget={'lynx'}
+        onLynxRuntimeCall={handleLynxRuntimeCall}
         themeVariant={themeVariant}
         themeMode={themeMode}
         onThemeVariantChange={setThemeVariant}

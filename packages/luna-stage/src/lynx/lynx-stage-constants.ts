@@ -15,7 +15,7 @@ import type { CSSVarProperties } from '../types/lynx-view';
 export const LYNX_VIEW_STYLE: CSSProperties & CSSVarProperties = {
   width: '100%',
   height: '100%',
-  pointerEvents: 'all',
+  pointerEvents: 'auto',
   containerType: 'size',
   '--rpx-unit': 'calc(100cqw / 750)',
   '--vh-unit': '1cqh',

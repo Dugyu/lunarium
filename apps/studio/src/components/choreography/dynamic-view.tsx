@@ -4,10 +4,14 @@
 
 import { AnimatePresence } from 'motion/react';
 import type { SpringOptions, Transition } from 'motion/react';
+import type {
+  MouseEvent as ReactMouseEvent,
+  PointerEvent as ReactPointerEvent,
+} from 'react';
 import { useMemo, useState } from 'react';
 
-import { StudioLunaLynxStage as LunaLynxStage } from '@/components/lynx-stage';
-import type { BridgeCall } from '@/components/lynx-stage';
+import { StudioLunaLynxStage } from '@/components/lynx-stage';
+import type { LynxRuntimeCall } from '@/components/lynx-stage';
 import {
   MotionPresentation,
   MotionStage,
@@ -17,7 +21,7 @@ import type { LunaThemeMode, LunaThemeVariant, StudioViewMode } from '@/types';
 import { cn } from '@/utils';
 
 import { BASE_STATUS, STAGES } from './data';
-import type { StageMeta, ViewSpec } from './types';
+import type { StageEvent, StageMeta, ViewSpec } from './types';
 
 type WorldPos = {
   x: number;
@@ -54,7 +58,9 @@ type DynamicViewProps = {
   className?: string;
   themeVariant: LunaThemeVariant;
   themeMode: LunaThemeMode;
-  onBridgeCall?: (call: BridgeCall) => unknown;
+  interactionTarget?: 'lynx' | 'container';
+  onLynxRuntimeCall?: (call: LynxRuntimeCall) => unknown;
+  onStageEvent?: (event: StageEvent) => void;
 };
 
 function DynamicView(
@@ -63,19 +69,56 @@ function DynamicView(
     className,
     themeVariant,
     themeMode,
-    onBridgeCall,
+    interactionTarget = 'lynx',
+    onLynxRuntimeCall,
+    onStageEvent,
   }: DynamicViewProps,
 ) {
   const [focused, setFocused] = useState<string>(DEFAULT_FOCUSED);
-  const handleBridgeCall = useMemo(() => {
-    return (call: BridgeCall) => {
+  const containerInteractive = interactionTarget === 'container';
+
+  const handleLynxRuntimeCall = useMemo(() => {
+    return (call: LynxRuntimeCall) => {
       if (call.name === 'setFocusedComponent') {
         const component = (call.data as { id: string }).id;
         setFocused(component);
       }
-      return onBridgeCall?.(call);
+      return onLynxRuntimeCall?.(call);
     };
-  }, [onBridgeCall]);
+  }, [onLynxRuntimeCall]);
+
+  const handleStageEvent = useMemo(() => {
+    return (
+      type: StageEvent['type'],
+      stage: ViewSpec & StageMeta,
+      nativeEvent: MouseEvent | PointerEvent,
+    ) => {
+      onStageEvent?.({
+        type,
+        viewMode: mode,
+        stage,
+        nativeEvent,
+      });
+    };
+  }, [mode, onStageEvent]);
+
+  function getStageContainerEventHandlers(stage: ViewSpec & StageMeta) {
+    if (!containerInteractive) return undefined;
+    return {
+      onClick: (e: ReactMouseEvent) => {
+        handleStageEvent('click', stage, e.nativeEvent);
+      },
+      onPointerCancel: (e: ReactPointerEvent) => {
+        handleStageEvent('pointercancel', stage, e.nativeEvent);
+      },
+      onPointerDown: (e: ReactPointerEvent) => {
+        handleStageEvent('pointerdown', stage, e.nativeEvent);
+      },
+      onPointerUp: (e: ReactPointerEvent) => {
+        handleStageEvent('pointerup', stage, e.nativeEvent);
+      },
+    };
+  }
 
   const rendered: RenderData[] = useMemo(() => {
     const components = BASE_STATUS[mode].map(d => STAGES[d.id])
@@ -152,8 +195,10 @@ function DynamicView(
                 'h-full',
                 stage.className,
               )}
+              {...getStageContainerEventHandlers(stage)}
               style={{
                 zIndex: stage.zIndex,
+                pointerEvents: containerInteractive ? 'auto' : 'none',
               }}
             >
               <MotionPresentation
@@ -173,20 +218,22 @@ function DynamicView(
                   className={themeMode === 'light'
                     ? 'bg-black opacity-[0.04]'
                     : 'bg-white opacity-5'}
+                  contentInteractive={interactionTarget === 'lynx'}
                   maskColor={themeMode === 'light' ? '#f5f5f5' : '#0000000'}
                   maskOpacity={themeMode === 'light'
                     ? stage.maskOpacity
                     : stage.maskOpacity * 0.2}
                 >
-                  <LunaLynxStage
+                  <StudioLunaLynxStage
                     entry={stage.entry}
                     lunaTheme={mode === 'compare'
                       ? stage.theme
                       : `${themeVariant}-${themeMode}`}
                     lunaThemeVariant={themeVariant}
+                    interactive={interactionTarget === 'lynx'}
                     studioViewMode={mode}
                     focusedComponent={focused}
-                    onBridgeCall={handleBridgeCall}
+                    onLynxRuntimeCall={handleLynxRuntimeCall}
                     componentEntry={stage.componentId}
                   />
                 </MotionStage>
