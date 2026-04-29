@@ -3,9 +3,9 @@
 // LICENSE file in the root directory of this source tree.
 
 import { Stage, StageContainer } from '@dugyu/luna-stage';
+import { LynxStage } from '@dugyu/luna-stage/lynx';
 
 import { Container } from '@/components/container';
-import { LynxStage } from '@/components/lynx-stage';
 import { StudioFrame } from '@/components/studio-frame';
 
 function StudioStatic() {

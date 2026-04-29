@@ -3,12 +3,17 @@
 // LICENSE file in the root directory of this source tree.
 
 import { LayoutGroup } from 'motion/react';
+import type { JSX } from 'react';
 
-import type { LynxRuntimeCall } from '@/components/lynx-stage';
-import type { LunaThemeMode, LunaThemeVariant, StudioViewMode } from '@/types';
-
-import { DynamicView } from './dynamic-view.tsx';
-import type { StageEvent, StudioLayout } from './types';
+import type { LynxRuntimeCall } from '../lynx-stage';
+import type {
+  LunaThemeMode,
+  LunaThemeVariant,
+  StudioLayout,
+  StudioViewMode,
+} from '../types';
+import { DynamicView } from './dynamic-view';
+import type { StageEvent } from './types';
 
 type ChoreographyProps = {
   /** Fully resolved stage layout used by the choreography layer. */
@@ -28,30 +33,28 @@ type ChoreographyProps = {
   themeMode?: LunaThemeMode;
 };
 
-function Choreography(
-  {
-    layout,
-    viewMode = 'compare',
-    className,
-    interactionTarget,
-    onLynxRuntimeCall,
-    onStageEvent,
-    themeVariant,
-    themeMode,
-  }: ChoreographyProps,
-) {
+function Choreography({
+  layout,
+  viewMode = 'compare',
+  themeVariant = 'lunaris',
+  themeMode = 'dark',
+  interactionTarget = 'lynx',
+  className,
+  onLynxRuntimeCall,
+  onStageEvent,
+}: ChoreographyProps): JSX.Element {
   return (
     <LayoutGroup id='luna-studio'>
       <DynamicView
         layout={layout}
         mode={viewMode}
         key='luna-studio-dynamic-view'
-        className={className}
-        onLynxRuntimeCall={onLynxRuntimeCall}
-        onStageEvent={onStageEvent}
-        themeVariant={themeVariant ?? 'lunaris'}
-        themeMode={themeMode ?? 'dark'}
+        themeVariant={themeVariant}
+        themeMode={themeMode}
         interactionTarget={interactionTarget}
+        {...(className !== undefined ? { className } : {})}
+        {...(onLynxRuntimeCall !== undefined ? { onLynxRuntimeCall } : {})}
+        {...(onStageEvent !== undefined ? { onStageEvent } : {})}
       />
     </LayoutGroup>
   );

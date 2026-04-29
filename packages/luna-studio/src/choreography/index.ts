@@ -2,4 +2,6 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-export type StudioViewMode = 'compare' | 'focus' | 'lineup';
+export { Choreography } from './choreography';
+export type { ChoreographyProps } from './choreography';
+export type { StageEvent, StageEventType } from './types';

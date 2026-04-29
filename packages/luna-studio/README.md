@@ -1,141 +1,278 @@
 # luna-studio
 
-> A multi-stage orchestration terminal built on `@dugyu/luna-stage` — for component library showcases, design system comparisons, and recording-ready layouts.
+`@dugyu/luna-studio` is the reusable choreography core extracted from `apps/studio`.
 
-Use `luna-studio` when you need side-by-side comparison, focus/lineup switching, or a structured presentation environment. For single-frame previews, use [`@dugyu/luna-stage`](../luna-stage) directly.
+It packages the multi-stage layout and Lynx runtime wiring needed for:
+
+- compare / focus / lineup stage arrangements
+- shared theme application across multiple stages
+- host-side stage interaction handling
+- Lynx-to-host runtime callback forwarding
+
+It does **not** currently ship the demo shell from `apps/studio`.
+
+The app-local pieces stay outside this package for now:
+
+- `Studio`
+- `MenuBar`
+- `StudioFrame`
+- keyboard shortcut glue
+- demo-specific runtime handling such as `MoonriseEvent`
+
+If you only need a single device-framed preview, use [`@dugyu/luna-stage`](../luna-stage) directly.
 
 ## Installation
 
 ```sh
-npm i @dugyu/luna-studio @dugyu/luna-stage
+npm i @dugyu/luna-studio @dugyu/luna-stage motion react react-dom
 ```
 
-**Peer dependencies:**
+`luna-studio` depends on `@dugyu/luna-stage` for its rendering primitives.
 
-```sh
-npm i react
-```
+You still need the required Lynx side-effects at your application entry point. See the [Required Lynx Side-effects](../luna-stage#required-lynx-side-effects) section in the `luna-stage` README.
 
-`luna-studio` depends on `luna-stage` for its rendering primitives. You still need to register the Lynx side-effects at your application entry point — see the [Required Lynx Side-effects](../luna-stage#required-lynx-side-effects) section in the `luna-stage` README.
+## What This Package Exports
 
----
+Current public exports from `@dugyu/luna-studio`:
+
+- `Choreography`
+- `ChoreographyProps`
+- `StageEntry`
+- `StudioLayout`
+- `StudioViewMode`
+- `StageEvent`
+- `StageEventType`
+- `LynxRuntimeCall`
+- `LunaThemeKey`
+- `LunaThemeMode`
+- `LunaThemeVariant`
+
+`StudioLunaLynxStage` exists inside the package as an internal adapter, but it is **not** part of the public API yet.
 
 ## Quick Start
 
 ```tsx
-import { Studio } from '@dugyu/luna-studio';
+import { Choreography } from '@dugyu/luna-studio';
+import type { StudioLayout } from '@dugyu/luna-studio';
 
-export default function App() {
+const layout: StudioLayout = {
+  compare: [
+    {
+      id: 'button-light',
+      className: 'flex-1 order-1',
+      entry: 'ActButton',
+      theme: 'luna-light',
+      componentId: 'button',
+    },
+    {
+      id: 'button-dark',
+      className: 'flex-1 order-2',
+      entry: 'ActButton',
+      theme: 'luna-dark',
+      componentId: 'button',
+    },
+  ],
+  focus: [
+    {
+      id: 'button-focus',
+      className: 'col-start-2 col-end-4 row-start-1 row-end-2',
+      entry: 'ActButton',
+      theme: 'luna-light',
+      componentId: 'button',
+    },
+  ],
+  lineup: [
+    {
+      id: 'button-lineup',
+      className: 'col-start-2 col-end-3 row-start-1 row-end-2',
+      entry: 'ActButton',
+      theme: 'lunaris-dark',
+      componentId: 'button',
+    },
+  ],
+};
+
+export function Demo() {
   return (
-    <Studio
-      bundleBaseUrl='/bundles/'
-      recordMode={false}
-    />
+    <div className='size-full'>
+      <Choreography
+        layout={layout}
+        viewMode='compare'
+        themeVariant='lunaris'
+        themeMode='dark'
+      />
+    </div>
   );
 }
 ```
 
-- **`bundleBaseUrl`** — forwarded to each `LunaLynxStage` in the composition; follows the same convention as `luna-stage`.
-- **`recordMode`** — adds layout padding and disables UI chrome so the canvas is clean for screen recording or export.
-- **`stages` / `layouts`** — pass custom stage configurations and layout specs to override the built-in defaults.
+## Core Concepts
 
-## Choreography (Advanced)
+### `StageEntry`
 
-`Choreography` and `DynamicView` are the two layers that power Studio's multi-stage layout:
-
-- **`Choreography`** — the orchestration entry point. Manages which stages are active, owns the view mode state, and handles theme sync and events.
-- **`DynamicView`** — the rendering and animation layer. Reads the current `StudioViewMode` and positions / animates the stage cells accordingly.
-
-```text
-Choreography (state + orchestration)
-  └── DynamicView (layout + animation)
-        └── MotionMockupContainer → MotionPresentation → MotionMockup → LunaLynxStage
-```
-
-### View modes
-
-`StudioViewMode` controls the layout strategy applied by `DynamicView`:
-
-| Mode      | Behavior                                         |
-| --------- | ------------------------------------------------ |
-| `compare` | All stages visible side-by-side at reduced scale |
-| `focus`   | Single stage fills the canvas                    |
-| `lineup`  | Stages arranged in a horizontal strip            |
-
-### Theme events
-
-If `onThemeModeChange` is wired up, `Choreography` propagates theme mode transitions across all active stages simultaneously.
-
-## Default Data
-
-`STAGES` and `BASE_STATUS` are the built-in example configurations used by `Studio` when no `stages` or `layouts` prop is provided.
-
-- They are intentionally minimal — suitable for internal demos and quick exploration.
-- **Do not modify them directly.** Override by passing your own `stages` / `layouts` to `Studio` or `Choreography`.
+`StageEntry` is the per-stage data boundary used by the choreography layer.
 
 ```ts
-import { Studio, STAGES } from '@dugyu/luna-studio';
-
-const myStages = STAGES.map(s => ({
-  ...s,
-  bundleBaseUrl: 'https://cdn.example.com/',
-}));
-
-<Studio stages={myStages} bundleBaseUrl='https://cdn.example.com/' />;
+type StageEntry = {
+  id: string;
+  className: string;
+  entry: string;
+  theme: LunaThemeKey;
+  componentId?: string;
+};
 ```
 
----
+Notes:
 
-## UI Components
+- `id` is used as the React key and motion layout identifier.
+- `className` controls the stage cell placement in the active layout.
+- `entry` is the Lynx bundle entry rendered inside the stage.
+- `theme` is used in `compare` mode.
+- `componentId` is an optional app-defined focus identity.
 
-### `MenuBar`
+### `StudioLayout`
 
-Renders the view mode switcher (`compare` / `focus` / `lineup`). Requires icon assets — see the package's peer dependency notes for icon resolution.
+`StudioLayout` contains one stage list for each built-in presentation mode.
 
-### `StudioFrame`
+```ts
+type StudioLayout = Record<'compare' | 'focus' | 'lineup', StageEntry[]>;
+```
 
-The outermost layout container. Handles canvas sizing, background, and recording padding (activated by `recordMode`). Nest `Choreography` inside it when composing manually.
+### `StudioViewMode`
 
----
+`StudioViewMode` selects which layout slice is active.
 
-## API Surface
+| Mode      | Behavior                                        |
+| --------- | ----------------------------------------------- |
+| `compare` | Shows multiple stages side-by-side              |
+| `focus`   | Places stages into the perspective focus layout |
+| `lineup`  | Places stages into the lineup grid              |
 
-### Components
+## Runtime And Interaction Hooks
 
-| Export         | Description                                  |
-| -------------- | -------------------------------------------- |
-| `Studio`       | Top-level assembly — the default entry point |
-| `Choreography` | Multi-stage orchestration container          |
-| `DynamicView`  | Layout and animation renderer                |
-| `MenuBar`      | View mode switching UI                       |
-| `StudioFrame`  | Canvas container with recording-mode support |
+### `onLynxRuntimeCall`
 
-### Props
+Receives generic runtime callbacks emitted from embedded Lynx content.
 
-| Type                | Description              |
-| ------------------- | ------------------------ |
-| `StudioProps`       | Props for `Studio`       |
-| `ChoreographyProps` | Props for `Choreography` |
-| `DynamicViewProps`  | Props for `DynamicView`  |
+```ts
+type LynxRuntimeCall = {
+  entry: string;
+  channel: string;
+  name: string;
+  data: unknown;
+};
+```
 
-### Data & Config
+This keeps the package surface runtime-neutral:
 
-| Export        | Description                                    |
-| ------------- | ---------------------------------------------- |
-| `STAGES`      | Default stage configuration array              |
-| `BASE_STATUS` | Default view status (active mode, theme state) |
-| `StageMeta`   | Type describing a single stage entry           |
-| `ViewSpec`    | Type describing a layout configuration         |
+- no `bridge` naming in the public API
+- no low-level `moduleName` leak
+- `channel` is the host-facing source identifier
 
----
+### `onStageEvent`
 
-## Who Should Use This?
+Receives host-side interaction events from the outer Web stage container.
 
-`luna-studio` is a **terminal consumer** package — it assembles all lower layers into a ready-to-use presentation environment.
+```ts
+type StageEvent = {
+  type: 'click' | 'pointerdown' | 'pointerup' | 'pointercancel';
+  viewMode: StudioViewMode;
+  stage: StageEntry;
+  nativeEvent: MouseEvent | PointerEvent;
+};
+```
 
-- Internal design system studios
-- Component library documentation demos
-- Multi-variant / multi-theme comparison views
-- Screen recording layouts
+### `interactionTarget`
 
-If you only need a single device-framed preview, reach for `@dugyu/luna-stage` instead — it has no Studio overhead and a smaller API surface.
+Controls where pointer interaction should land:
+
+- `'lynx'`: Lynx content receives pointer interaction
+- `'container'`: the outer Web stage container receives pointer interaction
+
+Example:
+
+```tsx
+<Choreography
+  layout={layout}
+  viewMode='focus'
+  interactionTarget='container'
+  onStageEvent={(event) => {
+    console.log(event.type, event.stage.id);
+  }}
+  onLynxRuntimeCall={(call) => {
+    console.log(call.channel, call.name, call.data);
+  }}
+/>;
+```
+
+## `Choreography` API
+
+`Choreography` is the main public component in this package.
+
+```ts
+type ChoreographyProps = {
+  layout: StudioLayout;
+  viewMode: StudioViewMode;
+  className?: string;
+  interactionTarget?: 'lynx' | 'container';
+  onLynxRuntimeCall?: (call: LynxRuntimeCall) => unknown;
+  onStageEvent?: (event: StageEvent) => void;
+  themeVariant?: LunaThemeVariant;
+  themeMode?: LunaThemeMode;
+};
+```
+
+Behavior notes:
+
+- `themeVariant` defaults to `'lunaris'`
+- `themeMode` defaults to `'dark'`
+- `interactionTarget` defaults to `'lynx'`
+- `layout` is required and should already be fully resolved by the host app
+
+## Scope Of This Extraction
+
+This package currently covers the first extraction target described in `apps/feature-design-spec.md`:
+
+- define public choreography types
+- make `DynamicView` layout-driven
+- move choreography and the Lynx runtime adapter into `packages/luna-studio`
+- make `apps/studio` consume the extracted package
+
+This package does **not** yet provide:
+
+- a top-level `Studio` shell component
+- built-in demo layout data
+- app chrome such as `MenuBar`
+- app-level keyboard bindings
+- demo-specific runtime event parsing
+- a public `lynx-stage` subpath export
+
+## Internal Structure
+
+```text
+packages/luna-studio/
+  src/
+    choreography/
+      choreography.tsx
+      dynamic-view.tsx
+      index.ts
+      types.ts
+      use-controllable-state.ts
+    lynx-stage/
+      studio-luna-lynx-stage.tsx
+      index.ts
+    types/
+      index.ts
+    utils/
+      world.ts
+    index.ts
+```
+
+## Intended Consumers
+
+Use `@dugyu/luna-studio` when you need a reusable multi-stage choreography layer but want to keep your app shell, data, and event handling local:
+
+- documentation sites embedding multiple Lynx entries
+- design system comparison canvases
+- host apps that need both Web-side stage events and Lynx runtime callbacks
+- future `lynx-website` integration
