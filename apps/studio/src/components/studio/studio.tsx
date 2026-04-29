@@ -13,7 +13,8 @@ import type { LunaThemeMode, LunaThemeVariant, StudioViewMode } from '@/types';
 import type { MoonriseEvent } from '@/types/stage';
 import { cn } from '@/utils';
 
-import { useThemeKeyboardControls } from '../choreography/use-theme-keyboard-controls';
+import { studioLayout } from './studio-layout';
+import { useThemeKeyboardControls } from './use-theme-keyboard-controls';
 
 const viewModes: StudioViewMode[] = ['compare', 'focus', 'lineup'];
 
@@ -62,13 +63,12 @@ function Studio() {
       )}
     >
       <Choreography
+        layout={studioLayout}
         viewMode={viewMode}
         interactionTarget={'lynx'}
         onLynxRuntimeCall={handleLynxRuntimeCall}
         themeVariant={themeVariant}
         themeMode={themeMode}
-        onThemeVariantChange={setThemeVariant}
-        onThemeModeChange={setThemeMode}
       />
       <MenuBar
         onViewModeChange={(i) => setViewMode(viewModes[i])}

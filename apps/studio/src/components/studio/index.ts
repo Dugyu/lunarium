@@ -3,3 +3,5 @@
 // LICENSE file in the root directory of this source tree.
 
 export { Studio } from './studio.tsx';
+export { studioLayout } from './studio-layout.ts';
+export { useThemeKeyboardControls } from './use-theme-keyboard-controls.ts';

@@ -20,8 +20,7 @@ import {
 import type { LunaThemeMode, LunaThemeVariant, StudioViewMode } from '@/types';
 import { cn } from '@/utils';
 
-import { BASE_STATUS, STAGES } from './data';
-import type { StageEvent, StageMeta, ViewSpec } from './types';
+import type { StageEntry, StageEvent, StudioLayout } from './types';
 
 type WorldPos = {
   x: number;
@@ -29,7 +28,7 @@ type WorldPos = {
   z: number;
 };
 
-type RenderData = ViewSpec & StageMeta & {
+type RenderData = StageEntry & {
   world: WorldPos;
   zIndex: number;
   maskOpacity: number;
@@ -54,17 +53,26 @@ const DEFAULT_FOCUSED = 'button';
 const WORLD_ORIGIN: WorldPos = { x: 0, y: 0, z: 0 };
 
 type DynamicViewProps = {
+  /** Stage layout data for all supported studio view modes. */
+  layout: StudioLayout;
+  /** Active mode selecting which layout slice to render. */
   mode?: StudioViewMode;
   className?: string;
+  /** Resolved theme variant passed down to rendered Lynx stages. */
   themeVariant: LunaThemeVariant;
+  /** Resolved theme mode passed down to rendered Lynx stages. */
   themeMode: LunaThemeMode;
+  /** Chooses whether pointer interaction is handled by Lynx content or the outer Web container. */
   interactionTarget?: 'lynx' | 'container';
+  /** Receives generic runtime calls emitted from the embedded Lynx content. */
   onLynxRuntimeCall?: (call: LynxRuntimeCall) => unknown;
+  /** Receives Web container interaction events for the rendered stages. */
   onStageEvent?: (event: StageEvent) => void;
 };
 
 function DynamicView(
   {
+    layout,
     mode = 'compare',
     className,
     themeVariant,
@@ -90,7 +98,7 @@ function DynamicView(
   const handleStageEvent = useMemo(() => {
     return (
       type: StageEvent['type'],
-      stage: ViewSpec & StageMeta,
+      stage: StageEntry,
       nativeEvent: MouseEvent | PointerEvent,
     ) => {
       onStageEvent?.({
@@ -102,7 +110,7 @@ function DynamicView(
     };
   }, [mode, onStageEvent]);
 
-  function getStageContainerEventHandlers(stage: ViewSpec & StageMeta) {
+  function getStageContainerEventHandlers(stage: StageEntry) {
     if (!containerInteractive) return undefined;
     return {
       onClick: (e: ReactMouseEvent) => {
@@ -121,7 +129,8 @@ function DynamicView(
   }
 
   const rendered: RenderData[] = useMemo(() => {
-    const components = BASE_STATUS[mode].map(d => STAGES[d.id])
+    const stages = layout[mode];
+    const components = stages
       .filter(d => d.componentId);
     const backgroundComponents = components.filter(d =>
       d.componentId !== focused
@@ -131,10 +140,9 @@ function DynamicView(
 
     const focusedIndex = components.findIndex(d => d.componentId === focused);
 
-    const items = BASE_STATUS[mode].map((d) => {
-      const stageMeta = STAGES[d.id];
+    const items = stages.map((stage) => {
       const compOrder = backgroundComponents.findIndex(d =>
-        d.componentId === stageMeta.componentId
+        d.componentId === stage.componentId
       );
       const escape = compOrder === -1;
 
@@ -164,8 +172,7 @@ function DynamicView(
         : 0;
 
       const data = {
-        ...d,
-        ...stageMeta,
+        ...stage,
         world,
         zIndex: zIndex,
         maskOpacity: maskOpacity * 0.5,
@@ -173,7 +180,7 @@ function DynamicView(
       return data;
     });
     return items;
-  }, [mode, focused]);
+  }, [focused, layout, mode]);
 
   return (
     <div
