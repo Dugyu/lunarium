@@ -2,7 +2,6 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "paths": {
-      "@dugyu/luna-studio": ["../../packages/luna-studio/src/index.ts"],
       "@/*": ["./src/*"],
     },
     "emitDeclarationOnly": true,
@@ -20,7 +19,6 @@
   },
   "include": [
     "src",
-    "../../packages/luna-studio/src",
     "rsbuild.config.ts",
     "tailwind.config.ts",
   ],

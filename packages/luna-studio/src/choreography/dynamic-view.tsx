@@ -37,6 +37,10 @@ type RenderData = StageEntry & {
   maskOpacity: number;
 };
 
+type FocusableStageEntry = StageEntry & {
+  componentId: string;
+};
+
 const slidingVariants = {
   initial: { opacity: 0, x: -300 },
   animate: { opacity: 1, x: 0 },
@@ -55,6 +59,10 @@ const DEFAULT_FOCUSED = 'button';
 
 function cn(...inputs: (string | false | null | undefined)[]) {
   return twMerge(clsx(inputs));
+}
+
+function hasComponentId(stage: StageEntry): stage is FocusableStageEntry {
+  return Boolean(stage.componentId);
 }
 
 type DynamicViewProps = {
@@ -133,9 +141,9 @@ function DynamicView({
 
   const rendered: RenderData[] = useMemo(() => {
     const stages = layout[mode];
-    const components = stages.filter(d => d.componentId);
-    const backgroundComponents = components.filter(d =>
-      d.componentId !== focused
+    const components = stages.filter(stage => hasComponentId(stage));
+    const backgroundComponents = components.filter(stage =>
+      stage.componentId !== focused
     );
 
     const mid = (backgroundComponents.length - 1) / 2;
@@ -219,7 +227,7 @@ function DynamicView({
                     studioViewMode={mode}
                     focusedComponent={focused}
                     onLynxRuntimeCall={handleLynxRuntimeCall}
-                    {...(stage.componentId !== undefined
+                    {...(hasComponentId(stage)
                       ? { componentEntry: stage.componentId }
                       : {})}
                   />

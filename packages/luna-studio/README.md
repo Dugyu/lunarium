@@ -119,7 +119,7 @@ type StageEntry = {
   entry: string;
   theme: LunaThemeKey;
   componentId?: string;
-};
+} & Record<string, unknown>;
 ```
 
 Notes:
@@ -246,27 +246,6 @@ This package does **not** yet provide:
 - app-level keyboard bindings
 - demo-specific runtime event parsing
 - a public `lynx-stage` subpath export
-
-## Internal Structure
-
-```text
-packages/luna-studio/
-  src/
-    choreography/
-      choreography.tsx
-      dynamic-view.tsx
-      index.ts
-      types.ts
-      use-controllable-state.ts
-    lynx-stage/
-      studio-luna-lynx-stage.tsx
-      index.ts
-    types/
-      index.ts
-    utils/
-      world.ts
-    index.ts
-```
 
 ## Intended Consumers
 
