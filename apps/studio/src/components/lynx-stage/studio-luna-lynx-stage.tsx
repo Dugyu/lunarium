@@ -6,24 +6,35 @@ import { useMemo } from 'react';
 
 import { LunaLynxStage } from '@dugyu/luna-stage/lynx';
 
-import type {
-  LunaThemeKey,
-  LunaThemeVariant,
-  LynxUIComponentId,
-  MoonriseEvent,
-  StudioViewMode,
-} from '@/types';
+import type { LunaThemeKey, LunaThemeVariant, StudioViewMode } from '@/types';
+
+/**
+ * Generic runtime callback payload emitted from Lynx back into the host Web app.
+ */
+type LynxRuntimeCall = {
+  /** Lynx bundle entry that emitted the runtime call. */
+  entry: string;
+  /** Runtime channel name, derived from the low-level native-module source. */
+  channel: string;
+  /** Runtime event name within the channel. */
+  name: string;
+  /** Opaque payload forwarded from the Lynx runtime. */
+  data: unknown;
+};
 
 type StudioLunaLynxStageProps = {
   bundleBaseUrl?: string;
   entry: string;
   lunaTheme?: LunaThemeKey;
   lunaThemeVariant?: LunaThemeVariant;
+  interactive?: boolean;
   studioViewMode: StudioViewMode;
-  focusedComponent: LynxUIComponentId;
-  onFocusedChange?: (name: LynxUIComponentId) => void;
-  onMoonriseChange?: (event: MoonriseEvent) => void;
-  componentEntry?: LynxUIComponentId;
+  focusedComponent: string;
+  /** Receives runtime calls emitted from the embedded Lynx content. */
+  onLynxRuntimeCall?: (
+    call: LynxRuntimeCall,
+  ) => unknown;
+  componentEntry?: string;
 };
 
 function StudioLunaLynxStage({
@@ -31,10 +42,10 @@ function StudioLunaLynxStage({
   entry,
   lunaTheme,
   lunaThemeVariant,
+  interactive,
   studioViewMode,
   focusedComponent,
-  onFocusedChange,
-  onMoonriseChange,
+  onLynxRuntimeCall,
   componentEntry,
 }: StudioLunaLynxStageProps) {
   const extraGlobalProps = useMemo(() => ({
@@ -44,19 +55,15 @@ function StudioLunaLynxStage({
   }), [studioViewMode, focusedComponent, componentEntry]);
 
   const handleNativeModulesCall = useMemo(() => (
-    (name: string, data: unknown, moduleName: string) => {
-      if (moduleName !== 'bridge') return;
-      if (name === 'setFocusedComponent') {
-        const component = (data as { id: LynxUIComponentId }).id;
-        onFocusedChange?.(component);
-        return { entry, focusedComponent: component };
-      }
-      if (name === 'setMoonriseState') {
-        onMoonriseChange?.(data as MoonriseEvent);
-        return { entry, moonriseEvent: data as MoonriseEvent };
-      }
+    (name: string, data: unknown, channel: string) => {
+      return onLynxRuntimeCall?.({
+        entry,
+        channel,
+        name,
+        data,
+      });
     }
-  ), [entry, onFocusedChange, onMoonriseChange]);
+  ), [entry, onLynxRuntimeCall]);
 
   return (
     <LunaLynxStage
@@ -64,6 +71,7 @@ function StudioLunaLynxStage({
       entry={entry}
       lunaTheme={lunaTheme}
       lunaThemeVariant={lunaThemeVariant}
+      interactive={interactive}
       extraGlobalProps={extraGlobalProps}
       onNativeModulesCall={handleNativeModulesCall}
     />
@@ -71,4 +79,4 @@ function StudioLunaLynxStage({
 }
 
 export { StudioLunaLynxStage };
-export type { StudioLunaLynxStageProps };
+export type { LynxRuntimeCall, StudioLunaLynxStageProps };

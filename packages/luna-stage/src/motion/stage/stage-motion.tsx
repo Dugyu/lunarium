@@ -77,6 +77,7 @@ function MotionStage({
   focalLength,
   maskColor = 'transparent',
   maskOpacity = 0,
+  contentInteractive = false,
 }: StageMotionProps): JSX.Element {
   // Graceful fallback: null when no VisualSizeProvider wraps this component
   const visualSizeCtx = useVisualSize();
@@ -196,6 +197,7 @@ function MotionStage({
       <motion.div
         style={{
           ...LAYER_CLIPPED_LOCKED_STYLE,
+          pointerEvents: contentInteractive ? 'auto' : 'none',
           width: baseWidth,
           height: baseHeight,
           transform: frameTransform,

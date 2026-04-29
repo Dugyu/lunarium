@@ -4,7 +4,7 @@
 
 import './App.css';
 import { Studio } from '@/components/studio';
-import { RECORD_MODE } from '@/constants/presentation.ts';
+import { RECORD_MODE } from '@/constants/presentation';
 import { cn } from '@/utils';
 
 function App() {

@@ -4,9 +4,9 @@
 
 import { useMotionValue } from 'motion/react';
 import type { MotionValue } from 'motion/react';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-import { useIsomorphicLayoutEffect } from '../../hooks/use-isomorphic-layout-effect';
+import { useEffectEvent } from '../../hooks/use-effect-event';
 
 type SizeMV = { width: MotionValue<number>; height: MotionValue<number> };
 
@@ -19,16 +19,22 @@ export function useContainerResizeMV<T extends HTMLElement = HTMLElement>(
     onResize?: (w: number, h: number) => void;
   },
 ): SizeMV {
+  const { ResizeObserverImpl, onResize: onResizeProp } = opts ?? {};
+
   const width = useMotionValue(0);
   const height = useMotionValue(0);
   const prevW = useRef<number>(-1);
   const prevH = useRef<number>(-1);
+  const hasOnResize = onResizeProp !== undefined;
 
-  useIsomorphicLayoutEffect(() => {
+  // Stable callback — avoids stale closure without adding to deps
+  const onResize = useEffectEvent(onResizeProp);
+
+  useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    const RO: ResizeObserverCtor | undefined = opts?.ResizeObserverImpl
+    const RO: ResizeObserverCtor | undefined = ResizeObserverImpl
       ?? ((typeof window !== 'undefined' && 'ResizeObserver' in window)
         ? window.ResizeObserver
         : undefined);
@@ -58,18 +64,21 @@ export function useContainerResizeMV<T extends HTMLElement = HTMLElement>(
         w = entry.contentRect.width;
         h = entry.contentRect.height;
       }
+
       if (w !== prevW.current || h !== prevH.current) {
         prevW.current = w;
         prevH.current = h;
         width.set(w);
         height.set(h);
-        opts?.onResize?.(w, h);
+        if (hasOnResize) {
+          onResize?.(w, h);
+        }
       }
     });
 
     obs.observe(el);
     return () => obs.disconnect();
-  }, [ref, opts, opts?.ResizeObserverImpl, opts?.onResize, width, height]);
+  }, [ref, ResizeObserverImpl, hasOnResize, width, height]);
 
   return { width, height };
 }

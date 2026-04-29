@@ -5,17 +5,54 @@
 import { useState } from 'react';
 
 import { Choreography } from '@/components/choreography';
+import type { LynxRuntimeCall } from '@/components/lynx-stage/studio-luna-lynx-stage';
 import { MenuBar } from '@/components/menu-bar';
 import { StudioFrame } from '@/components/studio-frame';
-import { STARTING_MODE } from '@/constants';
-import type { StudioViewMode } from '@/types';
+import { STARTING_MODE, STARTING_VARIANT } from '@/constants';
+import type { LunaThemeMode, LunaThemeVariant, StudioViewMode } from '@/types';
+import type { MoonriseEvent } from '@/types/stage';
 import { cn } from '@/utils';
+
+import { useThemeKeyboardControls } from '../choreography/use-theme-keyboard-controls';
 
 const viewModes: StudioViewMode[] = ['compare', 'focus', 'lineup'];
 
+function isMoonriseEvent(data: unknown): data is MoonriseEvent {
+  if (data === null || typeof data !== 'object') return false;
+
+  const event = data as { field?: unknown; value?: unknown };
+  return event.field === 'luna-variant'
+    || event.field === 'light-mode'
+    || event.field === 'autoplay'
+    || event.field === 'trust'
+    || event.field === 'subscribe';
+}
+
 function Studio() {
   const [viewMode, setViewMode] = useState<StudioViewMode>('compare');
-  const [themeMode, setThemeMode] = useState<'light' | 'dark'>(STARTING_MODE);
+  const [themeMode, setThemeMode] = useState<LunaThemeMode>(STARTING_MODE);
+  const [themeVariant, setThemeVariant] = useState<LunaThemeVariant>(
+    STARTING_VARIANT,
+  );
+
+  function handleLynxRuntimeCall(
+    call: LynxRuntimeCall,
+  ) {
+    if (call.name !== 'setMoonriseState') return;
+    if (!isMoonriseEvent(call.data)) return;
+    const event = call.data;
+    if (event.field === 'luna-variant') {
+      setThemeVariant(event.value);
+    } else if (event.field === 'light-mode') {
+      setThemeMode(event.value === true ? 'light' : 'dark');
+    }
+  }
+
+  useThemeKeyboardControls({
+    enabled: true,
+    onThemeVariantChange: setThemeVariant,
+    onThemeModeChange: setThemeMode,
+  });
 
   return (
     <StudioFrame
@@ -24,7 +61,15 @@ function Studio() {
         themeMode === 'light' ? 'bg-[#f5f5f5]' : 'bg-[#0d0d0d]',
       )}
     >
-      <Choreography viewMode={viewMode} onThemeModeChange={setThemeMode} />
+      <Choreography
+        viewMode={viewMode}
+        interactionTarget={'lynx'}
+        onLynxRuntimeCall={handleLynxRuntimeCall}
+        themeVariant={themeVariant}
+        themeMode={themeMode}
+        onThemeVariantChange={setThemeVariant}
+        onThemeModeChange={setThemeMode}
+      />
       <MenuBar
         onViewModeChange={(i) => setViewMode(viewModes[i])}
         className='z-[1000]'

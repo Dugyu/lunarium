@@ -4,26 +4,24 @@
 
 import { AnimatePresence } from 'motion/react';
 import type { SpringOptions, Transition } from 'motion/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import type {
+  MouseEvent as ReactMouseEvent,
+  PointerEvent as ReactPointerEvent,
+} from 'react';
+import { useMemo, useState } from 'react';
 
-import { StudioLunaLynxStage as LunaLynxStage } from '@/components/lynx-stage';
+import { StudioLunaLynxStage } from '@/components/lynx-stage';
+import type { LynxRuntimeCall } from '@/components/lynx-stage';
 import {
   MotionPresentation,
   MotionStage,
   MotionStageContainer,
 } from '@/components/mockup-motion';
-import { STARTING_MODE, STARTING_VARIANT } from '@/constants/presentation.ts';
-import type {
-  LunaThemeMode,
-  LunaThemeVariant,
-  LynxUIComponentId,
-  MoonriseEvent,
-  StudioViewMode,
-} from '@/types';
+import type { LunaThemeMode, LunaThemeVariant, StudioViewMode } from '@/types';
 import { cn } from '@/utils';
 
-import { BASE_STATUS, STAGES } from './data.ts';
-import type { StageMeta, ViewSpec } from './types.ts';
+import { BASE_STATUS, STAGES } from './data';
+import type { StageEvent, StageMeta, ViewSpec } from './types';
 
 type WorldPos = {
   x: number;
@@ -51,63 +49,76 @@ const presentationTransition: Transition = {
 
 const fitTransition: SpringOptions = { visualDuration: 0.8, bounce: 0.1 };
 
-const DEFAULT_FOCUSED: LynxUIComponentId = 'button';
-const DEFAULT_LUNA_THEME_VARIANT: LunaThemeVariant = STARTING_VARIANT;
-const DEFAULT_LUNA_THEME_MODE: LunaThemeMode = STARTING_MODE;
+const DEFAULT_FOCUSED = 'button';
 
 const WORLD_ORIGIN: WorldPos = { x: 0, y: 0, z: 0 };
 
 type DynamicViewProps = {
   mode?: StudioViewMode;
   className?: string;
-  onThemeModeChange?: (mode: 'light' | 'dark') => void;
+  themeVariant: LunaThemeVariant;
+  themeMode: LunaThemeMode;
+  interactionTarget?: 'lynx' | 'container';
+  onLynxRuntimeCall?: (call: LynxRuntimeCall) => unknown;
+  onStageEvent?: (event: StageEvent) => void;
 };
 
 function DynamicView(
-  { mode = 'compare', className, onThemeModeChange }: DynamicViewProps,
+  {
+    mode = 'compare',
+    className,
+    themeVariant,
+    themeMode,
+    interactionTarget = 'lynx',
+    onLynxRuntimeCall,
+    onStageEvent,
+  }: DynamicViewProps,
 ) {
-  const [focused, setFocused] = useState<LynxUIComponentId>(DEFAULT_FOCUSED);
-  const [themeVariant, setThemeVariant] = useState<LunaThemeVariant>(
-    DEFAULT_LUNA_THEME_VARIANT,
-  );
-  const [themeMode, setThemeMode] = useState<LunaThemeMode>(
-    DEFAULT_LUNA_THEME_MODE,
-  );
+  const [focused, setFocused] = useState<string>(DEFAULT_FOCUSED);
+  const containerInteractive = interactionTarget === 'container';
 
-  useEffect(() => {
-    function onKeyDown(e: KeyboardEvent) {
-      // ----- Variant Control -----
-      if (e.key === 'a' || e.key === 'A') {
-        setThemeVariant('luna');
+  const handleLynxRuntimeCall = useMemo(() => {
+    return (call: LynxRuntimeCall) => {
+      if (call.name === 'setFocusedComponent') {
+        const component = (call.data as { id: string }).id;
+        setFocused(component);
       }
-      if (e.key === 's' || e.key === 'S') {
-        setThemeVariant('lunaris');
-      }
+      return onLynxRuntimeCall?.(call);
+    };
+  }, [onLynxRuntimeCall]);
 
-      // ----- Mode Control -----
-      if (e.key === 'j' || e.key === 'J') {
-        setThemeMode('light');
-        onThemeModeChange?.('light');
-      }
-      if (e.key === 'k' || e.key === 'K') {
-        setThemeMode('dark');
-        onThemeModeChange?.('dark');
-      }
-    }
+  const handleStageEvent = useMemo(() => {
+    return (
+      type: StageEvent['type'],
+      stage: ViewSpec & StageMeta,
+      nativeEvent: MouseEvent | PointerEvent,
+    ) => {
+      onStageEvent?.({
+        type,
+        viewMode: mode,
+        stage,
+        nativeEvent,
+      });
+    };
+  }, [mode, onStageEvent]);
 
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [onThemeModeChange]);
-
-  const handleMoonriseChange = useCallback((event: MoonriseEvent) => {
-    if (event.field === 'luna-variant') {
-      setThemeVariant(event.value);
-    } else if (event.field === 'light-mode') {
-      const next: 'light' | 'dark' = event.value === true ? 'light' : 'dark';
-      setThemeMode(next);
-      onThemeModeChange?.(next);
-    }
-  }, [onThemeModeChange]);
+  function getStageContainerEventHandlers(stage: ViewSpec & StageMeta) {
+    if (!containerInteractive) return undefined;
+    return {
+      onClick: (e: ReactMouseEvent) => {
+        handleStageEvent('click', stage, e.nativeEvent);
+      },
+      onPointerCancel: (e: ReactPointerEvent) => {
+        handleStageEvent('pointercancel', stage, e.nativeEvent);
+      },
+      onPointerDown: (e: ReactPointerEvent) => {
+        handleStageEvent('pointerdown', stage, e.nativeEvent);
+      },
+      onPointerUp: (e: ReactPointerEvent) => {
+        handleStageEvent('pointerup', stage, e.nativeEvent);
+      },
+    };
+  }
 
   const rendered: RenderData[] = useMemo(() => {
     const components = BASE_STATUS[mode].map(d => STAGES[d.id])
@@ -184,8 +195,10 @@ function DynamicView(
                 'h-full',
                 stage.className,
               )}
+              {...getStageContainerEventHandlers(stage)}
               style={{
                 zIndex: stage.zIndex,
+                pointerEvents: containerInteractive ? 'auto' : 'none',
               }}
             >
               <MotionPresentation
@@ -205,21 +218,22 @@ function DynamicView(
                   className={themeMode === 'light'
                     ? 'bg-black opacity-[0.04]'
                     : 'bg-white opacity-5'}
-                  maskColor={themeMode === 'light' ? '#f5f5f5' : '#0000000'}
+                  contentInteractive={interactionTarget === 'lynx'}
+                  maskColor={themeMode === 'light' ? '#f5f5f5' : '#000000'}
                   maskOpacity={themeMode === 'light'
                     ? stage.maskOpacity
                     : stage.maskOpacity * 0.2}
                 >
-                  <LunaLynxStage
+                  <StudioLunaLynxStage
                     entry={stage.entry}
                     lunaTheme={mode === 'compare'
                       ? stage.theme
                       : `${themeVariant}-${themeMode}`}
                     lunaThemeVariant={themeVariant}
+                    interactive={interactionTarget === 'lynx'}
                     studioViewMode={mode}
                     focusedComponent={focused}
-                    onFocusedChange={setFocused}
-                    onMoonriseChange={handleMoonriseChange}
+                    onLynxRuntimeCall={handleLynxRuntimeCall}
                     componentEntry={stage.componentId}
                   />
                 </MotionStage>

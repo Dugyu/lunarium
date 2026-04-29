@@ -8,5 +8,4 @@ export type {
   LunaThemeMode,
   LunaThemeVariant,
 } from '@dugyu/luna-core';
-export type { StudioViewMode } from '@dugyu/luna-catalog';
-export type { MoonriseEvent } from './stage.js';
+export type { StudioViewMode } from './studio.js';

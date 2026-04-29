@@ -11,4 +11,4 @@ export type {
   LunaThemeKey,
 } from '@dugyu/luna-core';
 
-export type { StudioViewMode } from '@dugyu/luna-catalog';
+export type { StudioViewMode } from './studio.js';
