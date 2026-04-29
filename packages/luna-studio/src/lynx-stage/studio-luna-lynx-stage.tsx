@@ -3,10 +3,11 @@
 // LICENSE file in the root directory of this source tree.
 
 import { useMemo } from 'react';
+import type { JSX } from 'react';
 
 import { LunaLynxStage } from '@dugyu/luna-stage/lynx';
 
-import type { LunaThemeKey, LunaThemeVariant, StudioViewMode } from '@/types';
+import type { LunaThemeKey, LunaThemeVariant, StudioViewMode } from '../types';
 
 /**
  * Generic runtime callback payload emitted from Lynx back into the host Web app.
@@ -31,9 +32,7 @@ type StudioLunaLynxStageProps = {
   studioViewMode: StudioViewMode;
   focusedComponent: string;
   /** Receives runtime calls emitted from the embedded Lynx content. */
-  onLynxRuntimeCall?: (
-    call: LynxRuntimeCall,
-  ) => unknown;
+  onLynxRuntimeCall?: (call: LynxRuntimeCall) => unknown;
   componentEntry?: string;
 };
 
@@ -47,7 +46,7 @@ function StudioLunaLynxStage({
   focusedComponent,
   onLynxRuntimeCall,
   componentEntry,
-}: StudioLunaLynxStageProps) {
+}: StudioLunaLynxStageProps): JSX.Element {
   const extraGlobalProps = useMemo(() => ({
     studioViewMode,
     focusedComponent,
@@ -67,13 +66,13 @@ function StudioLunaLynxStage({
 
   return (
     <LunaLynxStage
-      bundleBaseUrl={bundleBaseUrl}
       entry={entry}
-      lunaTheme={lunaTheme}
-      lunaThemeVariant={lunaThemeVariant}
-      interactive={interactive}
       extraGlobalProps={extraGlobalProps}
       onNativeModulesCall={handleNativeModulesCall}
+      {...(bundleBaseUrl !== undefined ? { bundleBaseUrl } : {})}
+      {...(lunaTheme !== undefined ? { lunaTheme } : {})}
+      {...(lunaThemeVariant !== undefined ? { lunaThemeVariant } : {})}
+      {...(interactive !== undefined ? { interactive } : {})}
     />
   );
 }

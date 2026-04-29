@@ -4,8 +4,9 @@
 
 import { useState } from 'react';
 
-import { Choreography } from '@/components/choreography';
-import type { LynxRuntimeCall } from '@/components/lynx-stage/studio-luna-lynx-stage';
+import { Choreography } from '@dugyu/luna-studio';
+import type { LynxRuntimeCall } from '@dugyu/luna-studio';
+
 import { MenuBar } from '@/components/menu-bar';
 import { StudioFrame } from '@/components/studio-frame';
 import { STARTING_MODE, STARTING_VARIANT } from '@/constants';

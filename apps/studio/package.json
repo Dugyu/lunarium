@@ -15,6 +15,7 @@
     "@dugyu/luna-catalog": "workspace:*",
     "@dugyu/luna-core": "workspace:*",
     "@dugyu/luna-stage": "workspace:*",
+    "@dugyu/luna-studio": "workspace:*",
     "@headlessui/react": "^2.2.7",
     "@headlessui/tailwindcss": "^0.2.2",
     "@lynx-js/web-core": "catalog:lynx",

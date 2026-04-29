@@ -2,9 +2,17 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-import type { LunaThemeKey, StudioViewMode } from '@/types';
+import type {
+  LunaThemeKey,
+  LunaThemeMode,
+  LunaThemeVariant,
+} from '@dugyu/luna-core';
 
-type StageEntry = {
+export type { LunaThemeKey, LunaThemeMode, LunaThemeVariant };
+
+export type StudioViewMode = 'compare' | 'focus' | 'lineup';
+
+export type StageEntry = {
   /** Stable stage identifier used for layout and event correlation. */
   id: string;
   /** Additional layout className applied to the stage container. */
@@ -18,23 +26,4 @@ type StageEntry = {
 } & Record<string, unknown>;
 
 /** Layout data for the three built-in studio presentation modes. */
-type StudioLayout = Record<StudioViewMode, StageEntry[]>;
-
-type StageEventType =
-  | 'click'
-  | 'pointercancel'
-  | 'pointerdown'
-  | 'pointerup';
-
-type StageEvent = {
-  /** High-level interaction kind observed on the Web stage container. */
-  type: StageEventType;
-  /** Current studio layout mode when the event is emitted. */
-  viewMode: StudioViewMode;
-  /** Stage data associated with the hit container. */
-  stage: StageEntry;
-  /** Original DOM event forwarded from the stage container binding. */
-  nativeEvent: MouseEvent | PointerEvent;
-};
-
-export type { StageEntry, StageEvent, StageEventType, StudioLayout };
+export type StudioLayout = Record<StudioViewMode, StageEntry[]>;

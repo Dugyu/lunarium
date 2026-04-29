@@ -39,15 +39,23 @@
   "scripts": {
     "build": "rslib build"
   },
+  "dependencies": {
+    "@dugyu/luna-core": "workspace:*",
+    "@dugyu/luna-stage": "workspace:*",
+    "clsx": "catalog:utils",
+    "tailwind-merge": "catalog:tailwind"
+  },
   "devDependencies": {
     "@rsbuild/plugin-react": "catalog:rsbuild",
     "@rslib/core": "catalog:rslib",
     "@types/react": "catalog:react18",
+    "motion": "catalog:motion",
     "react": "catalog:react18",
     "react-dom": "catalog:react18",
     "typescript": "catalog:ts"
   },
   "peerDependencies": {
+    "motion": ">=12.23.16",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   }

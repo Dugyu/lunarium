@@ -8,4 +8,4 @@ export type {
   LunaThemeMode,
   LunaThemeVariant,
 } from '@dugyu/luna-core';
-export type { StudioViewMode } from './studio.js';
+export type { StudioViewMode } from '@dugyu/luna-studio';

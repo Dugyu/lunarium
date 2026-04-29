@@ -2,10 +2,11 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
+import type { StageEntry, StudioLayout } from '@dugyu/luna-studio';
+
 import type { LunaThemeKey, StudioViewMode } from '@/types';
 
 import { LynxUIComponentsRegistry } from '../../constants/component-data.ts';
-import type { StageEntry, StudioLayout } from '../choreography/types.ts';
 
 const getMeta = LynxUIComponentsRegistry.getMeta;
 

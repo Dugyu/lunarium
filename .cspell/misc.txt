@@ -11,3 +11,6 @@ startswith
 svitejs
 tostring
 tsgo
+pointerdown
+pointerup
+pointercancel

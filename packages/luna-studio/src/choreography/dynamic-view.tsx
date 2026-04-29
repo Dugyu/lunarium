@@ -2,36 +2,43 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
+import { clsx } from 'clsx';
 import { AnimatePresence } from 'motion/react';
 import type { SpringOptions, Transition } from 'motion/react';
 import type {
+  JSX,
   MouseEvent as ReactMouseEvent,
   PointerEvent as ReactPointerEvent,
 } from 'react';
 import { useMemo, useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 
-import { StudioLunaLynxStage } from '@/components/lynx-stage';
-import type { LynxRuntimeCall } from '@/components/lynx-stage';
 import {
   MotionPresentation,
   MotionStage,
   MotionStageContainer,
-} from '@/components/mockup-motion';
-import type { LunaThemeMode, LunaThemeVariant, StudioViewMode } from '@/types';
-import { cn } from '@/utils';
+} from '@dugyu/luna-stage/motion';
 
-import type { StageEntry, StageEvent, StudioLayout } from './types';
-
-type WorldPos = {
-  x: number;
-  y: number;
-  z: number;
-};
+import { StudioLunaLynxStage } from '../lynx-stage';
+import type { LynxRuntimeCall } from '../lynx-stage';
+import type {
+  LunaThemeMode,
+  LunaThemeVariant,
+  StageEntry,
+  StudioLayout,
+  StudioViewMode,
+} from '../types';
+import type { StageEvent } from './types';
+import { getStageWorldState } from '../utils/world';
 
 type RenderData = StageEntry & {
-  world: WorldPos;
+  world: { x: number; y: number; z: number };
   zIndex: number;
   maskOpacity: number;
+};
+
+type FocusableStageEntry = StageEntry & {
+  componentId: string;
 };
 
 const slidingVariants = {
@@ -50,7 +57,13 @@ const fitTransition: SpringOptions = { visualDuration: 0.8, bounce: 0.1 };
 
 const DEFAULT_FOCUSED = 'button';
 
-const WORLD_ORIGIN: WorldPos = { x: 0, y: 0, z: 0 };
+function cn(...inputs: (string | false | null | undefined)[]) {
+  return twMerge(clsx(inputs));
+}
+
+function hasComponentId(stage: StageEntry): stage is FocusableStageEntry {
+  return Boolean(stage.componentId);
+}
 
 type DynamicViewProps = {
   /** Stage layout data for all supported studio view modes. */
@@ -59,9 +72,9 @@ type DynamicViewProps = {
   mode?: StudioViewMode;
   className?: string;
   /** Resolved theme variant passed down to rendered Lynx stages. */
-  themeVariant: LunaThemeVariant;
+  themeVariant?: LunaThemeVariant;
   /** Resolved theme mode passed down to rendered Lynx stages. */
-  themeMode: LunaThemeMode;
+  themeMode?: LunaThemeMode;
   /** Chooses whether pointer interaction is handled by Lynx content or the outer Web container. */
   interactionTarget?: 'lynx' | 'container';
   /** Receives generic runtime calls emitted from the embedded Lynx content. */
@@ -70,18 +83,16 @@ type DynamicViewProps = {
   onStageEvent?: (event: StageEvent) => void;
 };
 
-function DynamicView(
-  {
-    layout,
-    mode = 'compare',
-    className,
-    themeVariant,
-    themeMode,
-    interactionTarget = 'lynx',
-    onLynxRuntimeCall,
-    onStageEvent,
-  }: DynamicViewProps,
-) {
+function DynamicView({
+  layout,
+  mode = 'compare',
+  className,
+  themeVariant = 'lunaris',
+  themeMode = 'dark',
+  interactionTarget = 'lynx',
+  onLynxRuntimeCall,
+  onStageEvent,
+}: DynamicViewProps): JSX.Element {
   const [focused, setFocused] = useState<string>(DEFAULT_FOCUSED);
   const containerInteractive = interactionTarget === 'container';
 
@@ -130,56 +141,34 @@ function DynamicView(
 
   const rendered: RenderData[] = useMemo(() => {
     const stages = layout[mode];
-    const components = stages
-      .filter(d => d.componentId);
-    const backgroundComponents = components.filter(d =>
-      d.componentId !== focused
+    const components = stages.filter(stage => hasComponentId(stage));
+    const backgroundComponents = components.filter(stage =>
+      stage.componentId !== focused
     );
 
     const mid = (backgroundComponents.length - 1) / 2;
-
     const focusedIndex = components.findIndex(d => d.componentId === focused);
 
-    const items = stages.map((stage) => {
+    return stages.map((stage) => {
       const compOrder = backgroundComponents.findIndex(d =>
         d.componentId === stage.componentId
       );
       const escape = compOrder === -1;
+      const { world, zIndex, maskOpacity } = getStageWorldState({
+        mode,
+        compOrder,
+        mid,
+        focusedIndex,
+        escape,
+      });
 
-      const direction = (compOrder - mid) > 0 ? 1 : -1;
-
-      const theta = ((compOrder - mid) * 20 + direction * focusedIndex * 2)
-        / 180 * Math.PI;
-
-      const world: WorldPos = mode === 'focus'
-        ? {
-          x: escape
-            ? 0
-            : Math.sin(theta) * 600,
-          y: 0,
-          z: escape
-            ? 0
-            : -Math.cos(theta) * 600, // -(1.5 - Math.abs((mid - compOrder) / mid)) * 500,
-        }
-        : WORLD_ORIGIN;
-
-      const zIndex = mode === 'focus'
-        ? (escape ? 100 : Math.ceil(Math.abs(compOrder - mid) * 2))
-        : 0;
-
-      const maskOpacity = mode === 'focus'
-        ? (escape ? 0 : 1 - Math.abs(theta * 2 / Math.PI) * 0.6)
-        : 0;
-
-      const data = {
+      return {
         ...stage,
         world,
-        zIndex: zIndex,
-        maskOpacity: maskOpacity * 0.5,
+        zIndex,
+        maskOpacity,
       };
-      return data;
     });
-    return items;
   }, [focused, layout, mode]);
 
   return (
@@ -198,10 +187,7 @@ function DynamicView(
             <MotionStageContainer
               layoutId={stage.id}
               key={stage.id}
-              className={cn(
-                'h-full',
-                stage.className,
-              )}
+              className={cn('h-full', stage.className)}
               {...getStageContainerEventHandlers(stage)}
               style={{
                 zIndex: stage.zIndex,
@@ -241,7 +227,9 @@ function DynamicView(
                     studioViewMode={mode}
                     focusedComponent={focused}
                     onLynxRuntimeCall={handleLynxRuntimeCall}
-                    componentEntry={stage.componentId}
+                    {...(hasComponentId(stage)
+                      ? { componentEntry: stage.componentId }
+                      : {})}
                   />
                 </MotionStage>
               </MotionPresentation>
@@ -254,5 +242,4 @@ function DynamicView(
 }
 
 export type { DynamicViewProps };
-
 export { DynamicView };
