@@ -3,24 +3,30 @@
 // LICENSE file in the root directory of this source tree.
 
 import { LayoutGroup } from 'motion/react';
-import type { JSX } from 'react';
+import type { CSSProperties, JSX } from 'react';
 
 import type { LynxRuntimeCall } from '../lynx-stage';
 import type {
   LunaThemeMode,
   LunaThemeVariant,
   StudioLayout,
+  StudioModeGrid,
   StudioViewMode,
 } from '../types';
 import { DynamicView } from './dynamic-view';
 import type { StageEvent } from './types';
 
 type ChoreographyProps = {
+  /** Optional class name applied to the outer choreography container. */
+  className?: string;
+  /** Optional inline style merged onto the outer choreography container. */
+  style?: CSSProperties;
   /** Fully resolved stage layout used by the choreography layer. */
   layout: StudioLayout;
+  /** Optional grid config that drives the container layout for each mode. */
+  modeGrid?: StudioModeGrid;
   /** Active presentation mode for the current choreography render. */
   viewMode: StudioViewMode;
-  className?: string;
   /** Chooses whether pointer interaction is handled by Lynx content or the outer Web container. */
   interactionTarget?: 'lynx' | 'container';
   /** Receives generic runtime calls emitted from the embedded Lynx content. */
@@ -35,11 +41,13 @@ type ChoreographyProps = {
 
 function Choreography({
   layout,
+  modeGrid,
   viewMode = 'compare',
   themeVariant = 'lunaris',
   themeMode = 'dark',
   interactionTarget = 'lynx',
   className,
+  style,
   onLynxRuntimeCall,
   onStageEvent,
 }: ChoreographyProps): JSX.Element {
@@ -47,12 +55,14 @@ function Choreography({
     <LayoutGroup id='luna-studio'>
       <DynamicView
         layout={layout}
+        {...(modeGrid !== undefined ? { modeGrid } : {})}
         mode={viewMode}
         key='luna-studio-dynamic-view'
         themeVariant={themeVariant}
         themeMode={themeMode}
         interactionTarget={interactionTarget}
         {...(className !== undefined ? { className } : {})}
+        {...(style !== undefined ? { style } : {})}
         {...(onLynxRuntimeCall !== undefined ? { onLynxRuntimeCall } : {})}
         {...(onStageEvent !== undefined ? { onStageEvent } : {})}
       />

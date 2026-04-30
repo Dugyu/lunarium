@@ -10,12 +10,19 @@ import { LynxUIComponentsRegistry } from '../../constants';
 
 const getMeta = LynxUIComponentsRegistry.getMeta;
 
+/** Legacy layout snapshot kept only for side-by-side comparison with the new data-driven grid config. */
+
 /** App-local stage catalog that keeps demo-specific entry and registry metadata out of choreography core. */
 type StudioStageDefinition = {
   entry: string;
   theme: LunaThemeKey;
   componentId?: string;
 } & Record<string, unknown>;
+
+type LegacyLayoutItem = {
+  id: string;
+  className: string;
+};
 
 const stageCatalog: Record<string, StudioStageDefinition> = {
   Bloom: { entry: 'ActBloom', theme: 'lunaris-light' },
@@ -189,10 +196,10 @@ const baseLayout = {
       className: 'col-start-2 col-end-3 row-start-2 row-end-3 order-3',
     },
   ],
-} satisfies Record<StudioViewMode, Pick<StageEntry, 'className' | 'id'>[]>;
+} satisfies Record<StudioViewMode, LegacyLayoutItem[]>;
 
 function mapStageEntries(
-  entries: Pick<StageEntry, 'className' | 'id'>[],
+  entries: LegacyLayoutItem[],
 ): StageEntry[] {
   return entries.map((entry) => {
     const stage = stageCatalog[entry.id];
@@ -202,14 +209,13 @@ function mapStageEntries(
 
     const stageEntry: StageEntry = {
       id: entry.id,
-      className: entry.className,
       ...stage,
     };
     return stageEntry;
   });
 }
 
-/** Demo layout consumed by the app-local Studio shell and passed into generic choreography core. */
+/** Legacy demo layout kept for reference only; the active Studio shell now uses `studio-layout-grid.ts`. */
 const studioLayout: StudioLayout = {
   compare: mapStageEntries(baseLayout.compare),
   focus: mapStageEntries(baseLayout.focus),
