@@ -6,7 +6,7 @@ import type { StageEntry, StudioLayout } from '@dugyu/luna-studio';
 
 import type { LunaThemeKey, StudioViewMode } from '@/types';
 
-import { LynxUIComponentsRegistry } from '../../constants/component-data.ts';
+import { LynxUIComponentsRegistry } from '../../constants';
 
 const getMeta = LynxUIComponentsRegistry.getMeta;
 

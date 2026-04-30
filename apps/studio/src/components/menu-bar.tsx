@@ -23,11 +23,15 @@ type MenuBarProps = {
 function MenuBar(
   { onViewModeChange, className, themeMode = 'light' }: MenuBarProps,
 ) {
+  const isLight = themeMode === 'light';
+  const containerBgClass = isLight ? 'bg-[#ffffffbb]' : 'bg-[#0000001a]';
+  const iconColor = isLight ? '#000000' : '#ffffff';
+
   return (
     <div
       className={cn(
         'absolute bottom-4 right-4 rounded-full shadow-sm',
-        themeMode === 'light' ? 'bg-[#ffffffbb]' : 'bg-[#0000001a]',
+        containerBgClass,
         className,
       )}
     >
@@ -37,15 +41,15 @@ function MenuBar(
         <TabList className='flex md:flex-col justify-between items-center px-3 py-2 md:px-3 md:py-5 gap-4 md:gap-5'>
           <TabIcon
             icon={Columns2}
-            color={themeMode === 'light' ? '#000000' : '#ffffff'}
+            color={iconColor}
           />
           <TabIcon
             icon={GalleryHorizontalEnd}
-            color={themeMode === 'light' ? '#000000' : '#ffffff'}
+            color={iconColor}
           />
           <TabIcon
             icon={Grid3x2}
-            color={themeMode === 'light' ? '#000000' : '#ffffff'}
+            color={iconColor}
           />
         </TabList>
       </TabGroup>

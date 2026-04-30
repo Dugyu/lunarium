@@ -9,15 +9,21 @@ import type { LynxRuntimeCall } from '@dugyu/luna-studio';
 
 import { MenuBar } from '@/components/menu-bar';
 import { StudioFrame } from '@/components/studio-frame';
-import { STARTING_MODE, STARTING_VARIANT } from '@/constants';
-import type { LunaThemeMode, LunaThemeVariant, StudioViewMode } from '@/types';
-import type { MoonriseEvent } from '@/types/stage';
+import type {
+  LunaThemeMode,
+  LunaThemeVariant,
+  MoonriseEvent,
+  StudioViewMode,
+} from '@/types';
 import { cn } from '@/utils';
 
 import { studioLayout } from './studio-layout';
 import { useThemeKeyboardControls } from './use-theme-keyboard-controls';
 
 const viewModes: StudioViewMode[] = ['compare', 'focus', 'lineup'];
+
+const STARTING_MODE: LunaThemeMode = 'dark';
+const STARTING_VARIANT: LunaThemeVariant = 'lunaris';
 
 function isMoonriseEvent(data: unknown): data is MoonriseEvent {
   if (data === null || typeof data !== 'object') return false;
@@ -30,7 +36,7 @@ function isMoonriseEvent(data: unknown): data is MoonriseEvent {
     || event.field === 'subscribe';
 }
 
-function Studio() {
+function Studio({ className }: { className?: string }) {
   const [viewMode, setViewMode] = useState<StudioViewMode>('compare');
   const [themeMode, setThemeMode] = useState<LunaThemeMode>(STARTING_MODE);
   const [themeVariant, setThemeVariant] = useState<LunaThemeVariant>(
@@ -61,6 +67,7 @@ function Studio() {
       className={cn(
         'pointer-events-auto relative luna-studio transition-all duration-300 ease-in-out',
         themeMode === 'light' ? 'bg-[#f5f5f5]' : 'bg-[#0d0d0d]',
+        className,
       )}
     >
       <Choreography

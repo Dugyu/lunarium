@@ -2,11 +2,26 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-import type { MotionValue, SpringOptions } from 'motion/react';
+import type {
+  MotionNodeLayoutOptions,
+  MotionNodeOptions,
+  MotionValue,
+  SpringOptions,
+} from 'motion/react';
+import type { ComponentPropsWithoutRef } from 'react';
 
-import type { StageBaseProps } from './stage-props';
+import type { StageBaseProps } from '../../types/stage-props';
 
-export type StageMotionProps =
+export type MotionStageContainerProps =
+  & Omit<MotionNodeOptions, 'transformTemplate'>
+  & ComponentPropsWithoutRef<'div'>
+  & { layoutId: string };
+
+export type MotionPresentationProps =
+  & Omit<MotionNodeOptions, keyof MotionNodeLayoutOptions>
+  & ComponentPropsWithoutRef<'div'>;
+
+export type MotionStageProps =
   & StageBaseProps
   & {
     /**
@@ -43,14 +58,14 @@ export type StageMotionProps =
     fitTransition?: SpringOptions;
     /**
      * Spring settings for the zoom factor.
-     * Applied on top of the fit scale — independent of fit interpolation.
+     * Applied on top of the fit scale - independent of fit interpolation.
      */
     zoomTransition?: SpringOptions;
     /**
      * Spring settings for the final screen-space translation.
      *
      * Both `panX`/`panY` and `world.x`/`world.y` contribute to screen-space
-     * displacement — `world` is perspective-projected before being composited.
+     * displacement - `world` is perspective-projected before being composited.
      * The spring animates the combined screen-space value.
      */
     panTransition?: SpringOptions;

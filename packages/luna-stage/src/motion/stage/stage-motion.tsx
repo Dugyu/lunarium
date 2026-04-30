@@ -13,12 +13,12 @@ import * as motion from 'motion/react-client';
 import { useLayoutEffect } from 'react';
 import type { JSX } from 'react';
 
+import type { MotionStageProps } from './types';
 import {
   OUTLINE_WEIGHT,
   SMOOTHING_OUTLINE_PATH,
   SMOOTHING_PATH,
 } from '../../constants/stage';
-import type { StageMotionProps } from '../../types/stage-motion';
 import {
   computeDepthScale,
   computeScreenTranslation,
@@ -78,7 +78,7 @@ function MotionStage({
   maskColor = 'transparent',
   maskOpacity = 0,
   contentInteractive = false,
-}: StageMotionProps): JSX.Element {
+}: MotionStageProps): JSX.Element {
   // Graceful fallback: null when no VisualSizeProvider wraps this component
   const visualSizeCtx = useVisualSize();
 
@@ -210,7 +210,7 @@ function MotionStage({
       {/* Mask layer */}
       <motion.div
         style={{
-          ...LAYER_CLIPPED_LOCKED_STYLE,
+          ...LAYER_BASE_LOCKED_STYLE,
           width: baseWidth,
           height: baseHeight,
           transform: frameTransform,
