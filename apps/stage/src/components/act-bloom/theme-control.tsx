@@ -2,52 +2,42 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-import { useState } from '@lynx-js/react';
+import { useMemo } from '@lynx-js/react';
 
 import type { LunaThemeKey, LunaThemeMode, LunaThemeVariant } from '@/types';
 
 import { parseLunaThemeKey } from './parse-theme.js';
+import { useControllable } from './use-controllable.js';
 
 type ThemeControlProps = {
-  defaultTheme: LunaThemeKey;
+  defaultTheme?: LunaThemeKey;
+  theme?: LunaThemeKey;
   onThemeChange?: (key: LunaThemeKey) => void;
 };
 
-type LunaThemeObject = {
-  variant: LunaThemeVariant;
-  mode: LunaThemeMode;
-};
-
-function ThemeControl({ defaultTheme, onThemeChange }: ThemeControlProps) {
-  // Use lazy initializer so parseLunaThemeKey is only called once.
-  const [theme, setTheme] = useState(() => parseLunaThemeKey(defaultTheme));
+function ThemeControl(
+  { defaultTheme = 'lunaris-dark', theme: themeProp, onThemeChange }:
+    ThemeControlProps,
+) {
+  const [themeKey, setThemeKey] = useControllable({
+    value: themeProp,
+    defaultValue: defaultTheme,
+    onValueChange: onThemeChange,
+  });
+  const theme = useMemo(() => parseLunaThemeKey(themeKey), [themeKey]);
 
   const { variant, mode } = theme;
 
-  const emit = (next: { variant: LunaThemeVariant; mode: LunaThemeMode }) => {
-    const key: LunaThemeKey = `${next.variant}-${next.mode}`;
-    onThemeChange?.(key);
+  const toggleVariant = () => {
+    const nextVariant: LunaThemeVariant = variant === 'luna'
+      ? 'lunaris'
+      : 'luna';
+    setThemeKey(`${nextVariant}-${mode}`);
   };
 
-  const toggleVariant = () => {
-    setTheme(prev => {
-      const next: LunaThemeObject = {
-        ...prev,
-        variant: prev.variant === 'luna' ? 'lunaris' : 'luna',
-      };
-      emit(next);
-      return next;
-    });
-  };
   const toggleMode = () => {
-    setTheme(prev => {
-      const next: LunaThemeObject = {
-        ...prev,
-        mode: prev.mode === 'light' ? 'dark' : 'light',
-      };
-      emit(next);
-      return next;
-    });
+    const nextMode: LunaThemeMode = mode === 'light' ? 'dark' : 'light';
+    setThemeKey(`${variant}-${nextMode}`);
   };
 
   return (
