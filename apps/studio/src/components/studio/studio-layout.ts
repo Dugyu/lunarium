@@ -2,7 +2,7 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-import type { StageEntry, StudioLayout } from '@dugyu/luna-studio';
+import type { StudioLayout, StudioStage } from '@dugyu/luna-studio';
 
 import type { LunaThemeKey, StudioViewMode } from '@/types';
 
@@ -200,15 +200,16 @@ const baseLayout = {
 
 function mapStageEntries(
   entries: LegacyLayoutItem[],
-): StageEntry[] {
+): StudioStage[] {
   return entries.map((entry) => {
     const stage = stageCatalog[entry.id];
     if (stage === undefined) {
       throw new Error(`Unknown stage id: ${entry.id}`);
     }
 
-    const stageEntry: StageEntry = {
+    const stageEntry: StudioStage = {
       id: entry.id,
+      className: entry.className,
       ...stage,
     };
     return stageEntry;

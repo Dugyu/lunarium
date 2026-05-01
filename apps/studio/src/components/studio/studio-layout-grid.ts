@@ -4,7 +4,13 @@
 
 import type { CSSProperties } from 'react';
 
-import type { StageEntry, StudioLayout } from '@dugyu/luna-studio';
+import type {
+  InteractionParams,
+  LynxRuntimeCall,
+  StudioLayout,
+  StudioModeGrid,
+  StudioStage,
+} from '@dugyu/luna-studio';
 
 import type { LunaThemeKey, StudioViewMode } from '@/types';
 
@@ -12,20 +18,19 @@ import { LynxUIComponentsRegistry } from '../../constants';
 
 const getMeta = LynxUIComponentsRegistry.getMeta;
 
+type StudioComponentExtension = {
+  key: string;
+  meta?: ReturnType<typeof getMeta>;
+};
+
+type StudioStageExtension = {
+  component?: StudioComponentExtension;
+};
+
 type StageCatalogItem = {
   entry: string;
   theme: LunaThemeKey;
-  studio?: {
-    component?: {
-      key: string;
-      meta?: ReturnType<typeof getMeta>;
-    };
-  };
-};
-
-type GridSpec = {
-  cols: number;
-  rows: number;
+  studio?: StudioStageExtension;
 };
 
 type Cell = {
@@ -161,6 +166,7 @@ const stageCatalog = {
 } satisfies Record<string, StageCatalogItem>;
 
 type StageId = keyof typeof stageCatalog;
+type StudioStageWithStudio = StudioStage & { studio?: StudioStageExtension };
 
 type ModeLayoutItem = StageId | {
   id: StageId;
@@ -180,7 +186,7 @@ const modeGrid = {
   compare: { cols: 4, rows: 1 },
   focus: { cols: 3, rows: 1 },
   lineup: { cols: 5, rows: 2 },
-} satisfies Record<StudioViewMode, GridSpec>;
+} satisfies StudioModeGrid;
 
 const modeLayout = {
   // Keep compare array order aligned with the legacy layout to avoid DOM reordering.
@@ -243,7 +249,19 @@ function toGridStyle(cellValue: Cell): CSSProperties {
   };
 }
 
-function resolveModeLayout(mode: StudioViewMode): StageEntry[] {
+function getStudioComponent(
+  stage: StudioStage,
+): StudioComponentExtension | undefined {
+  return (stage as StudioStageWithStudio).studio?.component;
+}
+
+function findStageIdByComponentKey(componentKey: string): StageId | undefined {
+  const entry = Object.entries(stageCatalog as Record<string, StageCatalogItem>)
+    .find(([, stage]) => stage.studio?.component?.key === componentKey);
+  return entry?.[0] as StageId | undefined;
+}
+
+function resolveModeLayout(mode: StudioViewMode): StudioStage[] {
   return modeLayout[mode].map((item, index) => {
     const id = getModeItemId(item);
     const stage: StageCatalogItem = stageCatalog[id];
@@ -252,16 +270,48 @@ function resolveModeLayout(mode: StudioViewMode): StageEntry[] {
     return {
       id,
       style: toGridStyle(stageCell),
+      ...(stage.studio !== undefined ? { studio: stage.studio } : {}),
+      ...(stage.studio?.component !== undefined ? { focusKey: id } : {}),
       entry: stage.entry,
       theme: stage.theme,
-      ...(stage.studio?.component !== undefined
-        ? { componentId: stage.studio.component.key }
-        : {}),
-      ...(stage.studio?.component?.meta !== undefined
-        ? { meta: stage.studio.component.meta }
-        : {}),
     };
   });
+}
+
+const DEFAULT_STUDIO_FOCUS_KEY: StageId = 'MoonRise';
+
+function resolveStudioFocusKey(
+  interaction: InteractionParams,
+): string | undefined {
+  if (interaction.target !== 'content') return undefined;
+  const call: LynxRuntimeCall | undefined = interaction.runtimeCall;
+  if (call === undefined) return undefined;
+  if (call.name !== 'setFocusedComponent') return undefined;
+  if (call.data === null || typeof call.data !== 'object') return undefined;
+
+  const componentKey = (call.data as { id?: unknown }).id;
+  if (typeof componentKey !== 'string') return undefined;
+
+  return findStageIdByComponentKey(componentKey);
+}
+
+function buildStudioStageGlobalProps(params: {
+  stage: StudioStage;
+  viewMode: StudioViewMode;
+  activeFocusKey: string;
+}): Record<string, unknown> {
+  const stageComponent = getStudioComponent(params.stage);
+  const focusedStage =
+    (stageCatalog as Record<string, StageCatalogItem>)[params.activeFocusKey];
+  const focusedComponent = focusedStage?.studio?.component?.key;
+
+  return {
+    studioViewMode: params.viewMode,
+    ...(focusedComponent !== undefined ? { focusedComponent } : {}),
+    ...(stageComponent?.key !== undefined
+      ? { componentEntry: stageComponent.key }
+      : {}),
+  };
 }
 
 /** Draft grid-first layout data kept next to the current Tailwind-string version for comparison. */
@@ -271,5 +321,13 @@ const studioLayoutGridDraft: StudioLayout = {
   lineup: resolveModeLayout('lineup'),
 };
 
-export type { Cell, GridSpec, ModeLayoutItem, StageCatalogItem, StageId };
-export { modeGrid, modeLayout, stageCatalog, studioLayoutGridDraft };
+export type { Cell, ModeLayoutItem, StageCatalogItem, StageId };
+export {
+  buildStudioStageGlobalProps,
+  DEFAULT_STUDIO_FOCUS_KEY,
+  modeGrid,
+  modeLayout,
+  resolveStudioFocusKey,
+  stageCatalog,
+  studioLayoutGridDraft,
+};

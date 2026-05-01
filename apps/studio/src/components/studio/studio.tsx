@@ -5,7 +5,7 @@
 import { useState } from 'react';
 
 import { Choreography } from '@dugyu/luna-studio';
-import type { LynxRuntimeCall } from '@dugyu/luna-studio';
+import type { InteractionParams } from '@dugyu/luna-studio';
 
 import { MenuBar } from '@/components/menu-bar';
 import { StudioFrame } from '@/components/studio-frame';
@@ -17,7 +17,13 @@ import type {
 } from '@/types';
 import { cn } from '@/utils';
 
-import { modeGrid, studioLayoutGridDraft } from './studio-layout-grid';
+import {
+  buildStudioStageGlobalProps,
+  DEFAULT_STUDIO_FOCUS_KEY as defaultStudioFocusKey,
+  modeGrid,
+  resolveStudioFocusKey,
+  studioLayoutGridDraft,
+} from './studio-layout-grid';
 import { useThemeKeyboardControls } from './use-theme-keyboard-controls';
 
 const viewModes: StudioViewMode[] = ['compare', 'focus', 'lineup'];
@@ -43,9 +49,9 @@ function Studio({ className }: { className?: string }) {
     STARTING_VARIANT,
   );
 
-  function handleLynxRuntimeCall(
-    call: LynxRuntimeCall,
-  ) {
+  function handleInteraction(interaction: InteractionParams) {
+    if (interaction.target !== 'content') return;
+    const call = interaction.runtimeCall;
     if (call.name !== 'setMoonriseState') return;
     if (!isMoonriseEvent(call.data)) return;
     const event = call.data;
@@ -75,8 +81,11 @@ function Studio({ className }: { className?: string }) {
         className='gap-4'
         modeGrid={modeGrid}
         viewMode={viewMode}
-        interactionTarget={'lynx'}
-        onLynxRuntimeCall={handleLynxRuntimeCall}
+        defaultFocusKey={defaultStudioFocusKey}
+        resolveFocusKey={resolveStudioFocusKey}
+        buildStageGlobalProps={buildStudioStageGlobalProps}
+        interactionTarget='content'
+        onInteraction={handleInteraction}
         themeVariant={themeVariant}
         themeMode={themeMode}
       />

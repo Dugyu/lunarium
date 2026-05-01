@@ -18,27 +18,23 @@ import {
   MotionStageContainer,
 } from '@dugyu/luna-stage/motion';
 
-import { StudioLunaLynxStage } from '../lynx-stage';
-import type { LynxRuntimeCall } from '../lynx-stage';
+import { StudioLynxStage } from '../lynx-stage';
 import type {
-  LunaThemeMode,
-  LunaThemeVariant,
-  StageEntry,
-  StudioLayout,
-  StudioModeGrid,
-  StudioViewMode,
+  ChoreographyViewProps,
+  InteractionParams,
+  LynxRuntimeCall,
+  StudioStage,
 } from '../types';
-import type { StageEvent } from './types';
 import { getStageWorldState } from '../utils/world';
 
-type RenderData = StageEntry & {
+type RenderData = StudioStage & {
   world: { x: number; y: number; z: number };
   zIndex: number;
   maskOpacity: number;
 };
 
-type FocusableStageEntry = StageEntry & {
-  componentId: string;
+type FocusableStudioStage = StudioStage & {
+  focusKey: string;
 };
 
 const slidingVariants = {
@@ -54,8 +50,6 @@ const presentationTransition: Transition = {
 };
 
 const fitTransition: SpringOptions = { visualDuration: 0.8, bounce: 0.1 };
-
-const DEFAULT_FOCUSED = 'button';
 const BASE_STYLE: CSSProperties = {
   width: '100%',
   height: '100%',
@@ -63,106 +57,122 @@ const BASE_STYLE: CSSProperties = {
   position: 'relative',
 };
 
-function hasComponentId(stage: StageEntry): stage is FocusableStageEntry {
-  return Boolean(stage.componentId);
+function hasFocusKey(stage: StudioStage): stage is FocusableStudioStage {
+  return stage.focusKey !== undefined;
 }
 
-type DynamicViewProps = {
-  /** Stage layout data for all supported studio view modes. */
-  layout: StudioLayout;
-  /** Optional grid config that drives the container layout for each mode. */
-  modeGrid?: StudioModeGrid;
-  /** Active mode selecting which layout slice to render. */
-  mode?: StudioViewMode;
-  /** Optional class name applied to the outer choreography container. */
-  className?: string;
-  /** Optional inline style merged onto the outer choreography container. */
-  style?: CSSProperties;
-  /** Resolved theme variant passed down to rendered Lynx stages. */
-  themeVariant?: LunaThemeVariant;
-  /** Resolved theme mode passed down to rendered Lynx stages. */
-  themeMode?: LunaThemeMode;
-  /** Chooses whether pointer interaction is handled by Lynx content or the outer Web container. */
-  interactionTarget?: 'lynx' | 'container';
-  /** Receives generic runtime calls emitted from the embedded Lynx content. */
-  onLynxRuntimeCall?: (call: LynxRuntimeCall) => unknown;
-  /** Receives Web container interaction events for the rendered stages. */
-  onStageEvent?: (event: StageEvent) => void;
-};
+function createStageInteraction(
+  stage: StudioStage,
+  containerEvent: MouseEvent | PointerEvent,
+): InteractionParams {
+  return {
+    target: 'stage',
+    stageId: stage.id,
+    entry: stage.entry,
+    containerEvent,
+  };
+}
 
-function DynamicView({
+function createContentInteraction(
+  stage: StudioStage,
+  call: LynxRuntimeCall,
+): InteractionParams {
+  return {
+    target: 'content',
+    stageId: stage.id,
+    entry: stage.entry,
+    runtimeCall: call,
+    ...(call.data !== undefined ? { payload: call.data } : {}),
+  };
+}
+
+/**
+ * Internal choreography renderer that resolves layout, focus state, interaction
+ * normalization, and Lynx-stage wiring for the active presentation mode.
+ */
+function ChoreographyView({
   layout,
   modeGrid,
   mode = 'compare',
+  defaultFocusKey,
   className,
   style,
+  bundleBaseUrl,
+  resolveFocusKey,
+  buildStageGlobalProps,
   themeVariant = 'lunaris',
   themeMode = 'dark',
-  interactionTarget = 'lynx',
+  interactionTarget = 'content',
   onLynxRuntimeCall,
-  onStageEvent,
-}: DynamicViewProps): JSX.Element {
-  const [focused, setFocused] = useState<string>(DEFAULT_FOCUSED);
-  const containerInteractive = interactionTarget === 'container';
+  onInteraction,
+}: ChoreographyViewProps): JSX.Element {
+  const [activeFocusKey, setActiveFocusKey] = useState<string>(
+    defaultFocusKey ?? '',
+  );
+  const containerInteractive = interactionTarget === 'stage';
 
   const containerGrid = modeGrid?.[mode];
 
-  const handleLynxRuntimeCall = useMemo(() => {
-    return (call: LynxRuntimeCall) => {
-      if (call.name === 'setFocusedComponent') {
-        const component = (call.data as { id: string }).id;
-        setFocused(component);
+  const handleInteraction = useMemo(() => {
+    return (interaction: InteractionParams) => {
+      const nextActiveFocusKey = resolveFocusKey?.(interaction);
+      if (nextActiveFocusKey !== undefined) {
+        setActiveFocusKey(nextActiveFocusKey);
       }
-      return onLynxRuntimeCall?.(call);
+      return onInteraction?.(interaction);
     };
-  }, [onLynxRuntimeCall]);
+  }, [onInteraction, resolveFocusKey]);
 
-  const handleStageEvent = useMemo(() => {
-    return (
-      type: StageEvent['type'],
-      stage: StageEntry,
-      nativeEvent: MouseEvent | PointerEvent,
-    ) => {
-      onStageEvent?.({
-        type,
-        viewMode: mode,
-        stage,
-        nativeEvent,
-      });
-    };
-  }, [mode, onStageEvent]);
-
-  function getStageContainerEventHandlers(stage: StageEntry) {
+  function getStageContainerEventHandlers(stage: StudioStage) {
     if (!containerInteractive) return undefined;
+    // These handlers all normalize into `interaction.containerEvent`; consumers
+    // can inspect `containerEvent.type` to distinguish click vs pointer events.
     return {
       onClick: (e: ReactMouseEvent) => {
-        handleStageEvent('click', stage, e.nativeEvent);
+        handleInteraction(
+          createStageInteraction(stage, e.nativeEvent),
+        );
       },
       onPointerCancel: (e: ReactPointerEvent) => {
-        handleStageEvent('pointercancel', stage, e.nativeEvent);
+        handleInteraction(
+          createStageInteraction(stage, e.nativeEvent),
+        );
       },
       onPointerDown: (e: ReactPointerEvent) => {
-        handleStageEvent('pointerdown', stage, e.nativeEvent);
+        handleInteraction(
+          createStageInteraction(stage, e.nativeEvent),
+        );
       },
       onPointerUp: (e: ReactPointerEvent) => {
-        handleStageEvent('pointerup', stage, e.nativeEvent);
+        handleInteraction(
+          createStageInteraction(stage, e.nativeEvent),
+        );
       },
+    };
+  }
+
+  function getStageRuntimeCallHandler(stage: StudioStage) {
+    return (call: LynxRuntimeCall) => {
+      handleInteraction(createContentInteraction(stage, call));
+      return onLynxRuntimeCall?.(call);
     };
   }
 
   const rendered: RenderData[] = useMemo(() => {
     const stages = layout[mode];
-    const components = stages.filter(stage => hasComponentId(stage));
+    const components = stages.filter(stage => hasFocusKey(stage));
     const backgroundComponents = components.filter(stage =>
-      stage.componentId !== focused
+      stage.focusKey !== activeFocusKey
     );
 
     const mid = (backgroundComponents.length - 1) / 2;
-    const focusedIndex = components.findIndex(d => d.componentId === focused);
+    const focusedIndex = components.findIndex(d =>
+      d.focusKey === activeFocusKey
+    );
 
     return stages.map((stage) => {
       const compOrder = backgroundComponents.findIndex(d =>
-        d.componentId === stage.componentId
+        d.focusKey === stage.focusKey
       );
       const escape = compOrder === -1;
       const { world, zIndex, maskOpacity } = getStageWorldState({
@@ -180,7 +190,17 @@ function DynamicView({
         maskOpacity,
       };
     });
-  }, [focused, layout, mode]);
+  }, [activeFocusKey, layout, mode]);
+
+  const resolvedActiveFocusKey = useMemo(() => {
+    if (activeFocusKey !== '') return activeFocusKey;
+    const firstFocusableStage = layout[mode].find(stage =>
+      stage.focusKey !== undefined
+    );
+    return firstFocusableStage === undefined
+      ? ''
+      : firstFocusableStage.focusKey ?? '';
+  }, [activeFocusKey, layout, mode]);
 
   const containerStyle: CSSProperties | undefined = useMemo(() => {
     const baseGridStyle = containerGrid === undefined ? {} : {
@@ -243,23 +263,36 @@ function DynamicView({
                   world={stage.world}
                   focalLength={mode === 'focus' ? 500 : 0}
                   style={stageOutlineStyle}
-                  contentInteractive={interactionTarget === 'lynx'}
+                  contentInteractive={interactionTarget === 'content'}
                   maskColor={themeMode === 'light' ? '#f5f5f5' : '#00000080'}
                   maskOpacity={stage.maskOpacity}
                 >
-                  <StudioLunaLynxStage
+                  <StudioLynxStage
                     entry={stage.entry}
                     lunaTheme={mode === 'compare'
                       ? stage.theme
                       : `${themeVariant}-${themeMode}`}
                     lunaThemeVariant={themeVariant}
-                    interactive={interactionTarget === 'lynx'}
-                    studioViewMode={mode}
-                    focusedComponent={focused}
-                    onLynxRuntimeCall={handleLynxRuntimeCall}
-                    {...(hasComponentId(stage)
-                      ? { componentEntry: stage.componentId }
-                      : {})}
+                    interactive={interactionTarget === 'content'}
+                    onLynxRuntimeCall={getStageRuntimeCallHandler(stage)}
+                    {...(() => {
+                      const resolvedBundleBaseUrl = stage.bundleBaseUrl
+                        ?? bundleBaseUrl;
+                      return resolvedBundleBaseUrl === undefined
+                        ? {}
+                        : { bundleBaseUrl: resolvedBundleBaseUrl };
+                    })()}
+                    {...(() => {
+                      const extraGlobalProps = buildStageGlobalProps?.({
+                        stage,
+                        viewMode: mode,
+                        activeFocusKey: resolvedActiveFocusKey,
+                        focusKey: stage.focusKey,
+                      });
+                      return extraGlobalProps === undefined
+                        ? {}
+                        : { extraGlobalProps };
+                    })()}
                   />
                 </MotionStage>
               </MotionPresentation>
@@ -271,5 +304,4 @@ function DynamicView({
   );
 }
 
-export type { DynamicViewProps };
-export { DynamicView };
+export { ChoreographyView };
