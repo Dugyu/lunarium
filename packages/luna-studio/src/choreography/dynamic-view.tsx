@@ -2,16 +2,15 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-import { clsx } from 'clsx';
 import { AnimatePresence } from 'motion/react';
 import type { SpringOptions, Transition } from 'motion/react';
 import type {
+  CSSProperties,
   JSX,
   MouseEvent as ReactMouseEvent,
   PointerEvent as ReactPointerEvent,
 } from 'react';
 import { useMemo, useState } from 'react';
-import { twMerge } from 'tailwind-merge';
 
 import {
   MotionPresentation,
@@ -26,6 +25,7 @@ import type {
   LunaThemeVariant,
   StageEntry,
   StudioLayout,
+  StudioModeGrid,
   StudioViewMode,
 } from '../types';
 import type { StageEvent } from './types';
@@ -56,10 +56,12 @@ const presentationTransition: Transition = {
 const fitTransition: SpringOptions = { visualDuration: 0.8, bounce: 0.1 };
 
 const DEFAULT_FOCUSED = 'button';
-
-function cn(...inputs: (string | false | null | undefined)[]) {
-  return twMerge(clsx(inputs));
-}
+const BASE_STYLE: CSSProperties = {
+  width: '100%',
+  height: '100%',
+  pointerEvents: 'none',
+  position: 'relative',
+};
 
 function hasComponentId(stage: StageEntry): stage is FocusableStageEntry {
   return Boolean(stage.componentId);
@@ -68,9 +70,14 @@ function hasComponentId(stage: StageEntry): stage is FocusableStageEntry {
 type DynamicViewProps = {
   /** Stage layout data for all supported studio view modes. */
   layout: StudioLayout;
+  /** Optional grid config that drives the container layout for each mode. */
+  modeGrid?: StudioModeGrid;
   /** Active mode selecting which layout slice to render. */
   mode?: StudioViewMode;
+  /** Optional class name applied to the outer choreography container. */
   className?: string;
+  /** Optional inline style merged onto the outer choreography container. */
+  style?: CSSProperties;
   /** Resolved theme variant passed down to rendered Lynx stages. */
   themeVariant?: LunaThemeVariant;
   /** Resolved theme mode passed down to rendered Lynx stages. */
@@ -85,8 +92,10 @@ type DynamicViewProps = {
 
 function DynamicView({
   layout,
+  modeGrid,
   mode = 'compare',
   className,
+  style,
   themeVariant = 'lunaris',
   themeMode = 'dark',
   interactionTarget = 'lynx',
@@ -95,6 +104,8 @@ function DynamicView({
 }: DynamicViewProps): JSX.Element {
   const [focused, setFocused] = useState<string>(DEFAULT_FOCUSED);
   const containerInteractive = interactionTarget === 'container';
+
+  const containerGrid = modeGrid?.[mode];
 
   const handleLynxRuntimeCall = useMemo(() => {
     return (call: LynxRuntimeCall) => {
@@ -171,17 +182,38 @@ function DynamicView({
     });
   }, [focused, layout, mode]);
 
+  const containerStyle: CSSProperties | undefined = useMemo(() => {
+    const baseGridStyle = containerGrid === undefined ? {} : {
+      display: 'grid',
+      gridTemplateColumns: `repeat(${containerGrid.cols}, minmax(0, 1fr))`,
+      gridTemplateRows: `repeat(${containerGrid.rows}, minmax(0, 1fr))`,
+      alignItems: 'stretch',
+    };
+    return {
+      ...BASE_STYLE,
+      ...baseGridStyle,
+    };
+  }, [containerGrid]);
+
+  const mergedContainerStyle: CSSProperties = useMemo(() => {
+    return {
+      ...containerStyle,
+      ...style,
+    };
+  }, [containerStyle, style]);
+
+  const stageOutlineStyle: CSSProperties = useMemo(() => {
+    return {
+      backgroundColor: themeMode === 'light'
+        ? 'rgb(0 0 0 / 0.04)'
+        : 'rgb(255 255 255 / 0.05)',
+    };
+  }, [themeMode]);
+
   return (
     <div
-      className={cn(
-        'size-full gap-4 pointer-events-none relative',
-        // Compare mode must stretch cross-axis height; centering would let each
-        // stage item shrink to the container-motion anchor's intrinsic 4px height.
-        mode === 'compare' && 'flex flex-row items-stretch justify-between',
-        mode === 'focus' && 'grid grid-cols-3 grid-rows-1',
-        mode === 'lineup' && 'grid grid-cols-5 grid-rows-2',
-        className,
-      )}
+      className={className}
+      style={mergedContainerStyle}
     >
       <AnimatePresence mode='popLayout'>
         {rendered.map((stage) => {
@@ -192,6 +224,7 @@ function DynamicView({
               className={stage.className}
               {...getStageContainerEventHandlers(stage)}
               style={{
+                ...stage.style,
                 zIndex: stage.zIndex,
                 pointerEvents: containerInteractive ? 'auto' : 'none',
               }}
@@ -209,9 +242,7 @@ function DynamicView({
                   fitTransition={fitTransition}
                   world={stage.world}
                   focalLength={mode === 'focus' ? 500 : 0}
-                  className={themeMode === 'light'
-                    ? 'bg-black opacity-[0.04]'
-                    : 'bg-white opacity-5'}
+                  style={stageOutlineStyle}
                   contentInteractive={interactionTarget === 'lynx'}
                   maskColor={themeMode === 'light' ? '#f5f5f5' : '#00000080'}
                   maskOpacity={stage.maskOpacity}

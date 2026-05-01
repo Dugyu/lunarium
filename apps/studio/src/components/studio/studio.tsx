@@ -17,7 +17,7 @@ import type {
 } from '@/types';
 import { cn } from '@/utils';
 
-import { studioLayout } from './studio-layout';
+import { modeGrid, studioLayoutGridDraft } from './studio-layout-grid';
 import { useThemeKeyboardControls } from './use-theme-keyboard-controls';
 
 const viewModes: StudioViewMode[] = ['compare', 'focus', 'lineup'];
@@ -71,7 +71,9 @@ function Studio({ className }: { className?: string }) {
       )}
     >
       <Choreography
-        layout={studioLayout}
+        layout={studioLayoutGridDraft}
+        className='gap-4'
+        modeGrid={modeGrid}
         viewMode={viewMode}
         interactionTarget={'lynx'}
         onLynxRuntimeCall={handleLynxRuntimeCall}

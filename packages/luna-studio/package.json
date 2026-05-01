@@ -41,9 +41,7 @@
   },
   "dependencies": {
     "@dugyu/luna-core": "workspace:*",
-    "@dugyu/luna-stage": "workspace:*",
-    "clsx": "catalog:utils",
-    "tailwind-merge": "catalog:tailwind"
+    "@dugyu/luna-stage": "workspace:*"
   },
   "devDependencies": {
     "@rsbuild/plugin-react": "catalog:rsbuild",
