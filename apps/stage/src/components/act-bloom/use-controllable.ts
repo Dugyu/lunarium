@@ -2,7 +2,14 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-import { useState } from '@lynx-js/react';
+import { useEffect, useRef, useState } from '@lynx-js/react';
+import type { Dispatch, SetStateAction } from '@lynx-js/react';
+
+import { noop, useEffectEvent } from './use-effect-event';
+
+function isUpdater<T>(v: SetStateAction<T>): v is (prev: T) => T {
+  return typeof v === 'function';
+}
 
 type UseControllableProps<T> = {
   value?: T;
@@ -11,30 +18,57 @@ type UseControllableProps<T> = {
 };
 
 function useControllable<T>({
-  value: valueProp,
+  value: controlled,
   defaultValue,
   onValueChange,
 }: UseControllableProps<T>) {
-  const isControlled = valueProp !== undefined;
-  const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue);
+  const [uncontrolled, setUncontrolled] = useUncontrolled({
+    defaultValue,
+    onValueChange,
+  });
 
-  const value = isControlled ? valueProp : uncontrolledValue;
+  const isControlled = controlled !== undefined;
 
-  const setValue = (next: T | ((prev: T) => T)) => {
-    const resolvedValue = typeof next === 'function'
-      ? (next as (prev: T) => T)(value)
-      : next;
+  const stableOnChange = useEffectEvent(onValueChange ?? noop);
 
-    if (Object.is(value, resolvedValue)) return;
+  const current = isControlled ? controlled : uncontrolled;
 
-    if (!isControlled) {
-      setUncontrolledValue(resolvedValue);
+  const setCurrent: Dispatch<SetStateAction<T>> = (next) => {
+    if (isControlled) {
+      const resolved = isUpdater(next) ? next(current) : next;
+      if (
+        !Object.is(resolved, current)
+        && resolved !== undefined
+      ) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks -- function created by useEffectEvent can only be called in useEffect
+        stableOnChange(resolved);
+      }
+    } else {
+      setUncontrolled(next);
     }
-    onValueChange?.(resolvedValue);
   };
 
-  return [value, setValue] as const;
+  return [current, setCurrent] as const;
 }
 
-export { useControllable };
-export type { UseControllableProps };
+function useUncontrolled<T>({
+  defaultValue,
+  onValueChange,
+}: Omit<UseControllableProps<T>, 'value'>) {
+  const [current, setCurrent] = useState<T>(defaultValue);
+  const prevRef = useRef(current);
+  const stableOnChange = useEffectEvent(onValueChange ?? noop);
+
+  useEffect(() => {
+    if (prevRef.current !== current) {
+      if (current !== undefined) {
+        stableOnChange(current);
+      }
+      prevRef.current = current;
+    }
+  }, [current]);
+
+  return [current, setCurrent] as const;
+}
+
+export { useControllable, useUncontrolled };

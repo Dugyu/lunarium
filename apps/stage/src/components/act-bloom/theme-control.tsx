@@ -6,8 +6,8 @@ import { useMemo } from '@lynx-js/react';
 
 import type { LunaThemeKey, LunaThemeMode, LunaThemeVariant } from '@/types';
 
-import { parseLunaThemeKey } from './parse-theme.js';
-import { useControllable } from './use-controllable.js';
+import { parseLunaThemeKey } from './parse-theme';
+import { useControllable } from './use-controllable';
 
 type ThemeControlProps = {
   defaultTheme?: LunaThemeKey;
