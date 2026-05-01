@@ -158,16 +158,26 @@ function ChoreographyView({
     };
   }
 
+  const resolvedActiveFocusKey = useMemo(() => {
+    if (activeFocusKey !== '') return activeFocusKey;
+    const firstFocusableStage = layout[mode].find(stage =>
+      stage.focusKey !== undefined
+    );
+    return firstFocusableStage === undefined
+      ? ''
+      : firstFocusableStage.focusKey ?? '';
+  }, [activeFocusKey, layout, mode]);
+
   const rendered: RenderData[] = useMemo(() => {
     const stages = layout[mode];
     const components = stages.filter(stage => hasFocusKey(stage));
     const backgroundComponents = components.filter(stage =>
-      stage.focusKey !== activeFocusKey
+      stage.focusKey !== resolvedActiveFocusKey
     );
 
     const mid = (backgroundComponents.length - 1) / 2;
     const focusedIndex = components.findIndex(d =>
-      d.focusKey === activeFocusKey
+      d.focusKey === resolvedActiveFocusKey
     );
 
     return stages.map((stage) => {
@@ -190,17 +200,7 @@ function ChoreographyView({
         maskOpacity,
       };
     });
-  }, [activeFocusKey, layout, mode]);
-
-  const resolvedActiveFocusKey = useMemo(() => {
-    if (activeFocusKey !== '') return activeFocusKey;
-    const firstFocusableStage = layout[mode].find(stage =>
-      stage.focusKey !== undefined
-    );
-    return firstFocusableStage === undefined
-      ? ''
-      : firstFocusableStage.focusKey ?? '';
-  }, [activeFocusKey, layout, mode]);
+  }, [layout, mode, resolvedActiveFocusKey]);
 
   const containerStyle: CSSProperties | undefined = useMemo(() => {
     const baseGridStyle = containerGrid === undefined ? {} : {
