@@ -141,7 +141,7 @@ type StudioStage = {
   focusKey?: string;
   entry: string;
   theme: LunaThemeKey;
-} & Record<string, unknown>;
+};
 ```
 
 Notes:
@@ -152,6 +152,7 @@ Notes:
 - `focusKey` is an optional stage-level focus identity and should already be resolved by the host before rendering `Choreography`.
 - `entry` is the Lynx bundle entry rendered inside the stage.
 - `theme` is used directly in `compare` mode.
+- app-specific metadata should live in app-local extension types rather than reopening the public `StudioStage` contract.
 
 ### `StudioLayout`
 

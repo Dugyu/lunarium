@@ -26,10 +26,10 @@ function useControllable<T>({
       ? (next as (prev: T) => T)(value)
       : next;
 
-    if (lastValueRef.current === resolvedValue) return;
+    if (Object.is(value, resolvedValue)) return;
 
-    lastValueRef.current = resolvedValue;
     if (!isControlled) {
+      lastValueRef.current = resolvedValue;
       setUncontrolledValue(resolvedValue);
     }
     onValueChange?.(resolvedValue);

@@ -18,19 +18,19 @@ import { LynxUIComponentsRegistry } from '../../constants';
 
 const getMeta = LynxUIComponentsRegistry.getMeta;
 
-type StudioComponentExtension = {
+type StudioComponentMetadata = {
   key: string;
   meta?: ReturnType<typeof getMeta>;
 };
 
-type StudioStageExtension = {
-  component?: StudioComponentExtension;
+type StudioStageMetadata = {
+  component?: StudioComponentMetadata;
 };
 
-type StageCatalogItem = {
+type StudioStageDefinition = {
   entry: string;
   theme: LunaThemeKey;
-  studio?: StudioStageExtension;
+  studio?: StudioStageMetadata;
 };
 
 type Cell = {
@@ -163,10 +163,10 @@ const stageCatalog = {
       },
     },
   },
-} satisfies Record<string, StageCatalogItem>;
+} satisfies Record<string, StudioStageDefinition>;
 
 type StageId = keyof typeof stageCatalog;
-type StudioStageWithStudio = StudioStage & { studio?: StudioStageExtension };
+type StudioAppStage = StudioStage & { studio?: StudioStageMetadata };
 
 type ModeLayoutItem = StageId | {
   id: StageId;
@@ -251,20 +251,22 @@ function toGridStyle(cellValue: Cell): CSSProperties {
 
 function getStudioComponent(
   stage: StudioStage,
-): StudioComponentExtension | undefined {
-  return (stage as StudioStageWithStudio).studio?.component;
+): StudioComponentMetadata | undefined {
+  return (stage as StudioAppStage).studio?.component;
 }
 
 function findStageIdByComponentKey(componentKey: string): StageId | undefined {
-  const entry = Object.entries(stageCatalog as Record<string, StageCatalogItem>)
+  const entry = Object.entries(
+    stageCatalog as Record<string, StudioStageDefinition>,
+  )
     .find(([, stage]) => stage.studio?.component?.key === componentKey);
   return entry?.[0] as StageId | undefined;
 }
 
-function resolveModeLayout(mode: StudioViewMode): StudioStage[] {
+function resolveModeLayout(mode: StudioViewMode): StudioAppStage[] {
   return modeLayout[mode].map((item, index) => {
     const id = getModeItemId(item);
-    const stage: StageCatalogItem = stageCatalog[id];
+    const stage: StudioStageDefinition = stageCatalog[id];
     const stageCell = getModeItemCell(item, index);
 
     return {
@@ -301,8 +303,9 @@ function buildStudioStageGlobalProps(params: {
   activeFocusKey: string;
 }): Record<string, unknown> {
   const stageComponent = getStudioComponent(params.stage);
-  const focusedStage =
-    (stageCatalog as Record<string, StageCatalogItem>)[params.activeFocusKey];
+  const focusedStage = (stageCatalog as Record<string, StudioStageDefinition>)[
+    params.activeFocusKey
+  ];
   const focusedComponent = focusedStage?.studio?.component?.key;
 
   return {
@@ -321,7 +324,7 @@ const studioLayoutGridDraft: StudioLayout = {
   lineup: resolveModeLayout('lineup'),
 };
 
-export type { Cell, ModeLayoutItem, StageCatalogItem, StageId };
+export type { Cell, ModeLayoutItem, StudioStageDefinition, StageId };
 export {
   buildStudioStageGlobalProps,
   DEFAULT_STUDIO_FOCUS_KEY,

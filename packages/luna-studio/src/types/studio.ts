@@ -40,7 +40,7 @@ export type StudioStage = {
   entry: string;
   /** Theme key applied to this stage when rendered in compare mode. */
   theme: LunaThemeKey;
-} & Record<string, unknown>;
+};
 
 /** Layout data for the three built-in studio presentation modes. */
 export type StudioLayout = Record<StudioViewMode, StudioStage[]>;
