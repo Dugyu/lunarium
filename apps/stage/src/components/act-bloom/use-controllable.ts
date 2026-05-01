@@ -2,7 +2,7 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-import { useRef, useState } from '@lynx-js/react';
+import { useState } from '@lynx-js/react';
 
 type UseControllableProps<T> = {
   value?: T;
@@ -17,7 +17,6 @@ function useControllable<T>({
 }: UseControllableProps<T>) {
   const isControlled = valueProp !== undefined;
   const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue);
-  const lastValueRef = useRef<T>();
 
   const value = isControlled ? valueProp : uncontrolledValue;
 
@@ -29,7 +28,6 @@ function useControllable<T>({
     if (Object.is(value, resolvedValue)) return;
 
     if (!isControlled) {
-      lastValueRef.current = resolvedValue;
       setUncontrolledValue(resolvedValue);
     }
     onValueChange?.(resolvedValue);
