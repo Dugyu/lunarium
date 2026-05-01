@@ -5,6 +5,10 @@ settings:
   excludeLinksFromLockfile: false
 
 catalogs:
+  lynx:
+    '@lynx-js/web-core':
+      specifier: 0.20.2
+      version: 0.20.2
   motion:
     motion:
       specifier: 12.38.0
@@ -13,6 +17,9 @@ catalogs:
     '@types/react':
       specifier: 18.3.24
       version: 18.3.24
+    '@types/react-dom':
+      specifier: 18.3.7
+      version: 18.3.7
     react:
       specifier: 18.3.1
       version: 18.3.1
@@ -20,17 +27,30 @@ catalogs:
       specifier: 18.3.1
       version: 18.3.1
   rsbuild:
+    '@rsbuild/core':
+      specifier: 1.7.5
+      version: 1.7.5
     '@rsbuild/plugin-react':
       specifier: 1.4.6
       version: 1.4.6
-  rslib:
-    '@rslib/core':
-      specifier: 0.21.1
-      version: 0.21.1
+  tailwind:
+    rsbuild-plugin-tailwindcss:
+      specifier: 0.2.3
+      version: 0.2.3
+    tailwind-merge:
+      specifier: 2.6.0
+      version: 2.6.0
+    tailwindcss:
+      specifier: 3.4.17
+      version: 3.4.17
   ts:
     typescript:
       specifier: 5.9.2
       version: 5.9.2
+  utils:
+    clsx:
+      specifier: 2.1.1
+      version: 2.1.1
 
 importers:
 
@@ -233,9 +253,6 @@ importers:
       '@types/react-dom':
         specifier: catalog:react18
         version: 18.3.7(@types/react@18.3.24)
-      cross-env:
-        specifier: ^10.0.0
-        version: 10.0.0
       rsbuild-plugin-tailwindcss:
         specifier: catalog:tailwind
         version: 0.2.3(@rsbuild/core@1.7.5)(tailwindcss@3.4.17)
@@ -1088,9 +1105,6 @@ packages:
 
   '@emnapi/wasi-threads@1.2.1':
     resolution: {integrity: sha512-uTII7OYF+/Mes/MrcIOYp5yOtSMLBWSIoLPpcgwipoiKbli6k322tcoFsxoIIxPDqW01SQGAgko4EzZi2BNv2w==}
-
-  '@epic-web/invariant@1.0.0':
-    resolution: {integrity: sha512-lrTPqgvfFQtR/eY/qkIzp98OGdNJu0m5ji3q/nJI8v3SXkRKEnWiOxMmbvcSoAIzv/cGiuvRy57k4suKQSAdwA==}
 
   '@eslint-community/eslint-utils@4.9.0':
     resolution: {integrity: sha512-ayVFHdtZ+hsq1t2Dy24wCmGXGe4q9Gu3smhLYALJrr473ZH27MsnSL+LKUlimp4BWJqMDMLmPpx/Q9R3OAlL4g==}
@@ -3526,11 +3540,6 @@ packages:
   cors@2.8.5:
     resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}
     engines: {node: '>= 0.10'}
-
-  cross-env@10.0.0:
-    resolution: {integrity: sha512-aU8qlEK/nHYtVuN4p7UQgAwVljzMg8hB4YK5ThRqD2l/ziSnryncPNn7bMLt5cFYsKVKBh8HqLqyCoTupEUu7Q==}
-    engines: {node: '>=20'}
-    hasBin: true
 
   cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
@@ -7978,8 +7987,6 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
-  '@epic-web/invariant@1.0.0': {}
-
   '@eslint-community/eslint-utils@4.9.0(eslint@9.35.0(jiti@2.6.1))':
     dependencies:
       eslint: 9.35.0(jiti@2.6.1)
@@ -11066,11 +11073,6 @@ snapshots:
     dependencies:
       object-assign: 4.1.1
       vary: 1.1.2
-
-  cross-env@10.0.0:
-    dependencies:
-      '@epic-web/invariant': 1.0.0
-      cross-spawn: 7.0.6
 
   cross-spawn@7.0.3:
     dependencies:

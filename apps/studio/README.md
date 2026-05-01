@@ -29,7 +29,7 @@ pnpm install
 
 ### Run Demo (Recommended)
 
-`demo` will **build the Stage app first**, then build Studio, and finally launch a local preview.
+`demo` will resolve the workspace build graph through **Turbo**, build all required upstream packages/apps, and finally launch a local preview for Studio.
 
 ```bash
 pnpm demo
@@ -40,10 +40,12 @@ This runs the following script:
 ```json
 {
   "scripts": {
-    "demo": "pnpm --filter ../stage build && cross-env rsbuild --config ./rsbuild.config.ts build && rsbuild preview"
+    "demo": "turbo run build && rsbuild preview"
   }
 }
 ```
+
+Turbo resolves the build order from the workspace dependency graph.
 
 ### Develop Studio Only
 
@@ -67,7 +69,7 @@ pnpm preview
 
 ### Scripts Reference
 
-- `demo`: Build **Stage** → Build **Studio** → Preview (end-to-end).
+- `demo`: Resolve Turbo dependencies → Build required packages/apps → Preview (end-to-end).
 
 - `build`: Build **Studio** only with Rsbuild (does **not** rebuild **Stage**).
 
