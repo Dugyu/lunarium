@@ -31,6 +31,7 @@ type RenderData = StudioStage & {
   world: { x: number; y: number; z: number };
   zIndex: number;
   maskOpacity: number;
+  extraGlobalProps?: Record<string, unknown>;
 };
 
 type FocusableStudioStage = StudioStage & {
@@ -196,14 +197,22 @@ function ChoreographyView({
         escape,
       });
 
+      const extraGlobalProps = buildStageGlobalProps?.({
+        stage,
+        viewMode: mode,
+        activeFocusKey: resolvedActiveFocusKey,
+        focusKey: stage.focusKey,
+      });
+
       return {
         ...stage,
         world,
         zIndex,
         maskOpacity,
+        ...(extraGlobalProps === undefined ? {} : { extraGlobalProps }),
       };
     });
-  }, [layout, mode, resolvedActiveFocusKey]);
+  }, [buildStageGlobalProps, layout, mode, resolvedActiveFocusKey]);
 
   const containerStyle: CSSProperties | undefined = useMemo(() => {
     const baseGridStyle = containerGrid === undefined ? {} : {
@@ -286,15 +295,9 @@ function ChoreographyView({
                         : { bundleBaseUrl: resolvedBundleBaseUrl };
                     })()}
                     {...(() => {
-                      const extraGlobalProps = buildStageGlobalProps?.({
-                        stage,
-                        viewMode: mode,
-                        activeFocusKey: resolvedActiveFocusKey,
-                        focusKey: stage.focusKey,
-                      });
-                      return extraGlobalProps === undefined
+                      return stage.extraGlobalProps === undefined
                         ? {}
-                        : { extraGlobalProps };
+                        : { extraGlobalProps: stage.extraGlobalProps };
                     })()}
                   />
                 </MotionStage>
