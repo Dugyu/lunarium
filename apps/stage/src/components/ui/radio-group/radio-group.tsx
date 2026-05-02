@@ -25,8 +25,25 @@ type RadioGroupProps = {
   children?: ReactNode;
 };
 
-const hitSlopLg = { top: '8px', left: '8px', right: '8px', bottom: '8px' };
-const hitSlopSM = { top: '10px', left: '10px', right: '10px', bottom: '10px' };
+type HitSlop = {
+  top: `${number}px`;
+  left: `${number}px`;
+  right: `${number}px`;
+  bottom: `${number}px`;
+};
+
+const hitSlopLg: HitSlop = {
+  top: '8px',
+  left: '8px',
+  right: '8px',
+  bottom: '8px',
+};
+const hitSlopSM: HitSlop = {
+  top: '10px',
+  left: '10px',
+  right: '10px',
+  bottom: '10px',
+};
 
 function RadioItem(
   { disabled: disabledProp, value, size = 'sm', className }: RadioItemProps,

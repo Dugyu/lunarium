@@ -7,15 +7,15 @@ catalogs:
   motion:
     motion: 12.38.0
   lynx:
-    "@lynx-js/react": 0.114.4
+    "@lynx-js/react": 0.120.0
     "@lynx-js/web-core": 0.20.3
   lynx-dev:
     "@lynx-js/preact-devtools": 5.0.1-cf9aef5
-    "@lynx-js/types": 3.4.11
+    "@lynx-js/types": 3.7.0
   lynx-build:
     "@lynx-js/qrcode-rsbuild-plugin": 0.4.6
-    "@lynx-js/react-rsbuild-plugin": 0.15.0
-    "@lynx-js/rspeedy": 0.14.1
+    "@lynx-js/react-rsbuild-plugin": 0.16.1
+    "@lynx-js/rspeedy": 0.14.3
   react18:
     "@types/react": 18.3.24
     "@types/react-dom": 18.3.7
@@ -31,7 +31,7 @@ catalogs:
     "@lynx-js/tailwind-preset": 0.4.0
     rsbuild-plugin-tailwindcss: 0.2.3
     tailwind-merge: 2.6.0
-    tailwindcss: 3.4.17
+    tailwindcss: 3.4.19
   test:
     "@testing-library/jest-dom": 6.9.1
     "@testing-library/react": 16.3.2
@@ -39,8 +39,8 @@ catalogs:
     vitest: 4.1.5
   ts:
     typescript: 5.9.2
-    "@types/node": 24.6.1
-    "@typescript/native-preview": 7.0.0-dev.20251103.1
+    "@types/node": 24.12.2
+    "@typescript/native-preview": 7.0.0-dev.20260501.1
 enablePrePostScripts: false
 ignorePatchFailures: false
 ignoredBuiltDependencies:
