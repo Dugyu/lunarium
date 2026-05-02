@@ -9,11 +9,17 @@ import type { LunaThemeKey, LunaThemeMode, LunaThemeVariant } from '@/types';
 import { parseLunaThemeKey } from './parse-theme';
 import { useControllable } from './use-controllable';
 
-type ThemeControlProps = {
-  defaultTheme?: LunaThemeKey;
-  theme?: LunaThemeKey;
-  onThemeChange?: (key: LunaThemeKey) => void;
-};
+type ThemeControlProps =
+  | {
+    theme: LunaThemeKey;
+    onThemeChange: (key: LunaThemeKey) => void;
+    defaultTheme?: never;
+  }
+  | {
+    defaultTheme?: LunaThemeKey;
+    theme?: never;
+    onThemeChange?: (key: LunaThemeKey) => void;
+  };
 
 function ThemeControl(
   { defaultTheme = 'lunaris-dark', theme: themeProp, onThemeChange }:

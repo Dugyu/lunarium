@@ -159,13 +159,16 @@ function ChoreographyView({
   }
 
   const resolvedActiveFocusKey = useMemo(() => {
-    if (activeFocusKey !== '') return activeFocusKey;
-    const firstFocusableStage = layout[mode].find(stage =>
-      stage.focusKey !== undefined
-    );
-    return firstFocusableStage === undefined
-      ? ''
-      : firstFocusableStage.focusKey ?? '';
+    const focusableStages = layout[mode].filter(stage => hasFocusKey(stage));
+
+    if (
+      activeFocusKey !== ''
+      && focusableStages.some(stage => stage.focusKey === activeFocusKey)
+    ) {
+      return activeFocusKey;
+    }
+
+    return focusableStages[0]?.focusKey ?? '';
   }, [activeFocusKey, layout, mode]);
 
   const rendered: RenderData[] = useMemo(() => {
