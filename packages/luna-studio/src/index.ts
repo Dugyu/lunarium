@@ -2,15 +2,30 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-export { Choreography } from './choreography';
-export type { ChoreographyProps } from './choreography';
-export type { StageEvent, StageEventType } from './choreography/types';
-export type { LynxRuntimeCall } from './lynx-stage';
+// Studio Model
 export type {
   LunaThemeKey,
   LunaThemeMode,
   LunaThemeVariant,
-  StageEntry,
+  StageGlobalPropsBuilder,
+  StudioGridSpec,
   StudioLayout,
+  StudioModeGrid,
+  StudioStage,
   StudioViewMode,
 } from './types';
+
+// Choreography
+export { Choreography } from './choreography';
+export type {
+  ChoreographyBaseProps,
+  ChoreographyInteractionProps,
+  ChoreographyProps,
+  ChoreographyViewProps,
+  FocusKeyResolver,
+  InteractionParams,
+  InteractionTarget,
+} from './choreography';
+
+// Lynx Stage
+export type { LynxRuntimeCall } from './lynx-stage';

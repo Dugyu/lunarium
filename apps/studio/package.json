@@ -31,7 +31,6 @@
     "@rsbuild/plugin-react": "catalog:rsbuild",
     "@types/react": "catalog:react18",
     "@types/react-dom": "catalog:react18",
-    "cross-env": "^10.0.0",
     "rsbuild-plugin-tailwindcss": "catalog:tailwind",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:ts"

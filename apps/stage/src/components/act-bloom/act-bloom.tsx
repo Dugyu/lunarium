@@ -194,10 +194,19 @@ function ActBloom(
             })}
           </view>
           {/* Theme Control */}
-          <ThemeControl
-            defaultTheme={theme}
-            onThemeChange={handleThemeChange}
-          />
+          {__WEB__
+            ? (
+              <ThemeControl
+                theme={theme}
+                onThemeChange={handleThemeChange}
+              />
+            )
+            : (
+              <ThemeControl
+                defaultTheme={theme}
+                onThemeChange={handleThemeChange}
+              />
+            )}
         </view>
       </view>
     </page>
