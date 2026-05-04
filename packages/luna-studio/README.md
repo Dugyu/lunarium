@@ -39,9 +39,13 @@ Current public exports from `@dugyu/luna-studio` are grouped by components and t
   - `Choreography`
 - Studio model types
   - `StudioStage`
+  - `StudioStageSlice`
+  - `StudioResolvedStage`
+  - `ResolveStudioLayoutParams`
   - `StageGlobalPropsBuilder`
   - `StudioGridSpec`
   - `StudioLayout`
+  - `StudioResolvedLayout`
   - `StudioModeGrid`
   - `StudioViewMode`
   - `LunaThemeKey`
@@ -57,6 +61,8 @@ Current public exports from `@dugyu/luna-studio` are grouped by components and t
   - `FocusKeyResolver`
 - Lynx bridge types
   - `LynxRuntimeCall`
+- Helpers
+  - `resolveStudioLayout`
 
 `ChoreographyView` and `StudioLynxStage` exist inside the package as internal implementation layers, but they are not part of the public component API.
 
@@ -64,7 +70,7 @@ Current public exports from `@dugyu/luna-studio` are grouped by components and t
 
 ```tsx
 import { Choreography } from '@dugyu/luna-studio';
-import type { StudioLayout, StudioModeGrid } from '@dugyu/luna-studio';
+import type { StudioModeGrid, StudioResolvedLayout } from '@dugyu/luna-studio';
 
 const modeGrid: StudioModeGrid = {
   compare: { cols: 2, rows: 1 },
@@ -72,7 +78,7 @@ const modeGrid: StudioModeGrid = {
   lineup: { cols: 3, rows: 1 },
 };
 
-const layout: StudioLayout = {
+const layout: StudioResolvedLayout = {
   compare: [
     {
       id: 'button-light',
@@ -113,7 +119,7 @@ export function Demo() {
   return (
     <div className='size-full'>
       <Choreography
-        bundleBaseUrl='/bundles/'
+        bundleRoot='/bundles/'
         layout={layout}
         modeGrid={modeGrid}
         viewMode='compare'
@@ -126,18 +132,65 @@ export function Demo() {
 }
 ```
 
+If your host prefers an authoring model that separates a resource pool (entry/bundleRoot/theme defaults) from per-mode layout overrides, you can build the resolved layout with `resolveStudioLayout`:
+
+```ts
+import { resolveStudioLayout } from '@dugyu/luna-studio';
+import type {
+  ResolveStudioLayoutParams,
+  StudioLayout,
+  StudioStage,
+} from '@dugyu/luna-studio';
+
+const stagePool: Record<string, StudioStage> = {
+  Button: { id: 'Button', entry: 'ActButton', theme: 'luna-light' },
+};
+
+const layoutSpec: StudioLayout = {
+  compare: [{ id: 'Button', style: { gridColumn: '1 / 2', gridRow: '1 / 2' } }],
+  focus: [{ id: 'Button', style: { gridColumn: '1 / 2', gridRow: '1 / 2' } }],
+  lineup: [{ id: 'Button', style: { gridColumn: '1 / 2', gridRow: '1 / 2' } }],
+};
+
+const resolvedLayout = resolveStudioLayout(
+  {
+    stagePool,
+    layoutSpec,
+  } satisfies ResolveStudioLayoutParams,
+);
+```
+
 ## Core Concepts
 
 ### `StudioStage`
 
-`StudioStage` is the per-stage data boundary consumed by the choreography layer.
+`StudioStage` is the resource/pool definition for a stage (resource locator + defaults).
 
 ```ts
 type StudioStage = {
   id: string;
+  entry: string;
+  theme: LunaThemeKey;
+  bundleRoot?: string;
+  focusKey?: string;
+};
+```
+
+Notes:
+
+- `entry` and `bundleRoot` are the resource locator used to locate the Lynx bundle.
+- `theme` and `focusKey` are stage-level defaults used during layout resolution.
+
+### `StudioResolvedStage`
+
+`StudioResolvedStage` is the per-stage data boundary consumed by the choreography layer.
+
+```ts
+type StudioResolvedStage = {
+  id: string;
   className?: string;
   style?: CSSProperties;
-  bundleBaseUrl?: string;
+  bundleRoot?: string;
   focusKey?: string;
   entry: string;
   theme: LunaThemeKey;
@@ -148,18 +201,48 @@ Notes:
 
 - `id` is the stable stage identity used for layout, motion, and interaction correlation.
 - `className` and `style` apply to the stage container.
-- `bundleBaseUrl` optionally overrides the choreography-level default bundle base URL for this stage.
-- `focusKey` is an optional stage-level focus identity and should already be resolved by the host before rendering `Choreography`.
-- `entry` is the Lynx bundle entry rendered inside the stage.
-- `theme` is used directly in `compare` mode.
-- app-specific metadata should live in app-local extension types rather than reopening the public `StudioStage` contract.
+- `bundleRoot` can be provided per-stage; otherwise `Choreography.bundleRoot` may act as a host-level fallback.
+- app-specific metadata should live in app-local extension types rather than reopening the public `StudioResolvedStage` contract.
+
+### `StudioStageSlice`
+
+`StudioStageSlice` is the per-mode layout projection for a stage. It references a pool stage by `id` and carries host-side overrides for that mode.
+
+```ts
+type StudioStageSlice = {
+  id: string;
+  className?: string;
+  style?: CSSProperties;
+  theme?: LunaThemeKey;
+  focusKey?: string;
+};
+```
+
+Notes:
+
+- Slice ids must be unique within the same `StudioViewMode`. `Choreography` uses the resolved `stage.id` as the stable render identity (React key, Motion layout id, and emitted `interaction.stageId`).
+- To render the same Lynx `entry` multiple times, define multiple `StudioStage` pool items with different `id` values but the same `entry`.
 
 ### `StudioLayout`
 
-`StudioLayout` contains one stage list for each built-in presentation mode.
+`StudioLayout` is the authoring layout specification for the three built-in presentation modes. Each item references a stage by `id` and carries host-side overrides (e.g. `className`, `style`, `theme`, `focusKey`).
 
 ```ts
-type StudioLayout = Record<'compare' | 'focus' | 'lineup', StudioStage[]>;
+type StudioLayout = Record<
+  'compare' | 'focus' | 'lineup',
+  StudioStageSlice[]
+>;
+```
+
+### `StudioResolvedLayout`
+
+`StudioResolvedLayout` contains one stage list for each built-in presentation mode.
+
+```ts
+type StudioResolvedLayout = Record<
+  'compare' | 'focus' | 'lineup',
+  StudioResolvedStage[]
+>;
 ```
 
 `modeGrid` can optionally provide the grid dimensions for each mode when the host wants the container layout to be grid-driven.
@@ -301,8 +384,8 @@ Behavior notes:
 - `themeVariant` defaults to `'lunaris'`
 - `themeMode` defaults to `'dark'`
 - `interactionTarget` defaults to `'content'`
-- `focusKey` is read directly from each `StudioStage`
-- `bundleBaseUrl` can provide a choreography-level default, and `StudioStage.bundleBaseUrl` can override it per stage
+- `focusKey` is read directly from each resolved stage in `layout` (i.e. from the `StudioResolvedLayout` stage items)
+- `bundleRoot` can provide a choreography-level fallback; per-stage resource roots are taken from each resolved stage in `layout`
 - `layout` is required and should already be fully resolved by the host app
 
 ## Scope Of This Extraction

@@ -7,9 +7,9 @@ import type { CSSProperties } from 'react';
 import type {
   InteractionParams,
   LynxRuntimeCall,
-  StudioLayout,
   StudioModeGrid,
-  StudioStage,
+  StudioResolvedLayout,
+  StudioResolvedStage,
 } from '@dugyu/luna-studio';
 
 import type { LunaThemeKey, StudioViewMode } from '@/types';
@@ -166,7 +166,7 @@ const stageCatalog = {
 } satisfies Record<string, StudioStageDefinition>;
 
 type StageId = keyof typeof stageCatalog;
-type StudioAppStage = StudioStage & { studio?: StudioStageMetadata };
+type StudioAppStage = StudioResolvedStage & { studio?: StudioStageMetadata };
 
 type ModeLayoutItem = StageId | {
   id: StageId;
@@ -250,7 +250,7 @@ function toGridStyle(cellValue: Cell): CSSProperties {
 }
 
 function getStudioComponent(
-  stage: StudioStage,
+  stage: StudioResolvedStage,
 ): StudioComponentMetadata | undefined {
   return (stage as StudioAppStage).studio?.component;
 }
@@ -298,7 +298,7 @@ function resolveStudioFocusKey(
 }
 
 function buildStudioStageGlobalProps(params: {
-  stage: StudioStage;
+  stage: StudioResolvedStage;
   viewMode: StudioViewMode;
   activeFocusKey: string;
 }): Record<string, unknown> {
@@ -318,7 +318,7 @@ function buildStudioStageGlobalProps(params: {
 }
 
 /** Draft grid-first layout data kept next to the current Tailwind-string version for comparison. */
-const studioLayoutGridDraft: StudioLayout = {
+const studioLayoutGridDraft: StudioResolvedLayout = {
   compare: resolveModeLayout('compare'),
   focus: resolveModeLayout('focus'),
   lineup: resolveModeLayout('lineup'),

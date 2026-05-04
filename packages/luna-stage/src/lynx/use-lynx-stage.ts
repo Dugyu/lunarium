@@ -4,11 +4,21 @@
 
 import type { LynxViewElement as LynxView } from '@lynx-js/web-core/client';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { RefObject } from 'react';
 
+import type {
+  ResolveBundleSrc,
+  UseLynxStageOptions,
+  UseLynxStageResult,
+} from './types';
 import { useContainerResize } from '../hooks/use-container-resize';
 import { useEffectEvent } from '../hooks/use-effect-event';
 import '../types/lynx-view';
+
+export type {
+  ResolveBundleSrc,
+  UseLynxStageOptions,
+  UseLynxStageResult,
+} from './types';
 
 type LynxViewWithExtensions = LynxView & {
   onNativeModulesCall?: (
@@ -19,47 +29,15 @@ type LynxViewWithExtensions = LynxView & {
 };
 
 type UpdateGlobalPropsArg = Parameters<LynxView['updateGlobalProps']>[0];
-type GlobalProps = Record<string, unknown>;
 
-export type UseLynxStageOptions = {
-  /**
-   * Base URL for bundle assets. Must end with a trailing slash.
-   * The resolved bundle URL is: `${bundleBaseUrl}${entry}.web.bundle`
-   */
-  bundleBaseUrl: string;
-  /**
-   * Entry name for the Lynx bundle.
-   */
-  entry: string;
-  /**
-   * Global props to inject into the Lynx runtime via `updateGlobalProps`.
-   * Re-injected whenever the object reference changes.
-   */
-  globalProps?: GlobalProps;
-  /**
-   * Called when the Lynx runtime calls a native module.
-   * Return a value to send back to the runtime.
-   */
-  onNativeModulesCall?: (
-    name: string,
-    data: unknown,
-    moduleName: string,
-  ) => unknown;
-  /**
-   * Called once when the view has rendered successfully.
-   */
-  onReady?: () => void;
-  /**
-   * Called when an error occurs during runtime load, template fetch, or rendering.
-   */
-  onError?: (error: string) => void;
-};
+function normalizeBundleRoot(bundleRoot: string): string {
+  return bundleRoot.endsWith('/')
+    ? bundleRoot
+    : `${bundleRoot}/`;
+}
 
-export type UseLynxStageResult = {
-  /** Attach to the `<lynx-view>` element. */
-  lynxViewRef: RefObject<LynxView>;
-  /** Attach to the container `<div>` wrapping `<lynx-view>`. */
-  containerRef: RefObject<HTMLDivElement>;
+const RESOLVE_BUNDLE_SRC_FALLBACK = {
+  fallbackResult: undefined as string | undefined,
 };
 
 // ─── Runtime singleton ────────────────────────────────────────────────────────
@@ -78,8 +56,9 @@ function ensureRuntime(): Promise<void> {
 }
 
 export function useLynxStage({
-  bundleBaseUrl,
+  bundleRoot,
   entry,
+  resolveBundleSrc,
   globalProps,
   onNativeModulesCall,
   onReady,
@@ -101,13 +80,17 @@ export function useLynxStage({
   const onReadyEvent = useEffectEvent(onReady);
   const reportError = useEffectEvent<[string]>(onError);
   const onNativeModulesCallEvent = useEffectEvent(onNativeModulesCall);
+  const resolveBundleSrcEvent = useEffectEvent(
+    (params: Parameters<ResolveBundleSrc>[0]) => resolveBundleSrc?.(params),
+    RESOLVE_BUNDLE_SRC_FALLBACK,
+  );
 
-  // Reset on entry / base URL change
+  // Reset on entry / bundle root change
   useEffect(() => {
     renderedRef.current = false;
     browserConfigInitializedRef.current = false;
     lastUrlRef.current = '';
-  }, [entry, bundleBaseUrl]);
+  }, [entry, bundleRoot]);
 
   // Load web-core eagerly on mount
   useEffect(() => {
@@ -175,10 +158,11 @@ export function useLynxStage({
     const lynxView = lynxViewRef.current as LynxViewWithExtensions | null;
     if (!ready || !dimsReady || !lynxView) return;
 
-    const normalizedBundleBaseUrl = bundleBaseUrl.endsWith('/')
-      ? bundleBaseUrl
-      : `${bundleBaseUrl}/`;
-    const src = `${normalizedBundleBaseUrl}${entry}.web.bundle`;
+    const normalizedBundleRoot = normalizeBundleRoot(bundleRoot);
+    const src = resolveBundleSrcEvent({
+      bundleRoot: normalizedBundleRoot,
+      entry,
+    }) ?? `${normalizedBundleRoot}${entry}.web.bundle`;
     const urlAlreadySet = lastUrlRef.current === src;
 
     const initialized = setDimensions();
@@ -259,7 +243,7 @@ export function useLynxStage({
     ready,
     dimsReady,
     entry,
-    bundleBaseUrl,
+    bundleRoot,
     setDimensions,
     globalProps,
   ]);

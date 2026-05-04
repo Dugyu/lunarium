@@ -23,7 +23,7 @@ describe('LynxStage SSR Behavior', () => {
     let html = '';
     expect(() => {
       html = renderToString(
-        <LynxStage entry='test-entry' bundleBaseUrl='/' />,
+        <LynxStage entry='test-entry' bundleRoot='/' />,
       );
     }).not.toThrow();
 
@@ -39,7 +39,7 @@ describe('LunaLynxStage SSR Behavior', () => {
       html = renderToString(
         <LunaLynxStage
           entry='test-entry'
-          bundleBaseUrl='/'
+          bundleRoot='/'
           lunaTheme='luna-light'
         />,
       );

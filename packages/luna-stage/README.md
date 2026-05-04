@@ -78,7 +78,7 @@ export default function Preview() {
     <Stage>
       <LunaLynxStage
         entry='my-component'
-        bundleBaseUrl='/bundles/'
+        bundleRoot='/bundles/'
         lunaTheme='lunaris'
         lunaThemeVariant='midnight'
       />
@@ -87,7 +87,11 @@ export default function Preview() {
 }
 ```
 
-Bundle URL convention: `${bundleBaseUrl}${entry}.web.bundle`
+Default bundle URL convention: `${bundleRoot}${entry}.web.bundle`
+
+Override it with `resolveBundleSrc` when your host uses a different naming rule.
+
+`bundleRoot` is normalized internally to always end with a trailing slash before URL resolution. This means callers may pass either `'/bundles'` or `'/bundles/'`, and `resolveBundleSrc` will always receive the normalized value.
 
 `lunaTheme` and `lunaThemeVariant` inject LUNA design token globals into the Lynx runtime. Omit them to use default theming.
 
@@ -99,7 +103,7 @@ Use `LynxStage` directly when you don't need LUNA global props forwarded:
 import { Stage, LynxStage } from '@dugyu/luna-stage';
 
 <Stage>
-  <LynxStage entry='my-component' bundleBaseUrl='/bundles/' />
+  <LynxStage entry='my-component' bundleRoot='/bundles/' />
 </Stage>;
 ```
 
@@ -113,7 +117,7 @@ import { LynxStage } from '@dugyu/luna-stage';
 export default function StandaloneView() {
   return (
     <div className='w-full h-screen'>
-      <LynxStage entry='my-component' bundleBaseUrl='/bundles/' />
+      <LynxStage entry='my-component' bundleRoot='/bundles/' />
     </div>
   );
 }
@@ -182,15 +186,16 @@ Measures its own DOM size via `ResizeObserver` and provides width/height to chil
 
 Core component for rendering Lynx bundles into a DOM container.
 
-| Prop                  | Type                      | Default | Description                                                 |
-| --------------------- | ------------------------- | ------- | ----------------------------------------------------------- |
-| `entry`               | `string`                  | —       | Entry name for the Lynx bundle.                             |
-| `bundleBaseUrl`       | `string`                  | `'/'`   | Base URL for bundle assets. Must end with a trailing slash. |
-| `globalProps`         | `Record<string, unknown>` | —       | Global props to inject into the Lynx runtime.               |
-| `groupId`             | `number`                  | `7`     | Shared Lynx worker group ID.                                |
-| `onNativeModulesCall` | `function`                | —       | Callback for native module calls from Lynx runtime.         |
-| `onReady`             | `function`                | —       | Callback when the view has rendered successfully.           |
-| `onError`             | `function`                | —       | Callback when an error occurs during loading or rendering.  |
+| Prop                  | Type                      | Default | Description                                                                                                                  |
+| --------------------- | ------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `entry`               | `string`                  | —       | Entry name for the Lynx bundle.                                                                                              |
+| `bundleRoot`          | `string`                  | `'/'`   | Resource root used with `entry` to locate the bundle. Normalized to always end with `/` before URL resolution.               |
+| `resolveBundleSrc`    | `function`                | —       | Optional hook for overriding how the final bundle URL is built. Receives the normalized `bundleRoot` (always ends with `/`). |
+| `globalProps`         | `Record<string, unknown>` | —       | Global props to inject into the Lynx runtime.                                                                                |
+| `groupId`             | `number`                  | `7`     | Shared Lynx worker group ID.                                                                                                 |
+| `onNativeModulesCall` | `function`                | —       | Callback for native module calls from Lynx runtime.                                                                          |
+| `onReady`             | `function`                | —       | Callback when the view has rendered successfully.                                                                            |
+| `onError`             | `function`                | —       | Callback when an error occurs during loading or rendering.                                                                   |
 
 ### `LunaLynxStage`
 
@@ -337,9 +342,10 @@ Omit `focalLength` (or set to `0`) — all frames render at equal scale regardle
 
 ## Bundle & Asset Conventions
 
-- Bundle files must follow the naming pattern `*.web.bundle`
-- `bundleBaseUrl` should end with a trailing slash: `"/bundles/"`, `"https://cdn.example.com/lynx/"`
-- Resolved URL: `${bundleBaseUrl}${entry}.web.bundle`
+- By default, bundle files follow the naming pattern `*.web.bundle`
+- `bundleRoot` is normalized to a trailing slash by the default resolver
+- Default resolved URL: `${bundleRoot}${entry}.web.bundle`
+- Use `resolveBundleSrc` when your host needs a different file naming rule or full URL composition
 
 ## Transform Utilities
 
