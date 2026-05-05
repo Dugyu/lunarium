@@ -3,7 +3,7 @@
 // LICENSE file in the root directory of this source tree.
 
 export { useContainerResize } from './use-container-resize';
-export { useEffectEvent } from './use-effect-event';
+export { useEventCallback } from './use-event-callback';
 export { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect';
 export { useMergedRefs } from './use-merged-refs';
 export { useIsClient } from './use-is-client';

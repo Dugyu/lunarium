@@ -183,6 +183,42 @@ export function resolveStudioLayout(
   return resolved;
 }
 
+export function indexResolvedLayout(layout: StudioResolvedLayout): {
+  focusKeys: Set<string>;
+  stageIdToFocusKey: Map<string, string>;
+} {
+  const focusKeys = new Set<string>();
+  const stageIdToFocusKey = new Map<string, string>();
+  const focusKeyToStageId = new Map<string, string>();
+
+  const modes = Object.keys(layout) as (keyof StudioResolvedLayout)[];
+  for (const mode of modes) {
+    for (const stage of layout[mode]) {
+      const focusKey = stage.focusKey;
+      if (focusKey === undefined) continue;
+
+      const focusKeyOwner = focusKeyToStageId.get(focusKey);
+      if (focusKeyOwner !== undefined && focusKeyOwner !== stage.id) {
+        throw new Error(
+          `Duplicate focusKey "${focusKey}" found for stages "${focusKeyOwner}" and "${stage.id}".`,
+        );
+      }
+      focusKeyToStageId.set(focusKey, stage.id);
+      focusKeys.add(focusKey);
+
+      const prevFocusKey = stageIdToFocusKey.get(stage.id);
+      if (prevFocusKey !== undefined && prevFocusKey !== focusKey) {
+        throw new Error(
+          `Conflicting focusKey for stage "${stage.id}": "${prevFocusKey}" vs "${focusKey}".`,
+        );
+      }
+      stageIdToFocusKey.set(stage.id, focusKey);
+    }
+  }
+
+  return { focusKeys, stageIdToFocusKey };
+}
+
 /** Optional mode-to-grid mapping used by grid-driven choreography containers. */
 export type StudioModeGrid = Record<StudioViewMode, StudioGridSpec>;
 

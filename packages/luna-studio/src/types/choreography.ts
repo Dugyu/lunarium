@@ -120,3 +120,14 @@ export type ChoreographyProps = Prettify<
     viewMode?: StudioViewMode;
   }
 >;
+
+export function getPayloadString(
+  data: unknown,
+  field = 'id',
+): string | undefined {
+  if (typeof data === 'string') return data;
+  if (data === null || typeof data !== 'object') return undefined;
+
+  const value = (data as Record<string, unknown>)[field];
+  return typeof value === 'string' ? value : undefined;
+}

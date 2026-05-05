@@ -18,7 +18,8 @@ export type {
   StudioStage,
   StudioViewMode,
 } from './types';
-export { resolveStudioLayout } from './types/studio';
+export { indexResolvedLayout, resolveStudioLayout } from './types/studio';
+export { getPayloadString } from './types/choreography';
 
 // Choreography
 export { Choreography } from './choreography';

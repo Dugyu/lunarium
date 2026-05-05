@@ -12,6 +12,7 @@ import type {
 } from 'react';
 import { useMemo, useState } from 'react';
 
+import { useEventCallback } from '@dugyu/luna-stage';
 import {
   MotionPresentation,
   MotionStage,
@@ -31,6 +32,9 @@ type RenderData = StudioResolvedStage & {
   world: { x: number; y: number; z: number };
   zIndex: number;
   maskOpacity: number;
+  // Pre-resolved props for StudioLynxStage. Optional so that omitting them
+  // matches `exactOptionalPropertyTypes` semantics on the consuming side.
+  resolvedBundleRoot?: string;
   extraGlobalProps?: Record<string, unknown>;
 };
 
@@ -51,6 +55,7 @@ const presentationTransition: Transition = {
 };
 
 const fitTransition: SpringOptions = { visualDuration: 0.8, bounce: 0.1 };
+
 const BASE_STYLE: CSSProperties = {
   width: '100%',
   height: '100%',
@@ -109,48 +114,43 @@ function ChoreographyView({
   onLynxRuntimeCall,
   onInteraction,
 }: ChoreographyViewProps): JSX.Element {
-  const [activeFocusKey, setActiveFocusKey] = useState<string>(
-    defaultFocusKey ?? '',
+  const [activeFocusKey, setActiveFocusKey] = useState<string | undefined>(
+    defaultFocusKey,
   );
   const containerInteractive = interactionTarget === 'stage';
-
+  const contentInteractive = interactionTarget === 'content';
   const containerGrid = modeGrid?.[mode];
 
-  const handleInteraction = useMemo(() => {
-    return (interaction: InteractionParams) => {
-      const nextActiveFocusKey = resolveFocusKey?.(interaction);
-      if (nextActiveFocusKey !== undefined) {
-        setActiveFocusKey(nextActiveFocusKey);
-      }
-      return onInteraction?.(interaction);
-    };
-  }, [onInteraction, resolveFocusKey]);
+  // Stable proxies that always invoke the latest props. Safe to call from
+  // event handlers. Only wrapping callbacks where stale-closure behavior would
+  // matter; `onLynxRuntimeCall` is a pass-through with a runtime-meaningful
+  // return value and stays as a direct prop call.
+  const resolveFocusKeyEvent = useEventCallback(resolveFocusKey);
+  const onInteractionEvent = useEventCallback(onInteraction);
 
+  const handleInteraction = (interaction: InteractionParams): void => {
+    const nextActiveFocusKey = resolveFocusKeyEvent(interaction);
+    if (nextActiveFocusKey !== undefined) {
+      setActiveFocusKey(nextActiveFocusKey);
+    }
+    onInteractionEvent(interaction);
+  };
+
+  // Container event handlers and runtime-call handlers close over `stage`, so
+  // they're inherently per-stage per-render. We don't try to memoize the
+  // factory functions — instead we keep them cheap and let React handle it.
+  // These handlers all normalize into `interaction.containerEvent`; consumers
+  // can inspect `containerEvent.type` to distinguish click vs pointer events.
   function getStageContainerEventHandlers(stage: StudioResolvedStage) {
     if (!containerInteractive) return undefined;
-    // These handlers all normalize into `interaction.containerEvent`; consumers
-    // can inspect `containerEvent.type` to distinguish click vs pointer events.
+    const dispatch = (e: ReactMouseEvent | ReactPointerEvent) => {
+      handleInteraction(createStageInteraction(stage, e.nativeEvent));
+    };
     return {
-      onClick: (e: ReactMouseEvent) => {
-        handleInteraction(
-          createStageInteraction(stage, e.nativeEvent),
-        );
-      },
-      onPointerCancel: (e: ReactPointerEvent) => {
-        handleInteraction(
-          createStageInteraction(stage, e.nativeEvent),
-        );
-      },
-      onPointerDown: (e: ReactPointerEvent) => {
-        handleInteraction(
-          createStageInteraction(stage, e.nativeEvent),
-        );
-      },
-      onPointerUp: (e: ReactPointerEvent) => {
-        handleInteraction(
-          createStageInteraction(stage, e.nativeEvent),
-        );
-      },
+      onClick: dispatch,
+      onPointerCancel: dispatch,
+      onPointerDown: dispatch,
+      onPointerUp: dispatch,
     };
   }
 
@@ -165,7 +165,7 @@ function ChoreographyView({
     const focusableStages = layout[mode].filter(stage => hasFocusKey(stage));
 
     if (
-      activeFocusKey !== ''
+      activeFocusKey !== undefined
       && focusableStages.some(stage => stage.focusKey === activeFocusKey)
     ) {
       return activeFocusKey;
@@ -176,19 +176,19 @@ function ChoreographyView({
 
   const rendered: RenderData[] = useMemo(() => {
     const stages = layout[mode];
-    const components = stages.filter(stage => hasFocusKey(stage));
-    const backgroundComponents = components.filter(stage =>
-      stage.focusKey !== resolvedActiveFocusKey
+    const focusableStages = stages.filter(stage => hasFocusKey(stage));
+    const backgroundStages = focusableStages.filter(
+      stage => stage.focusKey !== resolvedActiveFocusKey,
     );
 
-    const mid = (backgroundComponents.length - 1) / 2;
-    const focusedIndex = components.findIndex(d =>
-      d.focusKey === resolvedActiveFocusKey
+    const mid = (backgroundStages.length - 1) / 2;
+    const focusedIndex = focusableStages.findIndex(
+      stage => stage.focusKey === resolvedActiveFocusKey,
     );
 
     return stages.map((stage) => {
-      const compOrder = backgroundComponents.findIndex(d =>
-        d.focusKey === stage.focusKey
+      const compOrder = backgroundStages.findIndex(
+        bg => bg.focusKey === stage.focusKey,
       );
       const escape = compOrder === -1;
       const { world, zIndex, maskOpacity } = getStageWorldState({
@@ -199,6 +199,7 @@ function ChoreographyView({
         escape,
       });
 
+      const resolvedBundleRoot = stage.bundleRoot ?? bundleRoot;
       const extraGlobalProps = buildStageGlobalProps?.({
         stage,
         viewMode: mode,
@@ -211,13 +212,14 @@ function ChoreographyView({
         world,
         zIndex,
         maskOpacity,
+        ...(resolvedBundleRoot === undefined ? {} : { resolvedBundleRoot }),
         ...(extraGlobalProps === undefined ? {} : { extraGlobalProps }),
       };
     });
-  }, [buildStageGlobalProps, layout, mode, resolvedActiveFocusKey]);
+  }, [bundleRoot, buildStageGlobalProps, layout, mode, resolvedActiveFocusKey]);
 
-  const containerStyle: CSSProperties | undefined = useMemo(() => {
-    const baseGridStyle = containerGrid === undefined ? {} : {
+  const mergedContainerStyle: CSSProperties = useMemo(() => {
+    const gridStyle: CSSProperties | undefined = containerGrid && {
       display: 'grid',
       gridTemplateColumns: `repeat(${containerGrid.cols}, minmax(0, 1fr))`,
       gridTemplateRows: `repeat(${containerGrid.rows}, minmax(0, 1fr))`,
@@ -225,88 +227,73 @@ function ChoreographyView({
     };
     return {
       ...BASE_STYLE,
-      ...baseGridStyle,
-    };
-  }, [containerGrid]);
-
-  const mergedContainerStyle: CSSProperties = useMemo(() => {
-    return {
-      ...containerStyle,
+      ...gridStyle,
       ...style,
     };
-  }, [containerStyle, style]);
+  }, [containerGrid, style]);
 
-  const stageOutlineStyle: CSSProperties = useMemo(() => {
-    return {
+  const stageOutlineStyle: CSSProperties = useMemo(
+    () => ({
       backgroundColor: themeMode === 'light'
         ? 'rgb(0 0 0 / 0.04)'
         : 'rgb(255 255 255 / 0.05)',
-    };
-  }, [themeMode]);
+    }),
+    [themeMode],
+  );
+
+  const maskColor = themeMode === 'light' ? '#f5f5f5' : '#00000080';
 
   return (
-    <div
-      className={className}
-      style={mergedContainerStyle}
-    >
+    <div className={className} style={mergedContainerStyle}>
       <AnimatePresence mode='popLayout'>
-        {rendered.map((stage) => {
-          return (
-            <MotionStageContainer
-              layoutId={stage.id}
-              key={stage.id}
-              className={stage.className}
-              {...getStageContainerEventHandlers(stage)}
-              style={{
-                ...stage.style,
-                zIndex: stage.zIndex,
-                pointerEvents: containerInteractive ? 'auto' : 'none',
-              }}
+        {rendered.map(stage => (
+          <MotionStageContainer
+            layoutId={stage.id}
+            key={stage.id}
+            className={stage.className}
+            {...getStageContainerEventHandlers(stage)}
+            style={{
+              ...stage.style,
+              zIndex: stage.zIndex,
+              pointerEvents: containerInteractive ? 'auto' : 'none',
+            }}
+          >
+            <MotionPresentation
+              variants={slidingVariants}
+              initial='initial'
+              animate='animate'
+              exit='exit'
+              transition={presentationTransition}
             >
-              <MotionPresentation
-                key={stage.id}
-                variants={slidingVariants}
-                initial='initial'
-                animate='animate'
-                exit='exit'
-                transition={presentationTransition}
+              <MotionStage
+                fitProgress={0}
+                fitTransition={fitTransition}
+                world={stage.world}
+                focalLength={mode === 'focus' ? 500 : 0}
+                style={stageOutlineStyle}
+                contentInteractive={contentInteractive}
+                maskColor={maskColor}
+                maskOpacity={stage.maskOpacity}
               >
-                <MotionStage
-                  fitProgress={0}
-                  fitTransition={fitTransition}
-                  world={stage.world}
-                  focalLength={mode === 'focus' ? 500 : 0}
-                  style={stageOutlineStyle}
-                  contentInteractive={interactionTarget === 'content'}
-                  maskColor={themeMode === 'light' ? '#f5f5f5' : '#00000080'}
-                  maskOpacity={stage.maskOpacity}
-                >
-                  <StudioLynxStage
-                    entry={stage.entry}
-                    lunaTheme={mode === 'compare'
-                      ? stage.theme
-                      : `${themeVariant}-${themeMode}`}
-                    lunaThemeVariant={themeVariant}
-                    interactive={interactionTarget === 'content'}
-                    onLynxRuntimeCall={getStageRuntimeCallHandler(stage)}
-                    {...(() => {
-                      const resolvedBundleRoot = stage.bundleRoot
-                        ?? bundleRoot;
-                      return resolvedBundleRoot === undefined
-                        ? {}
-                        : { bundleRoot: resolvedBundleRoot };
-                    })()}
-                    {...(() => {
-                      return stage.extraGlobalProps === undefined
-                        ? {}
-                        : { extraGlobalProps: stage.extraGlobalProps };
-                    })()}
-                  />
-                </MotionStage>
-              </MotionPresentation>
-            </MotionStageContainer>
-          );
-        })}
+                <StudioLynxStage
+                  entry={stage.entry}
+                  lunaTheme={mode === 'compare'
+                    ? stage.theme
+                    : `${themeVariant}-${themeMode}`}
+                  lunaThemeVariant={themeVariant}
+                  interactive={contentInteractive}
+                  onLynxRuntimeCall={getStageRuntimeCallHandler(stage)}
+                  {...(stage.resolvedBundleRoot === undefined
+                    ? {}
+                    : { bundleRoot: stage.resolvedBundleRoot })}
+                  {...(stage.extraGlobalProps === undefined
+                    ? {}
+                    : { extraGlobalProps: stage.extraGlobalProps })}
+                />
+              </MotionStage>
+            </MotionPresentation>
+          </MotionStageContainer>
+        ))}
       </AnimatePresence>
     </div>
   );

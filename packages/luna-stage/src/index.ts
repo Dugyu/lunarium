@@ -5,7 +5,7 @@
 // ─── Hooks (public utilities) ────────────────────────────────────────────────
 export {
   useContainerResize,
-  useEffectEvent,
+  useEventCallback,
   useIsomorphicLayoutEffect,
   useMergedRefs,
   useIsClient,

@@ -63,6 +63,8 @@ Current public exports from `@dugyu/luna-studio` are grouped by components and t
   - `LynxRuntimeCall`
 - Helpers
   - `resolveStudioLayout`
+  - `indexResolvedLayout`
+  - `getPayloadString`
 
 `ChoreographyView` and `StudioLynxStage` exist inside the package as internal implementation layers, but they are not part of the public component API.
 
