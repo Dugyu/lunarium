@@ -23,18 +23,18 @@ import type {
   ChoreographyViewProps,
   InteractionParams,
   LynxRuntimeCall,
-  StudioStage,
+  StudioResolvedStage,
 } from '../types';
 import { getStageWorldState } from '../utils/world';
 
-type RenderData = StudioStage & {
+type RenderData = StudioResolvedStage & {
   world: { x: number; y: number; z: number };
   zIndex: number;
   maskOpacity: number;
   extraGlobalProps?: Record<string, unknown>;
 };
 
-type FocusableStudioStage = StudioStage & {
+type FocusableStudioStage = StudioResolvedStage & {
   focusKey: string;
 };
 
@@ -58,12 +58,14 @@ const BASE_STYLE: CSSProperties = {
   position: 'relative',
 };
 
-function hasFocusKey(stage: StudioStage): stage is FocusableStudioStage {
+function hasFocusKey(
+  stage: StudioResolvedStage,
+): stage is FocusableStudioStage {
   return stage.focusKey !== undefined;
 }
 
 function createStageInteraction(
-  stage: StudioStage,
+  stage: StudioResolvedStage,
   containerEvent: MouseEvent | PointerEvent,
 ): InteractionParams {
   return {
@@ -75,7 +77,7 @@ function createStageInteraction(
 }
 
 function createContentInteraction(
-  stage: StudioStage,
+  stage: StudioResolvedStage,
   call: LynxRuntimeCall,
 ): InteractionParams {
   return {
@@ -98,7 +100,7 @@ function ChoreographyView({
   defaultFocusKey,
   className,
   style,
-  bundleBaseUrl,
+  bundleRoot,
   resolveFocusKey,
   buildStageGlobalProps,
   themeVariant = 'lunaris',
@@ -124,7 +126,7 @@ function ChoreographyView({
     };
   }, [onInteraction, resolveFocusKey]);
 
-  function getStageContainerEventHandlers(stage: StudioStage) {
+  function getStageContainerEventHandlers(stage: StudioResolvedStage) {
     if (!containerInteractive) return undefined;
     // These handlers all normalize into `interaction.containerEvent`; consumers
     // can inspect `containerEvent.type` to distinguish click vs pointer events.
@@ -152,7 +154,7 @@ function ChoreographyView({
     };
   }
 
-  function getStageRuntimeCallHandler(stage: StudioStage) {
+  function getStageRuntimeCallHandler(stage: StudioResolvedStage) {
     return (call: LynxRuntimeCall) => {
       handleInteraction(createContentInteraction(stage, call));
       return onLynxRuntimeCall?.(call);
@@ -288,11 +290,11 @@ function ChoreographyView({
                     interactive={interactionTarget === 'content'}
                     onLynxRuntimeCall={getStageRuntimeCallHandler(stage)}
                     {...(() => {
-                      const resolvedBundleBaseUrl = stage.bundleBaseUrl
-                        ?? bundleBaseUrl;
-                      return resolvedBundleBaseUrl === undefined
+                      const resolvedBundleRoot = stage.bundleRoot
+                        ?? bundleRoot;
+                      return resolvedBundleRoot === undefined
                         ? {}
-                        : { bundleBaseUrl: resolvedBundleBaseUrl };
+                        : { bundleRoot: resolvedBundleRoot };
                     })()}
                     {...(() => {
                       return stage.extraGlobalProps === undefined

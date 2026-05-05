@@ -9,8 +9,8 @@ import type {
   LunaThemeMode,
   LunaThemeVariant,
   StageGlobalPropsBuilder,
-  StudioLayout,
   StudioModeGrid,
+  StudioResolvedLayout,
   StudioViewMode,
 } from './studio';
 import type { Prettify } from './utils';
@@ -65,10 +65,13 @@ export type ChoreographyBaseProps = {
   className?: string;
   /** Optional inline style merged onto the outer choreography container. */
   style?: CSSProperties;
-  /** Optional default bundle base URL applied when a stage does not provide its own override. */
-  bundleBaseUrl?: string;
+  /**
+   * Optional host-level default resource root used when a stage does not define
+   * its own `bundleRoot`.
+   */
+  bundleRoot?: string;
   /** Fully resolved stage layout used by the choreography layer. */
-  layout: StudioLayout;
+  layout: StudioResolvedLayout;
   /** Optional grid config that drives the container layout for each mode. */
   modeGrid?: StudioModeGrid;
   /** Optional initial focus key used when no runtime selection has been made yet. */

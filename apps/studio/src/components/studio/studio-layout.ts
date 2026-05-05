@@ -2,7 +2,10 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-import type { StudioLayout, StudioStage } from '@dugyu/luna-studio';
+import type {
+  StudioResolvedLayout,
+  StudioResolvedStage,
+} from '@dugyu/luna-studio';
 
 import type { LunaThemeKey, StudioViewMode } from '@/types';
 
@@ -200,14 +203,14 @@ const baseLayout = {
 
 function mapStageEntries(
   entries: LegacyLayoutItem[],
-): StudioStage[] {
+): StudioResolvedStage[] {
   return entries.map((entry) => {
     const stage = stageCatalog[entry.id];
     if (stage === undefined) {
       throw new Error(`Unknown stage id: ${entry.id}`);
     }
 
-    const stageEntry: StudioStage = {
+    const stageEntry: StudioResolvedStage = {
       id: entry.id,
       className: entry.className,
       ...stage,
@@ -217,7 +220,7 @@ function mapStageEntries(
 }
 
 /** Legacy demo layout kept for reference only; the active Studio shell now uses `studio-layout-grid.ts`. */
-const studioLayout: StudioLayout = {
+const studioLayout: StudioResolvedLayout = {
   compare: mapStageEntries(baseLayout.compare),
   focus: mapStageEntries(baseLayout.focus),
   lineup: mapStageEntries(baseLayout.lineup),

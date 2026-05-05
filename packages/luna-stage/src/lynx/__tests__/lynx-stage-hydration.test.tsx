@@ -27,7 +27,7 @@ describe('LynxStage Client Mounting Behavior', () => {
     // Seed the container with initial markup.
     // This test primarily verifies client-side mounting after `useIsClient` resolves.
     const serverMarkup = renderToString(
-      <LynxStage entry='test-entry' bundleBaseUrl='/' />,
+      <LynxStage entry='test-entry' bundleRoot='/' />,
     );
     container.innerHTML = serverMarkup;
 
@@ -38,7 +38,7 @@ describe('LynxStage Client Mounting Behavior', () => {
     await act(async () => {
       root = hydrateRoot(
         container,
-        <LynxStage entry='test-entry' bundleBaseUrl='/' />,
+        <LynxStage entry='test-entry' bundleRoot='/' />,
       );
       // await Promise.resolve() satisfies the async requirement and yields a microtask
       await Promise.resolve();
@@ -79,7 +79,7 @@ describe('LunaLynxStage Client Mounting Behavior', () => {
     const serverMarkup = renderToString(
       <LunaLynxStage
         entry='test-entry'
-        bundleBaseUrl='/'
+        bundleRoot='/'
         lunaTheme='lunaris-dark'
       />,
     );
@@ -92,7 +92,7 @@ describe('LunaLynxStage Client Mounting Behavior', () => {
         container,
         <LunaLynxStage
           entry='test-entry'
-          bundleBaseUrl='/'
+          bundleRoot='/'
           lunaTheme='lunaris-dark'
         />,
       );

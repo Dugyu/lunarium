@@ -9,18 +9,19 @@ import {
   DEFAULT_GROUP_ID,
   LYNX_VIEW_STYLE,
 } from './lynx-stage-constants';
+import type { UseLynxStageOptions } from './types';
 import { useLynxStage } from './use-lynx-stage';
-import type { UseLynxStageOptions } from './use-lynx-stage';
 import { useIsClient } from '../hooks';
 import '../types/lynx-view';
 
-export type LynxStageProps = Omit<UseLynxStageOptions, 'bundleBaseUrl'> & {
+export type LynxStageProps = Omit<UseLynxStageOptions, 'bundleRoot'> & {
   /**
-   * Base URL for bundle assets. Must end with a trailing slash.
-   * The resolved bundle URL is: `${bundleBaseUrl}${entry}.web.bundle`
+   * Resource root used together with `entry` to locate the Lynx bundle.
+   * The default resolver normalizes a trailing slash and builds
+   * `${bundleRoot}${entry}.web.bundle`.
    * @defaultValue '/'
    */
-  bundleBaseUrl?: string;
+  bundleRoot?: string;
   /**
    * Shared Lynx worker group ID. Defaults to 7.
    * Override to isolate workers between unrelated view groups.
@@ -35,13 +36,13 @@ export type LynxStageProps = Omit<UseLynxStageOptions, 'bundleBaseUrl'> & {
 };
 
 function LynxStageImpl({
-  bundleBaseUrl,
+  bundleRoot,
   groupId = DEFAULT_GROUP_ID,
   interactive = true,
   ...stageOptions
 }: LynxStageProps): ReactNode {
   const { lynxViewRef, containerRef } = useLynxStage({
-    bundleBaseUrl: bundleBaseUrl ?? '/',
+    bundleRoot: bundleRoot ?? '/',
     ...stageOptions,
   });
 

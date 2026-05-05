@@ -7,13 +7,18 @@ export type {
   LunaThemeKey,
   LunaThemeMode,
   LunaThemeVariant,
+  ResolveStudioLayoutParams,
   StageGlobalPropsBuilder,
   StudioGridSpec,
   StudioLayout,
+  StudioResolvedLayout,
   StudioModeGrid,
+  StudioResolvedStage,
+  StudioStageSlice,
   StudioStage,
   StudioViewMode,
 } from './types';
+export { resolveStudioLayout } from './types/studio';
 
 // Choreography
 export { Choreography } from './choreography';
