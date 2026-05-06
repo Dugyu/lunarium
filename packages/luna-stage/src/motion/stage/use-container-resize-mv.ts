@@ -6,7 +6,7 @@ import { useMotionValue } from 'motion/react';
 import type { MotionValue } from 'motion/react';
 import { useEffect, useRef } from 'react';
 
-import { useEffectEvent } from '../../hooks/use-effect-event';
+import { useEventCallback } from '../../hooks';
 
 type SizeMV = { width: MotionValue<number>; height: MotionValue<number> };
 
@@ -27,8 +27,8 @@ export function useContainerResizeMV<T extends HTMLElement = HTMLElement>(
   const prevH = useRef<number>(-1);
   const hasOnResize = onResizeProp !== undefined;
 
-  // Stable callback — avoids stale closure without adding to deps
-  const onResize = useEffectEvent(onResizeProp);
+  // Stable callback — avoids stale closure
+  const onResize = useEventCallback(onResizeProp);
 
   useEffect(() => {
     const el = ref.current;
@@ -78,7 +78,7 @@ export function useContainerResizeMV<T extends HTMLElement = HTMLElement>(
 
     obs.observe(el);
     return () => obs.disconnect();
-  }, [ref, ResizeObserverImpl, hasOnResize, width, height]);
+  }, [ref, ResizeObserverImpl, onResize, hasOnResize, width, height]);
 
   return { width, height };
 }

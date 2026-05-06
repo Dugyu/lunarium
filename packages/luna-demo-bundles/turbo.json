@@ -1,0 +1,18 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "dependsOn": [
+        "@dugyu/luna-stage-demo#build"
+      ],
+      "inputs": [
+        "build.mjs",
+        "package.json",
+        "../../apps/stage/dist/*.web.bundle",
+        "../../apps/studio/public/*.web.bundle"
+      ],
+      "outputs": ["dist/**"]
+    }
+  }
+}

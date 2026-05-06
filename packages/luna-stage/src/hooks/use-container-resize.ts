@@ -5,7 +5,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { MutableRefObject } from 'react';
 
-import { useEffectEvent } from './use-effect-event';
+import { useEventCallback } from './use-event-callback';
 
 type Size = {
   width?: number;
@@ -44,7 +44,7 @@ function useContainerResize<T extends HTMLElement = HTMLElement>({
 }: UseContainerResizeOptions<T>): Size {
   const [size, setSize] = useState<Size>({});
   const prev = useRef<Size>({});
-  const onResize = useEffectEvent(onResizeProp);
+  const onResize = useEventCallback(onResizeProp);
   const hasOnResize = onResizeProp !== undefined;
 
   useEffect(() => {
@@ -101,7 +101,7 @@ function useContainerResize<T extends HTMLElement = HTMLElement>({
 
     observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [ref, ResizeObserverImpl, hasOnResize]);
+  }, [ref, ResizeObserverImpl, hasOnResize, onResize]);
 
   return size;
 }

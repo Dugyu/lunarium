@@ -3,3 +3,4 @@
 // LICENSE file in the root directory of this source tree.
 
 export { ActMoonrise } from './act-moonrise.js';
+export type { ActMoonriseProps } from './act-moonrise.js';

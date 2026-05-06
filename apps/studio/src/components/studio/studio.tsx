@@ -10,9 +10,9 @@ import type { InteractionParams } from '@dugyu/luna-studio';
 import { MenuBar } from '@/components/menu-bar';
 import { StudioFrame } from '@/components/studio-frame';
 import type {
+  LunaThemeKey,
   LunaThemeMode,
   LunaThemeVariant,
-  MoonriseEvent,
   StudioViewMode,
 } from '@/types';
 import { cn } from '@/utils';
@@ -28,44 +28,86 @@ import { useThemeKeyboardControls } from './use-theme-keyboard-controls';
 
 const viewModes: StudioViewMode[] = ['compare', 'focus', 'lineup'];
 
-const STARTING_MODE: LunaThemeMode = 'dark';
-const STARTING_VARIANT: LunaThemeVariant = 'lunaris';
+type StudioEvent = {
+  type:
+    | 'studioThemeVariant'
+    | 'studioThemeMode'
+    | 'studioAutoplay'
+    | 'requestViewModeChange';
+  payload?: unknown;
+  source?: unknown;
+};
 
-function isMoonriseEvent(data: unknown): data is MoonriseEvent {
+function isStudioEvent(data: unknown): data is StudioEvent {
   if (data === null || typeof data !== 'object') return false;
 
-  const event = data as { field?: unknown; value?: unknown };
-  return event.field === 'luna-variant'
-    || event.field === 'light-mode'
-    || event.field === 'autoplay'
-    || event.field === 'trust'
-    || event.field === 'subscribe';
+  const event = data as { type?: unknown };
+  return event.type === 'studioThemeVariant'
+    || event.type === 'studioThemeMode'
+    || event.type === 'studioAutoplay'
+    || event.type === 'requestViewModeChange';
 }
 
 function Studio({ className }: { className?: string }) {
   const [viewMode, setViewMode] = useState<StudioViewMode>('compare');
-  const [themeMode, setThemeMode] = useState<LunaThemeMode>(STARTING_MODE);
-  const [themeVariant, setThemeVariant] = useState<LunaThemeVariant>(
-    STARTING_VARIANT,
-  );
+  const [themeVariant, setThemeVariant] = useState<LunaThemeVariant>('lunaris');
+  const [themeMode, setThemeMode] = useState<LunaThemeMode>('dark');
+  const [studioAutoplay, setStudioAutoplay] = useState(false);
+
+  const studioThemeKey: LunaThemeKey = `${themeVariant}-${themeMode}`;
 
   function handleInteraction(interaction: InteractionParams) {
     if (interaction.target !== 'content') return;
     const call = interaction.runtimeCall;
-    if (call.name !== 'setMoonriseState') return;
-    if (!isMoonriseEvent(call.data)) return;
+    if (call === undefined) return;
+    if (call.name !== 'emitStudioEvent') return;
+    if (!isStudioEvent(call.data)) return;
     const event = call.data;
-    if (event.field === 'luna-variant') {
-      setThemeVariant(event.value);
-    } else if (event.field === 'light-mode') {
-      setThemeMode(event.value === true ? 'light' : 'dark');
+    if (event.type === 'studioThemeVariant') {
+      if (event.payload === 'luna' || event.payload === 'lunaris') {
+        setThemeVariant(event.payload);
+      }
+    } else if (event.type === 'studioThemeMode') {
+      if (event.payload === 'light' || event.payload === 'dark') {
+        setThemeMode(event.payload);
+      }
+    } else if (event.type === 'studioAutoplay') {
+      if (typeof event.payload === 'boolean') {
+        setStudioAutoplay(event.payload);
+      }
+    } else if (event.type === 'requestViewModeChange') {
+      const suggestedViewMode = (() => {
+        const payload = event.payload;
+        if (payload === null || typeof payload !== 'object') return undefined;
+        const candidate = (payload as { suggestedViewMode?: unknown })
+          .suggestedViewMode;
+        return candidate === 'compare' || candidate === 'focus'
+            || candidate === 'lineup'
+          ? candidate
+          : undefined;
+      })();
+
+      if (suggestedViewMode !== undefined) {
+        setViewMode(suggestedViewMode);
+        return;
+      }
+
+      setViewMode((prevMode) => {
+        const index = viewModes.indexOf(prevMode);
+        if (index < 0) return viewModes[0];
+        return viewModes[(index + 1) % viewModes.length];
+      });
     }
   }
 
   useThemeKeyboardControls({
     enabled: true,
-    onThemeVariantChange: setThemeVariant,
-    onThemeModeChange: setThemeMode,
+    onThemeVariantChange: (variant) => {
+      setThemeVariant(variant);
+    },
+    onThemeModeChange: (mode) => {
+      setThemeMode(mode);
+    },
   });
 
   return (
@@ -83,11 +125,14 @@ function Studio({ className }: { className?: string }) {
         viewMode={viewMode}
         defaultFocusKey={defaultStudioFocusKey}
         resolveFocusKey={resolveStudioFocusKey}
-        buildStageGlobalProps={buildStudioStageGlobalProps}
+        buildStageGlobalProps={({ stage, viewMode, activeFocusKey }) => ({
+          ...buildStudioStageGlobalProps({ stage, viewMode, activeFocusKey }),
+          studioThemeKey,
+          studioAutoplay,
+        })}
         interactionTarget='content'
         onInteraction={handleInteraction}
-        themeVariant={themeVariant}
-        themeMode={themeMode}
+        themeKey={studioThemeKey}
       />
       <MenuBar
         onViewModeChange={(i) => setViewMode(viewModes[i])}

@@ -1,10 +1,5 @@
 /// <reference types="@lynx-js/rspeedy/client" />
-import type {
-  LunaThemeKey,
-  LunaThemeVariant,
-  LynxUIComponentId,
-  StudioViewMode,
-} from '@/types';
+import type { LunaThemeKey, LynxUIComponentId, StudioViewMode } from '@/types';
 
 declare module '@lynx-js/types' {
   interface GlobalProps {
@@ -13,10 +8,10 @@ declare module '@lynx-js/types' {
      * These types will be accessible through `lynx.__globalProps`.
      */
     lunaTheme: LunaThemeKey;
+    studioThemeKey: LunaThemeKey;
+    studioAutoplay: boolean;
     studioViewMode: StudioViewMode;
-    focusedComponent: LynxUIComponentId;
-    componentEntry: LynxUIComponentId;
-    lunaThemeVariant: LunaThemeVariant;
+    studioFocusKey: LynxUIComponentId;
     frontendTheme: 'light' | 'dark' | 'Light' | 'Dark';
   }
 }

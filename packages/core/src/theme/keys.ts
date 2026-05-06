@@ -11,3 +11,11 @@ export type LunaNeutralThemeKey = `luna-${LunaThemeMode}`;
 export type LunaCustomThemeKey = LunaThemeKey | (string & {});
 export type LunaCustomThemeVariant = LunaThemeVariant | (string & {});
 export type LunaCustomThemeMode = LunaThemeMode | (string & {});
+
+export function parseLunaThemeKey<K extends LunaThemeKey>(key: K): {
+  variant: LunaThemeVariant;
+  mode: LunaThemeMode;
+} {
+  const [variant, mode] = key.split('-') as [LunaThemeVariant, LunaThemeMode];
+  return { variant, mode };
+}

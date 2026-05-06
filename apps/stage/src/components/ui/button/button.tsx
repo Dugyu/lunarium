@@ -13,10 +13,17 @@ type ButtonProps = {
   disabled?: boolean;
   children?: ReactNode;
   className?: string;
+  bindtap?: () => void;
 };
 
 function Button(props: ButtonProps) {
-  const { size = 'md', variant = 'neutral', children, className } = props;
+  const {
+    size = 'md',
+    variant = 'neutral',
+    children,
+    className,
+    bindtap,
+  } = props;
 
   return (
     <view
@@ -31,6 +38,7 @@ function Button(props: ButtonProps) {
           : 'h-[32px]',
         className,
       )}
+      bindtap={bindtap}
     >
       <text
         className={cn(

@@ -14,21 +14,28 @@ pnpm i @dugyu/luna-stage
 **Peer dependencies** — install in your application:
 
 ```sh
-pnpm i react @lynx-js/web-core
+pnpm i react react-dom
 ```
 
-For motion capabilities, `motion` is an optional peer dependency:
+For Lynx rendering (`LynxStage` / `LunaLynxStage`), install the Lynx Web runtime:
+
+```sh
+pnpm i @lynx-js/web-core
+```
+
+For motion capabilities, install `motion`:
 
 ```sh
 pnpm i motion
 ```
 
-## Two Entry Points
+## Entry Points
 
-| Import path                | Requires `motion` | Use when                                 |
-| -------------------------- | ----------------- | ---------------------------------------- |
-| `@dugyu/luna-stage`        | No                | Static display, no animation             |
-| `@dugyu/luna-stage/motion` | Yes               | Animated transitions, perspective camera |
+| Import path                | Requires `motion` | Requires `@lynx-js/web-core` | Use when                                                  |
+| -------------------------- | ----------------- | ---------------------------- | --------------------------------------------------------- |
+| `@dugyu/luna-stage`        | No                | No                           | Static device frame + shared hooks                        |
+| `@dugyu/luna-stage/lynx`   | No                | Yes                          | Lynx bundle rendering (`LynxStage` / `LunaLynxStage`)     |
+| `@dugyu/luna-stage/motion` | Yes               | No                           | Animated transitions + perspective camera (`MotionStage`) |
 
 ## Concepts
 
@@ -71,7 +78,8 @@ Final translation = `world.xy × depthScale + panXY`
 ### Single-frame preview with `LunaLynxStage`
 
 ```tsx
-import { Stage, LunaLynxStage } from '@dugyu/luna-stage';
+import { Stage } from '@dugyu/luna-stage';
+import { LunaLynxStage } from '@dugyu/luna-stage/lynx';
 
 export default function Preview() {
   return (
@@ -79,8 +87,7 @@ export default function Preview() {
       <LunaLynxStage
         entry='my-component'
         bundleRoot='/bundles/'
-        lunaTheme='lunaris'
-        lunaThemeVariant='midnight'
+        lunaTheme='lunaris-dark'
       />
     </Stage>
   );
@@ -93,14 +100,15 @@ Override it with `resolveBundleSrc` when your host uses a different naming rule.
 
 `bundleRoot` is normalized internally to always end with a trailing slash before URL resolution. This means callers may pass either `'/bundles'` or `'/bundles/'`, and `resolveBundleSrc` will always receive the normalized value.
 
-`lunaTheme` and `lunaThemeVariant` inject LUNA design token globals into the Lynx runtime. Omit them to use default theming.
+`lunaTheme` injects LUNA design token globals into the Lynx runtime.
 
 ### Without LUNA theming
 
 Use `LynxStage` directly when you don't need LUNA global props forwarded:
 
 ```tsx
-import { Stage, LynxStage } from '@dugyu/luna-stage';
+import { Stage } from '@dugyu/luna-stage';
+import { LynxStage } from '@dugyu/luna-stage/lynx';
 
 <Stage>
   <LynxStage entry='my-component' bundleRoot='/bundles/' />
@@ -112,7 +120,7 @@ import { Stage, LynxStage } from '@dugyu/luna-stage';
 `LynxStage` can be used independently of the `Stage` system if you just want to render a Lynx view in a DOM container:
 
 ```tsx
-import { LynxStage } from '@dugyu/luna-stage';
+import { LynxStage } from '@dugyu/luna-stage/lynx';
 
 export default function StandaloneView() {
   return (
@@ -204,7 +212,6 @@ Extends `LynxStage` with LUNA theme properties.
 | Prop               | Type                      | Default        | Description                                   |
 | ------------------ | ------------------------- | -------------- | --------------------------------------------- |
 | `lunaTheme`        | `LunaThemeKey`            | `'luna-light'` | LUNA theme key (e.g. `'luna-light'`).         |
-| `lunaThemeVariant` | `LunaThemeVariant`        | `'luna'`       | LUNA theme variant (e.g. `'luna'`).           |
 | `extraGlobalProps` | `Record<string, unknown>` | —              | Additional global props.                      |
 | _(others)_         |                           |                | All `LynxStage` props (except `globalProps`). |
 
@@ -316,25 +323,26 @@ Omit `focalLength` (or set to `0`) — all frames render at equal scale regardle
 
 ## Component Table
 
-| Component              | Entry point       | Description                                           |
-| ---------------------- | ----------------- | ----------------------------------------------------- |
-| `Stage`                | `.`               | Static device frame                                   |
-| `StageContainer`       | `.`               | Auto-measures container, provides size via context    |
-| `LynxStage`            | `. (To be split)` | Core Lynx bundle renderer (no LUNA globals)           |
-| `LunaLynxStage`        | `. (To be split)` | `LynxStage` + LUNA theme prop injection               |
-| `MotionStage`          | `./motion`        | Animated device frame with perspective camera         |
-| `MotionStageContainer` | `./motion`        | Layout animation wrapper, provides `MotionValue` size |
-| `MotionPresentation`   | `./motion`        | Mount/unmount transition orchestrator                 |
+| Component              | Entry point | Description                                           |
+| ---------------------- | ----------- | ----------------------------------------------------- |
+| `Stage`                | `.`         | Static device frame                                   |
+| `StageContainer`       | `.`         | Auto-measures container, provides size via context    |
+| `LynxStage`            | `./lynx`    | Core Lynx bundle renderer (no LUNA globals)           |
+| `LunaLynxStage`        | `./lynx`    | `LynxStage` + LUNA theme prop injection               |
+| `MotionStage`          | `./motion`  | Animated device frame with perspective camera         |
+| `MotionStageContainer` | `./motion`  | Layout animation wrapper, provides `MotionValue` size |
+| `MotionPresentation`   | `./motion`  | Mount/unmount transition orchestrator                 |
 
 ## Hooks
 
-| Export                      | Description                                        |
-| --------------------------- | -------------------------------------------------- |
-| `useLynxStage`              | Core hook for managing Lynx runtime and lifecycle  |
-| `useIsClient`               | SSR-safe client-side mount detection               |
-| `useContainerResize`        | Observes container dimensions via `ResizeObserver` |
-| `useMergedRefs`             | Merges multiple refs onto a single element         |
-| `useIsomorphicLayoutEffect` | SSR-safe `useLayoutEffect`                         |
+| Export                      | Entry point | Description                                        |
+| --------------------------- | ----------- | -------------------------------------------------- |
+| `useEventCallback`          | `.`         | Stable callback that always calls the latest `fn`  |
+| `useIsClient`               | `.`         | SSR-safe client-side mount detection               |
+| `useContainerResize`        | `.`         | Observes container dimensions via `ResizeObserver` |
+| `useMergedRefs`             | `.`         | Merges multiple refs onto a single element         |
+| `useIsomorphicLayoutEffect` | `.`         | SSR-safe `useLayoutEffect`                         |
+| `useLynxStage`              | `./lynx`    | Core hook for managing Lynx runtime and lifecycle  |
 
 ## SSR / SSG Notes
 

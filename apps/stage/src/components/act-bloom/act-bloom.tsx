@@ -5,6 +5,7 @@
 import { useState } from '@lynx-js/react';
 
 import { demoTitleFromSlug } from '@dugyu/luna-catalog';
+import { parseLunaThemeKey } from '@dugyu/luna-core';
 
 import {
   ALL_LUNA_THEME_KEYS,
@@ -29,7 +30,6 @@ import type {
 import { cn } from '@/utils';
 
 import { LyricBlock } from './lyric-block.js';
-import { parseLunaThemeKey } from './parse-theme.js';
 import { ThemeControl } from './theme-control.js';
 
 const LynxUIComponents = LynxUIComponentsRegistry.list;
@@ -52,12 +52,12 @@ type ComponentDisplay = {
 
 type ActBloomProps = {
   studioViewMode: StudioViewMode;
-  focusedComponent: LynxUIComponentId;
+  studioFocusKey: LynxUIComponentId;
   lunaTheme: LunaThemeKey;
 };
 
 function ActBloom(
-  { studioViewMode, focusedComponent, lunaTheme }: ActBloomProps,
+  { studioViewMode, studioFocusKey, lunaTheme }: ActBloomProps,
 ) {
   const [focused, setFocused] = useState<LynxUIComponentId>(getSavedComponent);
   const [innerTheme, setInnerTheme] = useState<LunaThemeKey>(getSavedTheme);
@@ -68,11 +68,15 @@ function ActBloom(
     setFocused(id);
     if (__WEB__) {
       NativeModules?.bridge?.call(
-        'setFocusedComponent',
-        { id },
+        'emitStudioEvent',
+        {
+          type: 'studioFocusKey',
+          payload: { focusKey: id },
+          source: 'bloom-focus',
+        },
         res => {
           if (import.meta.env.DEV) {
-            console.log('setFocusedComponent:', res);
+            console.log('emitStudioEvent:', res);
           }
         },
       );
@@ -96,17 +100,17 @@ function ActBloom(
     if (__WEB__) {
       const { variant, mode } = parseLunaThemeKey(themeKey);
       NativeModules?.bridge?.call(
-        'setMoonriseState',
-        { field: 'luna-variant', value: variant },
+        'emitStudioEvent',
+        { type: 'studioThemeVariant', payload: variant, source: 'bloom-theme' },
         res => {
-          console.log('setMoonriseState:', res);
+          console.log('emitStudioEvent:', res);
         },
       );
       NativeModules?.bridge?.call(
-        'setMoonriseState',
-        { field: 'light-mode', value: mode === 'light' },
+        'emitStudioEvent',
+        { type: 'studioThemeMode', payload: mode, source: 'bloom-theme' },
         res => {
-          console.log('setMoonriseState:', res);
+          console.log('emitStudioEvent:', res);
         },
       );
     } else {
@@ -174,7 +178,7 @@ function ActBloom(
                         key={d.id}
                         data={d}
                         onClick={handleComponentClick}
-                        checked={focusedComponent === d.id}
+                        checked={studioFocusKey === d.id}
                       />
                     )
                 );

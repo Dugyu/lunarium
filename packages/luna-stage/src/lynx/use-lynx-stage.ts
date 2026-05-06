@@ -5,13 +5,9 @@
 import type { LynxViewElement as LynxView } from '@lynx-js/web-core/client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import type {
-  ResolveBundleSrc,
-  UseLynxStageOptions,
-  UseLynxStageResult,
-} from './types';
+import type { UseLynxStageOptions, UseLynxStageResult } from './types';
 import { useContainerResize } from '../hooks/use-container-resize';
-import { useEffectEvent } from '../hooks/use-effect-event';
+import { useEventCallback } from '../hooks/use-event-callback';
 import '../types/lynx-view';
 
 export type {
@@ -36,10 +32,6 @@ function normalizeBundleRoot(bundleRoot: string): string {
     : `${bundleRoot}/`;
 }
 
-const RESOLVE_BUNDLE_SRC_FALLBACK = {
-  fallbackResult: undefined as string | undefined,
-};
-
 // ─── Runtime singleton ────────────────────────────────────────────────────────
 
 let runtimeReady: Promise<void> | null = null;
@@ -58,8 +50,8 @@ function ensureRuntime(): Promise<void> {
 export function useLynxStage({
   bundleRoot,
   entry,
-  resolveBundleSrc,
   globalProps,
+  resolveBundleSrc,
   onNativeModulesCall,
   onReady,
   onError,
@@ -77,13 +69,10 @@ export function useLynxStage({
   const dimsReadyRef = useRef(false);
 
   // Stable refs for callbacks — avoids re-running effects on every render
-  const onReadyEvent = useEffectEvent(onReady);
-  const reportError = useEffectEvent<[string]>(onError);
-  const onNativeModulesCallEvent = useEffectEvent(onNativeModulesCall);
-  const resolveBundleSrcEvent = useEffectEvent(
-    (params: Parameters<ResolveBundleSrc>[0]) => resolveBundleSrc?.(params),
-    RESOLVE_BUNDLE_SRC_FALLBACK,
-  );
+  const reportReadyEvent = useEventCallback(onReady);
+  const reportErrorEvent = useEventCallback(onError);
+  const onNativeModulesCallEvent = useEventCallback(onNativeModulesCall);
+  const resolveBundleSrcEvent = useEventCallback(resolveBundleSrc);
 
   // Reset on entry / bundle root change
   useEffect(() => {
@@ -97,13 +86,13 @@ export function useLynxStage({
     ensureRuntime()
       .then(() => setReady(true))
       .catch((err: unknown) => {
-        reportError(
+        reportErrorEvent(
           `Failed to load Lynx runtime: ${
             err instanceof Error ? err.message : String(err)
           }`,
         );
       });
-  }, []);
+  }, [reportErrorEvent]);
 
   // Watch container dimensions — gate URL assignment on non-zero size
   useContainerResize({
@@ -137,13 +126,14 @@ export function useLynxStage({
     return true;
   }, []);
 
-  // Wire up onNativeModulesCall whenever the handler changes
+  // Wire up onNativeModulesCall after runtime is ready. `useEventCallback`
+  // ensures the proxy always calls the latest handler without re-wiring.
   useEffect(() => {
     const view = lynxViewRef.current as LynxViewWithExtensions | null;
     if (!view) return;
     view.onNativeModulesCall = (name, data, moduleName) =>
       onNativeModulesCallEvent(name, data, moduleName);
-  }, [ready]); // re-wire after runtime is ready and ref is populated
+  }, [ready, onNativeModulesCallEvent]);
 
   // Inject globalProps whenever they change
   useEffect(() => {
@@ -187,7 +177,7 @@ export function useLynxStage({
           globalProps as unknown as UpdateGlobalPropsArg,
         );
       }
-      onReadyEvent();
+      reportReadyEvent();
     };
 
     const setupShadow = (shadow: ShadowRoot) => {
@@ -212,7 +202,7 @@ export function useLynxStage({
         if (disposed) return;
         if (performance.now() - pollStart > 3000) {
           if (timer) clearTimeout(timer);
-          reportError('Preview timed out: shadow root was not created');
+          reportErrorEvent('Preview timed out: shadow root was not created');
           return;
         }
         const shadow = el.shadowRoot;
@@ -223,7 +213,7 @@ export function useLynxStage({
 
       timer = setTimeout(() => {
         if (!renderedRef.current) {
-          reportError(
+          reportErrorEvent(
             'Preview timed out: rendering did not complete within 5s',
           );
         }
@@ -246,6 +236,10 @@ export function useLynxStage({
     bundleRoot,
     setDimensions,
     globalProps,
+    resolveBundleSrcEvent,
+    onNativeModulesCallEvent,
+    reportReadyEvent,
+    reportErrorEvent,
   ]);
 
   return { lynxViewRef, containerRef };

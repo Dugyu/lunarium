@@ -14,7 +14,10 @@ export function App() {
     <AppTheme preset={lynx.__globalProps.lunaTheme ?? 'luna-light'}>
       <ActMoonrise
         studioViewMode={lynx.__globalProps.studioViewMode ?? 'compare'}
-        lunaVariant={lynx.__globalProps.lunaThemeVariant ?? 'luna'}
+        studioThemeKey={lynx.__globalProps.studioThemeKey
+          ?? lynx.__globalProps.lunaTheme
+          ?? 'luna-light'}
+        studioAutoplay={lynx.__globalProps.studioAutoplay ?? false}
       />
     </AppTheme>
   );

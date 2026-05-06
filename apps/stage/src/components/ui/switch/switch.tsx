@@ -9,13 +9,35 @@ import { cn } from '@/utils';
 type SwitchProps = {
   size?: 'sm' | 'lg';
   defaultChecked?: boolean;
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
   disabled?: boolean;
 };
 
 function Switch(
-  { size = 'sm', defaultChecked, disabled = false }: SwitchProps,
+  {
+    size = 'sm',
+    defaultChecked = false,
+    checked: checkedProp,
+    onCheckedChange,
+    disabled = false,
+  }: SwitchProps,
 ) {
-  const [checked, setChecked] = useState(defaultChecked);
+  const isControlled = checkedProp !== undefined;
+  const [uncontrolledChecked, setUncontrolledChecked] = useState(
+    defaultChecked,
+  );
+
+  const checked = isControlled ? checkedProp : uncontrolledChecked;
+
+  const handleToggle = () => {
+    if (disabled) return;
+    const next = !checked;
+    if (!isControlled) {
+      setUncontrolledChecked(next);
+    }
+    onCheckedChange?.(next);
+  };
 
   return (
     <view
@@ -25,7 +47,7 @@ function Switch(
         size === 'lg' && 'w-[48px] h-[28px]',
         disabled && 'ui-disabled',
       )}
-      bindtap={() => setChecked(prev => !prev)}
+      bindtap={handleToggle}
     >
       {/* Track */}
       <view

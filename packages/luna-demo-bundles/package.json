@@ -1,0 +1,33 @@
+{
+  "name": "@dugyu/luna-demo-bundles",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Prebuilt Lynx web bundle assets used by the luna stage/studio minimal demo",
+  "keywords": [
+    "luna",
+    "studio",
+    "stage",
+    "lynx",
+    "bundles",
+    "demo"
+  ],
+  "homepage": "https://github.com/Dugyu/lunarium/tree/main/packages/luna-demo-bundles#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dugyu/lunarium.git",
+    "directory": "packages/luna-demo-bundles"
+  },
+  "license": "Apache-2.0",
+  "author": "The Lynx Authors",
+  "sideEffects": false,
+  "type": "module",
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node ./build.mjs"
+  }
+}

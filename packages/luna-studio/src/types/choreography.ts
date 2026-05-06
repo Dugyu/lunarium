@@ -6,8 +6,7 @@ import type { CSSProperties } from 'react';
 
 import type { LynxRuntimeCall } from './lynx-stage';
 import type {
-  LunaThemeMode,
-  LunaThemeVariant,
+  LunaThemeKey,
   StageGlobalPropsBuilder,
   StudioModeGrid,
   StudioResolvedLayout,
@@ -78,10 +77,8 @@ export type ChoreographyBaseProps = {
   defaultFocusKey?: string;
   /** Optional builder for app-specific Lynx global props derived from stage + focus state. */
   buildStageGlobalProps?: StageGlobalPropsBuilder;
-  /** Theme variant passed down to rendered Lynx stages. */
-  themeVariant?: LunaThemeVariant;
-  /** Theme mode passed down to rendered Lynx stages. */
-  themeMode?: LunaThemeMode;
+  /** Shared theme key applied to all stages in focus/lineup modes. */
+  themeKey?: LunaThemeKey;
 };
 
 export type ChoreographyInteractionProps = {
@@ -120,3 +117,14 @@ export type ChoreographyProps = Prettify<
     viewMode?: StudioViewMode;
   }
 >;
+
+export function getPayloadString(
+  data: unknown,
+  field = 'id',
+): string | undefined {
+  if (typeof data === 'string') return data;
+  if (data === null || typeof data !== 'object') return undefined;
+
+  const value = (data as Record<string, unknown>)[field];
+  return typeof value === 'string' ? value : undefined;
+}
