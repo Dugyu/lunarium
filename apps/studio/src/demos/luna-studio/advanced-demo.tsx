@@ -6,7 +6,6 @@ import { useState } from 'react';
 
 import { Choreography } from '@dugyu/luna-studio';
 import type {
-  InteractionParams,
   LunaThemeKey,
   LunaThemeMode,
   LunaThemeVariant,
@@ -16,6 +15,7 @@ import type {
 import { useThemeKeyboardControls } from '@/components/studio/use-theme-keyboard-controls';
 
 import {
+  createDemoInteractionHandler,
   createDemoResolveFocusKey,
   createDemoStageGlobalPropsBuilder,
 } from './interaction';
@@ -24,26 +24,6 @@ import { lunaStudioDemoLayout, lunaStudioDemoModeGrid } from './layout';
 const VIEW_MODES: StudioViewMode[] = ['compare', 'focus', 'lineup'];
 
 const resolveFocusKey = createDemoResolveFocusKey(lunaStudioDemoLayout);
-
-type StudioEvent = {
-  type:
-    | 'studioThemeVariant'
-    | 'studioThemeMode'
-    | 'studioAutoplay'
-    | 'requestViewModeChange';
-  payload?: unknown;
-  source?: unknown;
-};
-
-function isStudioEvent(data: unknown): data is StudioEvent {
-  if (data === null || typeof data !== 'object') return false;
-
-  const event = data as { type?: unknown };
-  return event.type === 'studioThemeVariant'
-    || event.type === 'studioThemeMode'
-    || event.type === 'studioAutoplay'
-    || event.type === 'requestViewModeChange';
-}
 
 function LunaStudioAdvancedDemo() {
   const [viewMode, setViewMode] = useState<StudioViewMode>('compare');
@@ -75,39 +55,12 @@ function LunaStudioAdvancedDemo() {
     });
   };
 
-  function handleInteraction(interaction: InteractionParams) {
-    if (interaction.target !== 'content') return;
-    const call = interaction.runtimeCall;
-    if (call.name !== 'emitStudioEvent') return;
-    if (!isStudioEvent(call.data)) return;
-    const event = call.data;
-    if (event.type === 'studioThemeVariant') {
-      if (event.payload === 'luna' || event.payload === 'lunaris') {
-        setStudioThemeVariant(event.payload);
-      }
-    } else if (event.type === 'studioThemeMode') {
-      if (event.payload === 'light' || event.payload === 'dark') {
-        setStudioThemeMode(event.payload);
-      }
-    } else if (event.type === 'studioAutoplay') {
-      if (typeof event.payload === 'boolean') {
-        setStudioAutoplay(event.payload);
-      }
-    } else if (event.type === 'requestViewModeChange') {
-      const suggestedViewMode = (() => {
-        const payload = event.payload;
-        if (payload === null || typeof payload !== 'object') return undefined;
-        const candidate = (payload as { suggestedViewMode?: unknown })
-          .suggestedViewMode;
-        return candidate === 'compare' || candidate === 'focus'
-            || candidate === 'lineup'
-          ? candidate
-          : undefined;
-      })();
-
-      handleRequestViewModeChange({ suggestedViewMode });
-    }
-  }
+  const handleInteraction = createDemoInteractionHandler({
+    onThemeModeChange: setStudioThemeMode,
+    onThemeVariantChange: setStudioThemeVariant,
+    onAutoplayChange: setStudioAutoplay,
+    onRequestViewModeChange: handleRequestViewModeChange,
+  });
 
   const containerClassName = themeMode === 'light'
     ? 'bg-[#f5f5f5] text-black'

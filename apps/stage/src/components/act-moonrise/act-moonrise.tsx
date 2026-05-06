@@ -86,7 +86,7 @@ function ActMoonrise(
               bindtap={() => {
                 emit({
                   type: 'studioThemeVariant',
-                  payload: lunaVariant === 'luna' ? 'lunaris' : 'luna',
+                  payload: 'luna',
                   source: 'moonrise-theme-picker',
                 });
               }}
@@ -112,7 +112,7 @@ function ActMoonrise(
               bindtap={() => {
                 emit({
                   type: 'studioThemeVariant',
-                  payload: lunaVariant === 'luna' ? 'lunaris' : 'luna',
+                  payload: 'lunaris',
                   source: 'moonrise-theme-picker',
                 });
               }}

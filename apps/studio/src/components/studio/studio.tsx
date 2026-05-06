@@ -59,6 +59,7 @@ function Studio({ className }: { className?: string }) {
   function handleInteraction(interaction: InteractionParams) {
     if (interaction.target !== 'content') return;
     const call = interaction.runtimeCall;
+    if (call === undefined) return;
     if (call.name !== 'emitStudioEvent') return;
     if (!isStudioEvent(call.data)) return;
     const event = call.data;

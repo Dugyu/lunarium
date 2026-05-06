@@ -4,12 +4,18 @@
 
 import type { LunaThemeMode, LunaThemeVariant } from '@dugyu/luna-core';
 
+import type { StudioViewMode } from '@/types';
+
 type StudioEvent =
   | { type: 'studioThemeVariant'; payload: LunaThemeVariant; source?: string }
   | { type: 'studioThemeMode'; payload: LunaThemeMode; source?: string }
   | { type: 'studioFocusKey'; payload: { focusKey: string }; source?: string }
   | { type: 'studioAutoplay'; payload: boolean; source?: string }
-  | { type: 'requestViewModeChange'; payload?: unknown; source?: string };
+  | {
+    type: 'requestViewModeChange';
+    payload?: { suggestedViewMode?: StudioViewMode };
+    source?: string;
+  };
 
 type onStudioEvent = (e: StudioEvent) => void;
 

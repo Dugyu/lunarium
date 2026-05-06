@@ -47,6 +47,7 @@ export function createDemoResolveFocusKey(
     }
 
     const call = interaction.runtimeCall;
+    if (call === undefined) return undefined;
     if (call.name !== 'emitStudioEvent') return undefined;
     if (!isStudioEvent(call.data)) return undefined;
     if (call.data.type !== 'studioFocusKey') return undefined;
@@ -83,6 +84,7 @@ export function createDemoInteractionHandler(params: {
   return (interaction: InteractionParams) => {
     if (interaction.target !== 'content') return;
     const call = interaction.runtimeCall;
+    if (call === undefined) return;
     if (call.name !== 'emitStudioEvent') return;
     if (!isStudioEvent(call.data)) return;
     const event = call.data;
