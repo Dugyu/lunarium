@@ -22,8 +22,6 @@ export type LunaLynxStageProps =
   & {
     /** LUNA theme key, e.g. `'luna-light'`, `'lunaris-dark'`. */
     lunaTheme?: LunaThemeKey;
-    /** LUNA theme variant, e.g. `'luna'`, `'lunaris'`. */
-    lunaThemeVariant?: LunaThemeVariant;
     /**
      * Additional global props to inject alongside LUNA theme props.
      * Merged with the LUNA props — LUNA props take precedence on key conflicts.
@@ -50,18 +48,21 @@ export type LunaLynxStageProps =
 
 function LunaLynxStageImpl({
   lunaTheme = 'luna-light',
-  lunaThemeVariant = 'luna',
   extraGlobalProps,
   groupId = DEFAULT_GROUP_ID,
   bundleRoot = '/',
   interactive = true,
   ...stageOptions
 }: LunaLynxStageProps): ReactNode {
-  const globalProps = useMemo<LynxGlobalProps>(() => ({
-    ...(extraGlobalProps ?? {}),
-    lunaTheme,
-    lunaThemeVariant,
-  }), [extraGlobalProps, lunaTheme, lunaThemeVariant]);
+  const globalProps = useMemo<LynxGlobalProps>(() => {
+    const resolvedThemeVariant = lunaTheme.split('-')[0] as LunaThemeVariant;
+
+    return {
+      ...(extraGlobalProps ?? {}),
+      lunaTheme,
+      lunaThemeVariant: resolvedThemeVariant,
+    };
+  }, [extraGlobalProps, lunaTheme]);
 
   const { lynxViewRef, containerRef } = useLynxStage({
     ...stageOptions,

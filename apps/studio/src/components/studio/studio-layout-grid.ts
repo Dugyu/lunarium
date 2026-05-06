@@ -249,12 +249,6 @@ function toGridStyle(cellValue: Cell): CSSProperties {
   };
 }
 
-function getStudioComponent(
-  stage: StudioResolvedStage,
-): StudioComponentMetadata | undefined {
-  return (stage as StudioAppStage).studio?.component;
-}
-
 function findStageIdByComponentKey(componentKey: string): StageId | undefined {
   const entry = Object.entries(
     stageCatalog as Record<string, StudioStageDefinition>,
@@ -288,13 +282,19 @@ function resolveStudioFocusKey(
   if (interaction.target !== 'content') return undefined;
   const call: LynxRuntimeCall | undefined = interaction.runtimeCall;
   if (call === undefined) return undefined;
-  if (call.name !== 'setFocusedComponent') return undefined;
+  if (call.name !== 'emitStudioEvent') return undefined;
   if (call.data === null || typeof call.data !== 'object') return undefined;
 
-  const componentKey = (call.data as { id?: unknown }).id;
-  if (typeof componentKey !== 'string') return undefined;
+  const data = call.data as { type?: unknown; payload?: unknown };
+  if (data.type !== 'studioFocusKey') return undefined;
+  if (data.payload === null || typeof data.payload !== 'object') {
+    return undefined;
+  }
 
-  return findStageIdByComponentKey(componentKey);
+  const focusKey = (data.payload as { focusKey?: unknown }).focusKey;
+  if (typeof focusKey !== 'string') return undefined;
+
+  return findStageIdByComponentKey(focusKey);
 }
 
 function buildStudioStageGlobalProps(params: {
@@ -302,18 +302,14 @@ function buildStudioStageGlobalProps(params: {
   viewMode: StudioViewMode;
   activeFocusKey: string;
 }): Record<string, unknown> {
-  const stageComponent = getStudioComponent(params.stage);
   const focusedStage = (stageCatalog as Record<string, StudioStageDefinition>)[
     params.activeFocusKey
   ];
-  const focusedComponent = focusedStage?.studio?.component?.key;
+  const studioFocusKey = focusedStage?.studio?.component?.key;
 
   return {
     studioViewMode: params.viewMode,
-    ...(focusedComponent !== undefined ? { focusedComponent } : {}),
-    ...(stageComponent?.key !== undefined
-      ? { componentEntry: stageComponent.key }
-      : {}),
+    ...(studioFocusKey !== undefined ? { studioFocusKey } : {}),
   };
 }
 

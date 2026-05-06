@@ -7,7 +7,6 @@ Prebuilt `.web.bundle` assets for the `luna-studio` minimal demo.
 ### Stage
 
 - `ActBloom`
-- `ActBlueSkies`
 - `ActButton`
 - `ActCheckbox`
 - `ActMoonrise`

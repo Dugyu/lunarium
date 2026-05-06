@@ -87,8 +87,7 @@ export default function Preview() {
       <LunaLynxStage
         entry='my-component'
         bundleRoot='/bundles/'
-        lunaTheme='lunaris'
-        lunaThemeVariant='midnight'
+        lunaTheme='lunaris-dark'
       />
     </Stage>
   );
@@ -101,7 +100,7 @@ Override it with `resolveBundleSrc` when your host uses a different naming rule.
 
 `bundleRoot` is normalized internally to always end with a trailing slash before URL resolution. This means callers may pass either `'/bundles'` or `'/bundles/'`, and `resolveBundleSrc` will always receive the normalized value.
 
-`lunaTheme` and `lunaThemeVariant` inject LUNA design token globals into the Lynx runtime. Omit them to use default theming.
+`lunaTheme` injects LUNA design token globals into the Lynx runtime.
 
 ### Without LUNA theming
 
@@ -213,7 +212,6 @@ Extends `LynxStage` with LUNA theme properties.
 | Prop               | Type                      | Default        | Description                                   |
 | ------------------ | ------------------------- | -------------- | --------------------------------------------- |
 | `lunaTheme`        | `LunaThemeKey`            | `'luna-light'` | LUNA theme key (e.g. `'luna-light'`).         |
-| `lunaThemeVariant` | `LunaThemeVariant`        | `'luna'`       | LUNA theme variant (e.g. `'luna'`).           |
 | `extraGlobalProps` | `Record<string, unknown>` | —              | Additional global props.                      |
 | _(others)_         |                           |                | All `LynxStage` props (except `globalProps`). |
 

@@ -125,8 +125,7 @@ export function Demo() {
         layout={layout}
         modeGrid={modeGrid}
         viewMode='compare'
-        themeVariant='lunaris'
-        themeMode='dark'
+        themeKey='lunaris-dark'
         interactionTarget='content'
       />
     </div>
@@ -383,8 +382,7 @@ type ChoreographyProps = Omit<ChoreographyViewProps, 'mode'> & {
 Behavior notes:
 
 - `viewMode` defaults to `'compare'`
-- `themeVariant` defaults to `'lunaris'`
-- `themeMode` defaults to `'dark'`
+- `themeKey` defaults to `'lunaris-dark'`
 - `interactionTarget` defaults to `'content'`
 - `focusKey` is read directly from each resolved stage in `layout` (i.e. from the `StudioResolvedLayout` stage items)
 - `bundleRoot` can provide a choreography-level fallback; per-stage resource roots are taken from each resolved stage in `layout`

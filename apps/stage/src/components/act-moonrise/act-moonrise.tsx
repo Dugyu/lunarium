@@ -2,32 +2,39 @@
 // Licensed under the Apache License Version 2.0 that can be found in the
 // LICENSE file in the root directory of this source tree.
 
-import { useCallback } from 'react';
+import { useCallback } from '@lynx-js/react';
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioItem } from '@/components/ui/radio-group';
 import { Switch } from '@/components/ui/switch';
-import type { LunaThemeVariant, StudioViewMode } from '@/types';
-import type { onMoonriseEvent } from '@/types/event.js';
+import type { LunaThemeKey, StudioViewMode } from '@/types';
+import type { onStudioEvent } from '@/types/event.js';
 import { cn } from '@/utils';
+
+import { parseLunaThemeKey } from '../act-bloom/parse-theme.js';
 
 type ActMoonriseProps = {
   studioViewMode: StudioViewMode;
-  lunaVariant: LunaThemeVariant;
+  studioThemeKey: LunaThemeKey;
+  studioAutoplay: boolean;
 };
 
 function ActMoonrise(
-  { studioViewMode = 'compare', lunaVariant }: ActMoonriseProps,
+  { studioViewMode = 'compare', studioThemeKey, studioAutoplay }:
+    ActMoonriseProps,
 ) {
-  const emit = useCallback<onMoonriseEvent>(
-    ({ field, value }) => {
+  const { variant: lunaVariant, mode } = parseLunaThemeKey(studioThemeKey);
+  const lightsOn = mode === 'light';
+
+  const emit = useCallback<onStudioEvent>(
+    (event) => {
       NativeModules?.bridge?.call(
-        'setMoonriseState',
-        { field, value },
+        'emitStudioEvent',
+        event,
         res => {
           if (import.meta.env.DEV) {
-            console.log('setMoonriseState:', res);
+            console.log('emitStudioEvent:', res);
           }
         },
       );
@@ -78,8 +85,9 @@ function ActMoonrise(
               )}
               bindtap={() => {
                 emit({
-                  field: 'luna-variant',
-                  value: lunaVariant === 'luna' ? 'lunaris' : 'luna',
+                  type: 'studioThemeVariant',
+                  payload: lunaVariant === 'luna' ? 'lunaris' : 'luna',
+                  source: 'moonrise-theme-picker',
                 });
               }}
             >
@@ -103,8 +111,9 @@ function ActMoonrise(
               )}
               bindtap={() => {
                 emit({
-                  field: 'luna-variant',
-                  value: lunaVariant === 'luna' ? 'lunaris' : 'luna',
+                  type: 'studioThemeVariant',
+                  payload: lunaVariant === 'luna' ? 'lunaris' : 'luna',
+                  source: 'moonrise-theme-picker',
                 });
               }}
             >
@@ -148,13 +157,33 @@ function ActMoonrise(
               <text className='text-start text-sm text-content-muted'>
                 Lights on
               </text>
-              <Switch defaultChecked size='sm' />
+              <Switch
+                size='sm'
+                checked={lightsOn}
+                onCheckedChange={(checked) => {
+                  emit({
+                    type: 'studioThemeMode',
+                    payload: checked ? 'light' : 'dark',
+                    source: 'moonrise-lights-on',
+                  });
+                }}
+              />
             </view>
             <view className='w-full flex flex-row items-center justify-between gap-[10px]'>
               <text className='text-start text-sm text-content-muted'>
                 Play itself
               </text>
-              <Switch size='sm' />
+              <Switch
+                size='sm'
+                checked={studioAutoplay}
+                onCheckedChange={(checked) => {
+                  emit({
+                    type: 'studioAutoplay',
+                    payload: checked,
+                    source: 'moonrise-autoplay',
+                  });
+                }}
+              />
             </view>
           </view>
         </view>
@@ -194,6 +223,9 @@ function ActMoonrise(
           <Button
             size='lg'
             variant={studioViewMode === 'compare' ? 'neutral' : 'primary'}
+            bindtap={() => {
+              emit({ type: 'requestViewModeChange', source: 'moonrise-cta' });
+            }}
           >
             Let it bloom
           </Button>

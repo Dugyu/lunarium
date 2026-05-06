@@ -108,8 +108,7 @@ function ChoreographyView({
   bundleRoot,
   resolveFocusKey,
   buildStageGlobalProps,
-  themeVariant = 'lunaris',
-  themeMode = 'dark',
+  themeKey,
   interactionTarget = 'content',
   onLynxRuntimeCall,
   onInteraction,
@@ -232,16 +231,21 @@ function ChoreographyView({
     };
   }, [containerGrid, style]);
 
+  const resolvedThemeKey = themeKey ?? 'lunaris-dark';
+  const resolvedThemeMode = resolvedThemeKey.endsWith('-light')
+    ? 'light'
+    : 'dark';
+
   const stageOutlineStyle: CSSProperties = useMemo(
     () => ({
-      backgroundColor: themeMode === 'light'
+      backgroundColor: resolvedThemeMode === 'light'
         ? 'rgb(0 0 0 / 0.04)'
         : 'rgb(255 255 255 / 0.05)',
     }),
-    [themeMode],
+    [resolvedThemeMode],
   );
 
-  const maskColor = themeMode === 'light' ? '#f5f5f5' : '#00000080';
+  const maskColor = resolvedThemeMode === 'light' ? '#f5f5f5' : '#00000080';
 
   return (
     <div className={className} style={mergedContainerStyle}>
@@ -279,9 +283,7 @@ function ChoreographyView({
                   entry={stage.entry}
                   lunaTheme={mode === 'compare'
                     ? stage.theme
-                    : `${themeVariant}-${themeMode}`}
-                  lunaThemeVariant={themeVariant}
-                  interactive={contentInteractive}
+                    : resolvedThemeKey}
                   onLynxRuntimeCall={getStageRuntimeCallHandler(stage)}
                   {...(stage.resolvedBundleRoot === undefined
                     ? {}

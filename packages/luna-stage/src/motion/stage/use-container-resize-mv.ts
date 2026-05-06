@@ -27,7 +27,7 @@ export function useContainerResizeMV<T extends HTMLElement = HTMLElement>(
   const prevH = useRef<number>(-1);
   const hasOnResize = onResizeProp !== undefined;
 
-  // Stable callback — avoids stale closure without adding to deps
+  // Stable callback — avoids stale closure
   const onResize = useEventCallback(onResizeProp);
 
   useEffect(() => {
