@@ -1,5 +1,12 @@
 # @dugyu/luna-reactlynx
 
+## 0.4.0
+
+### Patch Changes
+
+- Updated dependencies [[`618e237`](https://github.com/Dugyu/lunarium/commit/618e237b50baa90e00517a17f36d680b77860296)]:
+  - @dugyu/luna-core@0.4.0
+
 ## 0.3.1
 
 ### Patch Changes

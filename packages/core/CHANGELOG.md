@@ -1,5 +1,11 @@
 # @dugyu/luna-core
 
+## 0.4.0
+
+### Minor Changes
+
+- Export `parseLunaThemeKey` and `inferThemeVariant` helpers. ([#113](https://github.com/Dugyu/lunarium/pull/113))
+
 ## 0.3.1
 
 ### Patch Changes
