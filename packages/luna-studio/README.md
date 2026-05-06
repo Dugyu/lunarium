@@ -1,6 +1,6 @@
 # luna-studio
 
-`@dugyu/luna-studio` is the reusable multi-stage choreography layer extracted from `apps/studio`.
+`@dugyu/luna-studio` is a reusable multi-stage choreography layer for Lynx-based previews and comparison canvases.
 
 It packages the rendering, layout, focus, and interaction plumbing needed for:
 
@@ -10,9 +10,9 @@ It packages the rendering, layout, focus, and interaction plumbing needed for:
 - embedded Lynx runtime callback forwarding
 - app-defined focus resolution and global-props injection
 
-It does **not** ship the app shell from `apps/studio`.
+It does **not** ship an application shell.
 
-The app-local pieces stay outside this package:
+The following app-level pieces stay outside this package:
 
 - `Studio`
 - `MenuBar`
@@ -226,7 +226,7 @@ Notes:
 
 ### `StudioLayout`
 
-`StudioLayout` is the authoring layout specification for the three built-in presentation modes. Each item references a stage by `id` and carries host-side overrides (e.g. `className`, `style`, `theme`, `focusKey`).
+`StudioLayout` is the authoring layout specification for the three built-in presentation modes. Each item references a stage by `id` and carries host-side overrides (e.g., `className`, `style`, `theme`, `focusKey`).
 
 ```ts
 type StudioLayout = Record<
@@ -371,7 +371,7 @@ This makes it easy to derive stage-local props such as:
 
 `Choreography` is the main public component in this package.
 
-Internally it wraps `ChoreographyView`, which is the lower-level renderer responsible for layout, focus state, interaction normalization, and Lynx-stage wiring.
+Internally, it wraps `ChoreographyView`, which is the lower-level renderer responsible for layout, focus state, interaction normalization, and Lynx-stage wiring.
 
 ```ts
 type ChoreographyProps = Omit<ChoreographyViewProps, 'mode'> & {
@@ -384,13 +384,13 @@ Behavior notes:
 - `viewMode` defaults to `'compare'`
 - `themeKey` defaults to `'lunaris-dark'`
 - `interactionTarget` defaults to `'content'`
-- `focusKey` is read directly from each resolved stage in `layout` (i.e. from the `StudioResolvedLayout` stage items)
+- `focusKey` is read directly from each resolved stage in `layout` (i.e., from the `StudioResolvedLayout` stage items)
 - `bundleRoot` can provide a choreography-level fallback; per-stage resource roots are taken from each resolved stage in `layout`
 - `layout` is required and should already be fully resolved by the host app
 
-## Scope Of This Extraction
+## Scope
 
-This package currently covers the reusable choreography layer:
+This package covers the reusable choreography layer:
 
 - public choreography types and data model
 - grid-driven multi-stage layout and focus presentation
@@ -398,7 +398,7 @@ This package currently covers the reusable choreography layer:
 - the internal `ChoreographyView` renderer
 - the internal Lynx runtime adapter used by `Choreography`
 
-This package does **not** currently provide:
+This package does **not** provide:
 
 - a top-level `Studio` shell component
 - built-in demo layout data

@@ -1,7 +1,7 @@
 {
   "name": "@dugyu/luna-studio",
   "version": "0.0.0",
-  "description": "Stage system and showcase components for the L.U.N.A project",
+  "description": "Reusable multi-stage choreography layer for the L.U.N.A project",
   "keywords": [
     "luna",
     "studio",
