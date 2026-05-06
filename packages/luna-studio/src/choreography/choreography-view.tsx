@@ -12,6 +12,7 @@ import type {
 } from 'react';
 import { useMemo, useState } from 'react';
 
+import { inferThemeMode } from '@dugyu/luna-core';
 import { useEventCallback } from '@dugyu/luna-stage';
 import {
   MotionPresentation,
@@ -232,9 +233,7 @@ function ChoreographyView({
   }, [containerGrid, style]);
 
   const resolvedThemeKey = themeKey ?? 'lunaris-dark';
-  const resolvedThemeMode = resolvedThemeKey.endsWith('-light')
-    ? 'light'
-    : 'dark';
+  const resolvedThemeMode = inferThemeMode(resolvedThemeKey) ?? 'dark';
 
   const stageOutlineStyle: CSSProperties = useMemo(
     () => ({

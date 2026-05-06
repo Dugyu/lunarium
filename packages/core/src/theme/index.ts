@@ -18,6 +18,8 @@ export type {
   LunaCustomThemeVariant,
 } from './keys.js';
 
+export { parseLunaThemeKey } from './keys.js';
+
 /* ============================================================================
  * Theme tokens
  * ========================================================================== */
@@ -52,6 +54,7 @@ export {
   resolveThemeKeyFromList,
   resolveThemeObjectFromList,
   inferThemeMode,
+  inferThemeVariant,
 } from './resolver.js';
 
 /** Resolver configuration & contracts */

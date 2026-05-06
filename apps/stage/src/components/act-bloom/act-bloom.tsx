@@ -5,6 +5,7 @@
 import { useState } from '@lynx-js/react';
 
 import { demoTitleFromSlug } from '@dugyu/luna-catalog';
+import { parseLunaThemeKey } from '@dugyu/luna-core';
 
 import {
   ALL_LUNA_THEME_KEYS,
@@ -29,7 +30,6 @@ import type {
 import { cn } from '@/utils';
 
 import { LyricBlock } from './lyric-block.js';
-import { parseLunaThemeKey } from './parse-theme.js';
 import { ThemeControl } from './theme-control.js';
 
 const LynxUIComponents = LynxUIComponentsRegistry.list;
