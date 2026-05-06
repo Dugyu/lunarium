@@ -1,7 +1,6 @@
 {
   "name": "@dugyu/luna-demo-bundles",
   "version": "0.0.0",
-  "private": true,
   "description": "Prebuilt Lynx web bundle assets used by the luna stage/studio minimal demo",
   "keywords": [
     "luna",
@@ -29,5 +28,8 @@
   ],
   "scripts": {
     "build": "node ./build.mjs"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
