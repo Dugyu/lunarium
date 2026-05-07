@@ -1,5 +1,11 @@
 # @dugyu/luna-stage
 
+## 0.1.1
+
+### Patch Changes
+
+- Remove unnecessary react-dom peer dependency and refresh installation docs. ([#117](https://github.com/Dugyu/lunarium/pull/117))
+
 ## 0.1.0
 
 ### Minor Changes
