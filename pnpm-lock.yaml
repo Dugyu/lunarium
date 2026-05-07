@@ -336,6 +336,8 @@ importers:
         specifier: catalog:ts
         version: 5.9.2
 
+  packages/luna-demo-bundles: {}
+
   packages/luna-stage:
     dependencies:
       '@dugyu/luna-core':

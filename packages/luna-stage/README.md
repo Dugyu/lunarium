@@ -14,7 +14,7 @@ pnpm i @dugyu/luna-stage
 **Peer dependencies** — install in your application:
 
 ```sh
-pnpm i react react-dom
+pnpm i react
 ```
 
 For Lynx rendering (`LynxStage` / `LunaLynxStage`), install the Lynx Web runtime:
