@@ -26,7 +26,7 @@ If you only need a single device-framed preview, use [`@dugyu/luna-stage`](../lu
 ## Installation
 
 ```sh
-npm i @dugyu/luna-studio @lynx-js/web-core motion react react-dom
+npm i @dugyu/luna-studio @lynx-js/web-core motion react
 ```
 
 `luna-studio` depends on `@dugyu/luna-stage` internally for its rendering primitives and expects the Lynx Web runtime to be available through `@lynx-js/web-core`.
