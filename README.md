@@ -76,3 +76,4 @@ Scan the QR code in the terminal with **LynxExplorer App**:
 Ensure your **desktop and mobile are on the same network**.
 
 → [**See Stage Details ↗**](./apps/stage/README.md)
+
