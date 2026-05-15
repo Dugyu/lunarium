@@ -5,6 +5,17 @@
 
 Use `luna-stage` when you need a single-frame preview (`Stage` + `LunaLynxStage`) or motion-enhanced presentation (`MotionStage`, etc.). For multi-stage orchestration and Studio-level layout, see [`@dugyu/luna-studio`](../luna-studio).
 
+## Contents
+
+- [Installation](#installation)
+- [Entry Points](#entry-points)
+- [Concepts](#concepts)
+- [Quick Start](#quick-start)
+- [API](#api)
+- [Usage Examples](#usage-examples)
+- [SSR / SSG Notes](#ssr--ssg-notes)
+- [Transform Utilities](#transform-utilities)
+
 ## Installation
 
 ```sh
@@ -41,17 +52,18 @@ pnpm i motion
 
 ### Device Frame Model
 
-- `baseWidth` / `baseHeight` define the **design baseline** (default `375×812`), not the container size
-- The component renders at `baseWidth×baseHeight` and uses CSS `transform: scale()` to fit into the container
-- Two visual layers: **outline** (decorative border, simulates device thickness) and **frame** (content area with clip-path)
-- The root element is a zero-size anchor (`w-0 h-0 overflow-visible`) — the device frame extends outward from it
+- `baseWidth` / `baseHeight` define the **design baseline** (default `375×812`), not the viewport size.
+- The frame renders at its base dimensions and uses CSS `transform: scale()` to fit into the viewport.
+- Two visual layers: **outline** (decorative border, simulates device thickness) and **frame** (content area with clip-path).
+- `Stage` only: an absolutely-positioned 0×0 anchor sits inside the viewport at the `placeX/placeY` location; the outline and frame are transformed around this anchor.
 
 ### Fit System
 
-- `contain` — scales down to fit fully inside the container (no cropping)
-- `cover` — scales up to fully cover the container (may crop)
-- `alignX` / `alignY` — control which part of the frame is preserved when `cover` crops. Physical directions: `left | center | right` / `top | center | bottom`
-- `fitProgress` _(motion only)_ — continuous `0→1` interpolation between `contain` and `cover`, driven by a spring
+- `contain` — scales down to fit fully inside the viewport (no cropping).
+- `cover` — scales up to fully cover the viewport (may crop).
+- `alignX` / `alignY` — alignment of the frame within the viewport. In `cover` mode also determines which part of the frame is preserved when cropped. Physical directions: `left | center | right` / `top | center | bottom`.
+- `placeX` / `placeY` _(Stage only)_ — placement of the anchor within the viewport, decoupled from `alignX/Y`. Defaults to match `alignX/Y` for object-position-like semantics. Override only when you want the frame's internal alignment to differ from its viewport position (rare).
+- `fitProgress` _(motion only)_ — continuous `0→1` interpolation between `contain` and `cover`, driven by a spring.
 
 ### Camera Model _(MotionStage only)_
 
@@ -59,9 +71,9 @@ The transform pipeline operates in two independent spaces:
 
 **Screen space**
 
-- `fit` / `fitProgress` — container-driven passive scaling
-- `zoom` — user-controlled active scaling, applied on top of fit
-- `panX` / `panY` — screen-space translation in pixels, applied after all scaling
+- `fit` / `fitProgress` — viewport-driven passive scaling.
+- `zoom` — user-controlled active scaling, applied on top of fit.
+- `panX` / `panY` — screen-space translation in pixels, applied after all scaling.
 
 **World space**
 
@@ -78,23 +90,25 @@ Final translation = `world.xy × depthScale + panXY`
 ### Single-frame preview with `LunaLynxStage`
 
 ```tsx
-import { Stage } from '@dugyu/luna-stage';
+import { Stage, StageContainer } from '@dugyu/luna-stage';
 import { LunaLynxStage } from '@dugyu/luna-stage/lynx';
 
 export default function Preview() {
   return (
-    <Stage>
-      <LunaLynxStage
-        entry='my-component'
-        bundleRoot='/bundles/'
-        lunaTheme='lunaris-dark'
-      />
-    </Stage>
+    <StageContainer className='w-full h-screen'>
+      <Stage>
+        <LunaLynxStage
+          entry='my-component'
+          bundleRoot='/bundles/'
+          lunaTheme='lunaris-dark'
+        />
+      </Stage>
+    </StageContainer>
   );
 }
 ```
 
-Default bundle URL convention: `${bundleRoot}${entry}.web.bundle`
+Default bundle URL convention: `${bundleRoot}${entry}.web.bundle`.
 
 Override it with `resolveBundleSrc` when your host uses a different naming rule.
 
@@ -107,12 +121,14 @@ Override it with `resolveBundleSrc` when your host uses a different naming rule.
 Use `LynxStage` directly when you don't need LUNA global props forwarded:
 
 ```tsx
-import { Stage } from '@dugyu/luna-stage';
+import { Stage, StageContainer } from '@dugyu/luna-stage';
 import { LynxStage } from '@dugyu/luna-stage/lynx';
 
-<Stage>
-  <LynxStage entry='my-component' bundleRoot='/bundles/' />
-</Stage>;
+<StageContainer className='w-full h-screen'>
+  <Stage>
+    <LynxStage entry='my-component' bundleRoot='/bundles/' />
+  </Stage>
+</StageContainer>;
 ```
 
 ### Standalone `LynxStage`
@@ -135,27 +151,11 @@ export default function StandaloneView() {
 
 ### `Stage`
 
-Static device frame. Reads container size from `StageContainer` context if present, otherwise falls back to `baseWidth/baseHeight`.
+Static device frame. Reads viewport size from `StageContainer` context if present, otherwise falls back to `baseWidth/baseHeight`.
 
-`Stage` can be used in three ways:
+`Stage` supports two ways to determine its viewport size:
 
-**Standalone** — renders at design baseline size:
-
-```tsx
-<Stage>
-  <YourContent />
-</Stage>;
-```
-
-**Manual size** — explicit container dimensions:
-
-```tsx
-<Stage width={390} height={844}>
-  <YourContent />
-</Stage>;
-```
-
-**With `StageContainer`** — auto-measures the container:
+**Auto-fit to parent (recommended)** — wrap in `StageContainer` so the viewport auto-measures and the frame fits to it:
 
 ```tsx
 <StageContainer className='w-full h-full'>
@@ -165,30 +165,52 @@ Static device frame. Reads container size from `StageContainer` context if prese
 </StageContainer>;
 ```
 
-| Prop         | Type                            | Default     | Description                                                     |
-| ------------ | ------------------------------- | ----------- | --------------------------------------------------------------- |
-| `baseWidth`  | `number`                        | `375`       | Design baseline width in pixels                                 |
-| `baseHeight` | `number`                        | `812`       | Design baseline height in pixels                                |
-| `width`      | `number`                        | —           | Container width. Falls back to `StageContainer` → `baseWidth`   |
-| `height`     | `number`                        | —           | Container height. Falls back to `StageContainer` → `baseHeight` |
-| `fit`        | `'contain' \| 'cover'`          | `'contain'` | Fit mode                                                        |
-| `alignX`     | `'left' \| 'center' \| 'right'` | `'center'`  | Horizontal crop anchor                                          |
-| `alignY`     | `'top' \| 'center' \| 'bottom'` | `'center'`  | Vertical crop anchor                                            |
-| `zoom`       | `number`                        | `1`         | Additional zoom factor on top of fit                            |
-| `panX`       | `number`                        | `0`         | Screen-space translation along X (px)                           |
-| `panY`       | `number`                        | `0`         | Screen-space translation along Y (px)                           |
-| `className`  | `string`                        | —           | Applied to the outline layer                                    |
-| `style`      | `CSSProperties`                 | —           | Applied to the outline layer                                    |
-| `onClick`    | `MouseEventHandler`             | —           | —                                                               |
+**Explicit viewport size** — pass `width` / `height` directly to `Stage`. Useful for fixed-size previews, server-rendered layouts, or anywhere you'd rather not add a measuring wrapper:
+
+```tsx
+<Stage width={390} height={844}>
+  <YourContent />
+</Stage>;
+```
+
+> **Note:** Wrapping `Stage` in a sized `<div>` without `StageContainer` won't make the frame fit the div — `Stage` has no way to read the div's size and will fall back to `baseWidth × baseHeight`. Use `StageContainer` or pass `width`/`height` directly.
+
+#### Props
+
+| Prop         | Type                            | Default     | Description                                                                                                             |
+| ------------ | ------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `baseWidth`  | `number`                        | `375`       | Design baseline width in pixels.                                                                                        |
+| `baseHeight` | `number`                        | `812`       | Design baseline height in pixels.                                                                                       |
+| `width`      | `number`                        | —           | Explicit viewport size. Drives both rendered `<div>` size and fit/scale. Falls back to `StageContainer` → `baseWidth`.  |
+| `height`     | `number`                        | —           | Explicit viewport size. Drives both rendered `<div>` size and fit/scale. Falls back to `StageContainer` → `baseHeight`. |
+| `fit`        | `'contain' \| 'cover'`          | `'contain'` | Fit mode.                                                                                                               |
+| `alignX`     | `'left' \| 'center' \| 'right'` | `'center'`  | Horizontal alignment of frame within viewport. In `cover` mode also determines crop anchor.                             |
+| `alignY`     | `'top' \| 'center' \| 'bottom'` | `'center'`  | Vertical alignment of frame within viewport. In `cover` mode also determines crop anchor.                               |
+| `placeX`     | `'left' \| 'center' \| 'right'` | `alignX`    | Horizontal placement of the internal anchor within the viewport. Override to decouple placement from alignment.         |
+| `placeY`     | `'top' \| 'center' \| 'bottom'` | `alignY`    | Vertical placement of the internal anchor within the viewport. Override to decouple placement from alignment.           |
+| `zoom`       | `number`                        | `1`         | Additional zoom factor on top of fit.                                                                                   |
+| `panX`       | `number`                        | `0`         | Screen-space translation along X (px).                                                                                  |
+| `panY`       | `number`                        | `0`         | Screen-space translation along Y (px).                                                                                  |
+| `className`  | `string`                        | —           | Applied to the outline layer.                                                                                           |
+| `style`      | `CSSProperties`                 | —           | Applied to the outline layer.                                                                                           |
+| `onClick`    | `MouseEventHandler`             | —           | —                                                                                                                       |
 
 ### `StageContainer`
 
 Measures its own DOM size via `ResizeObserver` and provides width/height to child `Stage` components via context.
 
-| Prop             | Type     | Default | Description                   |
-| ---------------- | -------- | ------- | ----------------------------- |
-| `fallbackWidth`  | `number` | `0`     | Used before first measurement |
-| `fallbackHeight` | `number` | `0`     | Used before first measurement |
+Add padding, border, or layout styling to `StageContainer` freely — the measured content box is what `Stage` fits to, so padding works as expected visual margin around the frame.
+
+Avoid setting `transform`, `filter`, `perspective`, `backdrop-filter`, or `contain: paint/layout/strict` on `StageContainer` — these establish a containing block that traps `position: fixed` descendants inside the stage.
+
+#### Props
+
+| Prop             | Type     | Default | Description                    |
+| ---------------- | -------- | ------- | ------------------------------ |
+| `fallbackWidth`  | `number` | `0`     | Used before first measurement. |
+| `fallbackHeight` | `number` | `0`     | Used before first measurement. |
+
+Inherits all `<div>` HTML attributes (`className`, `style`, etc.).
 
 ### `LynxStage`
 
@@ -219,34 +241,60 @@ Extends `LynxStage` with LUNA theme properties.
 
 Animated device frame. Extends `Stage`'s base props with spring-driven transitions and a perspective camera model.
 
-| Prop             | Type                   | Default             | Description                                                                         |
-| ---------------- | ---------------------- | ------------------- | ----------------------------------------------------------------------------------- |
-| `width`          | `MotionValue<number>`  | —                   | Reactive container width                                                            |
-| `height`         | `MotionValue<number>`  | —                   | Reactive container height                                                           |
-| `fit`            | `'contain' \| 'cover'` | `'contain'`         | Fit mode (ignored when `fitProgress` is set)                                        |
-| `fitProgress`    | `number`               | —                   | `0–1` blend between contain and cover                                               |
-| `zoom`           | `number`               | `1`                 | Additional zoom factor                                                              |
-| `panX`           | `number`               | `0`                 | Screen-space translation along X (px)                                               |
-| `panY`           | `number`               | `0`                 | Screen-space translation along Y (px)                                               |
-| `world`          | `{ x?, y?, z? }`       | `{ x:0, y:0, z:0 }` | World-space position. `+Z` toward viewer.                                           |
-| `focalLength`    | `number`               | —                   | Perspective focal length (px). Omit for orthographic.                               |
-| `fitTransition`  | `SpringOptions`        | —                   | Spring for `fit` / `fitProgress`                                                    |
-| `zoomTransition` | `SpringOptions`        | —                   | Spring for `zoom`                                                                   |
-| `panTransition`  | `SpringOptions`        | —                   | Spring for the combined screen-space translation (`panX/Y` + projected `world.x/y`) |
-| `maskColor`      | `string`               | `'transparent'`     | Overlay mask color                                                                  |
-| `maskOpacity`    | `number`               | `0`                 | Overlay mask opacity, animated                                                      |
+`MotionStage` is recommended inside `MotionStageContainer` for responsive sizing and layout animations. When rendered standalone it falls back to its baseline size, and you can override sizing explicitly via the `width` / `height` `MotionValue<number>` props.
+
+#### Props
+
+| Prop                 | Type                            | Default             | Description                                                                      |
+| -------------------- | ------------------------------- | ------------------- | -------------------------------------------------------------------------------- |
+| `baseWidth`          | `number`                        | `375`               | Design baseline width in pixels.                                                 |
+| `baseHeight`         | `number`                        | `812`               | Design baseline height in pixels.                                                |
+| `width`              | `MotionValue<number>`           | —                   | Override the viewport width (from context). For advanced cases.                  |
+| `height`             | `MotionValue<number>`           | —                   | Override the viewport height (from context). For advanced cases.                 |
+| `fit`                | `'contain' \| 'cover'`          | `'contain'`         | Fit mode. Ignored when `fitProgress` is set.                                     |
+| `fitProgress`        | `number`                        | —                   | `0–1` blend between contain and cover, driven by a spring.                       |
+| `zoom`               | `number`                        | `1`                 | Additional zoom factor.                                                          |
+| `panX`               | `number`                        | `0`                 | Screen-space translation along X (px).                                           |
+| `panY`               | `number`                        | `0`                 | Screen-space translation along Y (px).                                           |
+| `world`              | `{ x?, y?, z? }`                | `{ x:0, y:0, z:0 }` | World-space position. `+Z` toward viewer.                                        |
+| `focalLength`        | `number`                        | —                   | Perspective focal length (px). Omit for orthographic.                            |
+| `alignX`             | `'left' \| 'center' \| 'right'` | `'center'`          | Horizontal alignment of frame within viewport.                                   |
+| `alignY`             | `'top' \| 'center' \| 'bottom'` | `'center'`          | Vertical alignment of frame within viewport.                                     |
+| `fitTransition`      | `SpringOptions`                 | —                   | Spring for `fit` / `fitProgress`.                                                |
+| `zoomTransition`     | `SpringOptions`                 | —                   | Spring for `zoom`.                                                               |
+| `panTransition`      | `SpringOptions`                 | —                   | Spring for combined screen-space translation (`panX/Y` + projected `world.x/y`). |
+| `maskColor`          | `string`                        | `'transparent'`     | Overlay mask color.                                                              |
+| `maskOpacity`        | `number`                        | `0`                 | Overlay mask opacity (animated).                                                 |
+| `contentInteractive` | `boolean`                       | `false`             | Whether the frame's children receive pointer events.                             |
+| `className`          | `string`                        | —                   | Applied to the outline layer.                                                    |
+| `style`              | `MotionStyle`                   | —                   | Applied to the outline layer.                                                    |
 
 ### `MotionStageContainer`
 
 Motion-aware equivalent of `StageContainer`. Provides `MotionValue<number>` width/height to child `MotionStage` components via context. Handles layout animations and extracts the parent scale from `transformTemplate` to keep the visual size accurate during transitions.
 
+Must be used as a child of `<AnimatePresence>` for mount/unmount animations to work.
+
+#### Props
+
+| Prop                        | Type                 | Default | Description                                                             |
+| --------------------------- | -------------------- | ------- | ----------------------------------------------------------------------- |
+| `layoutId`                  | `string`             | —       | Unique ID for layout animation matching across mount/unmount. Required. |
+| `onLayoutMeasure`           | `(box: Box) => void` | —       | Forwarded from `motion`. Called when layout box is measured.            |
+| `onLayoutAnimationStart`    | `() => void`         | —       | Forwarded from `motion`. Called when layout animation starts.           |
+| `onLayoutAnimationComplete` | `() => void`         | —       | Forwarded from `motion`. Called when layout animation completes.        |
+
+Inherits all `motion.div` props (except `transformTemplate`, which is used internally).
+
 ### `MotionPresentation`
 
-A zero-size anchor element (`4px × 4px`, `overflow-visible`) that wraps `AnimatePresence propagate`.
+A zero-size flex-centered anchor that wraps `AnimatePresence propagate` for descendant mount/unmount animations.
 
 **Use when:** items are dynamically added/removed and need mount/unmount animations.
 
 **Skip when:** components are always mounted, or you only need state transition animations.
+
+Inherits all `motion.div` props (`variants`, `initial`, `animate`, `exit`, `transition`, etc.).
 
 ## Usage Examples
 
@@ -255,7 +303,7 @@ A zero-size anchor element (`4px × 4px`, `overflow-visible`) that wraps `Animat
 ```tsx
 import { MotionStage, MotionStageContainer } from '@dugyu/luna-stage/motion';
 
-<MotionStageContainer className='w-full h-full'>
+<MotionStageContainer className='w-full h-full' layoutId='stage-1'>
   <MotionStage fitProgress={0} zoom={1.2}>
     <YourContent />
   </MotionStage>
@@ -265,6 +313,7 @@ import { MotionStage, MotionStageContainer } from '@dugyu/luna-stage/motion';
 ### Motion: with mount/unmount animations
 
 ```tsx
+import { AnimatePresence } from 'motion/react';
 import {
   MotionStage,
   MotionStageContainer,
@@ -277,7 +326,7 @@ const variants = {
   exit: { opacity: 0, x: 300 },
 };
 
-<AnimatePresence>
+<AnimatePresence mode='popLayout'>
   {items.map(item => (
     <MotionStageContainer key={item.id} layoutId={item.id}>
       <MotionPresentation
@@ -323,15 +372,15 @@ Omit `focalLength` (or set to `0`) — all frames render at equal scale regardle
 
 ## Component Table
 
-| Component              | Entry point | Description                                           |
-| ---------------------- | ----------- | ----------------------------------------------------- |
-| `Stage`                | `.`         | Static device frame                                   |
-| `StageContainer`       | `.`         | Auto-measures container, provides size via context    |
-| `LynxStage`            | `./lynx`    | Core Lynx bundle renderer (no LUNA globals)           |
-| `LunaLynxStage`        | `./lynx`    | `LynxStage` + LUNA theme prop injection               |
-| `MotionStage`          | `./motion`  | Animated device frame with perspective camera         |
-| `MotionStageContainer` | `./motion`  | Layout animation wrapper, provides `MotionValue` size |
-| `MotionPresentation`   | `./motion`  | Mount/unmount transition orchestrator                 |
+| Component              | Entry point | Description                                          |
+| ---------------------- | ----------- | ---------------------------------------------------- |
+| `Stage`                | `.`         | Static device frame                                  |
+| `StageContainer`       | `.`         | Auto-measures container, provides size via context   |
+| `LynxStage`            | `./lynx`    | Core Lynx bundle renderer (no LUNA globals)          |
+| `LunaLynxStage`        | `./lynx`    | `LynxStage` + LUNA theme prop injection              |
+| `MotionStage`          | `./motion`  | Animated device frame with perspective camera        |
+| `MotionStageContainer` | `./motion`  | Layout-animated wrapper; provides `MotionValue` size |
+| `MotionPresentation`   | `./motion`  | Mount/unmount transition orchestrator                |
 
 ## Hooks
 
@@ -350,10 +399,10 @@ Omit `focalLength` (or set to `0`) — all frames render at equal scale regardle
 
 ## Bundle & Asset Conventions
 
-- By default, bundle files follow the naming pattern `*.web.bundle`
-- `bundleRoot` is normalized to a trailing slash by the default resolver
-- Default resolved URL: `${bundleRoot}${entry}.web.bundle`
-- Use `resolveBundleSrc` when your host needs a different file naming rule or full URL composition
+- By default, bundle files follow the naming pattern `*.web.bundle`.
+- `bundleRoot` is normalized to a trailing slash by the default resolver.
+- Default resolved URL: `${bundleRoot}${entry}.web.bundle`.
+- Use `resolveBundleSrc` when your host needs a different file naming rule or full URL composition.
 
 ## Transform Utilities
 

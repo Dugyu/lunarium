@@ -6,3 +6,4 @@ export { VisualSizeContext } from './visual-size-context';
 export { VisualSizeProvider } from './visual-size-provider';
 export { useVisualSize } from './use-visual-size';
 export type { VisualSizeValue } from './visual-size-context';
+export type { VisualSizeProviderProps } from './visual-size-provider';

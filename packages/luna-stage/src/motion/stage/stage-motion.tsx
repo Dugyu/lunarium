@@ -10,7 +10,7 @@ import {
 } from 'motion/react';
 import type { MotionStyle, SpringOptions } from 'motion/react';
 import * as motion from 'motion/react-client';
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import type { JSX } from 'react';
 
 import type { MotionStageProps } from './types';
@@ -43,6 +43,7 @@ const LAYER_BASE_LOCKED_STYLE: MotionStyle = {
   left: 0,
   transformOrigin: 'top left',
   pointerEvents: 'none',
+  willChange: 'transform',
 };
 
 const LAYER_CLIPPED_LOCKED_STYLE: MotionStyle = {
@@ -82,17 +83,19 @@ function MotionStage({
   // Graceful fallback: null when no VisualSizeProvider wraps this component
   const visualSizeCtx = useVisualSize();
 
-  const frameW = baseWidth;
-  const frameH = baseHeight;
-
   const outlineW = baseWidth + 2 * OUTLINE_WEIGHT;
   const outlineH = baseHeight + 2 * OUTLINE_WEIGHT;
 
-  const deltaX = (outlineW - frameW) / 2; // == OUTLINE_WEIGHT
-  const deltaY = (outlineH - frameH) / 2; // == OUTLINE_WEIGHT
+  const deltaX = OUTLINE_WEIGHT;
+  const deltaY = OUTLINE_WEIGHT;
 
   const baseW = useMotionValue(outlineW);
   const baseH = useMotionValue(outlineH);
+
+  useLayoutEffect(() => {
+    baseW.set(outlineW);
+    baseH.set(outlineH);
+  }, [outlineW, outlineH, baseW, baseH]);
 
   const width = widthProp
     ?? visualSizeCtx?.visualW ?? baseW;
@@ -169,7 +172,6 @@ function MotionStage({
 
   const outlineX = useTransform(() => -(outlineW * scale.get()) * ax);
   const outlineY = useTransform(() => -(outlineH * scale.get()) * ay);
-
   const frameX = useTransform(() => outlineX.get() + deltaX * scale.get());
   const frameY = useTransform(() => outlineY.get() + deltaY * scale.get());
 
@@ -178,6 +180,27 @@ function MotionStage({
   const outlineTransform =
     useMotionTemplate`translate(${panXSpring}px, ${panYSpring}px) translate(${outlineX}px, ${outlineY}px) scale(${scale})`;
 
+  const outlineLayerStyle = useMemo<MotionStyle>(() => ({
+    ...LAYER_BASE_LOCKED_STYLE,
+    width: outlineW,
+    height: outlineH,
+    clipPath: DEVICE_OUTLINE_CLIP_PATH,
+  }), [outlineW, outlineH]);
+
+  const frameLayerStyle = useMemo<MotionStyle>(() => ({
+    ...LAYER_CLIPPED_LOCKED_STYLE,
+    width: baseWidth,
+    height: baseHeight,
+    clipPath: DEVICE_CLIP_PATH,
+  }), [baseWidth, baseHeight]);
+
+  const maskLayerStyle = useMemo<MotionStyle>(() => ({
+    ...LAYER_BASE_LOCKED_STYLE,
+    width: baseWidth,
+    height: baseHeight,
+    clipPath: DEVICE_CLIP_PATH,
+  }), [baseWidth, baseHeight]);
+
   return (
     <motion.div style={STAGE_ANCHOR_LOCKED_STYLE}>
       {/* Device outline */}
@@ -185,37 +208,27 @@ function MotionStage({
         className={className}
         style={{
           ...(style as MotionStyle | undefined),
-          ...LAYER_BASE_LOCKED_STYLE,
-          width: outlineW,
-          height: outlineH,
+          ...outlineLayerStyle,
           transform: outlineTransform,
-          clipPath: DEVICE_OUTLINE_CLIP_PATH,
-          willChange: 'transform',
         } as MotionStyle}
       />
+
       {/* Device frame */}
       <motion.div
         style={{
-          ...LAYER_CLIPPED_LOCKED_STYLE,
+          ...frameLayerStyle,
           pointerEvents: contentInteractive ? 'auto' : 'none',
-          width: baseWidth,
-          height: baseHeight,
           transform: frameTransform,
-          clipPath: DEVICE_CLIP_PATH,
-          willChange: 'transform',
         }}
       >
         {children}
       </motion.div>
+
       {/* Mask layer */}
       <motion.div
         style={{
-          ...LAYER_BASE_LOCKED_STYLE,
-          width: baseWidth,
-          height: baseHeight,
+          ...maskLayerStyle,
           transform: frameTransform,
-          clipPath: DEVICE_CLIP_PATH,
-          willChange: 'transform',
           backgroundColor: maskColor,
         }}
         animate={{ opacity: maskOpacity }}

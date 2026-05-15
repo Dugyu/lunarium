@@ -37,12 +37,40 @@ const [StageSizeProvider, useOptionalStageSize] = createContextWithProvider<
 const DEVICE_CLIP_PATH = `path("${SMOOTHING_PATH}")`;
 const DEVICE_OUTLINE_CLIP_PATH = `path("${SMOOTHING_OUTLINE_PATH}")`;
 
-const STAGE_ANCHOR_STYLE: CSSProperties = {
+const VIEWPORT_LOCKED_STYLE: CSSProperties = {
   position: 'relative',
-  width: 0,
-  height: 0,
   overflow: 'visible',
   pointerEvents: 'none',
+};
+
+const VIEWPORT_FILL_STYLE: CSSProperties = {
+  ...VIEWPORT_LOCKED_STYLE,
+  width: '100%',
+  height: '100%',
+};
+
+const STAGE_ANCHOR_STYLE: CSSProperties = {
+  width: 0,
+  height: 0,
+  transform: 'none',
+  filter: 'none',
+  perspective: 'none',
+  backdropFilter: 'none',
+  willChange: 'auto',
+  contain: 'none',
+  overflow: 'visible',
+  pointerEvents: 'none',
+};
+
+const ANCHOR_LOCKED_STYLE: CSSProperties = {
+  ...STAGE_ANCHOR_STYLE,
+  position: 'absolute',
+};
+
+const ANCHOR_CENTER_STYLE: CSSProperties = {
+  ...ANCHOR_LOCKED_STYLE,
+  left: '50%',
+  top: '50%',
 };
 
 const DEVICE_OUTLINE_LOCKED_STYLE: CSSProperties = {
@@ -73,6 +101,8 @@ function Stage({
   fit = 'contain',
   alignX = 'center',
   alignY = 'center',
+  placeX,
+  placeY,
   children,
   baseWidth = 375,
   baseHeight = 812,
@@ -82,24 +112,27 @@ function Stage({
 }: StageProps): JSX.Element {
   const ctx = useOptionalStageSize();
 
-  const width = widthProp
+  const containerWidth = widthProp
     ?? ctx?.width ?? baseWidth;
 
-  const height = heightProp
+  const containerHeight = heightProp
     ?? ctx?.height ?? baseHeight;
 
   const scaleInfo = useMemo(() => {
     const scaleRange = computeScaleRange({
-      containerWidth: width,
-      containerHeight: height,
+      containerWidth,
+      containerHeight,
       baseWidth,
       baseHeight,
     });
     const scale = lerpFitScale(scaleRange, fit === 'cover' ? 1 : 0) * zoom;
 
+    const ax = toAlignFactor(alignX);
+    const ay = toAlignFactor(alignY);
+
     const { offsetX, offsetY } = computeFrameOffset({
-      ax: toAlignFactor(alignX),
-      ay: toAlignFactor(alignY),
+      ax,
+      ay,
       scale,
       baseWidth,
       baseHeight,
@@ -107,8 +140,8 @@ function Stage({
 
     return { scale, offsetX: offsetX + panX, offsetY: offsetY + panY };
   }, [
-    width,
-    height,
+    containerWidth,
+    containerHeight,
     baseWidth,
     baseHeight,
     fit,
@@ -119,37 +152,84 @@ function Stage({
     panY,
   ]);
 
-  return (
-    // Anchor & coordinate system element, no size
-    <div style={STAGE_ANCHOR_STYLE}>
-      {/* Device outline */}
-      <div
-        className={className}
-        style={{
-          ...style,
-          ...DEVICE_OUTLINE_LOCKED_STYLE,
-          width: baseWidth + 2 * OUTLINE_WEIGHT,
-          height: baseHeight + 2 * OUTLINE_WEIGHT,
-          transform: `translate(${
-            scaleInfo.offsetX - OUTLINE_WEIGHT * scaleInfo.scale
-          }px, ${
-            scaleInfo.offsetY - OUTLINE_WEIGHT * scaleInfo.scale
-          }px) scale(${scaleInfo.scale})`,
-        }}
-      />
+  const resolvedPlaceX = placeX ?? alignX;
+  const resolvedPlaceY = placeY ?? alignY;
 
-      {/* Device frame */}
+  const hasMeasuredCtx = ctx !== undefined;
+
+  const viewportStyle = useMemo<CSSProperties>(() => {
+    if (widthProp === undefined && heightProp === undefined) {
+      if (hasMeasuredCtx) {
+        return VIEWPORT_FILL_STYLE;
+      }
+      return {
+        ...VIEWPORT_LOCKED_STYLE,
+        width: containerWidth,
+        height: containerHeight,
+      };
+    }
+    return {
+      ...VIEWPORT_LOCKED_STYLE,
+      width: widthProp ?? containerWidth,
+      height: heightProp ?? containerHeight,
+    };
+  }, [
+    widthProp,
+    heightProp,
+    hasMeasuredCtx,
+    containerWidth,
+    containerHeight,
+  ]);
+
+  const anchorStyle = useMemo<CSSProperties>(() => {
+    if (resolvedPlaceX === 'center' && resolvedPlaceY === 'center') {
+      return ANCHOR_CENTER_STYLE;
+    }
+    const ax = toAlignFactor(resolvedPlaceX);
+    const ay = toAlignFactor(resolvedPlaceY);
+    return {
+      ...ANCHOR_LOCKED_STYLE,
+      left: `${ax * 100}%`,
+      top: `${ay * 100}%`,
+    };
+  }, [resolvedPlaceX, resolvedPlaceY]);
+
+  return (
+    <div
+      style={viewportStyle}
+    >
+      {/* Anchor & coordinate system element, no size */}
       <div
-        style={{
-          ...DEVICE_FRAME_LOCKED_STYLE,
-          width: baseWidth,
-          height: baseHeight,
-          transform:
-            `translate(${scaleInfo.offsetX}px, ${scaleInfo.offsetY}px) scale(${scaleInfo.scale})`,
-        }}
+        style={anchorStyle}
       >
-        {/* Content area inside the device */}
-        {children}
+        {/* Device outline */}
+        <div
+          className={className}
+          style={{
+            ...style,
+            ...DEVICE_OUTLINE_LOCKED_STYLE,
+            width: baseWidth + 2 * OUTLINE_WEIGHT,
+            height: baseHeight + 2 * OUTLINE_WEIGHT,
+            transform: `translate(${
+              scaleInfo.offsetX - OUTLINE_WEIGHT * scaleInfo.scale
+            }px, ${
+              scaleInfo.offsetY - OUTLINE_WEIGHT * scaleInfo.scale
+            }px) scale(${scaleInfo.scale})`,
+          }}
+        />
+
+        {/* Device frame */}
+        <div
+          style={{
+            ...DEVICE_FRAME_LOCKED_STYLE,
+            width: baseWidth,
+            height: baseHeight,
+            transform:
+              `translate(${scaleInfo.offsetX}px, ${scaleInfo.offsetY}px) scale(${scaleInfo.scale})`,
+          }}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );

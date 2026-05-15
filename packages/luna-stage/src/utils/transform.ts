@@ -92,6 +92,9 @@ export function lerpFitScale(
 /**
  * Compute the transform offset for a scaled frame,
  * given pre-computed scale and alignment factors.
+ *
+ * ax / ay are the normalized coordinates of the anchor point within the frame;
+ * the returned offset is applied to a top-left-origin transform.
  */
 export function computeFrameOffset(input: FrameOffsetInput): FrameOffset {
   const { baseWidth, baseHeight, scale, ax, ay } = input;

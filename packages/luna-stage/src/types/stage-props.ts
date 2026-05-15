@@ -87,4 +87,16 @@ export type StageProps =
      * otherwise falls back to `baseHeight`.
      */
     height?: number;
+    /**
+     * Horizontal placement of the internal anchor within the viewport.
+     *
+     * Defaults to `alignX` (object-position semantics).
+     */
+    placeX?: AlignX;
+    /**
+     * Vertical placement of the internal anchor within the viewport.
+     *
+     * Defaults to `alignY` (object-position semantics).
+     */
+    placeY?: AlignY;
   };

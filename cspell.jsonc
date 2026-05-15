@@ -30,6 +30,7 @@
     "dist",
     "lib",
     "node_modules",
+    "**/public/**",
     ".pnpm-store",
     "/pnpm-lock.yaml",
     "/pnpm-workspace.yaml",

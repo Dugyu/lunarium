@@ -1,0 +1,30 @@
+{
+  "name": "@dugyu/luna-stage-examples-motion",
+  "version": "0.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "author": "The Lynx Authors",
+  "type": "module",
+  "scripts": {
+    "build": "rsbuild --config ./rsbuild.config.ts build",
+    "demo": "turbo run build && rsbuild preview",
+    "dev": "rsbuild dev --open",
+    "preview": "rsbuild preview"
+  },
+  "dependencies": {
+    "@dugyu/luna-stage": "workspace:*",
+    "@lynx-js/web-core": "catalog:lynx",
+    "motion": "catalog:motion",
+    "react": "catalog:react18",
+    "react-dom": "catalog:react18"
+  },
+  "devDependencies": {
+    "@lynx-example/design-guide": "^0.4.4",
+    "@lynx-example/lynx-ui-popover": "^0.0.7",
+    "@rsbuild/core": "catalog:rsbuild",
+    "@rsbuild/plugin-react": "catalog:rsbuild",
+    "@types/react": "catalog:react18",
+    "@types/react-dom": "catalog:react18",
+    "typescript": "catalog:ts"
+  }
+}
