@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "composite": true,
+    "strict": true,
+  },
+  "references": [
+    /** packages-start */
+    { "path": "./basic/tsconfig.json" },
+    { "path": "./motion/tsconfig.json" },
+    /** packages-end */
+  ],
+  "include": [],
+}

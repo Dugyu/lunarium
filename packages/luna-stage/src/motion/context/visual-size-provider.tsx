@@ -12,6 +12,7 @@ import type { VisualSizeValue } from './visual-size-context';
 type VisualSizeProviderProps = VisualSizeValue & {
   children?: ReactNode;
 };
+export type { VisualSizeProviderProps };
 export function VisualSizeProvider({
   visualW,
   visualH,
