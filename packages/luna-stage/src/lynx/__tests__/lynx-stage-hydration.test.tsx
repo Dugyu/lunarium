@@ -21,7 +21,9 @@ vi.mock('@lynx-js/web-core/client', () => {
   ) {
     customElements.define(
       'lynx-view',
-      class LynxViewMock extends HTMLElement {},
+      class LynxViewMock extends HTMLElement {
+        updateGlobalProps = vi.fn();
+      },
     );
   }
   return { default: {} };
