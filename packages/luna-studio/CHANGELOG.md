@@ -1,5 +1,12 @@
 # @dugyu/luna-studio
 
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`313f763`](https://github.com/Dugyu/lunarium/commit/313f7633d5c23d04fd8167c40f55a86b08c72bc5)]:
+  - @dugyu/luna-stage@0.2.1
+
 ## 0.1.2
 
 ### Patch Changes
