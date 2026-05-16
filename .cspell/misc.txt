@@ -1,4 +1,5 @@
 avenir
+dlog
 elif
 esac
 instantiator
@@ -6,12 +7,12 @@ lerp
 manypkg
 npmjs
 pipefail
+pointercancel
+pointerdown
+pointerup
 qrcode
 realpath
 startswith
 svitejs
 tostring
 tsgo
-pointerdown
-pointerup
-pointercancel

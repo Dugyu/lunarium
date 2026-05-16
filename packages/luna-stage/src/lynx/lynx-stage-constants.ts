@@ -22,6 +22,17 @@ export const LYNX_VIEW_STYLE: CSSProperties & CSSVarProperties = {
   '--vw-unit': '1cqw',
 };
 
+export const LYNX_VIEW_STYLE_INTERACTIVE: CSSProperties & CSSVarProperties = {
+  ...LYNX_VIEW_STYLE,
+  pointerEvents: 'auto',
+};
+
+export const LYNX_VIEW_STYLE_NON_INTERACTIVE: CSSProperties & CSSVarProperties =
+  {
+    ...LYNX_VIEW_STYLE,
+    pointerEvents: 'none',
+  };
+
 export const CONTAINER_STYLE: CSSProperties = {
   position: 'relative',
   width: '100%',

@@ -73,4 +73,15 @@ export type UseLynxStageResult = {
   lynxViewRef: RefObject<LynxView>;
   /** Attach to the container `<div>` wrapping `<lynx-view>`. */
   containerRef: RefObject<HTMLDivElement>;
+  /**
+   * Resolved bundle URL for the current `entry`/`bundleRoot`.
+   * Pass this value to `<lynx-view url={src} />` so the URL is available
+   * at element creation time (avoids ref/effect timing races).
+   */
+  src: string;
+  /**
+   * Whether the Lynx runtime (`@lynx-js/web-core/client`) has finished loading.
+   * When `false`, delay mounting `<lynx-view>` to avoid upgrade/handshake races.
+   */
+  ready: boolean;
 };

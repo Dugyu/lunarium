@@ -15,9 +15,17 @@ import { LunaLynxStage } from '../luna-lynx-stage';
 import { LynxStage } from '../lynx-stage';
 
 // Mock the web-core runtime to avoid actual loading and network requests in tests
-vi.mock('@lynx-js/web-core/client', () => ({
-  default: {},
-}));
+vi.mock('@lynx-js/web-core/client', () => {
+  if (
+    typeof customElements !== 'undefined' && !customElements.get('lynx-view')
+  ) {
+    customElements.define(
+      'lynx-view',
+      class LynxViewMock extends HTMLElement {},
+    );
+  }
+  return { default: {} };
+});
 
 describe('LynxStage Client Mounting Behavior', () => {
   it('should mount correctly on the client side after useIsClient resolves', async () => {
