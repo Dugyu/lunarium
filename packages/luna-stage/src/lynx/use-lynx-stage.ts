@@ -49,12 +49,18 @@ function ensureRuntime(): Promise<void> {
   return (runtimeReady ??= (() => {
     dlog('runtime:import:start');
     return import('@lynx-js/web-core/client')
-      .then(() => {
+      .then(async () => {
         dlog('runtime:import:done');
-        // Verify customElements is registered
-        const defined = typeof customElements !== 'undefined'
-          && customElements.get('lynx-view');
-        dlog('runtime:custom-element-defined', !!defined);
+        if (typeof customElements === 'undefined') {
+          return;
+        }
+        if (!customElements.get('lynx-view')) {
+          await customElements.whenDefined('lynx-view');
+        }
+        dlog(
+          'runtime:custom-element-defined',
+          !!customElements.get('lynx-view'),
+        );
       })
       .catch((error) => {
         dlog('runtime:import:error', error);
@@ -140,8 +146,47 @@ export function useLynxStage({
     const lynxView = lynxViewRef.current as LynxViewWithExtensions | null;
     if (!ready || !lynxView || renderedRef.current) return;
 
+    let errored = false;
+    const onError = (event: Event) => {
+      if (errored) return;
+      errored = true;
+      if (!(event instanceof CustomEvent)) {
+        reportErrorEvent('Unknown Lynx error');
+        return;
+      }
+
+      const detail = event.detail as {
+        error?: Error;
+        sourceMap?: { offset?: { line?: number; col?: number } };
+        release?: string;
+        fileName?: 'lepus.js' | 'app-service.js';
+      } | undefined;
+
+      const err = detail?.error;
+      const message = err?.message ?? 'Unknown Lynx error';
+
+      const fileName = detail?.fileName;
+      const release = detail?.release;
+      const line = detail?.sourceMap?.offset?.line;
+      const col = detail?.sourceMap?.offset?.col;
+
+      const location = (line != null || col != null)
+        ? `${line ?? '?'}:${col ?? '?'}`
+        : undefined;
+
+      const context = [
+        fileName,
+        location,
+        release,
+      ].filter(Boolean).join(' ');
+
+      reportErrorEvent(context ? `${message} (${context})` : message);
+    };
+
+    (lynxView as unknown as HTMLElement).addEventListener('error', onError);
+
     const t = setTimeout(() => {
-      if (renderedRef.current) return;
+      if (renderedRef.current || errored) return;
       renderedRef.current = true;
       if (globalProps) {
         lynxView.updateGlobalProps(
@@ -151,13 +196,20 @@ export function useLynxStage({
       reportReadyEvent();
     }, 0);
 
-    return () => clearTimeout(t);
+    return () => {
+      clearTimeout(t);
+      (lynxView as unknown as HTMLElement).removeEventListener(
+        'error',
+        onError,
+      );
+    };
   }, [
     ready,
     entry,
     bundleRoot,
     globalProps,
     reportReadyEvent,
+    reportErrorEvent,
   ]);
 
   return {
