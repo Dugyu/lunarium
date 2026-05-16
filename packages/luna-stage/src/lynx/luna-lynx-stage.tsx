@@ -10,7 +10,8 @@ import type { LunaThemeKey, LunaThemeVariant } from '@dugyu/luna-core';
 import {
   CONTAINER_STYLE,
   DEFAULT_GROUP_ID,
-  LYNX_VIEW_STYLE,
+  LYNX_VIEW_STYLE_INTERACTIVE,
+  LYNX_VIEW_STYLE_NON_INTERACTIVE,
 } from './lynx-stage-constants';
 import type { UseLynxStageOptions } from './types';
 import { useLynxStage } from './use-lynx-stage';
@@ -64,7 +65,7 @@ function LunaLynxStageImpl({
     };
   }, [extraGlobalProps, lunaTheme]);
 
-  const { lynxViewRef, containerRef } = useLynxStage({
+  const { lynxViewRef, containerRef, src, ready } = useLynxStage({
     ...stageOptions,
     globalProps,
     bundleRoot,
@@ -72,16 +73,19 @@ function LunaLynxStageImpl({
 
   return (
     <div ref={containerRef} style={CONTAINER_STYLE}>
-      <lynx-view
-        ref={lynxViewRef}
-        style={{
-          ...LYNX_VIEW_STYLE,
-          pointerEvents: interactive ? 'auto' : 'none',
-        }}
-        lynx-group-id={groupId}
-        transform-vh={true}
-        transform-vw={true}
-      />
+      {ready && (
+        <lynx-view
+          key={src}
+          ref={lynxViewRef}
+          url={src}
+          style={interactive
+            ? LYNX_VIEW_STYLE_INTERACTIVE
+            : LYNX_VIEW_STYLE_NON_INTERACTIVE}
+          lynx-group-id={groupId}
+          transform-vh={true}
+          transform-vw={true}
+        />
+      )}
     </div>
   );
 }

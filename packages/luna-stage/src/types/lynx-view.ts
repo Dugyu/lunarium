@@ -5,6 +5,7 @@
 import type { DetailedHTMLProps, HTMLAttributes } from 'react';
 
 type LynxViewAttributes = HTMLAttributes<HTMLElement> & {
+  url?: string;
   'lynx-group-id'?: number;
   'transform-vh'?: boolean;
   'transform-vw'?: boolean;
