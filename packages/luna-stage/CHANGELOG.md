@@ -1,5 +1,11 @@
 # @dugyu/luna-stage
 
+## 0.2.1
+
+### Patch Changes
+
+- Fix `<lynx-view>` initialization race by setting `url` via JSX attribute and mounting only after the Lynx runtime is ready. Expose `src` and `ready` from `useLynxStage` to support this flow. ([#122](https://github.com/Dugyu/lunarium/pull/122))
+
 ## 0.2.0
 
 ### Minor Changes
