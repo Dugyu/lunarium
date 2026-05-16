@@ -1,5 +1,16 @@
 # @dugyu/luna-stage
 
+## 0.2.1
+
+### Patch Changes
+
+- Fix intermittent `<lynx-view>` load races by: ([#124](https://github.com/Dugyu/lunarium/pull/124))
+
+  - Mounting `<lynx-view>` only after the Lynx runtime is ready and the custom element is defined
+  - Passing `url` via JSX attribute at element creation time (avoid ref/effect timing races)
+  - Exposing `src` and `ready` from `useLynxStage` to support the safer mounting flow
+  - Forwarding `<lynx-view>` `error` events to `onError` to avoid false-positive `onReady`
+
 ## 0.2.0
 
 ### Minor Changes
