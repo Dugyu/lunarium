@@ -1,5 +1,11 @@
 # @dugyu/luna-tokens
 
+## 0.5.0
+
+### Patch Changes
+
+- Clarify token roles in the README. ([#127](https://github.com/Dugyu/lunarium/pull/127))
+
 ## 0.4.0
 
 ## 0.3.1
