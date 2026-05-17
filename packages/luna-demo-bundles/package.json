@@ -1,6 +1,6 @@
 {
   "name": "@dugyu/luna-demo-bundles",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Prebuilt Lynx web bundle assets used by the luna stage/studio minimal demo",
   "keywords": [
     "luna",

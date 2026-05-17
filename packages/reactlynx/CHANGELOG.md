@@ -1,5 +1,14 @@
 # @dugyu/luna-reactlynx
 
+## 0.5.0
+
+### Patch Changes
+
+- Set the Rslib output syntax to `esnext` to avoid unnecessary syntax transforms. ([#127](https://github.com/Dugyu/lunarium/pull/127))
+
+- Updated dependencies []:
+  - @dugyu/luna-core@0.5.0
+
 ## 0.4.0
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @dugyu/luna-tailwind
 
+## 0.5.0
+
+### Minor Changes
+
+- Add the `luna-gradient-afterglow` utility class. ([#127](https://github.com/Dugyu/lunarium/pull/127))
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @dugyu/luna-core@0.5.0
+
 ## 0.4.0
 
 ### Patch Changes

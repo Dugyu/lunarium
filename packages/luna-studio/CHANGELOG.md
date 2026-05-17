@@ -1,5 +1,17 @@
 # @dugyu/luna-studio
 
+## 0.2.0
+
+### Minor Changes
+
+- Update default stage outline/mask colors for light/dark themes, and add a `stageAppearance` prop to override them by theme mode. ([#127](https://github.com/Dugyu/lunarium/pull/127))
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @dugyu/luna-core@0.5.0
+  - @dugyu/luna-stage@0.2.2
+
 ## 0.1.3
 
 ### Patch Changes
