@@ -42,7 +42,7 @@ function Switch(
   return (
     <view
       className={cn(
-        'rounded-full overflow-hidden flex flex-row items-center ui-disabled:opacity-50',
+        'rounded-full overflow-hidden flex flex-row items-center ui-disabled:opacity-50 active:opacity-80',
         size === 'sm' && 'w-[38px] h-[22px]',
         size === 'lg' && 'w-[48px] h-[28px]',
         disabled && 'ui-disabled',
@@ -65,6 +65,10 @@ function Switch(
             && 'size-[16px] ui-active:w-[24px] ui-checked:transform-[translateX(19px)] ui-checked:ui-active:transform-[translateX(11px)]',
           size === 'lg'
             && 'size-[22px] ui-active:w-[33px] ui-checked:transform-[translateX(23px)] ui-checked:ui-active:transform-[translateX(12px)]',
+          __WEB__ && size === 'sm'
+            && 'active:w-[24px] ui-checked:active:transform-[translateX(11px)]',
+          __WEB__ && size === 'lg'
+            && 'active:w-[33px] ui-checked:active:transform-[translateX(12px)]',
         )}
       />
       <view />

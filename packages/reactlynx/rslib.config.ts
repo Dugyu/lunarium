@@ -14,7 +14,7 @@ export default defineConfig({
   lib: [{
     bundle: false,
     format: 'esm',
-    syntax: 'es6',
+    syntax: 'esnext',
     output: {
       filename: { js: '[name].jsx' },
       sourceMap: true,

@@ -7,6 +7,7 @@ import type { CSSProperties } from 'react';
 import type { LynxRuntimeCall } from './lynx-stage';
 import type {
   LunaThemeKey,
+  LunaThemeMode,
   StageGlobalPropsBuilder,
   StudioModeGrid,
   StudioResolvedLayout,
@@ -59,6 +60,17 @@ export type FocusKeyResolver = (
   interaction: InteractionParams,
 ) => string | undefined;
 
+/**
+ * Visual appearance of the host-side stage chrome (outline + mask).
+ * These values are forwarded to the underlying MotionStage props.
+ */
+export type StageAppearance = {
+  /** Color of the overlay mask above the device frame. */
+  maskColor?: string;
+  /** Color of the visible device outline (implemented as outline-layer background). */
+  outlineColor?: string;
+};
+
 export type ChoreographyBaseProps = {
   /** Optional class name applied to the outer choreography container. */
   className?: string;
@@ -79,6 +91,11 @@ export type ChoreographyBaseProps = {
   buildStageGlobalProps?: StageGlobalPropsBuilder;
   /** Shared theme key applied to all stages in focus/lineup modes. */
   themeKey?: LunaThemeKey;
+  /** Per-theme-mode stage chrome configuration (falls back to built-in defaults). */
+  stageAppearance?: Partial<Record<LunaThemeMode, StageAppearance>> & {
+    /** Fallback appearance used when the current theme mode is not configured. */
+    default?: StageAppearance;
+  };
 };
 
 export type ChoreographyInteractionProps = {

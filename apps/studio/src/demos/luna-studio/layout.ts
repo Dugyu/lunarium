@@ -26,7 +26,7 @@ const stagePool: Record<string, StudioStage> = {
   },
   Dialog: {
     id: 'Dialog',
-    entry: 'OffstageActDialog',
+    entry: 'ActDialog',
     theme: 'luna-dark',
     focusKey: 'dialog',
   },
@@ -49,7 +49,7 @@ const stagePool: Record<string, StudioStage> = {
   },
   Popover: {
     id: 'Popover',
-    entry: 'OffstageActPopover',
+    entry: 'ActPopover',
     theme: 'luna-light',
     focusKey: 'popover',
   },
@@ -67,7 +67,7 @@ const stagePool: Record<string, StudioStage> = {
   },
   Sheet: {
     id: 'Sheet',
-    entry: 'ActOneDark',
+    entry: 'ActOne',
     theme: 'lunaris-dark',
     focusKey: 'sheet',
   },

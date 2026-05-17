@@ -10,12 +10,12 @@ Prebuilt `.web.bundle` assets for the `luna-studio` minimal demo.
 - `ActButton`
 - `ActCheckbox`
 - `ActMoonrise`
-- `ActOneDark`
-- `ActOneLight`
+- `ActOne`
+- `ActTwo`
 - `ActRadioGroup`
 - `ActSwitch`
-- `ActTwoDark`
-- `ActTwoLight`
+- `ActPopover`
+- `ActDialog`
 
 ### Offstage
 

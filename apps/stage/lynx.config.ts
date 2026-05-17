@@ -24,14 +24,14 @@ export default defineConfig({
     entry: {
       ActBloom: './src/demos/ActBloom.tsx',
       ActMoonrise: './src/demos/ActMoonrise.tsx',
-      ActOneDark: './src/demos/ActOneDark.tsx',
-      ActOneLight: './src/demos/ActOneLight.tsx',
-      ActTwoDark: './src/demos/ActTwoDark.tsx',
-      ActTwoLight: './src/demos/ActTwoLight.tsx',
+      ActOne: './src/demos/ActOne.tsx',
+      ActTwo: './src/demos/ActTwo.tsx',
       ActButton: './src/demos/ActButton.tsx',
       ActSwitch: './src/demos/ActSwitch.tsx',
       ActCheckbox: './src/demos/ActCheckbox.tsx',
       ActRadioGroup: './src/demos/ActRadioGroup.tsx',
+      ActPopover: './src/demos/ActPopover.tsx',
+      ActDialog: './src/demos/ActDialog.tsx',
     },
   },
   plugins: [

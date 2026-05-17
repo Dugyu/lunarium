@@ -64,7 +64,7 @@ function LunaStudioAdvancedDemo() {
 
   const containerClassName = themeMode === 'light'
     ? 'bg-[#f5f5f5] text-black'
-    : 'bg-[#0d0d0d] text-white';
+    : 'bg-[#000000] text-white';
 
   const dividerClassName = themeMode === 'light'
     ? 'bg-black/10'

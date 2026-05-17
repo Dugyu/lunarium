@@ -26,13 +26,14 @@ type ButtonProps = {
 };
 
 function Button(props: ButtonProps) {
-  const { variant = 'primary', children, className } = props;
+  const { variant = 'primary', children, className, disabled } = props;
   return (
     <view
       className={cn(
         'flex flex-row justify-center items-center rounded-full h-[48px] w-full active:opacity-50 transition-opacity ease-in-out',
         className,
         variant === 'primary' ? 'bg-primary' : 'bg-neutral-ambient',
+        disabled && 'opacity-40',
       )}
     >
       <text

@@ -61,10 +61,11 @@ function RadioItem(
   return (
     <view
       className={cn(
-        'border-line rounded-full border-[1.5px] ui-checked:border-none ui-checked:bg-primary ui-disabled:opacity-40',
+        'border-line rounded-full border-[1.5px] ui-checked:border-none ui-checked:bg-primary ui-disabled:opacity-40 active:opacity-80',
         size === 'sm' ? 'size-[16px]' : 'size-[22px]',
         disabled && 'ui-disabled',
         selectedValue === value && 'ui-checked',
+        'ui-checked:active:bg-primary-2',
         className,
       )}
       bindtap={handleChange}

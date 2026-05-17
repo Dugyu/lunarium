@@ -36,8 +36,6 @@ export const LUNA_STUDIO_ONLY_COMPONENTS: LynxUIComponentId[] = [
 export const LUNA_OFFSTAGE_COMPONENTS: LynxUIComponentId[] = [
   'sheet',
   'swiper',
-  'dialog',
-  'popover',
   'scroll-view',
   'feed-list',
   'swipe-action',
@@ -53,4 +51,6 @@ export const LUNA_STAGE_COMPONENTS: LynxUIComponentId[] = [
   'button',
   'checkbox',
   'radio-group',
+  'popover',
+  'dialog',
 ];

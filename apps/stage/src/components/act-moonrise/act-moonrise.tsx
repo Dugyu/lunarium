@@ -229,13 +229,7 @@ function ActMoonrise(
           >
             Let it bloom
           </Button>
-          <Button
-            size='lg'
-            variant='secondary'
-            className={cn(
-              'transition-all',
-            )}
-          >
+          <Button size='lg' variant='secondary'>
             Stay asleep
           </Button>
         </view>

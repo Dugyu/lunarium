@@ -6,7 +6,7 @@ import { Switch } from '@/components/ui/switch';
 
 function ActSwitch() {
   return (
-    <view className='size-full luna-gradient-berry flex flex-col justify-center items-center gap-[10px]'>
+    <view className='size-full luna-gradient-berry flex flex-col justify-center items-center'>
       <view className='bg-canvas flex flex-col items-start gap-[12px] py-[128px] px-[84px] rounded-[36px]'>
         {/* Switch Demo Large */}
         <view className='flex flex-row items-center justify-start gap-[16px]'>

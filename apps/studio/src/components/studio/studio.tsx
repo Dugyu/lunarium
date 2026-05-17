@@ -114,7 +114,7 @@ function Studio({ className }: { className?: string }) {
     <StudioFrame
       className={cn(
         'pointer-events-auto relative luna-studio transition-all duration-300 ease-in-out',
-        themeMode === 'light' ? 'bg-[#f5f5f5]' : 'bg-[#0d0d0d]',
+        themeMode === 'light' ? 'bg-[#f5f5f5]' : 'bg-[#000000]',
         className,
       )}
     >

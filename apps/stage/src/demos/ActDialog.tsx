@@ -6,14 +6,14 @@ import '@lynx-js/preact-devtools';
 import '@lynx-js/react/debug';
 import { root } from '@lynx-js/react';
 
-import { AppTheme } from '@/App.js';
-import { ActOne } from '@/components/act-one';
+import { ActDialog } from '@/components/act-dialog';
+import { LunaTheme } from '@/LunaTheme.js';
 
 export function App() {
   return (
-    <AppTheme preset='luna-light'>
-      <ActOne />
-    </AppTheme>
+    <LunaTheme>
+      <ActDialog />
+    </LunaTheme>
   );
 }
 
