@@ -120,7 +120,7 @@ function ActBloom(
   };
 
   return (
-    <page
+    <view
       className={cn(
         'relative size-full bg-canvas transition-colors duration-300 ease-in-out',
         theme,
@@ -213,7 +213,7 @@ function ActBloom(
             )}
         </view>
       </view>
-    </page>
+    </view>
   );
 }
 

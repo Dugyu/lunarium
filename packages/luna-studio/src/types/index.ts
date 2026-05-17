@@ -10,6 +10,7 @@ export type {
   FocusKeyResolver,
   InteractionParams,
   InteractionTarget,
+  StageAppearance,
 } from './choreography';
 export type { LynxRuntimeCall, StudioLynxStageProps } from './lynx-stage';
 export type {

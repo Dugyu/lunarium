@@ -8,30 +8,45 @@ import { LynxStage } from '@dugyu/luna-stage/lynx';
 import { Container } from '@/components/container';
 import { StudioFrame } from '@/components/studio-frame';
 
+const lightTheme = { lunaTheme: 'luna-light' };
+const darkTheme = { lunaTheme: 'luna-dark' };
+
 function StudioStatic() {
   return (
-    <StudioFrame className={'py-10'}>
+    <StudioFrame className={'py-10 bg-[#f5f5f5]'}>
       <Container
-        className={'gap-4 pointer-events-none bg-[#f5f5f5]'}
+        className={'gap-4 pointer-events-none'}
       >
         <StageContainer className='flex-1 pointer-events-none'>
           <Stage className='bg-black opacity-10'>
-            <LynxStage entry='ActOneDark' />
+            <LynxStage
+              entry='ActOne'
+              globalProps={darkTheme}
+            />
           </Stage>
         </StageContainer>
         <StageContainer className='flex-1'>
           <Stage className='bg-white opacity-50'>
-            <LynxStage entry='ActOneLight' />
+            <LynxStage
+              entry='ActOne'
+              globalProps={lightTheme}
+            />
           </Stage>
         </StageContainer>
         <StageContainer className='flex-1'>
           <Stage className='bg-black opacity-10'>
-            <LynxStage entry='ActTwoDark' />
+            <LynxStage
+              entry='ActTwo'
+              globalProps={darkTheme}
+            />
           </Stage>
         </StageContainer>
         <StageContainer className='flex-1'>
           <Stage className='bg-white opacity-50'>
-            <LynxStage entry='ActTwoLight' />
+            <LynxStage
+              entry='ActTwo'
+              globalProps={lightTheme}
+            />
           </Stage>
         </StageContainer>
       </Container>

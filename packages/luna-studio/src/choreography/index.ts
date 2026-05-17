@@ -11,4 +11,5 @@ export type {
   FocusKeyResolver,
   InteractionParams,
   InteractionTarget,
+  StageAppearance,
 } from '../types';

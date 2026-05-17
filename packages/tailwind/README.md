@@ -22,18 +22,26 @@ pnpm add @dugyu/luna-styles
 Add the preset to your `tailwind.config.ts`:
 
 ```ts
-import LynxPreset from '@lynx-js/tailwind-preset';
 import type { Config } from 'tailwindcss';
+
+import LynxPreset from '@lynx-js/tailwind-preset';
 
 import { LunaPreset } from '@dugyu/luna-tailwind';
 
 const config: Config = {
-  content: [],
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
   presets: [LynxPreset, LunaPreset],
 };
 
 export default config;
 ```
+
+Tailwind on Lynx requires `@lynx-js/tailwind-preset` for runtime compatibility.
+
+Some Tailwind integrations can provide source scanning automatically, so the
+`content` field may not be required in every setup. For example, when using
+`rsbuild-plugin-tailwindcss` the plugin replaces Tailwind's `content` config at
+build time.
 
 Import LUNA theme variables once (global stylesheet):
 
@@ -65,10 +73,11 @@ function App() {
 
 This preset also ships gradient classes that use the LUNA gradient tokens:
 
-- `luna-gradient`
-- `luna-gradient-rose`
-- `luna-gradient-berry`
-- `luna-gradient-ocean`
+- `luna-gradient` — the full signature gradient, spanning the complete LUNA color journey.
+- `luna-gradient-rose` — a warm rose gradient for soft pink surfaces.
+- `luna-gradient-berry` — a richer berry gradient with a warmer, more saturated lower glow.
+- `luna-gradient-afterglow` — an angled pink-to-lavender gradient inspired by the lingering glow after sunset.
+- `luna-gradient-ocean` — a cool lavender-to-aqua gradient inspired by atmospheric haze and moonlit tides.
 
 ## LUNA Packages
 

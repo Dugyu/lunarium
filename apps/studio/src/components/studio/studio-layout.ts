@@ -43,7 +43,7 @@ const stageCatalog: Record<string, StudioStageDefinition> = {
     componentId: 'switch',
   },
   Slider: {
-    entry: 'ActTwoDark',
+    entry: 'ActTwo',
     theme: 'luna-dark',
     meta: getMeta('slider'),
     componentId: 'slider',
@@ -73,19 +73,19 @@ const stageCatalog: Record<string, StudioStageDefinition> = {
     componentId: 'swiper',
   },
   Popover: {
-    entry: 'OffstageActPopover',
+    entry: 'ActPopover',
     theme: 'luna-light',
     meta: getMeta('popover'),
     componentId: 'popover',
   },
   Sheet: {
-    entry: 'ActOneDark',
+    entry: 'ActOne',
     theme: 'lunaris-dark',
     meta: getMeta('sheet'),
     componentId: 'sheet',
   },
   Dialog: {
-    entry: 'OffstageActDialog',
+    entry: 'ActDialog',
     theme: 'luna-dark',
     meta: getMeta('dialog'),
     componentId: 'dialog',
@@ -97,7 +97,7 @@ const stageCatalog: Record<string, StudioStageDefinition> = {
     componentId: 'checkbox',
   },
   Input: {
-    entry: 'ActTwoDark',
+    entry: 'ActTwo',
     theme: 'luna-dark',
     meta: getMeta('input'),
     componentId: 'input',

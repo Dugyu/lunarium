@@ -42,6 +42,15 @@ const lunaGradientPlugin: LunaTailwindPlugin = plugin(function(api) {
     },
   });
   addComponents({
+    '.luna-gradient-afterglow': {
+      background: `linear-gradient(
+        150deg,
+        ${theme('colors.gradient.b') as string} 8.42%,
+        ${theme('colors.gradient.c') as string} 81.71%
+      )`,
+    },
+  });
+  addComponents({
     '.luna-gradient-ocean': {
       background: `linear-gradient(
         0deg,

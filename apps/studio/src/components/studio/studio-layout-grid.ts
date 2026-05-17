@@ -64,7 +64,7 @@ const stageCatalog = {
     },
   },
   Slider: {
-    entry: 'ActTwoDark',
+    entry: 'ActTwo',
     theme: 'luna-dark',
     studio: {
       component: {
@@ -114,7 +114,7 @@ const stageCatalog = {
     },
   },
   Popover: {
-    entry: 'OffstageActPopover',
+    entry: 'ActPopover',
     theme: 'luna-light',
     studio: {
       component: {
@@ -124,7 +124,7 @@ const stageCatalog = {
     },
   },
   Sheet: {
-    entry: 'ActOneDark',
+    entry: 'ActOne',
     theme: 'lunaris-dark',
     studio: {
       component: {
@@ -134,7 +134,7 @@ const stageCatalog = {
     },
   },
   Dialog: {
-    entry: 'OffstageActDialog',
+    entry: 'ActDialog',
     theme: 'luna-dark',
     studio: {
       component: {
@@ -154,7 +154,7 @@ const stageCatalog = {
     },
   },
   Input: {
-    entry: 'ActTwoDark',
+    entry: 'ActTwo',
     theme: 'luna-dark',
     studio: {
       component: {

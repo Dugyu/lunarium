@@ -64,6 +64,17 @@ const BASE_STYLE: CSSProperties = {
   position: 'relative',
 };
 
+const DEFAULT_STAGE_APPEARANCE_BY_MODE = {
+  light: {
+    outlineColor: 'rgb(0 0 0 / 0.04)',
+    maskColor: '#f5f5f5',
+  },
+  dark: {
+    outlineColor: 'rgb(255 255 255 / 0.10)',
+    maskColor: '#00000080',
+  },
+} as const;
+
 function hasFocusKey(
   stage: StudioResolvedStage,
 ): stage is FocusableStudioStage {
@@ -110,6 +121,7 @@ function ChoreographyView({
   resolveFocusKey,
   buildStageGlobalProps,
   themeKey,
+  stageAppearance,
   interactionTarget = 'content',
   onLynxRuntimeCall,
   onInteraction,
@@ -235,16 +247,27 @@ function ChoreographyView({
   const resolvedThemeKey = themeKey ?? 'lunaris-dark';
   const resolvedThemeMode = inferThemeMode(resolvedThemeKey) ?? 'dark';
 
+  const resolvedStageAppearance = useMemo(() => {
+    const fallback = DEFAULT_STAGE_APPEARANCE_BY_MODE[resolvedThemeMode];
+    const fromDefault = stageAppearance?.default;
+    const fromMode = stageAppearance?.[resolvedThemeMode];
+
+    return {
+      outlineColor: fromMode?.outlineColor ?? fromDefault?.outlineColor
+        ?? fallback.outlineColor,
+      maskColor: fromMode?.maskColor ?? fromDefault?.maskColor
+        ?? fallback.maskColor,
+    } as const;
+  }, [resolvedThemeMode, stageAppearance]);
+
   const stageOutlineStyle: CSSProperties = useMemo(
     () => ({
-      backgroundColor: resolvedThemeMode === 'light'
-        ? 'rgb(0 0 0 / 0.04)'
-        : 'rgb(255 255 255 / 0.05)',
+      backgroundColor: resolvedStageAppearance.outlineColor,
     }),
-    [resolvedThemeMode],
+    [resolvedStageAppearance.outlineColor],
   );
 
-  const maskColor = resolvedThemeMode === 'light' ? '#f5f5f5' : '#00000080';
+  const maskColor = resolvedStageAppearance.maskColor;
 
   return (
     <div className={className} style={mergedContainerStyle}>

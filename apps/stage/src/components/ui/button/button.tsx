@@ -8,8 +8,7 @@ import { cn } from '@/utils';
 
 type ButtonProps = {
   size?: 'xs' | 'sm' | 'md' | 'lg';
-  variant?: 'neutral' | 'primary' | 'secondary' | 'outline' | 'ghost';
-  shape?: 'normal' | 'capsule';
+  variant?: 'neutral' | 'primary' | 'secondary';
   disabled?: boolean;
   children?: ReactNode;
   className?: string;
@@ -22,6 +21,7 @@ function Button(props: ButtonProps) {
     variant = 'neutral',
     children,
     className,
+    disabled,
     bindtap,
   } = props;
 
@@ -36,6 +36,7 @@ function Button(props: ButtonProps) {
             === 'lg'
           ? 'h-[48px]'
           : 'h-[32px]',
+        disabled && 'opacity-40',
         className,
       )}
       bindtap={bindtap}
