@@ -12,6 +12,7 @@ type SwitchProps = {
   checked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
   disabled?: boolean;
+  className?: string;
 };
 
 function Switch(
@@ -21,6 +22,7 @@ function Switch(
     checked: checkedProp,
     onCheckedChange,
     disabled = false,
+    className,
   }: SwitchProps,
 ) {
   const isControlled = checkedProp !== undefined;
@@ -46,6 +48,7 @@ function Switch(
         size === 'sm' && 'w-[38px] h-[22px]',
         size === 'lg' && 'w-[48px] h-[28px]',
         disabled && 'ui-disabled',
+        className,
       )}
       bindtap={handleToggle}
     >
@@ -62,13 +65,9 @@ function Switch(
           'absolute rounded-full bg-primary-content transform-[translateX(3px)] transition-all shadow',
           checked && 'ui-checked',
           size === 'sm'
-            && 'size-[16px] ui-active:w-[24px] ui-checked:transform-[translateX(19px)] ui-checked:ui-active:transform-[translateX(11px)]',
+            && 'size-[16px] active:w-[24px] ui-checked:transform-[translateX(19px)] ui-checked:active:transform-[translateX(11px)]',
           size === 'lg'
-            && 'size-[22px] ui-active:w-[33px] ui-checked:transform-[translateX(23px)] ui-checked:ui-active:transform-[translateX(12px)]',
-          __WEB__ && size === 'sm'
-            && 'active:w-[24px] ui-checked:active:transform-[translateX(11px)]',
-          __WEB__ && size === 'lg'
-            && 'active:w-[33px] ui-checked:active:transform-[translateX(12px)]',
+            && 'size-[22px] active:w-[33px] ui-checked:transform-[translateX(23px)] ui-checked:active:transform-[translateX(12px)]',
         )}
       />
       <view />
