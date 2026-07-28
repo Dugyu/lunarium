@@ -43,7 +43,6 @@
   },
   "devDependencies": {
     "@rslib/core": "catalog:rslib",
-    "@typescript/native-preview": "catalog:ts",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:ts"
   },
