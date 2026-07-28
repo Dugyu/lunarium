@@ -1,5 +1,16 @@
 # @dugyu/luna-reactlynx
 
+## 0.5.1
+
+### Patch Changes
+
+- Centralize the dev-only `@typescript/native-preview` dependency at the workspace root. No runtime API changes. ([#130](https://github.com/Dugyu/lunarium/pull/130))
+
+- Upgrade the internal toolchain to Rsbuild 2 and Rslib 0.23, and align Lynx and Tailwind build-time dependencies. No runtime API changes. ([#130](https://github.com/Dugyu/lunarium/pull/130))
+
+- Updated dependencies [[`25a0545`](https://github.com/Dugyu/lunarium/commit/25a0545657a90223c01a55b30d55c0a03147d5f7), [`25a0545`](https://github.com/Dugyu/lunarium/commit/25a0545657a90223c01a55b30d55c0a03147d5f7)]:
+  - @dugyu/luna-core@0.5.1
+
 ## 0.5.0
 
 ### Patch Changes
