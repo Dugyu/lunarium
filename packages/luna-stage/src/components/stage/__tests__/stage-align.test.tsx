@@ -6,8 +6,8 @@ import '@testing-library/jest-dom/vitest';
 import { render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
-import { Stage } from './stage';
-import { SMOOTHING_PATH } from '../../constants/stage';
+import { SMOOTHING_PATH } from '../../../constants/stage';
+import { Stage } from '../stage';
 
 function parseFrameTransform(root: HTMLElement) {
   const expectedClipPath = `path("${SMOOTHING_PATH}")`;

@@ -8,9 +8,9 @@ import { useMotionValue } from 'motion/react';
 import type { ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
 
-import { MotionStage } from './stage-motion';
-import { SMOOTHING_PATH } from '../../constants/stage';
-import { VisualSizeProvider } from '../context/visual-size-provider';
+import { SMOOTHING_PATH } from '../../../constants/stage';
+import { VisualSizeProvider } from '../../context/visual-size-provider';
+import { MotionStage } from '../stage-motion';
 
 function Wrapper(props: { w: number; h: number; children: ReactNode }) {
   const { w, h, children } = props;
