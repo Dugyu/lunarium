@@ -60,7 +60,6 @@
     "@rsbuild/plugin-react": "catalog:rsbuild",
     "@rslib/core": "catalog:rslib",
     "@types/react": "catalog:react18",
-    "@typescript/native-preview": "catalog:ts",
     "typescript": "catalog:ts"
   },
   "peerDependencies": {
