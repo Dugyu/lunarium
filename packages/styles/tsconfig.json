@@ -15,5 +15,6 @@
   "include": ["scripts", "src", "rslib.config.ts"],
   "references": [
     { "path": "../core/tsconfig.build.json" },
+    { "path": "../tokens/tsconfig.build.json" },
   ],
 }

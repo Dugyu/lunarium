@@ -53,8 +53,8 @@
     "build": "rslib build"
   },
   "devDependencies": {
-    "@dugyu/luna-core": "workspace:",
-    "@dugyu/luna-tokens": "workspace:",
+    "@dugyu/luna-core": "workspace:*",
+    "@dugyu/luna-tokens": "workspace:*",
     "@rslib/core": "catalog:rslib",
     "@types/node": "catalog:ts",
     "typescript": "catalog:ts"

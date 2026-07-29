@@ -560,10 +560,10 @@ importers:
   packages/styles:
     devDependencies:
       '@dugyu/luna-core':
-        specifier: 'workspace:'
+        specifier: workspace:*
         version: link:../core
       '@dugyu/luna-tokens':
-        specifier: 'workspace:'
+        specifier: workspace:*
         version: link:../tokens
       '@rslib/core':
         specifier: catalog:rslib
