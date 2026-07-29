@@ -159,7 +159,7 @@ export function inferThemeVariant(
   if (key.startsWith('lunaris-')) return 'lunaris';
   const lower = key.toLowerCase();
   const segments = lower.split('-');
-  return segments[0] as LunaCustomThemeVariant;
+  return segments[0];
 }
 
 /**

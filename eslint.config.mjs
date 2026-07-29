@@ -262,6 +262,7 @@ export default defineConfig([
     },
     rules: {
       '@typescript-eslint/consistent-generic-constructors': 'off',
+      '@typescript-eslint/no-unnecessary-type-assertion': 'warn',
       '@typescript-eslint/prefer-optional-chain': 'warn',
       '@typescript-eslint/prefer-as-const': 'warn',
       '@typescript-eslint/prefer-function-type': 'warn',

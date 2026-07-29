@@ -81,7 +81,7 @@ export function colorKeyToColorId(key: LunaColorKey): LunaColorId {
 /** Precomputed list of all color keys in camelCase. */
 export const LUNA_COLOR_KEYS: readonly LunaColorKey[] = LUNA_COLOR_IDS.map(id =>
   colorIdToColorKey(id)
-) as readonly LunaColorKey[];
+);
 
 export const EMPTY_LUNA_COLORS = Object.freeze(
   Object.fromEntries(
