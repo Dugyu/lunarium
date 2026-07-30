@@ -7,9 +7,13 @@ import type { Ref } from 'react';
 
 type PossibleRef<T> = Ref<T> | undefined;
 
+type WritableRefObject<T> = {
+  current: T | null;
+};
+
 function setRef<T>(
   ref: PossibleRef<T>,
-  value: T,
+  value: T | null,
 ): void {
   if (typeof ref === 'function') {
     ref(value);
@@ -17,7 +21,7 @@ function setRef<T>(
     ref !== undefined && ref !== null && typeof ref === 'object'
     && 'current' in ref
   ) {
-    (ref as React.MutableRefObject<T | null>).current = value;
+    (ref as WritableRefObject<T>).current = value;
   }
 }
 

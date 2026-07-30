@@ -5,6 +5,7 @@
     "build": {
       "dependsOn": ["@dugyu/luna-stage#build"],
       "inputs": [
+        "public/**",
         "src/**",
         "rsbuild.config.ts",
         "package.json",

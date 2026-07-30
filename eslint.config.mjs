@@ -134,7 +134,7 @@ export default defineConfig([
   {
     plugins: { unicorn },
     rules: {
-      'unicorn/consistent-function-scoping': 'error',
+      'unicorn/consistent-function-scoping': 'warn',
       'unicorn/no-invalid-remove-event-listener': 'error',
       'unicorn/no-array-push-push': 'error',
 

@@ -98,8 +98,8 @@ function createContextWithProvider<
 
   function useContextValue(): T {
     const context = useContext(Context);
-    if (context) return context;
-    if (defaultValue) return defaultValue;
+    if (context !== undefined) return context;
+    if (defaultValue !== undefined) return defaultValue;
 
     if (throwIfMissing) {
       throw new Error(

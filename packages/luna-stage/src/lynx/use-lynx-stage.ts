@@ -124,6 +124,10 @@ export function useLynxStage({
   // Wire up onNativeModulesCall after runtime is ready
   useEffect(() => {
     const view = lynxViewRef.current as LynxViewWithExtensions | null;
+    if (!ready) {
+      dlog(`nativeModules(${entry}): runtime not ready`);
+      return;
+    }
     if (!view) {
       dlog(`nativeModules(${entry}): no view yet`);
       return;
@@ -131,16 +135,16 @@ export function useLynxStage({
     dlog(`nativeModules(${entry}): wiring`);
     view.onNativeModulesCall = (name, data, moduleName) =>
       onNativeModulesCallEvent(name, data, moduleName);
-  }, [ready, onNativeModulesCallEvent, entry]);
+  }, [ready, onNativeModulesCallEvent, src, entry]);
 
   // Inject globalProps whenever they change
   useEffect(() => {
-    if (!globalProps || !lynxViewRef.current) return;
+    if (!ready || !globalProps || !lynxViewRef.current) return;
     dlog(`globalProps(${entry}): updating`);
     lynxViewRef.current.updateGlobalProps(
       globalProps as unknown as UpdateGlobalPropsArg,
     );
-  }, [globalProps, entry]);
+  }, [ready, globalProps, src, entry]);
 
   useEffect(() => {
     const lynxView = lynxViewRef.current as LynxViewWithExtensions | null;
@@ -188,11 +192,6 @@ export function useLynxStage({
     const t = setTimeout(() => {
       if (renderedRef.current || errored) return;
       renderedRef.current = true;
-      if (globalProps) {
-        lynxView.updateGlobalProps(
-          globalProps as unknown as UpdateGlobalPropsArg,
-        );
-      }
       reportReadyEvent();
     }, 0);
 
@@ -205,9 +204,7 @@ export function useLynxStage({
     };
   }, [
     ready,
-    entry,
-    bundleRoot,
-    globalProps,
+    src,
     reportReadyEvent,
     reportErrorEvent,
   ]);

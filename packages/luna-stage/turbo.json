@@ -6,7 +6,8 @@
       "dependsOn": ["@dugyu/luna-core#build"],
       "inputs": [
         "src/**",
-        "rslib.config.ts"
+        "rslib.config.ts",
+        "tsconfig.build.json"
       ],
       "outputs": ["dist/**"]
     }
